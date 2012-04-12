@@ -12,7 +12,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -26,14 +26,19 @@ public class WhooingMain extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
-		Toast.makeText(this, initConnect(), 2000).show();
+		//TODO make a thread to handshake to server
+		Toast.makeText(this, initHandshake(), 2000).show();
 	}
 
-	private String initConnect(){
-		StringBuilder builder = new StringBuilder();
+	/**
+	 * Do initial handshake to server. Getting a token in this phase
+	 * @return	Returns token
+	 * */
+	private String initHandshake(){
+		String token = null;
 	    HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(
-				"https://whooing.com/app_auth/request_token?app_id=125&app_secret=1c5224ad2961704a6076c0bda127003933828a16");
+				"https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_KEY+"");
 		try {
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
@@ -41,21 +46,62 @@ public class WhooingMain extends Activity {
 			if (statusCode == 200) {
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
-				BufferedReader reader = new BufferedReader(
-						new InputStreamReader(content));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					builder.append(line);
+				
+				// Load the requested page converted to a string into a JSONObject.
+                JSONObject result;
+				try {
+					// Get the token value
+					result = new JSONObject(convertStreamToString(content));
+					token = result.getString("token");
+				} catch (JSONException e) {
+					Log.e(WhooingMain.class.toString(), "Failed to get JSON token value");
+					return null;
 				}
 			} else {
 				Log.e(WhooingMain.class.toString(), "Failed to download file");
+				return null;
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return builder.toString();
+		
+		return token.toString();
+	}
+
+    private static String convertStreamToString(InputStream is) {
+        /*
+         * To convert the InputStream to String we use the BufferedReader.readLine()
+         * method. We iterate until the BufferedReader return null which means
+         * there's no more data to read. Each line will appended to a StringBuilder
+         * and returned as String.
+         */
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+ 
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
+    
+
+    @Override
+	public void onBackPressed() {
+		// block back event
+    	//TODO Ask exit
 	}
 	
 }
