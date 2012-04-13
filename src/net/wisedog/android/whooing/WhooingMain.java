@@ -1,9 +1,7 @@
 package net.wisedog.android.whooing;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,21 +18,23 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import net.wisedog.android.whooing.utils.StringUtil;
+
 public class WhooingMain extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
-		//TODO make a thread to handshake to server
-		Toast.makeText(this, initHandshake(), 2000).show();
+		Define.TOKEN = initHandshake();
+		Toast.makeText(this, Define.TOKEN, 2000).show();
 	}
 
 	/**
 	 * Do initial handshake to server. Getting a token in this phase
-	 * @return	Returns token
+	 * @return	Returns token or null
 	 * */
-	private String initHandshake(){
+	public String initHandshake(){
 		String token = null;
 	    HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(
@@ -51,7 +51,7 @@ public class WhooingMain extends Activity {
                 JSONObject result;
 				try {
 					// Get the token value
-					result = new JSONObject(convertStreamToString(content));
+					result = new JSONObject(StringUtil.convertStreamToString(content));
 					token = result.getString("token");
 				} catch (JSONException e) {
 					Log.e(WhooingMain.class.toString(), "Failed to get JSON token value");
@@ -62,40 +62,47 @@ public class WhooingMain extends Activity {
 				return null;
 			}
 		} catch (ClientProtocolException e) {
-			e.printStackTrace();
+			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
+			token = null;
 		} catch (IOException e) {
-			e.printStackTrace();
+			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
+			token = null;
 		}
 		
-		return token.toString();
+		return token;
 	}
-
-    private static String convertStreamToString(InputStream is) {
-        /*
-         * To convert the InputStream to String we use the BufferedReader.readLine()
-         * method. We iterate until the BufferedReader return null which means
-         * there's no more data to read. Each line will appended to a StringBuilder
-         * and returned as String.
-         */
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
- 
-        String line = null;
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return sb.toString();
-    }
+	/**
+	 * 
+	 * @return Returns Pin or null
+	 * */
+	private String secondHandshake(String token){
+		String pin = null;
+		if(Define.TOKEN == null)
+			return null;
+		HttpClient client = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(
+				"https://whooing.com/app_auth/authorize?token="+ Define.TOKEN);
+		try{
+			HttpResponse response = client.execute(httpGet);
+			StatusLine statusLine = response.getStatusLine();
+			int statusCode = statusLine.getStatusCode();
+			if (statusCode == 200) {
+				HttpEntity entity = response.getEntity();
+				InputStream content = entity.getContent();
+				String contentStr = StringUtil.convertStreamToString(content);
+				contentStr +="";
+				//TODO Complete getting Pin code. I should go home, so I commit incompletely 
+			}
+		}
+		catch(ClientProtocolException e){
+			
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pin;
+	}
     
 
     @Override

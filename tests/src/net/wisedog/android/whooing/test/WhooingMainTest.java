@@ -6,6 +6,7 @@ import net.wisedog.android.whooing.WhooingMain;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -22,10 +23,29 @@ import android.widget.TextView;
  * Demonstrates the use of JUnit setUp() and assert() methods.
  */
 public class WhooingMainTest extends ActivityInstrumentationTestCase2<WhooingMain> {
+	
+	private WhooingMain mActivity;
 
-	public WhooingMainTest(Class<WhooingMain> activityClass) {
-		super(activityClass);
-		// TODO Auto-generated constructor stub
+	public WhooingMainTest(String pkg, Class<WhooingMain> activityClass) {
+		super(pkg, activityClass);
 	}
+	
+	public WhooingMainTest(){
+		super("net.wisedog.android.whooing", WhooingMain.class);
+	}
+	
 
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		setActivityInitialTouchMode(false);
+		
+		mActivity = getActivity();
+	}
+	
+	public void testInitHandshake(){
+		String result = mActivity.initHandshake();
+		assertNotNull(result);
+	}
 }
