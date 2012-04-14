@@ -23,7 +23,7 @@ public class Whooing extends Activity {
 			@Override
 			public void handleMessage(Message msg) {
 				Intent intent = new Intent(mContext, WhooingMain.class);
-				startActivity(intent);
+				startActivityForResult(intent, 1);
 			}			
 		};
 		handler.sendEmptyMessageDelayed(0, 2000);
@@ -31,8 +31,7 @@ public class Whooing extends Activity {
     
     @Override
 	public void onBackPressed() {
-		// block back event
-		//super.onBackPressed();
+		// block back button event
 	}
     
     
@@ -41,4 +40,18 @@ public class Whooing extends Activity {
 		super.onResume();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode != RESULT_OK){
+			switch(resultCode){
+				case Define.RESPONSE_EXIT:
+				{
+					setResult(Define.RESPONSE_EXIT);
+					this.finish();
+					break;
+				}
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

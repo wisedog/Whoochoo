@@ -43,9 +43,4 @@ public class WhooingMainTest extends ActivityInstrumentationTestCase2<WhooingMai
 		
 		mActivity = getActivity();
 	}
-	
-	public void testInitHandshake(){
-		String result = mActivity.initHandshake();
-		assertNotNull(result);
-	}
 }

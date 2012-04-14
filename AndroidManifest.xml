@@ -20,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name="WhooingMain"></activity>
+        <activity android:name="WhooingAuth"></activity>
     </application>
 
 </manifest>
