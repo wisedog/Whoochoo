@@ -2,17 +2,22 @@ package net.wisedog.android.whooing;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
 public class WhooingMain extends Activity {
-
+	private ProgressDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
+		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE); 
+		Define.TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
+		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
 	}
 	
     @Override
@@ -20,6 +25,7 @@ public class WhooingMain extends Activity {
     	if(Define.TOKEN == null || Define.PIN == null){
     		ThreadHandshake thread = new ThreadHandshake(mHandler, this);
     		thread.start();
+    		dialog = ProgressDialog.show(this, "", getString(R.string.authorizing), true);
     	}
 		super.onResume();
 	}
@@ -31,13 +37,9 @@ public class WhooingMain extends Activity {
 				return;
 			}
 			else if(msg.what == Define.MSG_OK){
-				if(msg.obj == null)
-					return;				
+				dialog.dismiss();		
 			}
 			
-
-			//mUpdateString  = (String)msg.obj;
-			//updateFlag = msg.what;
 		}		
 	};
 

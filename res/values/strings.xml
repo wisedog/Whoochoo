@@ -9,5 +9,6 @@
     <string name="yes">네</string>
     <string name="no">아니오</string>
     <string name="is_exit">종료하시겠습니까?</string>
+    <string name="authorizing">인증중입니다...</string>
 
 </resources>

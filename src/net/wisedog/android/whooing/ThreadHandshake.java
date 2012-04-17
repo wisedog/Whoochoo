@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -90,6 +91,7 @@ public class ThreadHandshake extends Thread {
 	 * 
 	 * @return Returns Pin or null
 	 * */
+	@SuppressWarnings("static-access")
 	private String secondHandshake(String token){
 		String pin = null;
 		if(token == null)
@@ -108,6 +110,11 @@ public class ThreadHandshake extends Thread {
 				Intent intent = new Intent(mContext, WhooingAuth.class);
 				intent.putExtra(Define.KEY_AUTHPAGE, contentStr);
 				intent.putExtra("token", token);
+				SharedPreferences prefs = mContext.getSharedPreferences(Define.SHARED_PREFERENCE,
+						mContext.MODE_PRIVATE);
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putString(Define.KEY_SHARED_TOKEN, pin);
+				editor.commit();
 				mContext.startActivity(intent);
 			}
 			else {
