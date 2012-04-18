@@ -1,7 +1,6 @@
 package net.wisedog.android.whooing;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -19,20 +18,15 @@ public class WhooingWebViewClient extends WebViewClient {
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
 		String pin = RegExUtil.takePin(url);
-		if(pin == null){
+		if(pin != null){
 			Define.PIN = pin;
-			SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
-					mActivity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString(Define.KEY_SHARED_PIN, pin);
-			editor.commit();
 			mActivity.setResult(mActivity.RESULT_OK);
-			mActivity.finish();
+			mActivity.finish();	//FIXME Geez. WhooingAuth activity will create again! not finish
+			return false;
 		}			
 		else{
-			return false;
+			return true;
 		}
-		return super.shouldOverrideUrlLoading(view, url);
 	}
 
 	

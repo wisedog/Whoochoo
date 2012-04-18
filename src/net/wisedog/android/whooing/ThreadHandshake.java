@@ -15,7 +15,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
@@ -25,28 +25,33 @@ import android.util.Log;
 
 public class ThreadHandshake extends Thread {
 	private Handler mHandler;
-	private Context mContext;
+	private Activity mActivity;
 	
-	public ThreadHandshake(Handler mHandler, Context ctx) {
+	public ThreadHandshake(Handler mHandler, Activity ctx) {
 		super();
 		this.mHandler = mHandler;
-		this.mContext = ctx;
+		this.mActivity = ctx;
 	}
 
 	@Override
 	public void run() {
 		Define.TOKEN = initHandshake();
 		Define.PIN = secondHandshake(Define.TOKEN);
-		Message msg = new Message();
-		msg.what = 1;	
-		msg.obj = "123";
-		mHandler.sendMessage(msg);
+		/*Message msg = new Message();
+		if(Define.TOKEN != null && Define.PIN != null){			
+			msg.what = Define.MSG_OK;					
+		}
+		else{
+			msg.what = Define.MSG_FAIL;	
+		}
+		mHandler.sendMessage(msg);	*/
 		super.run();
 	}	
 	/**
 	 * Do initial handshake to server. Getting a token in this phase
 	 * @return	Returns token or null
 	 * */
+	@SuppressWarnings("static-access")
 	public String initHandshake(){
 		String token = null;
 	    HttpClient client = new DefaultHttpClient();
@@ -82,16 +87,22 @@ public class ThreadHandshake extends Thread {
 			token = null;
 		}
 		
+		SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
+				mActivity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(Define.KEY_SHARED_TOKEN, token);
+		editor.commit();
+		
 		return token;
 	}
 	
 
 	
 	/**
-	 * 
+	 * Getting PIN number. If shaking hand with server is successful, then 
+	 * invoke an activity to try to authorize user
 	 * @return Returns Pin or null
 	 * */
-	@SuppressWarnings("static-access")
 	private String secondHandshake(String token){
 		String pin = null;
 		if(token == null)
@@ -107,15 +118,17 @@ public class ThreadHandshake extends Thread {
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
 				String contentStr = StringUtil.convertStreamToString(content);
-				Intent intent = new Intent(mContext, WhooingAuth.class);
+				Message msg = new Message();		
+				msg.what = Define.MSG_OK;			
+				msg.obj = contentStr;
+
+				mHandler.sendMessage(msg);
+				/*Intent intent = new Intent(mActivity, WhooingAuth.class);
 				intent.putExtra(Define.KEY_AUTHPAGE, contentStr);
 				intent.putExtra("token", token);
-				SharedPreferences prefs = mContext.getSharedPreferences(Define.SHARED_PREFERENCE,
-						mContext.MODE_PRIVATE);
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putString(Define.KEY_SHARED_TOKEN, pin);
-				editor.commit();
-				mContext.startActivity(intent);
+				
+				mActivity.startActivityForResult(intent, Define.REQUEST_AUTH);
+				mActivity.startActivity(intent);*/
 			}
 			else {
 				Log.e(WhooingMain.class.toString(), "Failed to download file");

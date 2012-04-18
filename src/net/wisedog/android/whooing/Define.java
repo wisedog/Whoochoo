@@ -12,8 +12,12 @@ public class Define {
 	
 	public static final int RESPONSE_EXIT = 10;
 	
+	public static final int REQUEST_AUTH = 50;
+	
 	public static final int MSG_OK = 100;
 	public static final int MSG_FAIL = 101;
+	
+	
 	
 	
 }

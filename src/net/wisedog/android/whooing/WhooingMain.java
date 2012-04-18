@@ -3,21 +3,26 @@ package net.wisedog.android.whooing;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.Toast;
 
 public class WhooingMain extends Activity {
 	private ProgressDialog dialog;
+	private Context mContext;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
+		mContext = this;
 		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE); 
 		Define.TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
-		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
+		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);		
 	}
 	
     @Override
@@ -34,10 +39,17 @@ public class WhooingMain extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			if(msg.what == Define.MSG_FAIL){
+				dialog.dismiss();
+				Toast.makeText(mContext, "인증에 실패하였습니다!", 1000).show();
 				return;
 			}
 			else if(msg.what == Define.MSG_OK){
-				dialog.dismiss();		
+				Intent intent = new Intent(WhooingMain.this, WhooingAuth.class);
+				intent.putExtra(Define.KEY_AUTHPAGE, msg.obj.toString());
+				intent.putExtra("token", Define.TOKEN);
+				
+				startActivityForResult(intent, Define.REQUEST_AUTH);
+				startActivity(intent);
 			}
 			
 		}		
@@ -62,5 +74,29 @@ public class WhooingMain extends Activity {
 			}
 		}).show();
 	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode == RESULT_OK){
+			if(requestCode == Define.REQUEST_AUTH){
+				SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE,
+						MODE_PRIVATE);
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putString(Define.KEY_SHARED_PIN, Define.PIN);
+				editor.commit();
+				dialog.dismiss();
+				Toast.makeText(mContext, "인증 성공!", 1000).show();
+			}			
+		}
+		else if(requestCode == RESULT_CANCELED){
+			if(requestCode == Define.REQUEST_AUTH){
+				dialog.dismiss();
+				Toast.makeText(mContext, "인증 실패!", 1000).show();
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+	
+	
 	
 }
