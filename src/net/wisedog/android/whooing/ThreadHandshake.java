@@ -16,35 +16,48 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-
+/**
+ * A thread for network. 
+ * @author Wisedog(me@wisedog.net)
+ * */
 public class ThreadHandshake extends Thread {
 	private Handler mHandler;
 	private Activity mActivity;
+	private boolean isAfterAuth;
 	
-	public ThreadHandshake(Handler mHandler, Activity ctx) {
+	public ThreadHandshake(Handler mHandler, Activity activity, boolean isAfterAuth) {
 		super();
 		this.mHandler = mHandler;
-		this.mActivity = ctx;
+		this.mActivity = activity;
+		this.isAfterAuth = isAfterAuth;
 	}
 
 	@Override
 	public void run() {
-		Define.TOKEN = initHandshake();
-		Define.PIN = secondHandshake(Define.TOKEN);
-		/*Message msg = new Message();
-		if(Define.TOKEN != null && Define.PIN != null){			
-			msg.what = Define.MSG_OK;					
+		if(!isAfterAuth){	//Before Auth
+			boolean result = initHandshake();
+			if(result == true)
+				result = secondHandshake(Define.TOKEN);
 		}
-		else{
-			msg.what = Define.MSG_FAIL;	
+		else{	//After Auth
+			boolean result = true;
+			if(Define.TOKEN == null || Define.PIN == null){
+				result = false;
+			}else{
+				result = thirdHandshake(Define.TOKEN, Define.PIN);
+			}	
+			if(result == false){
+				Message msg = new Message();		
+				msg.what = Define.MSG_FAIL;
+				mHandler.sendMessage(msg);
+			}
 		}
-		mHandler.sendMessage(msg);	*/
+		
 		super.run();
 	}	
 	/**
@@ -52,8 +65,9 @@ public class ThreadHandshake extends Thread {
 	 * @return	Returns token or null
 	 * */
 	@SuppressWarnings("static-access")
-	public String initHandshake(){
+	public boolean initHandshake(){
 		String token = null;
+		boolean isResult = true;
 	    HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(
 				"https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_KEY+"");
@@ -70,21 +84,27 @@ public class ThreadHandshake extends Thread {
 				try {
 					// Get the token value
 					result = new JSONObject(StringUtil.convertStreamToString(content));
-					token = result.getString("token");
+					Define.TOKEN = result.getString("token");					
 				} catch (JSONException e) {
 					Log.e(WhooingMain.class.toString(), "Failed to get JSON token value");
-					return null;
+					isResult =  false;
 				}
 			} else {
 				Log.e(WhooingMain.class.toString(), "Failed to download file");
-				return null;
+				isResult =  false;
 			}
 		} catch (ClientProtocolException e) {
 			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
-			token = null;
+			isResult =  false;
 		} catch (IOException e) {
 			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
-			token = null;
+			isResult = false;
+		}
+		if(isResult == false){
+			Message msg = new Message();		
+			msg.what = Define.MSG_FAIL;
+			mHandler.sendMessage(msg);
+			return false;
 		}
 		
 		SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
@@ -93,7 +113,7 @@ public class ThreadHandshake extends Thread {
 		editor.putString(Define.KEY_SHARED_TOKEN, token);
 		editor.commit();
 		
-		return token;
+		return true;
 	}
 	
 
@@ -103,10 +123,10 @@ public class ThreadHandshake extends Thread {
 	 * invoke an activity to try to authorize user
 	 * @return Returns Pin or null
 	 * */
-	private String secondHandshake(String token){
+	private boolean secondHandshake(String token){
 		String pin = null;
 		if(token == null)
-			return null;
+			return false;
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(
 				"https://whooing.com/app_auth/authorize?token="+ Define.TOKEN);
@@ -118,31 +138,87 @@ public class ThreadHandshake extends Thread {
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
 				String contentStr = StringUtil.convertStreamToString(content);
-				Message msg = new Message();		
-				msg.what = Define.MSG_OK;			
-				msg.obj = contentStr;
-
-				mHandler.sendMessage(msg);
-				/*Intent intent = new Intent(mActivity, WhooingAuth.class);
-				intent.putExtra(Define.KEY_AUTHPAGE, contentStr);
-				intent.putExtra("token", token);
 				
-				mActivity.startActivityForResult(intent, Define.REQUEST_AUTH);
-				mActivity.startActivity(intent);*/
+				Message msg = new Message();		
+				msg.what = Define.MSG_REQ_AUTH;
+				msg.obj = contentStr;
+				mHandler.sendMessage(msg);
 			}
 			else {
 				Log.e(WhooingMain.class.toString(), "Failed to download file");
-				return null;
+				return false;
 			}
 		}
 		catch(ClientProtocolException e){
 			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
-			pin = null;
+			return false;
 		} 
 		catch (IOException e) {
 			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
-			pin = null;
+			return false;
 		}
-		return pin;
+		return false;
+	}
+	
+	/**
+	 * 
+	 * */
+	@SuppressWarnings("static-access")
+	private boolean thirdHandshake(String token, String pin){
+		String token_secret = null;
+		String user_id = null;
+		if(token == null || pin == null)
+			return false;
+		HttpClient client = new DefaultHttpClient();
+		HttpGet httpGet = new HttpGet(
+				"https://whooing.com/app_auth/access_token?app_id="+Define.APP_ID+
+				"&app_secret="+Define.APP_KEY+ "&token="+token+"&pin="+pin);
+		try{
+			HttpResponse response = client.execute(httpGet);
+			StatusLine statusLine = response.getStatusLine();
+			int statusCode = statusLine.getStatusCode();
+			if (statusCode == 200) {
+				HttpEntity entity = response.getEntity();
+				InputStream content = entity.getContent();
+				
+				// Load the requested page converted to a string into a JSONObject.
+                JSONObject result;
+				try {
+					// Get the token value
+					result = new JSONObject(StringUtil.convertStreamToString(content));
+					token_secret = result.getString("token_secret");
+					user_id = result.getString("user_id");
+				} catch (JSONException e) {
+					Log.e(WhooingMain.class.toString(), "Failed to get JSON token value");
+					return false;
+				}
+			}
+			else {
+				Log.e(WhooingMain.class.toString(), "Failed to download file");
+				return false;
+			}
+		}
+		catch(ClientProtocolException e){
+			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
+			return false;
+		} 
+		catch (IOException e) {
+			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
+			return false;
+		}
+		SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
+				mActivity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putString(Define.KEY_SHARED_TOKEN_SECRET, token_secret);
+		editor.putString(Define.USER_ID, user_id);
+		editor.commit();
+		
+		Define.TOKEN_SECRET = token_secret;
+		Define.USER_ID = user_id;
+		
+		Message msg = new Message();		
+		msg.what = Define.MSG_DONE;
+		mHandler.sendMessage(msg);
+		return true;
 	}
 }

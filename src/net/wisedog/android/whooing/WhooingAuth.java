@@ -3,6 +3,7 @@ package net.wisedog.android.whooing;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -13,6 +14,7 @@ public class WhooingAuth extends Activity{
 		super.onCreate(savedInstanceState);
 		//FIXME This activity is not finished() when finish() is called in WhooingWebViewClient
 		// So I can't help avoiding dirty
+		Log.i("wisedog", "WhooingAuth");
 		if(Define.PIN != null){
 			setResult(RESULT_OK);
 			this.finish();

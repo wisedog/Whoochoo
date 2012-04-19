@@ -10,5 +10,7 @@
     <string name="no">아니오</string>
     <string name="is_exit">종료하시겠습니까?</string>
     <string name="authorizing">인증중입니다...</string>
+    <string name="msg_auth_success">인증성공!</string>
+    <string name="msg_auth_fail">인증 실패!</string>
 
 </resources>

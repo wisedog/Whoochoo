@@ -12,25 +12,38 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+/**
+ * 
+ * */
 public class WhooingMain extends Activity {
 	private ProgressDialog dialog;
-	private Context mContext;
+	private Activity mActivity;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
-		mContext = this;
+		mActivity = this;
 		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE); 
+		
 		Define.TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
-		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);		
+		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
+		Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
+		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
 	}
 	
     @Override
 	protected void onResume() {
+    	//TODO Move this!
     	if(Define.TOKEN == null || Define.PIN == null){
-    		ThreadHandshake thread = new ThreadHandshake(mHandler, this);
+    		ThreadHandshake thread = new ThreadHandshake(mHandler, this, false);
     		thread.start();
     		dialog = ProgressDialog.show(this, "", getString(R.string.authorizing), true);
+    		dialog.setCancelable(true);
+    	}
+    	else{
+    		//TODO Move this!
+    		ThreadRestAPI thread = new ThreadRestAPI(mHandler, this);
+    		thread.start();
     	}
 		super.onResume();
 	}
@@ -40,10 +53,10 @@ public class WhooingMain extends Activity {
 		public void handleMessage(Message msg) {
 			if(msg.what == Define.MSG_FAIL){
 				dialog.dismiss();
-				Toast.makeText(mContext, "인증에 실패하였습니다!", 1000).show();
+				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), 1000).show();
 				return;
 			}
-			else if(msg.what == Define.MSG_OK){
+			else if(msg.what == Define.MSG_REQ_AUTH){
 				Intent intent = new Intent(WhooingMain.this, WhooingAuth.class);
 				intent.putExtra(Define.KEY_AUTHPAGE, msg.obj.toString());
 				intent.putExtra("token", Define.TOKEN);
@@ -51,7 +64,12 @@ public class WhooingMain extends Activity {
 				startActivityForResult(intent, Define.REQUEST_AUTH);
 				startActivity(intent);
 			}
-			
+			else if(msg.what == Define.MSG_DONE){
+				dialog.dismiss();
+				Toast.makeText(mActivity, getString(R.string.msg_auth_success), 1000).show();
+				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity);
+	    		thread.start();
+			}
 		}		
 	};
 
@@ -84,14 +102,16 @@ public class WhooingMain extends Activity {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putString(Define.KEY_SHARED_PIN, Define.PIN);
 				editor.commit();
-				dialog.dismiss();
-				Toast.makeText(mContext, "인증 성공!", 1000).show();
+				//dialog.dismiss();
+				//Toast.makeText(mContext, getString(R.string.msg_auth_success), 1000).show();
+				ThreadHandshake thread = new ThreadHandshake(mHandler, this, true);
+	    		thread.start();
 			}			
 		}
 		else if(requestCode == RESULT_CANCELED){
 			if(requestCode == Define.REQUEST_AUTH){
 				dialog.dismiss();
-				Toast.makeText(mContext, "인증 실패!", 1000).show();
+				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), 1000).show();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
