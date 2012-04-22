@@ -5,9 +5,10 @@
     android:orientation="vertical" >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dip"
+        android:layout_height="100dip"
         android:background="#FFFFFF"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="3dip">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">       
@@ -15,7 +16,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="30dip"
 		        android:background="@android:color/transparent"
-		        android:text="Budget"
+		        android:text="Balance"
 		        android:id="@+id/balance_text"
 		        android:textSize="15dp"
 		        android:gravity="center_vertical"
@@ -25,7 +26,7 @@
 		        android:layout_height="fill_parent"
 		        android:gravity="right"
 		        android:background="@android:color/transparent"
-		        android:text="12,345,678"
+		        android:text="----------"
 		        android:id="@+id/balance_num"
 		        android:paddingTop="30dip"
 		        android:textSize="50dp"
@@ -36,22 +37,49 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dip"
+        android:layout_height="90dip"
         android:background="#FFFFFF"
         android:orientation="horizontal">
         <FrameLayout
             android:layout_width="match_parent"
 	        android:layout_height="match_parent"
         >
-        <TextView 
-	        android:layout_width="fill_parent"
-	        android:layout_height="30dip"
-	        android:background="@android:color/transparent"
-	        android:text="Budget"
-	        android:id="@+id/balance_text"
-	        android:textSize="15dp"
-	        android:gravity="center_vertical"
-        />
+	         <TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="25dip"
+		        android:background="@android:color/transparent"
+		        android:text="Monthly Budget"
+		        android:id="@+id/budget_text"
+		        android:textSize="15dp"
+		        android:gravity="center_vertical"
+	        />
+	        <LinearLayout 
+	            android:layout_width="match_parent"
+		        android:layout_height="90dip"
+		        android:orientation="vertical"
+		        android:paddingTop="25dip"
+        >
+	        <TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="25dip"
+		        android:background="@android:color/transparent"
+		        android:text="월간예산: ------"
+		        android:id="@+id/budget_monthly_budget"
+		        android:textSize="22dp"
+		        android:gravity="center_vertical"
+		        android:paddingLeft="40dip"
+	        />
+	        <TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="25dip"
+		        android:background="@android:color/transparent"
+		        android:text="월간잔여액: -----"
+		        android:id="@+id/budget_monthly_balance"
+		        android:textSize="22dp"
+		        android:gravity="center_vertical"
+		        android:paddingLeft="40dip"
+	        />
+	        </LinearLayout>
     	</FrameLayout>
         
     </LinearLayout>

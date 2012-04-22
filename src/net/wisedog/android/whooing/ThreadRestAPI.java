@@ -33,24 +33,24 @@ public class ThreadRestAPI extends Thread {
 
 	@Override
 	public void run() {
+		String url = null;
 		switch(mAPIName){
 		case Define.API_SECTION:
-			
+			url = "https://whooing.com/api/sections.json_array";
 			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
+			return;
 		}
-		JSONObject result = getSection();
+		JSONObject result = callAPI(url);
 		try {
-			//JSONObject obj = result.getJSONObject("result");
 			JSONArray array = result.getJSONArray("results");
 			
-			JSONObject obj1 = (JSONObject) array.get(0);
-			obj1.getString("111");
-			//obj.getString("123");
+			//JSONObject obj1 = (JSONObject) array.get(0);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			Log.e(ThreadRestAPI.class.toString(), "Error while handle JSON");
 			e.printStackTrace();
+			result = null;
 		}	//TODO Support multiple section
 		
 		
@@ -68,8 +68,7 @@ public class ThreadRestAPI extends Thread {
 	}
 	
 	
-	private JSONObject getSection(){
-		String url = "https://whooing.com/api/sections.json";
+	private JSONObject callAPI(String url){
 		
 		String sig_raw = Define.APP_KEY+"|" +Define.TOKEN_SECRET;
 		String signiture = SHA1Util.SHA1(sig_raw);

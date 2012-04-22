@@ -7,6 +7,7 @@ public class Define {
 	public static String PIN = null;
 	public static String USER_ID = null;
 	public static String TOKEN_SECRET = null;
+	public static String APP_SECTION = null;
 	
 	// General Key and Shared Preference Key
 	public static String KEY_AUTHPAGE = "AUTHPAGE";

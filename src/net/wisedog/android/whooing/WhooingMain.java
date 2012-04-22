@@ -1,5 +1,11 @@
 package net.wisedog.android.whooing;
 
+import java.text.DecimalFormat;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -9,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -64,6 +71,22 @@ public class WhooingMain extends Activity {
 				Toast.makeText(mActivity, getString(R.string.msg_auth_success), 1000).show();
 				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_SECTION);
 	    		thread.start();
+			}
+			else if(msg.what == Define.MSG_API_OK){
+				if(msg.arg1 == Define.API_SECTION){
+					TextView text = (TextView)findViewById(R.id.balance_num);
+					JSONObject result = (JSONObject)msg.obj;					
+					try {
+						JSONArray array = result.getJSONArray("results");					
+						JSONObject obj = (JSONObject) array.get(0);
+						DecimalFormat df = new DecimalFormat("#,##0");
+						int num = obj.getInt("total_assets");						
+						text.setText(df.format(num));
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}				
 			}
 		}		
 	};
