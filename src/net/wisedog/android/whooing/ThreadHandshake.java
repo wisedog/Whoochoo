@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.wisedog.android.whooing.utils.StringUtil;
+import net.wisedog.android.whooing.utils.JSONUtil;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -62,53 +63,24 @@ public class ThreadHandshake extends Thread {
 	}	
 	/**
 	 * Do initial handshake to server. Getting a token in this phase
-	 * @return	Returns token or null
+	 * @return	Returns true if it sucess
 	 * */
-	@SuppressWarnings("static-access")
 	public boolean initHandshake(){
+		String url = "https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_KEY;
 		String token = null;
-		boolean isResult = true;
-	    HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(
-				"https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_KEY+"");
 		try {
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				
-				// Load the requested page converted to a string into a JSONObject.
-                JSONObject result;
-				try {
-					// Get the token value
-					result = new JSONObject(StringUtil.convertStreamToString(content));
-					Define.TOKEN = result.getString("token");					
-				} catch (JSONException e) {
-					Log.e(WhooingMain.class.toString(), "Failed to get JSON token value");
-					isResult =  false;
-				}
-			} else {
-				Log.e(WhooingMain.class.toString(), "Failed to download file");
-				isResult =  false;
-			}
-		} catch (ClientProtocolException e) {
-			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
-			isResult =  false;
-		} catch (IOException e) {
-			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
-			isResult = false;
-		}
-		if(isResult == false){
-			Message msg = new Message();		
-			msg.what = Define.MSG_FAIL;
-			mHandler.sendMessage(msg);
-			return false;
+			JSONObject result = JSONUtil.getJSONObject(url, null, null);
+			token = result.getString("token");
+		} catch (JSONException e) {
+			Log.e(ThreadHandshake.class.toString(), "JSON Error");
+			e.printStackTrace();
+		} 
+		if(token != null){
+			Define.TOKEN = token;
 		}
 		
 		SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
-				mActivity.MODE_PRIVATE);
+				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(Define.KEY_SHARED_TOKEN, token);
 		editor.commit();
@@ -121,10 +93,9 @@ public class ThreadHandshake extends Thread {
 	/**
 	 * Getting PIN number. If shaking hand with server is successful, then 
 	 * invoke an activity to try to authorize user
-	 * @return Returns Pin or null
+	 * @return Returns true if it success
 	 * */
 	private boolean secondHandshake(String token){
-		String pin = null;
 		if(token == null)
 			return false;
 		HttpClient client = new DefaultHttpClient();
@@ -161,53 +132,30 @@ public class ThreadHandshake extends Thread {
 	}
 	
 	/**
-	 * 
+	 * After Authorizing user, get token secret and user id
+	 * @return	Return true if it success or false 
 	 * */
-	@SuppressWarnings("static-access")
 	private boolean thirdHandshake(String token, String pin){
 		String token_secret = null;
 		String user_id = null;
 		if(token == null || pin == null)
 			return false;
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(
-				"https://whooing.com/app_auth/access_token?app_id="+Define.APP_ID+
-				"&app_secret="+Define.APP_KEY+ "&token="+token+"&pin="+pin);
-		try{
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				
-				// Load the requested page converted to a string into a JSONObject.
-                JSONObject result;
-				try {
-					// Get the token value
-					result = new JSONObject(StringUtil.convertStreamToString(content));
-					token_secret = result.getString("token_secret");
-					user_id = result.getString("user_id");
-				} catch (JSONException e) {
-					Log.e(WhooingMain.class.toString(), "Failed to get JSON token value");
-					return false;
-				}
-			}
-			else {
-				Log.e(WhooingMain.class.toString(), "Failed to download file");
-				return false;
-			}
-		}
-		catch(ClientProtocolException e){
-			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
-			return false;
-		} 
-		catch (IOException e) {
-			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
+		
+		String url = "https://whooing.com/app_auth/access_token?app_id="+Define.APP_ID+
+				"&app_secret="+Define.APP_KEY+ "&token="+token+"&pin="+pin;
+		
+		try {
+			JSONObject result = JSONUtil.getJSONObject(url, null, null);
+			token_secret = result.getString("token_secret");
+			user_id = result.getString("user_id");
+		} catch (JSONException e) {
+			Log.e(ThreadHandshake.class.toString(), "JSON Error");
+			e.printStackTrace();
 			return false;
 		}
+		
 		SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
-				mActivity.MODE_PRIVATE);
+				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(Define.KEY_SHARED_TOKEN_SECRET, token_secret);
 		editor.putString(Define.USER_ID, user_id);

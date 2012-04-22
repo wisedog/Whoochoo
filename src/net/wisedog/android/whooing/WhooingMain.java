@@ -3,7 +3,6 @@ package net.wisedog.android.whooing;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,17 +22,11 @@ public class WhooingMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
 		mActivity = this;
-		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE); 
-		
+		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
 		Define.TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
 		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
 		Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
 		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
-	}
-	
-    @Override
-	protected void onResume() {
-    	//TODO Move this!
     	if(Define.TOKEN == null || Define.PIN == null){
     		ThreadHandshake thread = new ThreadHandshake(mHandler, this, false);
     		thread.start();
@@ -41,10 +34,13 @@ public class WhooingMain extends Activity {
     		dialog.setCancelable(true);
     	}
     	else{
-    		//TODO Move this!
-    		ThreadRestAPI thread = new ThreadRestAPI(mHandler, this);
+    		ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_SECTION);
     		thread.start();
     	}
+	}
+	
+    @Override
+	protected void onResume() {
 		super.onResume();
 	}
     
@@ -54,7 +50,6 @@ public class WhooingMain extends Activity {
 			if(msg.what == Define.MSG_FAIL){
 				dialog.dismiss();
 				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), 1000).show();
-				return;
 			}
 			else if(msg.what == Define.MSG_REQ_AUTH){
 				Intent intent = new Intent(WhooingMain.this, WhooingAuth.class);
@@ -67,7 +62,7 @@ public class WhooingMain extends Activity {
 			else if(msg.what == Define.MSG_DONE){
 				dialog.dismiss();
 				Toast.makeText(mActivity, getString(R.string.msg_auth_success), 1000).show();
-				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity);
+				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_SECTION);
 	    		thread.start();
 			}
 		}		
@@ -102,8 +97,6 @@ public class WhooingMain extends Activity {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putString(Define.KEY_SHARED_PIN, Define.PIN);
 				editor.commit();
-				//dialog.dismiss();
-				//Toast.makeText(mContext, getString(R.string.msg_auth_success), 1000).show();
 				ThreadHandshake thread = new ThreadHandshake(mHandler, this, true);
 	    		thread.start();
 			}			

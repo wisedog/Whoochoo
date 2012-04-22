@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="WhooingMain" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        <activity android:name="WhooingMain" android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name="WhooingAuth" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
     </application>
 
