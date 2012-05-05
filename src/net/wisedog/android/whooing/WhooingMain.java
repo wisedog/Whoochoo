@@ -12,9 +12,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +31,20 @@ public class WhooingMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main);
 		mActivity = this;
+		//For Debug
+		Define.TOKEN = "ca01f5d4b108ae0fb14c60be98b24f353b57ba50";
+		Define.PIN = "731251";
+		Define.TOKEN_SECRET = "c753d2953d283694b378332d8f3919be155748b7";
+		Define.USER_ID = "93aa0354c21629add8f373887b15f0e3";
+		Define.APP_SECTION = "s2128";
+		
+		/*
 		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
 		Define.TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
 		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
 		Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
-		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
+		Define = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
+		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);*/
     	if(Define.TOKEN == null || Define.PIN == null){
     		ThreadHandshake thread = new ThreadHandshake(mHandler, this, false);
     		thread.start();
@@ -41,8 +52,7 @@ public class WhooingMain extends Activity {
     		dialog.setCancelable(true);
     	}
     	else{
-    		ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_SECTION);
-    		thread.start();
+    		refreshAll();
     	}
 	}
 	
@@ -50,6 +60,15 @@ public class WhooingMain extends Activity {
 	protected void onResume() {
 		super.onResume();
 	}
+    
+    public void refreshAll(){
+    	ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_MAIN);
+		thread.start();
+		/*ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_BUDGET);
+		thread.start();
+		ThreadRestAPI thread1 = new ThreadRestAPI(mHandler, this, Define.API_GET_BALANCE);
+		thread1.start();*/
+    }
     
     Handler mHandler = new Handler(){
 		@Override
@@ -66,27 +85,137 @@ public class WhooingMain extends Activity {
 				startActivityForResult(intent, Define.REQUEST_AUTH);
 				startActivity(intent);
 			}
-			else if(msg.what == Define.MSG_DONE){
-				dialog.dismiss();
-				Toast.makeText(mActivity, getString(R.string.msg_auth_success), 1000).show();
-				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_SECTION);
-	    		thread.start();
+			else if(msg.what == Define.MSG_AUTH_DONE){
+				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_GET_SECTIONS);
+				thread.start();
 			}
 			else if(msg.what == Define.MSG_API_OK){
-				if(msg.arg1 == Define.API_SECTION){
-					TextView text = (TextView)findViewById(R.id.balance_num);
-					JSONObject result = (JSONObject)msg.obj;					
+				if(msg.arg1 == Define.API_GET_MAIN){
+					JSONObject obj = (JSONObject)msg.obj;
+					TextView monthlyBudgetText = (TextView)findViewById(R.id.budget_monthly);
+					TextView monthlyExpenseText = (TextView)findViewById(R.id.budget_monthly_expense);
 					try {
-						JSONArray array = result.getJSONArray("results");					
-						JSONObject obj = (JSONObject) array.get(0);
-						DecimalFormat df = new DecimalFormat("#,##0");
-						int num = obj.getInt("total_assets");						
-						text.setText(df.format(num));
+						JSONObject total = obj.getJSONObject("budget").getJSONObject("aggregate")
+								.getJSONObject("total");
+						
+						int budget = total.getInt("budget");
+						int expenses = total.getInt("money");
+						if(budget < expenses){
+							monthlyExpenseText.setTextColor(Color.RED);
+						}
+						monthlyBudgetText.setText("예산:"+budget);
+						monthlyExpenseText.setText("지출 : "+expenses);
+						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}				
+					
+					TextView currentBalance = (TextView)findViewById(R.id.balance_num);
+					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
+					try{
+						JSONObject obj1 = obj.getJSONObject("bs").getJSONObject("capital");
+						DecimalFormat df = new DecimalFormat("#,##0");
+						currentBalance.setText(df.format(obj1.getLong("total")));
+						
+						JSONObject obj2 = obj.getJSONObject("bs").getJSONObject("liabilities");
+						inoutBalance.setText(df.format(obj2.getLong("total")));						
+						
+					}catch(JSONException e){
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}catch(IllegalArgumentException e){
+						e.printStackTrace();
+					}
+					
+					TextView creditCard = (TextView)findViewById(R.id.text_credit_card);
+					try {
+						JSONArray array = obj.getJSONObject("bill").getJSONObject("aggregate")
+								.getJSONArray("accounts");
+/*						JSONObject total = obj.getJSONObject("bill").getJSONObject("aggregate")
+								.getJSONObject("total");*/
+						
+						String fullString = "";
+						for(int i = 0; i< array.length(); i++){
+							JSONObject object =(JSONObject) array.get(i);
+							String accountName = object.getString("account_id");
+							long money = object.getLong("money");
+							fullString = fullString + accountName + " : " + money+ "\n";
+						}
+						creditCard.setText(fullString);
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					
+					
+				}
+				else if(msg.arg1 == Define.API_GET_SECTIONS){
+					JSONObject result = (JSONObject)msg.obj;					
+					try {
+						JSONArray array = result.getJSONArray("results");					
+						JSONObject obj = (JSONObject) array.get(0);
+						String section = obj.getString("section_id");
+						if(section != null){
+							Define.APP_SECTION = section;
+							Log.i("Wisedog", "APP SECTION:"+ Define.APP_SECTION);
+							SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
+									Activity.MODE_PRIVATE);
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString(Define.KEY_SHARED_SECTION_ID, section);
+							editor.commit();
+							dialog.dismiss();
+							Toast.makeText(mActivity, getString(R.string.msg_auth_success),
+									1000).show();
+						}
+						else{
+							throw new JSONException("Error in getting section id");
+						}
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				else if(msg.arg1 == Define.API_GET_BUDGET){
+					TextView monthlyBudgetText = (TextView)findViewById(R.id.budget_monthly);
+					TextView monthlyExpenseText = (TextView)findViewById(R.id.budget_monthly_expense);
+					JSONObject obj = (JSONObject)msg.obj;
+					try {
+						int budget = obj.getInt("budget");
+						int expenses = obj.getInt("money");
+						if(budget < expenses){
+							monthlyExpenseText.setTextColor(Color.RED);
+						}
+						monthlyBudgetText.setText("예산:"+budget);
+						monthlyExpenseText.setText("지출 : "+expenses);
+						
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+				else if(msg.arg1 == Define.API_GET_BALANCE){
+					TextView currentBalance = (TextView)findViewById(R.id.balance_num);
+					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
+					JSONObject obj = (JSONObject)msg.obj;
+					try{
+						JSONObject obj1 = obj.getJSONObject("assets");
+						DecimalFormat df = new DecimalFormat("#,##0");
+						currentBalance.setText(df.format(obj1.getLong("total")));
+						
+						JSONObject obj2 = obj.getJSONObject("liabilities");
+						inoutBalance.setText(df.format(obj2.getLong("total")));						
+						
+					}catch(JSONException e){
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}catch(IllegalArgumentException e){
+						e.printStackTrace();
+					}
+				}
 			}
 		}		
 	};
@@ -119,6 +248,7 @@ public class WhooingMain extends Activity {
 						MODE_PRIVATE);
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putString(Define.KEY_SHARED_PIN, Define.PIN);
+				Log.i("Wisedog", "PIN:"+Define.PIN);
 				editor.commit();
 				ThreadHandshake thread = new ThreadHandshake(mHandler, this, true);
 	    		thread.start();

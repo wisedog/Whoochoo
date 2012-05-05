@@ -1,6 +1,7 @@
 package net.wisedog.android.whooing;
 
 import android.app.Activity;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 

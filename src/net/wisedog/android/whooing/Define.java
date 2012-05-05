@@ -16,6 +16,7 @@ public class Define {
 	public static String KEY_SHARED_TOKEN = "SHARED_TOKEN";
 	public static String KEY_SHARED_TOKEN_SECRET = "SHARED_TOKEN_SECRET";
 	public static String KEY_SHARED_USER_ID = "SHARED_USER_ID";
+	public static String KEY_SHARED_SECTION_ID = "SHARED_SECTION_ID";
 	
 	// Response/Request Key
 	public static final int RESPONSE_EXIT = 10;
@@ -24,14 +25,18 @@ public class Define {
 	//Message
 	public static final int MSG_REQ_AUTH = 100;
 	public static final int MSG_FAIL = 101;
-	public static final int MSG_DONE = 102;
+	public static final int MSG_AUTH_DONE = 102;
 	
 	public static final int MSG_API_OK = 1000;
 	public static final int MSG_API_FAIL = 1003;
 	public static final int MSG_API_FAIL_WITH_404 = 404;
+		
+	public static final int API_GET_SECTIONS = 2010;
+	public static final int API_GET_MAIN = 2020;
+	public static final int API_GET_BUDGET = 2030;
+	public static final int API_GET_BALANCE = 2040;
 	
 	
-	public static final int API_SECTION = 2001;
 	
 	
 }

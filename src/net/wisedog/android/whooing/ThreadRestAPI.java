@@ -1,12 +1,10 @@
 package net.wisedog.android.whooing;
 
-import java.util.Calendar;
+import net.wisedog.android.whooing.api.Balance;
+import net.wisedog.android.whooing.api.Budget;
+import net.wisedog.android.whooing.api.MainInfo;
+import net.wisedog.android.whooing.api.Section;
 
-import net.wisedog.android.whooing.utils.JSONUtil;
-import net.wisedog.android.whooing.utils.SHA1Util;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -33,27 +31,37 @@ public class ThreadRestAPI extends Thread {
 
 	@Override
 	public void run() {
-		String url = null;
+		JSONObject result = null;
 		switch(mAPIName){
-		case Define.API_SECTION:
-			url = "https://whooing.com/api/sections.json_array";
+		case Define.API_GET_MAIN:
+			MainInfo mainInfo = new MainInfo();
+			result = mainInfo.getInfo(Define.APP_SECTION,Define.APP_ID, Define.TOKEN, 
+					Define.APP_KEY, Define.TOKEN_SECRET);
+			break;
+		case Define.API_GET_SECTIONS:
+			Section section = new Section();
+			result = section.getSections(Define.APP_ID, Define.TOKEN, 
+					Define.APP_KEY, Define.TOKEN_SECRET);
+			break;
+		case Define.API_GET_BUDGET:
+			Budget budget = new Budget();
+			result = budget.getBudget(Define.APP_SECTION, Define.APP_ID, 
+					Define.TOKEN, Define.APP_KEY, Define.TOKEN_SECRET);
+			break;
+		case Define.API_GET_BALANCE:
+			Balance balance = new Balance();
+			result = balance.getBalance(Define.APP_SECTION, Define.APP_ID, 
+					Define.TOKEN, Define.APP_KEY, Define.TOKEN_SECRET, null);
 			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;
 		}
-		JSONObject result = callAPI(url);
-		try {
-			JSONArray array = result.getJSONArray("results");
-			
-			//JSONObject obj1 = (JSONObject) array.get(0);
-		} catch (JSONException e) {
-			Log.e(ThreadRestAPI.class.toString(), "Error while handle JSON");
-			e.printStackTrace();
-			result = null;
-		}	//TODO Support multiple section
-		
-		
+		sendMessage(result, mAPIName);
+		super.run();
+	}
+	
+	private void sendMessage(JSONObject result, int arg){
 		Message msg = new Message();
 		if(result != null){
 			msg.what = Define.MSG_API_OK;
@@ -62,27 +70,7 @@ public class ThreadRestAPI extends Thread {
 			msg.what = Define.MSG_API_FAIL;
 		}
 		msg.obj = result;
-		msg.arg1 = mAPIName;
+		msg.arg1 = arg;
 		mHandler.sendMessage(msg);
-		super.run();
-	}
-	
-	
-	private JSONObject callAPI(String url){
-		
-		String sig_raw = Define.APP_KEY+"|" +Define.TOKEN_SECRET;
-		String signiture = SHA1Util.SHA1(sig_raw);
-		String headerValue = "app_id="+Define.APP_ID+ ",token="+Define.TOKEN + ",signiture="+ signiture+
-				",nounce="+"abcde"+",timestamp="+Calendar.getInstance().getTimeInMillis();
-
-		try {
-			JSONObject result = JSONUtil.getJSONObject(url, "X-API-KEY", headerValue);
-			return result;
-			
-		} catch (JSONException e) {
-			Log.e(ThreadHandshake.class.toString(), "JSON Error");
-			e.printStackTrace();
-		} 
-		return null;
 	}
 }

@@ -71,6 +71,7 @@ public class ThreadHandshake extends Thread {
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
 			token = result.getString("token");
+			Log.i("Wisedog", "TOKEN:"+token);
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");
 			e.printStackTrace();
@@ -147,7 +148,9 @@ public class ThreadHandshake extends Thread {
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
 			token_secret = result.getString("token_secret");
+			Log.i("Wisedog", "Token secret:"+token_secret);
 			user_id = result.getString("user_id");
+			Log.i("Wisedog", "USER ID:"+user_id);
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");
 			e.printStackTrace();
@@ -165,7 +168,7 @@ public class ThreadHandshake extends Thread {
 		Define.USER_ID = user_id;
 		
 		Message msg = new Message();		
-		msg.what = Define.MSG_DONE;
+		msg.what = Define.MSG_AUTH_DONE;
 		mHandler.sendMessage(msg);
 		return true;
 	}

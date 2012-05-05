@@ -9,45 +9,57 @@
         android:background="#FFFFFF"
         android:orientation="vertical"
         android:layout_marginBottom="3dip">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">       
-	        <TextView 
+        <TextView 
 		        android:layout_width="fill_parent"
-		        android:layout_height="30dip"
-		        android:background="@android:color/transparent"
+		        android:layout_height="0dip"
+		        android:layout_weight="17"
+		        android:background="#00000000"
 		        android:text="Balance"
 		        android:id="@+id/balance_text"
 		        android:textSize="15dp"
 		        android:gravity="center_vertical"
 	        />
-	        <TextView 
+         <TextView 
 		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
+		        android:layout_height="0dip"
+		        android:layout_weight="55"
 		        android:gravity="right"
-		        android:background="@android:color/transparent"
-		        android:text="----------"
+		        android:background="#00000000"
+		        android:text="--------"
 		        android:id="@+id/balance_num"
-		        android:paddingTop="30dip"
 		        android:textSize="50dp"
 		        android:textColor="#000000"
 	        />
-	    </FrameLayout>
+          <TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="0dip"
+		        android:layout_weight="28"
+		        android:gravity="right"
+		        android:background="#00000000"
+		        android:text="---------"
+		        android:id="@+id/inout_num"
+		        android:textSize="20dp"
+		        android:textColor="#000000"
+	        />
     </LinearLayout>
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="90dip"
-        android:background="#FFFFFF"
-        android:orientation="horizontal">
+        android:background="#000000"
+        android:orientation="horizontal" 
+        android:layout_marginBottom="5dip"
+        android:baselineAligned="false">
         <FrameLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dip"
 	        android:layout_height="match_parent"
+	        android:layout_weight="70"
+	        android:background="#FFFFFF"
         >
 	         <TextView 
 		        android:layout_width="fill_parent"
 		        android:layout_height="25dip"
-		        android:background="@android:color/transparent"
+		        android:background="#00000000"
 		        android:text="Monthly Budget"
 		        android:id="@+id/budget_text"
 		        android:textSize="15dp"
@@ -62,29 +74,126 @@
 	        <TextView 
 		        android:layout_width="fill_parent"
 		        android:layout_height="25dip"
-		        android:background="@android:color/transparent"
-		        android:text="월간예산: ------"
-		        android:id="@+id/budget_monthly_budget"
-		        android:textSize="22dp"
+		        android:background="#00000000"
+		        android:text="예산: ------"
+		        android:id="@+id/budget_monthly"
+		        android:textSize="18dp"
 		        android:gravity="center_vertical"
 		        android:paddingLeft="40dip"
 	        />
 	        <TextView 
 		        android:layout_width="fill_parent"
 		        android:layout_height="25dip"
-		        android:background="@android:color/transparent"
-		        android:text="월간잔여액: -----"
-		        android:id="@+id/budget_monthly_balance"
-		        android:textSize="22dp"
+		        android:background="#00000000"
+		        android:text="지출: -----"
+		        android:id="@+id/budget_monthly_expense"
+		        android:textSize="18dp"
 		        android:gravity="center_vertical"
 		        android:paddingLeft="40dip"
 	        />
 	        </LinearLayout>
     	</FrameLayout>
+
+    	<LinearLayout
+    	    android:layout_width="0dip"
+    	    android:layout_height="fill_parent"
+    	    android:layout_marginLeft="5dip"
+    	    android:layout_weight="28"
+    	    android:background="#FFFFFF"
+    	    android:orientation="vertical" >
+
+    		<TextView 
+	        android:layout_width="match_parent"
+	        android:layout_height="25dip"
+	        
+	        android:background="#00000000"
+	        android:text=""
+	        android:id="@+id/text_user_name"
+	        android:textSize="18dp"
+	        android:gravity="center_vertical"
+	        android:paddingTop="60dip"
+        />    
+    	    
+    	</LinearLayout>
+        
         
     </LinearLayout>
-    	
-    
-    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dip"
+        android:background="#FFFFFF"
+        android:baselineAligned="false"
+        android:orientation="horizontal" 
+        android:layout_marginBottom="5dip">
+    	<TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:background="#00000000"
+		        android:text="Goal"
+		        android:id="@+id/goal_text"
+		        android:textSize="15dp"
+		        android:gravity="center_vertical"
+	        />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#000000"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
+    	<LinearLayout 
+    	    android:layout_width="0dip"
+    	    android:layout_height="match_parent"
+    	    android:layout_weight="27"
+    	    android:orientation="vertical"
+    	    android:layout_marginRight="5dip"
+    	    android:background="#000000"
+    	    >
+    	    <TextView 
+		        android:layout_width="match_parent"
+		        android:layout_height="90dip"
+		        android:background="#00000000"
+		        android:text="SMS"
+		        android:id="@+id/sms"
+		        android:textSize="15dp"
+		        android:gravity="center_vertical"
+		        android:layout_marginBottom="5dip"
+	        />
+    	     <TextView
+	            android:id="@+id/btn_more"
+	            android:layout_width="match_parent"
+	            android:layout_height="fill_parent"
+	            android:background="#00000000"
+	            android:gravity="center_vertical"
+	            android:text="+"
+	            android:textSize="30dp"
+	            />
+    	</LinearLayout>
+	    <LinearLayout
+	        android:layout_width="0dip"
+    	    android:layout_height="match_parent"
+    	    android:layout_weight="71"
+    	    android:orientation="vertical"
+    	    android:background="#000000"
+	        >
+		        <TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="30dip"
+		        android:background="#FFFFFF"
+		        android:text="Credit Card"
+		        android:textSize="18dp"
+	       		/>
+		        <TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:background="#FFFFFF"
+		        android:text="123123123"
+		        android:id="@+id/text_credit_card"
+		        android:textSize="18dp"
+	       		/>
+	        
+	    </LinearLayout>
+        
 
+    </LinearLayout>
 </LinearLayout>
