@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+    <net.wisedog.android.whooing.NavigationBar android:id="@+id/nav_bar"
+	    android:layout_width="fill_parent" android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dip"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:layout_marginBottom="3dip">
+        android:layout_marginBottom="4dip">
         <TextView 
 		        android:layout_width="fill_parent"
 		        android:layout_height="0dip"
@@ -36,7 +38,7 @@
 		        android:layout_weight="28"
 		        android:gravity="right"
 		        android:background="#00000000"
-		        android:text="---------"
+		        android:text="Goal : ---------"
 		        android:id="@+id/inout_num"
 		        android:textSize="20dp"
 		        android:textColor="#000000"
@@ -45,10 +47,28 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dip"
+        android:layout_height="150dip"
+        android:background="#FFFFFF"
+        android:baselineAligned="false"
+        android:orientation="horizontal" 
+        android:layout_marginBottom="5dip">
+    	<TextView 
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"
+		        android:background="#00000000"
+		        android:text="Graph"
+		        android:id="@+id/goal_text"
+		        android:textSize="15dp"
+		        android:gravity="center_vertical"
+	        />
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dip"
         android:background="#000000"
         android:orientation="horizontal" 
-        android:layout_marginBottom="5dip"
+        android:layout_marginBottom="4dip"
         android:baselineAligned="false">
         <FrameLayout
             android:layout_width="0dip"
@@ -98,7 +118,7 @@
     	    android:layout_width="0dip"
     	    android:layout_height="fill_parent"
     	    android:layout_marginLeft="5dip"
-    	    android:layout_weight="28"
+    	    android:layout_weight="22.30"
     	    android:background="#FFFFFF"
     	    android:orientation="vertical" >
 
@@ -120,55 +140,20 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="90dip"
-        android:background="#FFFFFF"
-        android:baselineAligned="false"
-        android:orientation="horizontal" 
-        android:layout_marginBottom="5dip">
-    	<TextView 
-		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
-		        android:background="#00000000"
-		        android:text="Goal"
-		        android:id="@+id/goal_text"
-		        android:textSize="15dp"
-		        android:gravity="center_vertical"
-	        />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="#000000"
         android:baselineAligned="false"
         android:orientation="horizontal" >
-    	<LinearLayout 
-    	    android:layout_width="0dip"
-    	    android:layout_height="match_parent"
-    	    android:layout_weight="27"
-    	    android:orientation="vertical"
-    	    android:layout_marginRight="5dip"
-    	    android:background="#000000"
-    	    >
-    	    <TextView 
-		        android:layout_width="match_parent"
-		        android:layout_height="90dip"
-		        android:background="#00000000"
-		        android:text="SMS"
-		        android:id="@+id/sms"
-		        android:textSize="15dp"
-		        android:gravity="center_vertical"
-		        android:layout_marginBottom="5dip"
-	        />
-    	     <TextView
-	            android:id="@+id/btn_more"
-	            android:layout_width="match_parent"
-	            android:layout_height="fill_parent"
-	            android:background="#00000000"
-	            android:gravity="center_vertical"
-	            android:text="+"
-	            android:textSize="30dp"
-	            />
-    	</LinearLayout>
+		  <TextView
+			android:id="@+id/btn_more"
+			android:layout_width="0dip"
+			android:layout_height="fill_parent"
+			android:layout_weight="26"
+			android:background="#00000000"
+			android:gravity="center_vertical"
+			android:text="+"
+			android:textSize="30dp"
+			/>
 	    <LinearLayout
 	        android:layout_width="0dip"
     	    android:layout_height="match_parent"

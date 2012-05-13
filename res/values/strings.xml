@@ -12,5 +12,6 @@
     <string name="authorizing">인증중입니다...</string>
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
+    <string name="main_title">Whooing</string>
 
 </resources>
