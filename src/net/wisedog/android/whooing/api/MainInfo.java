@@ -48,7 +48,7 @@ public class MainInfo extends AbstractAPI {
  'goal_start_date' => 201104, 'goal_end_date' => 201205,
 );
     	 * */
-		String mainInfoURL = "https://whooing.com/api_jongha/mixed.json_array"
+		/*String mainInfoURL = "https://whooing.com/api_jongha/mixed.json_array"
 				+"?section_id="	+appSection + "&budget_start_date="+year+monthString
 				+"&budget_end_date="+year+monthString 
 				+"&bs_end_date=" +year+endDate 
@@ -57,13 +57,26 @@ public class MainInfo extends AbstractAPI {
 				+"&in_out_start_date="+year+startDate
 				+"&in_out_end_date="+year+endDate
 				+"&goal_start_date="+year+monthString
-				+"&goal_end_date="+(year+1)+monthString;
+				+"&goal_end_date="+(year+1)+monthString;*/
+		String mainInfoURL = "https://whooing.com/api_jongha/mixed.json_array"
+				+"?section_id="	+appSection 
+				+"&budget_start_date="+year+monthString
+				+"&budget_end_date="+year+monthString 
+				+"&bill_start_date="+year+monthString
+				+"&bill_end_date="+year+monthString
+				+"&in_out_start_date="+year+startDate
+				+"&in_out_end_date="+year+endDate
+				+"&mountain_start_date="+year+monthString
+				+"&mountain_end_date="+(year+1)+monthString;
 		JSONObject result = callAPI(mainInfoURL, appID, token, appKey, tokenSecret);
 		try {
 			result = (JSONObject) result.getJSONObject("results");//.getJSONArray("rows").get(0);
 			
 		} catch (JSONException e) {
 			Log.e(Budget.class.toString(), "JSON error in API_BUDGET");
+			result = null;
+		}catch (NullPointerException e) {
+			Log.e(Budget.class.toString(), "Null pointer exception in API_BUDGET");
 			result = null;
 		}
 		

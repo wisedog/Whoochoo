@@ -18,15 +18,8 @@ This file is part of QuiteSleep.
  along with QuiteSleep.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-
-import android.util.Log;
-
 
 /**
 * 

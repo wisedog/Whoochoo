@@ -46,15 +46,16 @@
     </LinearLayout>
     
     <LinearLayout
+        android:id="@+id/test_layout"
         android:layout_width="match_parent"
         android:layout_height="150dip"
         android:background="#FFFFFF"
         android:baselineAligned="false"
-        android:orientation="horizontal" 
+        android:orientation="vertical" 
         android:layout_marginBottom="5dip">
     	<TextView 
 		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
+		        android:layout_height="wrap_content"
 		        android:background="#00000000"
 		        android:text="Graph"
 		        android:id="@+id/goal_text"
