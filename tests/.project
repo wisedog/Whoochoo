@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>whooing-for-android-test</name>
+	<name>WhooingTest</name>
 	<comment></comment>
 	<projects>
-		<project>whooing-for-android</project>
+		<project>net.wisedog.android.whooing.Whooing</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
