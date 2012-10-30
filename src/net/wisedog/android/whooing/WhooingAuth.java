@@ -15,7 +15,6 @@ public class WhooingAuth extends Activity{
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.i("wisedog", "WhooingAuth");
 		setContentView(R.layout.whooing_auth);
 	}
 	

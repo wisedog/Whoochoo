@@ -45,19 +45,19 @@ public class WhooingMain extends Activity {
 		setContentView(R.layout.whooing_main);
 		mActivity = this;
 		//For Debug
-		/*Define.TOKEN = "ca01f5d4b108ae0fb14c60be98b24f353b57ba50";
-		Define.PIN = "731251";
-		Define.TOKEN_SECRET = "c753d2953d283694b378332d8f3919be155748b7";
-		Define.USER_ID = "93aa0354c21629add8f373887b15f0e3";
-		Define.APP_SECTION = "s2128";*/
+		Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
+		Define.PIN = "992505";
+		Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
+		Define.USER_ID = "8955";
+		Define.APP_SECTION = "s10550";
 		
 		
-		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
+		/*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
 		Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
 		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
 		Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
 		Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
-		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
+		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);*/
     	if(Define.PIN == null || Define.REAL_TOKEN == null){
     		ThreadHandshake thread = new ThreadHandshake(mHandler, this, false);
     		thread.start();
@@ -125,12 +125,11 @@ public class WhooingMain extends Activity {
 					TextView currentBalance = (TextView)findViewById(R.id.balance_num);
 					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
 					try{	//TODO	BS정보 바뀜. 수정할것
-						JSONObject obj1 = obj.getJSONObject("bs").getJSONObject("capital");
+						JSONObject obj1 = obj.getJSONObject("mountain").getJSONObject("aggregate");
 						DecimalFormat df = new DecimalFormat("#,##0");
-						currentBalance.setText(df.format(obj1.getLong("total")));
+						currentBalance.setText(df.format(obj1.getLong("capital")));
 						
-						JSONObject obj2 = obj.getJSONObject("bs").getJSONObject("liabilities");
-						inoutBalance.setText(df.format(obj2.getLong("total")));						
+						inoutBalance.setText(df.format(obj1.getLong("liabilities")));						
 						
 					}catch(JSONException e){
 					    setErrorHandler("통신 오류! Err-MAIN2");
@@ -407,7 +406,9 @@ public class WhooingMain extends Activity {
 	}
 	
 	public void setErrorHandler(String errorMsg){
-	    dialog.dismiss();
+	    if(dialog != null){
+	        dialog.dismiss();
+	    }
 	    Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
 	}
 	
