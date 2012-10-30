@@ -35,23 +35,23 @@ public class ThreadRestAPI extends Thread {
 		switch(mAPIName){
 		case Define.API_GET_MAIN:
 			MainInfo mainInfo = new MainInfo();
-			result = mainInfo.getInfo(Define.APP_SECTION,Define.APP_ID, Define.TOKEN, 
-					Define.APP_KEY, Define.TOKEN_SECRET);
+			result = mainInfo.getInfo(Define.APP_SECTION,Define.APP_ID, Define.REAL_TOKEN, 
+					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
 		case Define.API_GET_SECTIONS:
 			Section section = new Section();
-			result = section.getSections(Define.APP_ID, Define.TOKEN, 
-					Define.APP_KEY, Define.TOKEN_SECRET);
+			result = section.getSections(Define.APP_ID, Define.REAL_TOKEN, 
+					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
 		case Define.API_GET_BUDGET:
 			Budget budget = new Budget();
 			result = budget.getBudget(Define.APP_SECTION, Define.APP_ID, 
-					Define.TOKEN, Define.APP_KEY, Define.TOKEN_SECRET);
+					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
 		case Define.API_GET_BALANCE:
 			Balance balance = new Balance();
 			result = balance.getBalance(Define.APP_SECTION, Define.APP_ID, 
-					Define.TOKEN, Define.APP_KEY, Define.TOKEN_SECRET, null);
+					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, null);
 			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

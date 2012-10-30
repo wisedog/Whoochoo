@@ -30,6 +30,7 @@ public class ThreadHandshake extends Thread {
 	private Handler mHandler;
 	private Activity mActivity;
 	private boolean isAfterAuth;
+	private String mSecondToken = null;
 	
 	public ThreadHandshake(Handler mHandler, Activity activity, boolean isAfterAuth) {
 		super();
@@ -37,20 +38,33 @@ public class ThreadHandshake extends Thread {
 		this.mActivity = activity;
 		this.isAfterAuth = isAfterAuth;
 	}
+	
+	public ThreadHandshake(Handler mHandler, Activity activity, boolean isAfterAuth, String secondToken) {
+        super();
+        this.mHandler = mHandler;
+        this.mActivity = activity;
+        this.isAfterAuth = isAfterAuth;
+        this.mSecondToken = secondToken;
+    }
+	
 
 	@Override
 	public void run() {
 		if(!isAfterAuth){	//Before Auth
-			boolean result = initHandshake();
-			if(result == true)
-				result = secondHandshake(Define.TOKEN);
+			String result = initHandshake();
+			if(result != null){
+			    Message msg = new Message();
+			    msg.what = Define.MSG_REQ_AUTH;
+			    msg.obj = result;
+			    mHandler.sendMessage(msg);
+			}
 		}
 		else{	//After Auth
 			boolean result = true;
-			if(Define.TOKEN == null || Define.PIN == null){
+			if(mSecondToken == null || Define.PIN == null){
 				result = false;
 			}else{
-				result = thirdHandshake(Define.TOKEN, Define.PIN);
+				result = thirdHandshake(mSecondToken, Define.PIN);
 			}	
 			if(result == false){
 				Message msg = new Message();		
@@ -65,28 +79,29 @@ public class ThreadHandshake extends Thread {
 	 * Do initial handshake to server. Getting a token in this phase
 	 * @return	Returns true if it sucess
 	 * */
-	public boolean initHandshake(){
-		String url = "https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_KEY;
-		String token = null;
+	public String initHandshake(){
+		String url = "https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_SECRET;
+		String firstToken = null;
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
-			token = result.getString("token");
-			Log.i("Wisedog", "TOKEN:"+token);
+			firstToken = result.getString("token");
+			Log.i("whooing", "FIRST TOKEN:"+firstToken);
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");
 			e.printStackTrace();
 		} 
-		if(token != null){
-			Define.TOKEN = token;
+		if(firstToken != null){
+			//Define.FIRST_TOKEN = firstToken;
+			Log.d("whooing", "TOKEN : " + firstToken);
 		}
 		
-		SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
+		/*SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
 				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(Define.KEY_SHARED_TOKEN, token);
-		editor.commit();
+		editor.putString(Define.KEY_SHARED_TOKEN, firstToken);
+		editor.commit();*/
 		
-		return true;
+		return firstToken;
 	}
 	
 
@@ -96,12 +111,13 @@ public class ThreadHandshake extends Thread {
 	 * invoke an activity to try to authorize user
 	 * @return Returns true if it success
 	 * */
+	@Deprecated
 	private boolean secondHandshake(String token){
 		if(token == null)
 			return false;
 		HttpClient client = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(
-				"https://whooing.com/app_auth/authorize?token="+ Define.TOKEN);
+				"https://whooing.com/app_auth/authorize?token=");//+ Define.FIRST_TOKEN);
 		try{
 			HttpResponse response = client.execute(httpGet);
 			StatusLine statusLine = response.getStatusLine();
@@ -136,21 +152,25 @@ public class ThreadHandshake extends Thread {
 	 * After Authorizing user, get token secret and user id
 	 * @return	Return true if it success or false 
 	 * */
-	private boolean thirdHandshake(String token, String pin){
+	private boolean thirdHandshake(String secondToken, String pin){
 		String token_secret = null;
 		String user_id = null;
-		if(token == null || pin == null)
+		String realToken = null;
+		if(secondToken == null || pin == null)
 			return false;
 		
 		String url = "https://whooing.com/app_auth/access_token?app_id="+Define.APP_ID+
-				"&app_secret="+Define.APP_KEY+ "&token="+token+"&pin="+pin;
+				"&app_secret="+Define.APP_SECRET+ "&token="+secondToken+"&pin="+pin;
 		
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
 			token_secret = result.getString("token_secret");
-			Log.i("Wisedog", "Token secret:"+token_secret);
+			Log.d("whooing", "Token secret:"+token_secret);
 			user_id = result.getString("user_id");
-			Log.i("Wisedog", "USER ID:"+user_id);
+			Log.d("whooing", "USER ID:"+user_id);
+			realToken = result.getString("token");
+			Log.d("whooing", "Real Token:"+user_id);
+			
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");
 			e.printStackTrace();
@@ -162,10 +182,12 @@ public class ThreadHandshake extends Thread {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(Define.KEY_SHARED_TOKEN_SECRET, token_secret);
 		editor.putString(Define.USER_ID, user_id);
+		editor.putString(Define.KEY_SHARED_TOKEN, realToken);
 		editor.commit();
 		
 		Define.TOKEN_SECRET = token_secret;
 		Define.USER_ID = user_id;
+		Define.REAL_TOKEN = realToken;
 		
 		Message msg = new Message();		
 		msg.what = Define.MSG_AUTH_DONE;

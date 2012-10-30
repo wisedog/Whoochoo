@@ -1,6 +1,8 @@
 package net.wisedog.android.whooing;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -14,18 +16,23 @@ public class WhooingWebViewClient extends WebViewClient {
 		this.mActivity = mActivity;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) {
-		String pin = RegExUtil.takePin(url);
-		if(pin != null){
+		String pin = RegExUtil.takeParam(url, "pin");
+		String secondToken = RegExUtil.takeParam(url, "token");
+		if(pin != null && secondToken != null){
 			Define.PIN = pin;
-			mActivity.setResult(mActivity.RESULT_OK);
-			mActivity.finish();	//FIXME Geez. WhooingAuth activity will create again! not finish
-			return false;
+			Log.d("whooing", "PIN : " + pin);
+			Log.d("whooing", "Second Token : " + secondToken);
+			Intent intent = new Intent();
+			intent.putExtra("pin", pin);
+			intent.putExtra("token", secondToken);
+			mActivity.setResult(Activity.RESULT_OK, intent);
+			mActivity.finish();
+			return true;
 		}			
 		else{
-			return true;
+			return false;
 		}
 	}
 

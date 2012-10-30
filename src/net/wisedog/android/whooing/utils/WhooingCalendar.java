@@ -10,6 +10,7 @@ public class WhooingCalendar {
 		int year = rightNow.get(Calendar.YEAR);
 		int month = rightNow.get(Calendar.MONTH);
 		int day = rightNow.get(Calendar.DAY_OF_MONTH);
+		month = month + 1;    //달은 0~11이다.
 		String monthString = "";
 		String dayString = "";
 		if(day < 10)

@@ -2,9 +2,9 @@ package net.wisedog.android.whooing;
 
 public class Define {
 	public static String APP_ID = "125";
-	public static String APP_KEY = "1c5224ad2961704a6076c0bda127003933828a16";
-	public static String TOKEN = null;
+	public static String APP_SECRET = "1c5224ad2961704a6076c0bda127003933828a16";
 	public static String PIN = null;
+	public static String REAL_TOKEN = null;
 	public static String USER_ID = null;
 	public static String TOKEN_SECRET = null;
 	public static String APP_SECTION = null;

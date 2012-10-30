@@ -2,6 +2,8 @@ package net.wisedog.android.whooing.api;
 
 import java.util.Calendar;
 
+import net.wisedog.android.whooing.utils.WhooingCalendar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,12 +16,20 @@ public class Balance extends AbstractAPI {
 
 	/**
 	 * Get balance 
+	 * @param  appSection  사용자 Section
+	 * @param  appID       App ID
+	 * @param  token       Token
+	 * @param  appKey      어플리케이션 Key
+	 * @param  tokenSecret Secret Token 키
+	 * @param  endDate     마지막날짜. null이면 오늘로 세팅된다.         
+	 * @return     API 결과물. JSONObject로 리턴한다. 
 	 * */
 	public JSONObject getBalance(String appSection, String appID, String token
 			,String appKey, String tokenSecret, String endDate){
 		String date = "";
 		if(endDate == null){
-			Calendar rightNow = Calendar.getInstance(); 
+		    date = WhooingCalendar.getTodayYYYYMMDD();
+			/*Calendar rightNow = Calendar.getInstance(); 
 			
 			int month = rightNow.get(Calendar.MONTH)+1;
 			int day = rightNow.get(Calendar.DAY_OF_MONTH);
@@ -33,7 +43,7 @@ public class Balance extends AbstractAPI {
 			dayString += day;
 			
 			int year = rightNow.get(Calendar.YEAR);
-			date += year + monthString + dayString;
+			date += year + monthString + dayString;*/
 		}
 		else{
 			date = endDate;
@@ -50,6 +60,5 @@ public class Balance extends AbstractAPI {
 		}
 		
 		return result;
-		
 	}
 }

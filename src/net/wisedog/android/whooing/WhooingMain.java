@@ -9,11 +9,8 @@ import net.wisedog.android.whooing.views.MountainGraph;
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
-import org.achartengine.chart.BarChart.Type;
-import org.achartengine.model.CategorySeries;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.SimpleSeriesRenderer;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 import org.json.JSONArray;
@@ -48,20 +45,20 @@ public class WhooingMain extends Activity {
 		setContentView(R.layout.whooing_main);
 		mActivity = this;
 		//For Debug
-		Define.TOKEN = "ca01f5d4b108ae0fb14c60be98b24f353b57ba50";
+		/*Define.TOKEN = "ca01f5d4b108ae0fb14c60be98b24f353b57ba50";
 		Define.PIN = "731251";
 		Define.TOKEN_SECRET = "c753d2953d283694b378332d8f3919be155748b7";
 		Define.USER_ID = "93aa0354c21629add8f373887b15f0e3";
-		Define.APP_SECTION = "s2128";
+		Define.APP_SECTION = "s2128";*/
 		
-		/*
+		
 		SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
-		Define.TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
+		Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
 		Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
 		Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
-		Define = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
-		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);*/
-    	if(Define.TOKEN == null || Define.PIN == null){
+		Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
+		Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
+    	if(Define.PIN == null || Define.REAL_TOKEN == null){
     		ThreadHandshake thread = new ThreadHandshake(mHandler, this, false);
     		thread.start();
     		dialog = ProgressDialog.show(this, "", getString(R.string.authorizing), true);
@@ -91,15 +88,13 @@ public class WhooingMain extends Activity {
 		public void handleMessage(Message msg) {
 			if(msg.what == Define.MSG_FAIL){
 				dialog.dismiss();
-				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), 1000).show();
+				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
 			}
 			else if(msg.what == Define.MSG_REQ_AUTH){
-				Intent intent = new Intent(WhooingMain.this, WhooingAuth.class);
-				intent.putExtra(Define.KEY_AUTHPAGE, msg.obj.toString());
-				intent.putExtra("token", Define.TOKEN);
+				Intent intent = new Intent(mActivity, WhooingAuth.class);
+				intent.putExtra("first_token", (String)msg.obj);
 				
 				startActivityForResult(intent, Define.REQUEST_AUTH);
-				startActivity(intent);
 			}
 			else if(msg.what == Define.MSG_AUTH_DONE){
 				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_GET_SECTIONS);
@@ -123,7 +118,7 @@ public class WhooingMain extends Activity {
 						monthlyExpenseText.setText("지출 : "+expenses);
 						
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
+					    setErrorHandler("통신 오류! Err-MAIN1");
 						e.printStackTrace();
 					}
 					
@@ -138,7 +133,7 @@ public class WhooingMain extends Activity {
 						inoutBalance.setText(df.format(obj2.getLong("total")));						
 						
 					}catch(JSONException e){
-						// TODO Auto-generated catch block
+					    setErrorHandler("통신 오류! Err-MAIN2");
 						e.printStackTrace();
 					}catch(IllegalArgumentException e){
 						e.printStackTrace();
@@ -161,13 +156,11 @@ public class WhooingMain extends Activity {
 						creditCard.setText(fullString);
 						
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
+					    setErrorHandler("통신 오류! Err-MAIN3");
 						e.printStackTrace();
 					}
 					
 					showGraph();
-					
-					
 				}
 				else if(msg.arg1 == Define.API_GET_SECTIONS){
 					JSONObject result = (JSONObject)msg.obj;					
@@ -177,7 +170,7 @@ public class WhooingMain extends Activity {
 						String section = obj.getString("section_id");
 						if(section != null){
 							Define.APP_SECTION = section;
-							Log.i("Wisedog", "APP SECTION:"+ Define.APP_SECTION);
+							Log.d("whooing", "APP SECTION:"+ Define.APP_SECTION);
 							SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
 									Activity.MODE_PRIVATE);
 							SharedPreferences.Editor editor = prefs.edit();
@@ -185,13 +178,13 @@ public class WhooingMain extends Activity {
 							editor.commit();
 							dialog.dismiss();
 							Toast.makeText(mActivity, getString(R.string.msg_auth_success),
-									1000).show();
+									Toast.LENGTH_LONG).show();
 						}
 						else{
 							throw new JSONException("Error in getting section id");
 						}
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
+					    setErrorHandler("통신 오류! Err-SCT1");
 						e.printStackTrace();
 					}
 				}
@@ -209,8 +202,7 @@ public class WhooingMain extends Activity {
 						monthlyExpenseText.setText("지출 : "+expenses);
 						
 					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					    setErrorHandler("통신 오류! Err-BDG1");
 					}
 					
 				}
@@ -227,9 +219,10 @@ public class WhooingMain extends Activity {
 						inoutBalance.setText(df.format(obj2.getLong("total")));						
 						
 					}catch(JSONException e){
-						// TODO Auto-generated catch block
+					    setErrorHandler("통신 오류! Err-BNC1");
 						e.printStackTrace();
 					}catch(IllegalArgumentException e){
+					    setErrorHandler("통신 오류! Err-BNC2");
 						e.printStackTrace();
 					}
 				}
@@ -383,25 +376,39 @@ public class WhooingMain extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK){
 			if(requestCode == Define.REQUEST_AUTH){
+			    if(data == null){
+			        setErrorHandler("인증오류! Err No.1");
+			        return;
+			    }
+			    String secondtoken = data.getStringExtra("token");
+			    String pin = data.getStringExtra("pin");
+			    if(secondtoken == null || pin == null){
+			        setErrorHandler("인증오류! Err No.2");
+			        return;
+			    }
+			    Define.PIN = pin;
 				SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE,
 						MODE_PRIVATE);
 				SharedPreferences.Editor editor = prefs.edit();
-				editor.putString(Define.KEY_SHARED_PIN, Define.PIN);
-				Log.i("Wisedog", "PIN:"+Define.PIN);
+				editor.putString(Define.KEY_SHARED_PIN, pin);
 				editor.commit();
-				ThreadHandshake thread = new ThreadHandshake(mHandler, this, true);
+				
+				ThreadHandshake thread = new ThreadHandshake(mHandler, this, true, secondtoken);
 	    		thread.start();
 			}			
 		}
 		else if(requestCode == RESULT_CANCELED){
 			if(requestCode == Define.REQUEST_AUTH){
 				dialog.dismiss();
-				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), 1000).show();
+				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
-	
+	public void setErrorHandler(String errorMsg){
+	    dialog.dismiss();
+	    Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+	}
 	
 }
