@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,7 +43,7 @@ public class WhooingMain extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.whooing_main);
+		setContentView(R.layout.whooing_main1);
 		mActivity = this;
 		//For Debug
 		Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
@@ -105,6 +106,11 @@ public class WhooingMain extends Activity {
 					JSONObject obj = (JSONObject)msg.obj;
 					TextView monthlyBudgetText = (TextView)findViewById(R.id.budget_monthly);
 					TextView monthlyExpenseText = (TextView)findViewById(R.id.budget_monthly_expense);
+					TextView labelAssets = (TextView)findViewById(R.id.label_asset);
+					Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
+					monthlyBudgetText.setTypeface(typeface, Typeface.BOLD);
+					monthlyExpenseText.setTypeface(typeface, Typeface.BOLD);
+					labelAssets.setTypeface(typeface, Typeface.BOLD);
 					try {
 						JSONObject total = obj.getJSONObject("budget").getJSONObject("aggregate")
 								.getJSONObject("total");
@@ -124,6 +130,9 @@ public class WhooingMain extends Activity {
 					
 					TextView currentBalance = (TextView)findViewById(R.id.balance_num);
 					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
+					currentBalance.setTypeface(typeface);
+					inoutBalance.setTypeface(typeface);
+					currentBalance.setTypeface(null, Typeface.BOLD);
 					try{	//TODO	BS정보 바뀜. 수정할것
 						JSONObject obj1 = obj.getJSONObject("mountain").getJSONObject("aggregate");
 						DecimalFormat df = new DecimalFormat("#,##0");
@@ -139,6 +148,7 @@ public class WhooingMain extends Activity {
 					}
 					
 					TextView creditCard = (TextView)findViewById(R.id.text_credit_card);
+					creditCard.setTypeface(typeface);
 					try {
 						JSONArray array = obj.getJSONObject("bill").getJSONObject("aggregate")
 								.getJSONArray("accounts");
@@ -159,7 +169,7 @@ public class WhooingMain extends Activity {
 						e.printStackTrace();
 					}
 					
-					showGraph();
+					//showGraph();
 				}
 				else if(msg.arg1 == Define.API_GET_SECTIONS){
 					JSONObject result = (JSONObject)msg.obj;					
