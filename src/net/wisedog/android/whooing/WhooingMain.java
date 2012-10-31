@@ -107,10 +107,10 @@ public class WhooingMain extends Activity {
 					TextView monthlyBudgetText = (TextView)findViewById(R.id.budget_monthly);
 					TextView monthlyExpenseText = (TextView)findViewById(R.id.budget_monthly_expense);
 					TextView labelAssets = (TextView)findViewById(R.id.label_asset);
-					Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Medium.ttf");
-					monthlyBudgetText.setTypeface(typeface, Typeface.BOLD);
+					Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+					monthlyBudgetText.setTypeface(typeface);
 					monthlyExpenseText.setTypeface(typeface, Typeface.BOLD);
-					labelAssets.setTypeface(typeface, Typeface.BOLD);
+					labelAssets.setTypeface(typeface);
 					try {
 						JSONObject total = obj.getJSONObject("budget").getJSONObject("aggregate")
 								.getJSONObject("total");
@@ -132,7 +132,6 @@ public class WhooingMain extends Activity {
 					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
 					currentBalance.setTypeface(typeface);
 					inoutBalance.setTypeface(typeface);
-					currentBalance.setTypeface(null, Typeface.BOLD);
 					try{	//TODO	BS정보 바뀜. 수정할것
 						JSONObject obj1 = obj.getJSONObject("mountain").getJSONObject("aggregate");
 						DecimalFormat df = new DecimalFormat("#,##0");
