@@ -25,7 +25,13 @@ public class WhooingCalendar {
 
     static public int getTodayYYYYMMDDint(){
         String str = getTodayYYYYMMDD();
-        int date = Integer.getInteger(str, 0);
+        
+        int date = 0;
+        try{
+            date = Integer.parseInt(str);
+        }catch(NumberFormatException e){
+            return 0;
+        }
         return date;
     }
 }

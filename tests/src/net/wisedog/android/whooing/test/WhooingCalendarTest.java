@@ -11,13 +11,19 @@ import junit.framework.TestCase;
  *
  */
 public class WhooingCalendarTest extends TestCase {
-
+    //Important! Check the value before test.
+    private String mTodayStringYYYYMMDD = "20121101";
+    private int mTodayIntYYYYMMDD = 20121101;
+    
     /**
      * Test method for {@link net.wisedog.android.whooing.utils.WhooingCalendar#getTodayYYYYMMDD()}.
      */
     public void testGetTodayYYYYMMDD() {
-        assertEquals("Expected 20121030, but " + WhooingCalendar.getTodayYYYYMMDD(),
-                "20121030", WhooingCalendar.getTodayYYYYMMDD());
+        assertEquals(mTodayStringYYYYMMDD, WhooingCalendar.getTodayYYYYMMDD());
+    }
+    
+    public void testGetTodayYYYYMMDDint(){
+        assertEquals(mTodayIntYYYYMMDD , WhooingCalendar.getTodayYYYYMMDDint());
     }
 
 }

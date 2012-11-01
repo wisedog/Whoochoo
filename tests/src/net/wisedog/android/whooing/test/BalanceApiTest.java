@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class BalanceAPITest extends TestCase {
+public class BalanceApiTest extends TestCase {
     protected String mToken;
     protected String mPIN;
     protected String mTokenSecret;
@@ -27,11 +27,11 @@ public class BalanceAPITest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         mBalance = new Balance();
-        mToken = "ca01f5d4b108ae0fb14c60be98b24f353b57ba50";
-        mPIN = "731251";
-        mTokenSecret = "c753d2953d283694b378332d8f3919be155748b7";
-        mUserId = "93aa0354c21629add8f373887b15f0e3";
-        mAppSection = "s2128";
+        mToken = "13165741351c21b2088c12706c1acd1d63cf7b49";
+        mPIN = "992505";
+        mTokenSecret = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
+        mUserId = "8955";
+        mAppSection = "s10550";
         super.setUp();
     }
 
@@ -47,6 +47,23 @@ public class BalanceAPITest extends TestCase {
     public void testGetBalance(){
         JSONObject obj = mBalance.getBalance(mAppSection, Define.APP_ID, 
                 mToken, Define.APP_SECRET, mTokenSecret, null);
+        try{
+            JSONObject objCapital = obj.getJSONObject("capital");
+            if(objCapital == null){
+                fail("Capital value is null!");
+            }
+            JSONObject obj1 = obj.getJSONObject("liabilities");
+            if(obj1 == null){
+                fail("Liabilities value is null");
+            }
+            JSONObject objAccounts = obj1.getJSONObject("accounts");
+            if(objAccounts == null){
+                fail("Accounts value is null");
+            }
+            
+        }catch(org.json.JSONException e){
+            fail("JSON Exception ! ");
+        }
         assertNotNull(obj);
     }
 
