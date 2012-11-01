@@ -1,20 +1,11 @@
 package net.wisedog.android.whooing;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
+import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
-import net.wisedog.android.whooing.views.MountainGraph;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.GraphicalView;
-import org.achartengine.chart.PointStyle;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.model.XYSeries;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.achartengine.renderer.XYSeriesRenderer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,13 +17,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint.Align;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +56,8 @@ public class WhooingMain extends Activity {
     		dialog.setCancelable(true);
     	}
     	else{
-    		refreshAll();
+    	    MainProcessor mainProcessor = new MainProcessor(this);
+    		mainProcessor.refreshAll();
     	}
 	}
 	
@@ -104,76 +93,7 @@ public class WhooingMain extends Activity {
 				thread.start();
 			}
 			else if(msg.what == Define.MSG_API_OK){
-			    //API for main page
-				if(msg.arg1 == Define.API_GET_MAIN){
-				    //Monthly Budget
-					JSONObject obj = (JSONObject)msg.obj;
-					TextView monthlyExpenseText = (TextView)findViewById(R.id.budget_monthly_expense);
-					TextView labelAssets = (TextView)findViewById(R.id.label_asset);
-					Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-					monthlyExpenseText.setTypeface(typeface, Typeface.BOLD);
-					labelAssets.setTypeface(typeface);
-					try {
-						JSONObject total = obj.getJSONObject("budget").getJSONObject("aggregate")
-								.getJSONObject("total");
-						
-						int budget = total.getInt("budget");
-						int expenses = total.getInt("money");
-						if(budget < expenses){
-							monthlyExpenseText.setTextColor(Color.RED);
-						}
-						//monthlyBudgetText.setText("예산:"+budget);
-						monthlyExpenseText.setText(expenses+" / " + budget);
-						
-					} catch (JSONException e) {
-					    setErrorHandler("통신 오류! Err-MAIN1");
-						e.printStackTrace();
-					}
-					
-					//Balance
-					TextView currentBalance = (TextView)findViewById(R.id.balance_num);
-					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
-					currentBalance.setTypeface(typeface);
-					inoutBalance.setTypeface(typeface);
-					try{
-						JSONObject obj1 = obj.getJSONObject("mountain").getJSONObject("aggregate");
-						DecimalFormat df = new DecimalFormat("#,##0");
-						currentBalance.setText(df.format(obj1.getLong("capital")));
-						
-						inoutBalance.setText(df.format(obj1.getLong("liabilities")));						
-						
-					}catch(JSONException e){
-					    setErrorHandler("통신 오류! Err-MAIN2");
-						e.printStackTrace();
-					}catch(IllegalArgumentException e){
-						e.printStackTrace();
-					}
-					
-					TextView creditCard = (TextView)findViewById(R.id.text_credit_card);
-					creditCard.setTypeface(typeface);
-					try {
-						JSONArray array = obj.getJSONObject("bill").getJSONObject("aggregate")
-								.getJSONArray("accounts");
-/*						JSONObject total = obj.getJSONObject("bill").getJSONObject("aggregate")
-								.getJSONObject("total");*/
-						
-						String fullString = "";
-						for(int i = 0; i< array.length(); i++){
-							JSONObject object =(JSONObject) array.get(i);
-							String accountName = object.getString("account_id");
-							long money = object.getLong("money");
-							fullString = fullString + accountName + " : " + money+ "\n";
-						}
-						creditCard.setText(fullString);
-						
-					} catch (JSONException e) {
-					    setErrorHandler("통신 오류! Err-MAIN3");
-						e.printStackTrace();
-					}
-					
-					//showGraph();
-				}
-				else if(msg.arg1 == Define.API_GET_SECTIONS){
+				if(msg.arg1 == Define.API_GET_SECTIONS){
 					JSONObject result = (JSONObject)msg.obj;					
 					try {
 						JSONArray array = result.getJSONArray("results");					
