@@ -22,4 +22,10 @@ public class WhooingCalendar {
 		
 		return ""+year+monthString+dayString;
 	}
+
+    static public int getTodayYYYYMMDDint(){
+        String str = getTodayYYYYMMDD();
+        int date = Integer.getInteger(str, 0);
+        return date;
+    }
 }

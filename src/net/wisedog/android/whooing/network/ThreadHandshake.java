@@ -1,8 +1,10 @@
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.network;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import net.wisedog.android.whooing.Define;
+import net.wisedog.android.whooing.WhooingMain;
 import net.wisedog.android.whooing.utils.StringUtil;
 import net.wisedog.android.whooing.utils.JSONUtil;
 

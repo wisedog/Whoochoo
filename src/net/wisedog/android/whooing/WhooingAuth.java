@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -26,7 +25,6 @@ public class WhooingAuth extends Activity{
     @Override
     protected void onResume() {
         Intent intent = getIntent();
-        //String content = intent.getStringExtra(Define.KEY_AUTHPAGE);
         String firstToken = intent.getStringExtra("first_token");
         WebView webView = (WebView) findViewById(R.id.webViewAuth);
         webView.setWebViewClient(new WhooingWebViewClient(this));
@@ -45,8 +43,6 @@ public class WhooingAuth extends Activity{
         super.onResume();
     }
 
-
-
     /* (non-Javadoc)
      * @see android.app.Activity#onDestroy()
      */
@@ -55,7 +51,6 @@ public class WhooingAuth extends Activity{
         WebView webView = (WebView) findViewById(R.id.webViewAuth);
         if(webView != null){
             webView.stopLoading();
-            Log.i("whooing", "OnDestory");
             webView.destroy();
         }
         super.onDestroy();

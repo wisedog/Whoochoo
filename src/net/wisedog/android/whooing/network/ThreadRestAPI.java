@@ -1,5 +1,6 @@
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.network;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.api.Balance;
 import net.wisedog.android.whooing.api.Budget;
 import net.wisedog.android.whooing.api.MainInfo;

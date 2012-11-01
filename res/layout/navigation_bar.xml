@@ -2,44 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:id="@+id/navigation_bar"
     android:layout_width="fill_parent" android:layout_height="wrap_content"
-    android:background="#9f9f9f" android:gravity="center_vertical">
+    android:background="#4A566B" android:gravity="center_vertical">
     <LinearLayout android:id="@+id/nav_btn_back_rect"
 	    android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:paddingLeft="3dip" android:paddingRight="5dip"
         android:clickable="true">
-	    <ImageView android:id="@+id/nav_btn_back"
-	        android:layout_width="wrap_content" android:layout_height="wrap_content"
-	        android:background="@drawable/navigation_img_back"/>
+
+	    <ImageView
+	        android:id="@+id/nav_btn_back"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/navigation_img_back"
+	        android:visibility="invisible" />
+
     </LinearLayout>
     <TextView android:id="@+id/textTitle" 
    		android:layout_width="wrap_content" android:layout_height="wrap_content"
-    	android:textSize="20sp" android:textColor="#363636"
+    	android:textSize="25sp" android:textColor="#FFFFFF"
     	android:typeface="sans" android:singleLine="true"
     	android:layout_toRightOf="@id/nav_btn_back_rect"
     	android:layout_centerVertical="true"
-    	android:text="TITLE"
-    	android:shadowColor="#affef1d2" android:shadowRadius="0.2"
-    	android:shadowDx="0.0" android:shadowDy="1.5"/>
+    	android:text="TITLE"/>
     
    
     <TextView android:id="@+id/nav_btn_right" 
    		android:layout_width="wrap_content" android:layout_height="wrap_content"
    		android:layout_alignParentRight="true"
-    	android:textSize="30dip" android:textColor="#000000"
+    	android:textSize="20sp" android:textColor="#FFFFFF"
     	android:singleLine="true"
     	android:layout_centerVertical="true"
-    	android:text="SMS"
-    	android:shadowColor="#affef1d2" android:shadowRadius="0.3"
-    	android:shadowDx="0.0" android:shadowDy="1.5"/>
+    	android:text="SMS"/>
     <TextView android:id="@+id/textTitle" 
    		android:layout_width="wrap_content" android:layout_height="wrap_content"
-    	android:textSize="40dip" android:textColor="#000000"
+    	android:textSize="30dip" android:textColor="#FFFFFF"
     	android:layout_marginRight="10dip"
     	android:singleLine="true"
     	android:layout_toLeftOf="@id/nav_btn_right"
     	android:layout_centerVertical="true"
-    	android:text="+"
-    	android:shadowColor="#affef1d2" android:shadowRadius="0.3"
-    	android:shadowDx="0.0" android:shadowDy="1.5"/>
+    	android:text="+"/>
     
 </RelativeLayout>

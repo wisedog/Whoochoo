@@ -10,13 +10,13 @@ public class Define {
 	public static String APP_SECTION = null;
 	
 	// General Key and Shared Preference Key
-	public static String KEY_AUTHPAGE = "AUTHPAGE";
 	public static String SHARED_PREFERENCE = "SHARED_AUTH";
 	public static String KEY_SHARED_PIN = "SHARED_PIN";
 	public static String KEY_SHARED_TOKEN = "SHARED_TOKEN";
 	public static String KEY_SHARED_TOKEN_SECRET = "SHARED_TOKEN_SECRET";
 	public static String KEY_SHARED_USER_ID = "SHARED_USER_ID";
 	public static String KEY_SHARED_SECTION_ID = "SHARED_SECTION_ID";
+	public static String KEY_SHARED_USER_INFO = "SHARED_USER_INFO";
 	
 	// Response/Request Key
 	public static final int RESPONSE_EXIT = 10;
@@ -35,8 +35,4 @@ public class Define {
 	public static final int API_GET_MAIN = 2020;
 	public static final int API_GET_BUDGET = 2030;
 	public static final int API_GET_BALANCE = 2040;
-	
-	
-	
-	
 }

@@ -1,5 +1,7 @@
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.ui;
 
+import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.R.layout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
