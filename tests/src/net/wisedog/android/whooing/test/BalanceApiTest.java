@@ -34,15 +34,6 @@ public class BalanceApiTest extends TestCase {
         mAppSection = "s10550";
         super.setUp();
     }
-
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#tearDown()
-     */
-    @Override
-    protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
-        super.tearDown();
-    }
     
     public void testGetBalance(){
         JSONObject obj = mBalance.getBalance(mAppSection, Define.APP_ID, 

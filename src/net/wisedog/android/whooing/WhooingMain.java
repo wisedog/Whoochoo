@@ -69,10 +69,6 @@ public class WhooingMain extends Activity {
     public void refreshAll(){
     	ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_MAIN);
 		thread.start();
-		/*ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_BUDGET);
-		thread.start();
-		ThreadRestAPI thread1 = new ThreadRestAPI(mHandler, this, Define.API_GET_BALANCE);
-		thread1.start();*/
     }
     
     Handler mHandler = new Handler(){
@@ -96,7 +92,7 @@ public class WhooingMain extends Activity {
 				if(msg.arg1 == Define.API_GET_SECTIONS){
 					JSONObject result = (JSONObject)msg.obj;					
 					try {
-						JSONArray array = result.getJSONArray("results");					
+						JSONArray array = result.getJSONArray("results");
 						JSONObject obj = (JSONObject) array.get(0);
 						String section = obj.getString("section_id");
 						if(section != null){
@@ -159,8 +155,6 @@ public class WhooingMain extends Activity {
 				}
 			}
 		}
-
-			
 	};
 
 
