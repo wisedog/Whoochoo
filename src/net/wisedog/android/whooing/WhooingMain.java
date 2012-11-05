@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.ui.NavigationBar;
+import net.wisedog.android.whooing.ui.NavigationBar.OnNavigationClick;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +29,7 @@ import android.widget.Toast;
 /**
  * 
  * */
-public class WhooingMain extends Activity {
+public class WhooingMain extends Activity implements OnNavigationClick {
 	private ProgressDialog dialog;
 	private Activity mActivity;
 	@Override
@@ -35,6 +37,11 @@ public class WhooingMain extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main1);
 		mActivity = this;
+		
+		NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);
+		navBar.setNavigationListener(this);
+		navBar.setupNavbar();
+		
 		//For Debug
 		Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
 		Define.PIN = "992505";
@@ -218,5 +225,21 @@ public class WhooingMain extends Activity {
 	    }
 	    Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
 	}
-	
+
+    /* (non-Javadoc)
+     * @see net.wisedog.android.whooing.ui.NavigationBar.OnNavigationClick#onHeadButton(java.lang.String)
+     */
+    public void onHeadButton(String type) {
+        String[] itemArray = new String[]{"추가","b"};
+        new AlertDialog.Builder(this)
+        .setTitle("asdf")
+        .setItems(itemArray, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if(which == 0){
+                    Intent intent = new Intent(mActivity, WhooingTransactionAdd.class);
+                    startActivityForResult(intent, 1);
+                }
+            }
+        }).setCancelable(true).create().show();
+    }
 }

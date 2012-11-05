@@ -9,11 +9,11 @@
         android:clickable="true">
 
 	    <ImageView
-	        android:id="@+id/nav_btn_back"
+	        android:id="@+id/nav_btn_head"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:background="@drawable/navigation_img_back"
-	        android:visibility="invisible" />
+	        android:background="@drawable/owl_normal" 
+	        />
 
     </LinearLayout>
     <TextView android:id="@+id/textTitle" 
@@ -40,5 +40,13 @@
     	android:layout_toLeftOf="@id/nav_btn_right"
     	android:layout_centerVertical="true"
     	android:text="+"/>
+
+    <TextView
+        android:id="@+id/navbar_textview_restapi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/textTitle"
+        android:text="API:" />
     
 </RelativeLayout>

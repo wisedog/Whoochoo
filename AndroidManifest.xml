@@ -21,6 +21,7 @@
         </activity>
         <activity android:name="WhooingMain" android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name="WhooingAuth" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
+        <activity android:screenOrientation="portrait" android:name="WhooingTransactionAdd"></activity>
     </application>
 
 </manifest>
