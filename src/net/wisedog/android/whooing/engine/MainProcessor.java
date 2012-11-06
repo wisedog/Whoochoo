@@ -57,7 +57,6 @@ public class MainProcessor {
                         if(budget < expenses){
                             monthlyExpenseText.setTextColor(Color.RED);
                         }
-                        //monthlyBudgetText.setText("예산:"+budget);
                         monthlyExpenseText.setText(expenses+" / " + budget);
                         
                     } catch (JSONException e) {
@@ -89,9 +88,6 @@ public class MainProcessor {
                     try {
                         JSONArray array = obj.getJSONObject("bill").getJSONObject("aggregate")
                                 .getJSONArray("accounts");
-/*                      JSONObject total = obj.getJSONObject("bill").getJSONObject("aggregate")
-                                .getJSONObject("total");*/
-                        
                         String fullString = "";
                         for(int i = 0; i< array.length(); i++){
                             JSONObject object =(JSONObject) array.get(i);
