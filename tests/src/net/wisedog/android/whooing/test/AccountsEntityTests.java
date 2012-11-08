@@ -120,6 +120,7 @@ public class AccountsEntityTests extends TestCase {
         }
         
         try {
+            @SuppressWarnings("unused")
             AccountsEntity entity = new AccountsEntity("expenses", obj);
         } catch (JSONException e) {
             assertTrue("Pass", true);
