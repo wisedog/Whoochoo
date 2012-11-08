@@ -35,4 +35,5 @@ public class Define {
 	public static final int API_GET_MAIN = 2020;
 	public static final int API_GET_BUDGET = 2030;
 	public static final int API_GET_BALANCE = 2040;
+	public static final int API_GET_ACCOUNTS = 2050;
 }

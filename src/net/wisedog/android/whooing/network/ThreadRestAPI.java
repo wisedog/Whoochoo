@@ -3,6 +3,7 @@ package net.wisedog.android.whooing.network;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.api.Balance;
 import net.wisedog.android.whooing.api.Budget;
+import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.Section;
 
@@ -53,6 +54,12 @@ public class ThreadRestAPI extends Thread {
 			Balance balance = new Balance();
 			result = balance.getBalance(Define.APP_SECTION, Define.APP_ID, 
 					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, null);
+			break;
+		case Define.API_GET_ACCOUNTS:
+			GeneralApi api = new GeneralApi();
+			result = api.getInfo("https://whooing.com/api/accounts.json_array", 
+					Define.APP_ID, Define.REAL_TOKEN,
+					 Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

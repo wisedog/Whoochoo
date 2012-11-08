@@ -18,7 +18,8 @@ public class GeneralApi extends AbstractAPI {
      * @param   tokenSecret Secret key for token
      * @return  Returns JSONObject for result, or null if it fails      
      * */
-    public JSONObject getInfo(String url, String appID, String token, String appKey, String tokenSecret){
+    public JSONObject getInfo(String url, String appID, 
+    		String token, String appKey, String tokenSecret){
         JSONObject obj = new JSONObject();
         return callAPI(url, appID, token, appKey, tokenSecret);
     }

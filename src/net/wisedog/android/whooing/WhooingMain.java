@@ -2,6 +2,7 @@ package net.wisedog.android.whooing;
 
 import java.text.DecimalFormat;
 
+import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
@@ -63,8 +64,18 @@ public class WhooingMain extends Activity implements OnNavigationClick {
     		dialog.setCancelable(true);
     	}
     	else{
-    	    MainProcessor mainProcessor = new MainProcessor(this);
-    		mainProcessor.refreshAll();
+    		GeneralProcessor generalProcessor = new GeneralProcessor(this);
+    		if(generalProcessor.checkingAccountsInfo()){
+    			MainProcessor mainProcessor = new MainProcessor(this);
+        		mainProcessor.refreshAll();
+    		}
+    		else{
+    			Toast.makeText(this, "Getting accounts information", 
+    					Toast.LENGTH_LONG).show();
+    			ThreadRestAPI thread = new ThreadRestAPI(mGeneralHandler, 
+    					mActivity, Define.API_GET_ACCOUNTS);
+    			thread.start();
+    		}
     	}
 	}
 	
@@ -77,6 +88,31 @@ public class WhooingMain extends Activity implements OnNavigationClick {
     	ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_MAIN);
 		thread.start();
     }
+    
+    
+    Handler mGeneralHandler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			if(msg.what == Define.MSG_FAIL){
+				dialog.dismiss();
+				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
+			}
+			else if(msg.what == Define.MSG_API_OK){
+				if(msg.arg1 == Define.API_GET_ACCOUNTS){
+					JSONObject result = (JSONObject)msg.obj;
+					try {
+						JSONArray array = result.getJSONArray("results");
+					}
+					catch(JSONException e){
+						;
+					}
+				}
+			}
+			super.handleMessage(msg);
+		}
+    	
+    };
     
     Handler mHandler = new Handler(){
 		@Override
