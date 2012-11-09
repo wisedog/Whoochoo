@@ -86,10 +86,13 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
     }
     
     /**
-     * 영화정보 레코드 추가
+     * Accounts 정보 레코드 추가
     * @param       info     DataClass of Recent Movie info         
      * */
     public boolean addAccountEntity(AccountsEntity info){
+        if(info == null){
+            return false;
+        }
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_ACCOUNT_ID, info.account_id);
@@ -100,16 +103,17 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
         values.put(KEY_OPEN_DATE, info.open_date);
         values.put(KEY_CLOSE_DATE, info.close_date);
         values.put(KEY_CATEGORY, info.category);
-        if(info.accountType.equals("liabilities")){
+        //if(info.accountType.equals("liabilities")){
             values.put(KEY_OPT_USE_DATE, info.opt_use_date);
             values.put(KEY_OPT_PAY_DATE, info.opt_pay_date);
             values.put(KEY_OPT_PAY_ACCOUNT_ID, info.opt_pay_account_id);
-        }
+        //}
         
         long result = db.insert(TABLE_ACCOUNTS, null, values);
         if(result == -1){
             return false;
         }
+        db.close();
         return true;
     }
 
@@ -162,9 +166,12 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
         String countQuery = "SELECT  * FROM " + TABLE_ACCOUNTS;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
 
         // return count
-        return cursor.getCount();
+        return count;
     }
 
     /**

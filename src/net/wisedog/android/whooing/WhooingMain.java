@@ -2,6 +2,7 @@ package net.wisedog.android.whooing;
 
 import java.text.DecimalFormat;
 
+import net.wisedog.android.whooing.db.WhooingDbOpenHelper;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadHandshake;
@@ -49,6 +50,7 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 		Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
 		Define.USER_ID = "8955";
 		Define.APP_SECTION = "s10550";
+		this.deleteDatabase(WhooingDbOpenHelper.DATABASE_NAME);
 		
 		
 		/*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
@@ -102,7 +104,10 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 				if(msg.arg1 == Define.API_GET_ACCOUNTS){
 					JSONObject result = (JSONObject)msg.obj;
 					try {
-						JSONArray array = result.getJSONArray("results");
+						JSONObject objResult = result.getJSONObject("results");
+						GeneralProcessor general = new GeneralProcessor(mActivity);
+						general.fillAccountsTable(objResult);
+						Toast.makeText(mActivity, result.toString(), Toast.LENGTH_LONG).show();
 					}
 					catch(JSONException e){
 						;

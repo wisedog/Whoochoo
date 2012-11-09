@@ -57,7 +57,7 @@ public class ThreadRestAPI extends Thread {
 			break;
 		case Define.API_GET_ACCOUNTS:
 			GeneralApi api = new GeneralApi();
-			result = api.getInfo("https://whooing.com/api/accounts.json_array", 
+			result = api.getInfo("https://whooing.com/api/accounts.json_array?section_id="+Define.APP_SECTION, 
 					Define.APP_ID, Define.REAL_TOKEN,
 					 Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
