@@ -3,23 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <TextView 
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="date"/>
-    <EditText 
-        android:layout_width="200dip"
+        android:text="Date"
+        android:textSize="24sp"/>
+        <TextView 
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-    <TextView 
+        android:text="2012.03.09"
+        android:textSize="24sp"/>
+
+        <Button
+            android:id="@+id/add_transaction_change_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change" />
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="item"/>
-    <EditText 
+    	<EditText 
         android:layout_width="200dip"
         android:layout_height="wrap_content"
         />
-    <TextView 
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    	<TextView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="amount"/>
@@ -27,6 +47,49 @@
         android:layout_width="200dip"
         android:layout_height="wrap_content"
         />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    	<TextView 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="50"
+        android:text="Left"
+        android:textSize="22sp"
+        android:gravity="center"/>
+    	<TextView 
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="50"
+        android:text="Right"
+        android:textSize="22sp"
+        android:gravity="center"/>
+    </LinearLayout>
     
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    </LinearLayout>
+    	
+    
+    
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>
