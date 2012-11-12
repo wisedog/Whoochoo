@@ -58,4 +58,14 @@ public class GeneralProcessor {
         }
         return true;
     }
+
+    /**
+     * @param accountName   String 
+     * @return  An AccountsEntity if it successed, else return null
+     */
+    public AccountsEntity findAccountById(String accountName) {
+        WhooingDbOpenHelper dbHelper = new WhooingDbOpenHelper(mContext);
+        AccountsEntity entity = dbHelper.getAccountById(accountName);
+        return entity;
+    }
 }

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -120,7 +121,7 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
     public List<AccountsEntity> getAllAccountsInfo() {
         List<AccountsEntity> entityList = new ArrayList<AccountsEntity>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_ACCOUNTS;
+        String selectQuery = "SELECT * FROM " + TABLE_ACCOUNTS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -156,6 +157,39 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
         }
         // return contact list
         return entityList;
+    }
+    
+    public AccountsEntity getAccountById(String accountTitle){
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_ACCOUNTS + " WHERE account_id = '"+ accountTitle + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        try{
+            cursor = db.rawQuery(selectQuery, null);
+        }catch(SQLiteException e){
+            return null;
+        }
+        if(cursor.moveToFirst()){
+            AccountsEntity entityInfo = new AccountsEntity();
+            entityInfo.account_id = cursor.getString(0);
+            entityInfo.accountType = cursor.getString(1);
+            entityInfo.type = cursor.getString(2);
+            entityInfo.title = cursor.getString(3);
+            entityInfo.memo = cursor.getString(4);
+            entityInfo.open_date = Integer.parseInt(cursor.getString(5));
+            entityInfo.close_date = Integer.parseInt(cursor.getString(6));
+            entityInfo.category = cursor.getString(7);
+            entityInfo.opt_use_date = cursor.getString(8);
+            try{
+                entityInfo.opt_pay_date = Integer.parseInt(cursor.getString(9));
+            }catch(NumberFormatException e){
+                entityInfo.opt_pay_date = 0;
+            }
+            entityInfo.opt_pay_account_id = cursor.getString(10);
+            return entityInfo;
+        }
+        return null;
     }
 
     /**

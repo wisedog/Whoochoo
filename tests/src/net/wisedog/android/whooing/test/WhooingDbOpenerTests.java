@@ -25,6 +25,7 @@ public class WhooingDbOpenerTests extends AndroidTestCase {
     
     protected void setUp() throws Exception {
         super.setUp();
+        mContext.deleteDatabase(WhooingDbOpenHelper.DATABASE_NAME);
         mDb = new WhooingDbOpenHelper(mContext);
     }
     
@@ -70,7 +71,6 @@ public class WhooingDbOpenerTests extends AndroidTestCase {
     }
 
     public void testGetAllAccountsInfo() throws JSONException {
-        mDb.clearTable();
         assertEquals(0, mDb.getAccountsInfoCount());
         JSONObject obj = new JSONObject(exampleJSON1);
         AccountsEntity info = new AccountsEntity("assets", obj);
@@ -95,6 +95,18 @@ public class WhooingDbOpenerTests extends AndroidTestCase {
         assertEquals(1,mDb.getAccountsInfoCount());
         mDb.clearTable();
         assertEquals(0, mDb.getAccountsInfoCount());
+    }
+    
+    public void testGetAccountById() throws JSONException{
+        mDb.clearTable();
+        JSONObject obj = new JSONObject(exampleJSON1);
+        AccountsEntity info = new AccountsEntity("assets", obj);
+        assertEquals(true, mDb.addAccountEntity(info));
+        AccountsEntity info1 = mDb.getAccountById("x1");
+        assertNotNull(info1);
+        if(info.account_id.equals("x1") != true){
+            fail("Not same value");
+        }
     }
 
 }

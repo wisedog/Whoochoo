@@ -29,11 +29,12 @@ public class AccountsEntity {
         open_date = jsonObj.getInt("open_date");
         close_date = jsonObj.getInt("close_date");
         category = jsonObj.getString("category");
-            
+
+
         if(account_type.equals("liabilities")){
             opt_use_date = jsonObj.getString("opt_use_date");
-            opt_pay_date = jsonObj.getInt("opt_pay_date");
             opt_pay_account_id = jsonObj.getString("opt_pay_account_id");
+            opt_pay_date = jsonObj.optInt("opt_pay_date", 0);
         }
     }
     

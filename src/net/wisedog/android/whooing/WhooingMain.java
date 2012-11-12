@@ -107,10 +107,12 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 						JSONObject objResult = result.getJSONObject("results");
 						GeneralProcessor general = new GeneralProcessor(mActivity);
 						general.fillAccountsTable(objResult);
-						Toast.makeText(mActivity, result.toString(), Toast.LENGTH_LONG).show();
+						Toast.makeText(mActivity, "Complete", Toast.LENGTH_LONG).show();
+						MainProcessor mainProcessor = new MainProcessor(mActivity);
+		              mainProcessor.refreshAll();
 					}
 					catch(JSONException e){
-						;
+					    Toast.makeText(mActivity, "Exception", Toast.LENGTH_LONG).show();
 					}
 				}
 			}

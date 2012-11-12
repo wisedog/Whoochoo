@@ -115,6 +115,7 @@ public class AccountsEntityTests extends TestCase {
         try {
             obj = new JSONObject(exampleJSON);
         } catch (JSONException e) {
+            e.printStackTrace();
             fail("JSON converting error!");
             return;
         }

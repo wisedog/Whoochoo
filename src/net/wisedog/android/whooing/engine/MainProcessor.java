@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.app.Activity;
 import android.graphics.Color;
@@ -83,19 +84,24 @@ public class MainProcessor {
                         e.printStackTrace();
                     }
                     
-                    TextView creditCard = (TextView)mActivity.findViewById(R.id.text_credit_card);
-                    creditCard.setTypeface(typeface);
                     try {
                         JSONArray array = obj.getJSONObject("bill").getJSONObject("aggregate")
                                 .getJSONArray("accounts");
-                        String fullString = "";
+                        int[] creditNameArray = new int[]{R.id.label_credit1, R.id.label_credit2};
+                        int[] creditAmountArray = new int[]{R.id.text_credit_card, R.id.text_credit_card1};
+                        GeneralProcessor general = new GeneralProcessor(mActivity);
                         for(int i = 0; i< array.length(); i++){
                             JSONObject object =(JSONObject) array.get(i);
                             String accountName = object.getString("account_id");
                             long money = object.getLong("money");
-                            fullString = fullString + accountName + " : " + money+ "\n";
+                            TextView creditNameLabel = (TextView)mActivity.findViewById(creditNameArray[i]);
+                            AccountsEntity entity = general.findAccountById(accountName);
+                            creditNameLabel.setText(entity.title);
+                            creditNameLabel.setTypeface(typeface);
+                            TextView creditAmountLabel = (TextView)mActivity.findViewById(creditAmountArray[i]);
+                            creditAmountLabel.setText(Long.toString(money));
+                            creditAmountLabel.setTypeface(typeface);
                         }
-                        creditCard.setText(fullString);
                         
                     } catch (JSONException e) {
                         setErrorHandler("통신 오류! Err-MAIN3");

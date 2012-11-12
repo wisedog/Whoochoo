@@ -62,14 +62,7 @@
                 android:text="10000"
                 android:textColor="#EE0000"
                 android:textSize="20sp" />
-            <TextView 
-		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"
-		        android:background="#FFFFFF"
-		        android:text="123123123"
-		        android:id="@+id/text_credit_card"
-		        android:textSize="18sp"
-	       		/>
+            
         </LinearLayout>
 
         <TextView
@@ -125,22 +118,50 @@
 		        android:id="@+id/label_credit_card"
 		        android:textSize="24sp"
 	        />
-        <TextView 
-		        android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView 
+		        android:layout_width="100dip"
 		        android:layout_height="wrap_content"
 		        android:text="Card1"
 		        android:id="@+id/label_credit1"
 		        android:textSize="18sp"
 		        android:paddingLeft="15sp"
 	        />
-        <TextView 
-		        android:layout_width="fill_parent"
+        	<TextView 
+		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:text="Card2"
+		        android:background="#FFFFFF"
+		        android:text="123123123"
+		        android:id="@+id/text_credit_card"
+		        android:paddingLeft="15sp"
+		        android:textSize="18sp"
+	       		/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView 
+		        android:layout_width="100dip"
+		        android:layout_height="wrap_content"
+		        android:text="Card1"
 		        android:id="@+id/label_credit2"
 		        android:textSize="18sp"
 		        android:paddingLeft="15sp"
 	        />
+        	<TextView 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:background="#FFFFFF"
+		        android:text="123123123"
+		        android:id="@+id/text_credit_card1"
+		        android:paddingLeft="15sp"
+		        android:textSize="18sp"
+	       		/>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
