@@ -112,6 +112,7 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 		              mainProcessor.refreshAll();
 					}
 					catch(JSONException e){
+					    e.printStackTrace();
 					    Toast.makeText(mActivity, "Exception", Toast.LENGTH_LONG).show();
 					}
 				}

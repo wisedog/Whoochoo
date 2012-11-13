@@ -36,18 +36,19 @@ public class BalanceApiTest extends TestCase {
     }
     
     public void testGetBalance(){
-        JSONObject obj = mBalance.getBalance(mAppSection, Define.APP_ID, 
+        JSONObject obj1 = mBalance.getBalance(mAppSection, Define.APP_ID, 
                 mToken, Define.APP_SECRET, mTokenSecret, null);
         try{
+            JSONObject obj = obj1.getJSONObject("results");
             JSONObject objCapital = obj.getJSONObject("capital");
             if(objCapital == null){
                 fail("Capital value is null!");
             }
-            JSONObject obj1 = obj.getJSONObject("liabilities");
-            if(obj1 == null){
+            JSONObject obj2 = obj.getJSONObject("liabilities");
+            if(obj2 == null){
                 fail("Liabilities value is null");
             }
-            JSONObject objAccounts = obj1.getJSONObject("accounts");
+            JSONObject objAccounts = obj2.getJSONObject("accounts");
             if(objAccounts == null){
                 fail("Accounts value is null");
             }
@@ -55,7 +56,7 @@ public class BalanceApiTest extends TestCase {
         }catch(org.json.JSONException e){
             fail("JSON Exception ! ");
         }
-        assertNotNull(obj);
+        assertNotNull(obj1);
     }
 
 }

@@ -12,8 +12,8 @@ import junit.framework.TestCase;
  */
 public class WhooingCalendarTest extends TestCase {
     //Important! Check the value before test.
-    private String mTodayStringYYYYMMDD = "20121112";
-    private int mTodayIntYYYYMMDD = 20121112;
+    private String mTodayStringYYYYMMDD = "20121113";
+    private int mTodayIntYYYYMMDD = 20121113;
     
     /**
      * Test method for {@link net.wisedog.android.whooing.utils.WhooingCalendar#getTodayYYYYMMDD()}.

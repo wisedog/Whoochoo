@@ -19,6 +19,7 @@ public class AbstractAPI {
 	 * Make header and call API
 	 * @param	url		URL string to call
 	 * @return	Returns JSONObject if it success, or null
+	 * @throws NotEnoughApiException 
 	 * */
 	protected JSONObject callAPI(String url, String appID, String token, String appKey, 
 			String tokenSecret){

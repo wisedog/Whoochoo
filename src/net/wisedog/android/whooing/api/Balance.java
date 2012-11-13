@@ -2,10 +2,7 @@ package net.wisedog.android.whooing.api;
 
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.Log;
 
 /**
  * @see https://whooing.com/api/bs.format
@@ -33,14 +30,6 @@ public class Balance extends AbstractAPI {
         String budgetURL = "https://whooing.com/api/bs.json_array" + "?section_id=" + appSection
                 + "&end_date=" + date;
         JSONObject result = callAPI(budgetURL, appID, token, appKey, tokenSecret);
-        try {
-            result = (JSONObject) result.getJSONObject("results");
-
-        } catch (JSONException e) {
-            Log.e(Budget.class.toString(), "JSON error in API_BALANCE");
-            result = null;
-        }
-
         return result;
     }
 }

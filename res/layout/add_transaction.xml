@@ -120,6 +120,7 @@
             android:id="@+id/add_transaction_btn_go"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onClickGo"
             android:text="Go" />
     </LinearLayout>
 

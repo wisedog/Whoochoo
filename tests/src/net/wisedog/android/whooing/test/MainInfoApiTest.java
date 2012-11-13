@@ -36,9 +36,10 @@ public class MainInfoApiTest extends TestCase {
     }
     
     public void testGetInfo() {
-        JSONObject obj = mMainInfo.getInfo(mAppSection, Define.APP_ID, mToken, Define.APP_SECRET,
+        JSONObject obj1 = mMainInfo.getInfo(mAppSection, Define.APP_ID, mToken, Define.APP_SECRET,
                 mTokenSecret);
         try{
+            JSONObject obj = (JSONObject)obj1.getJSONObject("results");
             JSONObject objBill = obj.getJSONObject("bill");
             assertNotNull(objBill);            
             JSONObject objAggregate = objBill.getJSONObject("aggregate");

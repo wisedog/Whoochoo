@@ -2,10 +2,7 @@ package net.wisedog.android.whooing.api;
 
 import java.util.Calendar;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.Log;
 
 /**
  * Section API routine class
@@ -42,15 +39,6 @@ public class Budget extends AbstractAPI {
 				+"?section_id="	+appSection + "&start_date="+year+startDate
 				+"&end_date="+year+endDate;
 		JSONObject result = callAPI(budgetURL, appID, token, appKey, tokenSecret);
-		try {
-			JSONObject obj1 = (JSONObject) result.getJSONObject("results").getJSONArray("rows").get(0);
-			result = obj1.getJSONObject("total");
-			
-		} catch (JSONException e) {
-			Log.e(Budget.class.toString(), "JSON error in API_BUDGET");
-			result = null;
-		}
-		
 		return result;
 	}
 }

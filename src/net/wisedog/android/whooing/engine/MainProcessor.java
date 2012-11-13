@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.ui.NavigationBar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -37,6 +38,28 @@ public class MainProcessor {
         thread.start();
     }
     
+    //TODO [Whooing] Add handler for various error status
+    public boolean checkValidResult(JSONObject obj){
+        JSONObject result1 = obj;
+        try{
+            int code = result1.getInt("code");
+            if(code != 200){
+                return false;
+            }
+           final int rest = result1.getInt("rest_of_api");
+           mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    NavigationBar navBar = (NavigationBar)mActivity.findViewById(R.id.nav_bar);
+                    navBar.setRestApi(rest);
+                }
+            } );
+        }
+        catch(JSONException e){
+            return false;
+        }
+        return false;
+    }
+    
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -44,13 +67,23 @@ public class MainProcessor {
                 if(msg.arg1 == Define.API_GET_MAIN){
                     //Monthly Budget
                     JSONObject obj = (JSONObject)msg.obj;
+                    checkValidResult(obj);
+                    JSONObject objResult = null;
+                    try{
+                        objResult = obj.getJSONObject("results");
+                    }
+                    catch(JSONException e){
+                        e.printStackTrace();
+                        return;
+                    }
+                    
                     TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
                     TextView labelAssets = (TextView)mActivity.findViewById(R.id.label_asset);
                     Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
                     monthlyExpenseText.setTypeface(typeface, Typeface.BOLD);
                     labelAssets.setTypeface(typeface);
                     try {
-                        JSONObject total = obj.getJSONObject("budget").getJSONObject("aggregate")
+                        JSONObject total = objResult.getJSONObject("budget").getJSONObject("aggregate")
                                 .getJSONObject("total");
                         
                         int budget = total.getInt("budget");
@@ -71,7 +104,7 @@ public class MainProcessor {
                     currentBalance.setTypeface(typeface);
                     inoutBalance.setTypeface(typeface);
                     try{
-                        JSONObject obj1 = obj.getJSONObject("mountain").getJSONObject("aggregate");
+                        JSONObject obj1 = objResult.getJSONObject("mountain").getJSONObject("aggregate");
                         DecimalFormat df = new DecimalFormat("#,##0");
                         currentBalance.setText(df.format(obj1.getLong("capital")));
                         
@@ -85,7 +118,7 @@ public class MainProcessor {
                     }
                     
                     try {
-                        JSONArray array = obj.getJSONObject("bill").getJSONObject("aggregate")
+                        JSONArray array = objResult.getJSONObject("bill").getJSONObject("aggregate")
                                 .getJSONArray("accounts");
                         int[] creditNameArray = new int[]{R.id.label_credit1, R.id.label_credit2};
                         int[] creditAmountArray = new int[]{R.id.text_credit_card, R.id.text_credit_card1};

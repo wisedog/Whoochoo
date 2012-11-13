@@ -7,6 +7,7 @@ import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.Section;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -65,6 +66,7 @@ public class ThreadRestAPI extends Thread {
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;
 		}
+    		
 		sendMessage(result, mAPIName);
 		super.run();
 	}

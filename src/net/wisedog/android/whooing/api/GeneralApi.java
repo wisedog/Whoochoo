@@ -20,7 +20,6 @@ public class GeneralApi extends AbstractAPI {
      * */
     public JSONObject getInfo(String url, String appID, 
     		String token, String appKey, String tokenSecret){
-        JSONObject obj = new JSONObject();
         return callAPI(url, appID, token, appKey, tokenSecret);
     }
 }
