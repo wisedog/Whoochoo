@@ -168,6 +168,7 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
         try{
             cursor = db.rawQuery(selectQuery, null);
         }catch(SQLiteException e){
+            db.close();
             return null;
         }
         if(cursor.moveToFirst()){
@@ -187,6 +188,7 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
                 entityInfo.opt_pay_date = 0;
             }
             entityInfo.opt_pay_account_id = cursor.getString(10);
+            db.close();
             return entityInfo;
         }
         return null;

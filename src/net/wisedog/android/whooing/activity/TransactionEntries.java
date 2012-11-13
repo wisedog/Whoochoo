@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.activity;
 
 import android.app.Activity;
 

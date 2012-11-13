@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -21,8 +21,8 @@
         </activity>
         <activity android:name="WhooingMain" android:theme="@android:style/Theme.Black.NoTitleBar"></activity>
         <activity android:name="WhooingAuth" android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
-        <activity android:screenOrientation="portrait" android:name="WhooingTransactionAdd"></activity>
-        <activity android:name="TransactionEntries"></activity>
+        <activity android:screenOrientation="portrait" android:name=".TransactionAdd"></activity>
+        <activity android:name=".activity.TransactionEntries"></activity>
     </application>
 
 </manifest>
