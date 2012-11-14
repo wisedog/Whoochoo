@@ -104,19 +104,22 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:layout_marginBottom="10dip">
 
-            <Spinner
-                android:id="@+id/spinner1"
+            <TextView
+                android:id="@+id/add_transaction_text_left_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1" 
+                android:textSize="20sp"/>
 
-            <Spinner
-                android:id="@+id/spinner2"
+            <TextView
+                android:id="@+id/add_transaction_text_right_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1" 
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <Button

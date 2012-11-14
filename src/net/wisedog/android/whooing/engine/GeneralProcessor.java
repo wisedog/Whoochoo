@@ -16,7 +16,11 @@ import android.content.Context;
  *
  */
 public class GeneralProcessor {
-	Context mContext = null;
+    public static final String PLUS    =   "+";
+    public static final String MINUS    =   "-";
+    public static final String NOTHING    =   "";
+    
+	protected Context mContext = null;
 	
 	public GeneralProcessor(Context context) {
 		mContext = context;
@@ -67,5 +71,43 @@ public class GeneralProcessor {
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
         AccountsEntity entity = dbHelper.getAccountById(accountName);
         return entity;
+    }
+    
+    /**
+     * 좌/우변에 따라서 +, - 기호를 붙여줌 
+     * @param   isLeft      flag weather left or right
+     * @param   entity      Account Entity       
+     * @return      if +, return 1, - , return -1, nothing return 0
+     * */
+    static public String getPlusMinus(AccountsEntity entity, boolean isLeft){
+        if(entity == null){
+            return NOTHING;
+        }
+        if(isLeft){
+            if(entity.accountType.compareTo("assets") == 0){
+                return PLUS;
+            }else if(entity.accountType.compareTo("liabilities") == 0){
+                return MINUS;
+            }else if(entity.accountType.compareTo("capital") == 0){
+                return MINUS;
+            }else if(entity.accountType.compareTo("income") == 0){
+                return NOTHING;
+            }else if(entity.accountType.compareTo("expenses") == 0){
+                return NOTHING;
+            }
+        }else{
+            if(entity.accountType.compareTo("assets") == 0){
+                return MINUS;
+            }else if(entity.accountType.compareTo("liabilities") == 0){
+                return PLUS;
+            }else if(entity.accountType.compareTo("capital") == 0){
+                return PLUS;
+            }else if(entity.accountType.compareTo("income") == 0){
+                return NOTHING;
+            }else if(entity.accountType.compareTo("expenses") == 0){
+                return NOTHING;
+            }
+        } 
+        return NOTHING;
     }
 }

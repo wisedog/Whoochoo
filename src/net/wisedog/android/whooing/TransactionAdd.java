@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
 import android.app.Activity;
@@ -59,7 +60,8 @@ public class TransactionAdd extends Activity {
             mRightAccount = mAccountsList.get(0);
         }
 
-        initUi();
+        if(initUi() == false)
+            return;
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
         thread.start();
@@ -68,9 +70,9 @@ public class TransactionAdd extends Activity {
     /**
      * Initialize UI
      * */
-    public void initUi(){
+    public boolean initUi(){
         if(mAccountsList == null){
-            return;
+            return false;
         }
         mDateDisplay = (TextView)findViewById(R.id.add_transaction_text_date);
         Button dateChangeBtn = (Button)findViewById(R.id.add_transaction_change_btn);
@@ -87,11 +89,15 @@ public class TransactionAdd extends Activity {
         String date = DateFormat.format("yyyy-MM-dd", new java.util.Date()).toString();
         mDateDisplay.setText(date);
         
-        //init spinners
-        String[] leftAccountsArray = new String[]{};
-        //TODO 별도의 Activity에서 해당 작업 수행. Spinner 걷어내기, AccountsSelection연결하기
-        //AccountsSelect인자는 left, right, all 
+        if(mLeftAccount != null && mRightAccount != null){
+            TextView textLeft = (TextView)findViewById(R.id.add_transaction_text_left_account);
+            TextView textRight = (TextView)findViewById(R.id.add_transaction_text_right_account);
+            textLeft.setText(mLeftAccount.title + GeneralProcessor.getPlusMinus(mLeftAccount, true));
+            textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
+        }
         
+        //TODO AccountsSelection연결하기, AccountsSelect인자는 left, right, all 
+        return true;
     }
     
     public void setLeftAccount(){
@@ -188,6 +194,19 @@ public class TransactionAdd extends Activity {
         // TODO 서버로 Entity Add 날리기 
     }
     
+    
+    
+    /* (non-Javadoc)
+     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     /**
      * Check field values validation for put entry
      * @return  All is validated, return true, otherwise return false
