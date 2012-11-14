@@ -62,4 +62,32 @@ public class AddTransactionTests extends ActivityInstrumentationTestCase2<Transa
         final LayoutParams lp = mBtnGo.getLayoutParams();
         assertEquals(expected, lp.width);
     }
+    
+    public void testCheckValidation(){
+        mActivity.runOnUiThread(new Runnable(){
+            public void run() {
+                mEditItem.setText("ASDFG");
+            }
+        });
+        assertEquals(false, mActivity.checkValidation());
+        assertNotSame(mEditItem, mActivity.getCurrentFocus());
+        mActivity.runOnUiThread(new Runnable(){
+            public void run() {
+                //mEditAmount.setText("123456");
+            }
+        });
+        assertEquals(false, mActivity.checkValidation());
+    }
+    
+    public void testGetAllAccountsInfo(){
+        assertEquals(true, mActivity.getAllAccountsInfo() > 0);
+    }
+    
+    public void testLeftRightEntryIsMoney(){
+        assertEquals(mActivity.getLeftAccounts().title, mActivity.getRightAccounts().title);
+    }
+    
+    public void testGoButtonBehavior(){
+        
+    }
 }

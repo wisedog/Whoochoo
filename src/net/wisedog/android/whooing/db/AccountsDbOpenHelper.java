@@ -19,7 +19,7 @@ import android.util.Log;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class WhooingDbOpenHelper extends SQLiteOpenHelper {
+public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -43,11 +43,11 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_OPT_PAY_DATE = "opt_pay_date";
     private static final String KEY_OPT_PAY_ACCOUNT_ID = "opt_pay_account_id";
     
-    public WhooingDbOpenHelper(Context context, String name, CursorFactory factory, int version) {
+    public AccountsDbOpenHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public WhooingDbOpenHelper(Context context) {
+    public AccountsDbOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         
     }
@@ -159,6 +159,11 @@ public class WhooingDbOpenHelper extends SQLiteOpenHelper {
         return entityList;
     }
     
+    /**
+     * Find account entity by given title
+     * @param       accountTitle        Account name
+     * @return      Return AccountsEntity when DB helper found appreciate record
+     * */
     public AccountsEntity getAccountById(String accountTitle){
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_ACCOUNTS + " WHERE account_id = '"+ accountTitle + "'";

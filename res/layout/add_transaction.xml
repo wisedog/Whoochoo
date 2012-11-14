@@ -58,11 +58,14 @@
 	        android:layout_width="60dip"
 	        android:layout_height="wrap_content"
 	        android:text="amount"/>
-	    <EditText 
+
+	    <EditText
 	        android:id="@+id/add_transaction_edit_amount"
 	        android:layout_width="200dip"
 	        android:layout_height="wrap_content"
-	        />
+	        android:inputType="numberDecimal" 
+	        android:digits="0123456789.,"/>
+
 	    </LinearLayout>
     </LinearLayout>
     
@@ -123,6 +126,12 @@
             android:onClick="onClickGo"
             android:text="Go" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/add_transaction_text_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
 
     <ListView
         android:id="@+id/listView1"

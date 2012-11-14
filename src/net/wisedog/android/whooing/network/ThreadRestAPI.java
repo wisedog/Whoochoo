@@ -3,6 +3,7 @@ package net.wisedog.android.whooing.network;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.api.Balance;
 import net.wisedog.android.whooing.api.Budget;
+import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.Section;
@@ -62,6 +63,11 @@ public class ThreadRestAPI extends Thread {
 					Define.APP_ID, Define.REAL_TOKEN,
 					 Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
+		case Define.API_GET_ENTRIES_LATEST:
+		    Entries entries = new Entries();
+		    result = entries.getLatest(Define.APP_SECTION, Define.APP_ID, 
+		            Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, 5);
+		    break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;

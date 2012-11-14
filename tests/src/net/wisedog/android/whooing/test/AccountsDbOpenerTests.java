@@ -8,13 +8,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.wisedog.android.whooing.db.AccountsEntity;
-import net.wisedog.android.whooing.db.WhooingDbOpenHelper;
+import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
-import android.util.Log;
 
-public class WhooingDbOpenerTests extends AndroidTestCase {
-    private WhooingDbOpenHelper mDb = null;
+public class AccountsDbOpenerTests extends AndroidTestCase {
+    private AccountsDbOpenHelper mDb = null;
     private String exampleJSON1 = "{\"account_id\" : \"x1\",\"type\" : \"group\",\"title\" : \"유동자산\","
             + "\"memo\" : \"바로쓸 수 있는 것들\",\"open_date\" : 20090511,"
             +"\"close_date\" : 20160101,\"category\" : \"\"}";
@@ -25,8 +24,8 @@ public class WhooingDbOpenerTests extends AndroidTestCase {
     
     protected void setUp() throws Exception {
         super.setUp();
-        mContext.deleteDatabase(WhooingDbOpenHelper.DATABASE_NAME);
-        mDb = new WhooingDbOpenHelper(mContext);
+        mContext.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
+        mDb = new AccountsDbOpenHelper(mContext);
     }
     
     
@@ -37,9 +36,9 @@ public class WhooingDbOpenerTests extends AndroidTestCase {
     @Override
     protected void tearDown() throws Exception {
         SQLiteDatabase db = mDb.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + WhooingDbOpenHelper.TABLE_ACCOUNTS);
+        db.execSQL("DROP TABLE IF EXISTS " + AccountsDbOpenHelper.TABLE_ACCOUNTS);
         db.close();
-        mContext.deleteDatabase(WhooingDbOpenHelper.DATABASE_NAME);
+        mContext.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
         super.tearDown();
     }
 
@@ -55,9 +54,9 @@ public class WhooingDbOpenerTests extends AndroidTestCase {
             fail("DB is not created!");
         }
         
-        String tableName = SQLiteDatabase.findEditTable(WhooingDbOpenHelper.TABLE_ACCOUNTS); 
+        String tableName = SQLiteDatabase.findEditTable(AccountsDbOpenHelper.TABLE_ACCOUNTS); 
         if(tableName == null){
-            fail("Table name'"+ WhooingDbOpenHelper.TABLE_ACCOUNTS + "' cannot be found!");
+            fail("Table name'"+ AccountsDbOpenHelper.TABLE_ACCOUNTS + "' cannot be found!");
         }
         
     }

@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.wisedog.android.whooing.db.AccountsEntity;
-import net.wisedog.android.whooing.db.WhooingDbOpenHelper;
+import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import android.content.Context;
 
 /**
@@ -27,7 +27,7 @@ public class GeneralProcessor {
 	 * @return		return true if it exists and it has 1 record at least, else return false
 	 * */
 	public boolean checkingAccountsInfo() {
-		WhooingDbOpenHelper dbHelper = new WhooingDbOpenHelper(mContext);
+		AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
 		if(dbHelper.getAccountsInfoCount() > 0){
 			return true;
 		}
@@ -45,8 +45,8 @@ public class GeneralProcessor {
         
         //There are five sections. - assets, liabilites, capital, income, expenses
         
-        mContext.deleteDatabase(WhooingDbOpenHelper.DATABASE_NAME);
-        WhooingDbOpenHelper dbHelper = new WhooingDbOpenHelper(mContext);
+        mContext.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
         AccountsEntity info = null;
         String accountsType[] = new String[]{"assets", "liabilities", "capital", "income", "expenses"};
         for(int j = 0; j < accountsType.length; j++){
@@ -64,7 +64,7 @@ public class GeneralProcessor {
      * @return  An AccountsEntity if it successed, else return null
      */
     public AccountsEntity findAccountById(String accountName) {
-        WhooingDbOpenHelper dbHelper = new WhooingDbOpenHelper(mContext);
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
         AccountsEntity entity = dbHelper.getAccountById(accountName);
         return entity;
     }
