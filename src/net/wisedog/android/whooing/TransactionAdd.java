@@ -89,7 +89,8 @@ public class TransactionAdd extends Activity {
         
         //init spinners
         String[] leftAccountsArray = new String[]{};
-        //TODO Spinner로 할지, 별도의 View로 할지 정하지 못했다..... 
+        //TODO 별도의 Activity에서 해당 작업 수행. Spinner 걷어내기, AccountsSelection연결하기
+        //AccountsSelect인자는 left, right, all 
         
     }
     
