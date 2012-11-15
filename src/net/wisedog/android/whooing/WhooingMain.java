@@ -2,6 +2,7 @@ package net.wisedog.android.whooing;
 
 import java.text.DecimalFormat;
 
+import net.wisedog.android.whooing.activity.TransactionAdd;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;

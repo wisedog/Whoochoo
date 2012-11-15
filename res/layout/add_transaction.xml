@@ -111,15 +111,19 @@
                 android:id="@+id/add_transaction_text_left_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" 
-                android:textSize="20sp"/>
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:clickable="true" 
+                android:onClick="onClickLRAccount"/>
 
             <TextView
                 android:id="@+id/add_transaction_text_right_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" 
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:clickable="true"
+                android:onClick="onClickLRAccount"/>
         </LinearLayout>
 
         <Button

@@ -1,7 +1,7 @@
 package net.wisedog.android.whooing.test;
 
 import static android.test.ViewAsserts.assertOnScreen;
-import net.wisedog.android.whooing.TransactionAdd;
+import net.wisedog.android.whooing.activity.TransactionAdd;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.view.Window;

@@ -2,7 +2,10 @@ package net.wisedog.android.whooing.db;
 
 import org.json.JSONObject;
 
-public class AccountsEntity {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class AccountsEntity implements Parcelable{
     public String accountType = null;
     public String account_id = null;
     public String type = null;
@@ -38,7 +41,76 @@ public class AccountsEntity {
         }
     }
     
-    public AccountsEntity(){
+    public AccountsEntity(Parcel in){
+        readFromParcel(in);
+    }
+    
+    /**
+     * 
+     */
+    public AccountsEntity() {
+        ;//Do nothing
+    }
+
+    /* (non-Javadoc)
+     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+     */
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(accountType);
+        dest.writeString(account_id);
+        dest.writeString(type);
+        dest.writeString(title);
+        dest.writeString(memo);
+        dest.writeInt(open_date);
+        dest.writeInt(close_date);
+        dest.writeString(category);
+        if(accountType.equals("liabilities")){
+            dest.writeString(opt_use_date);
+            dest.writeString(opt_pay_account_id);
+            dest.writeInt(opt_pay_date);
+        }
+    }
+    
+    public void readFromParcel(Parcel in){
+        accountType = in.readString();
+        account_id = in.readString();
+        type = in.readString();
+        title = in.readString();
+        memo = in.readString();
+        open_date = in.readInt();
+        close_date = in.readInt();
+        category = in.readString();
+        if(accountType.equals("liabilities")){
+            opt_use_date = in.readString();
+            opt_pay_account_id = in.readString();
+            opt_pay_date = in.readInt();
+        }else{
+            opt_use_date = null;
+            opt_pay_date = 0;
+            opt_pay_account_id = null;
+        }
         
     }
+
+    /* (non-Javadoc)
+     * @see android.os.Parcelable#describeContents()
+     */
+    public int describeContents() {
+        // do nothing
+        return 0;
+    }
+    
+
+    @SuppressWarnings("rawtypes")
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+            public AccountsEntity createFromParcel(Parcel in) {
+                 return new AccountsEntity(in);
+           }
+
+           public AccountsEntity[] newArray(int size) {
+                return new AccountsEntity[size];
+           }
+       };
+
+   
 }

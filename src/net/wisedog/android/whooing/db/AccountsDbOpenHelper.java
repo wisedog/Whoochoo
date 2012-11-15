@@ -118,8 +118,8 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public List<AccountsEntity> getAllAccountsInfo() {
-        List<AccountsEntity> entityList = new ArrayList<AccountsEntity>();
+    public ArrayList<AccountsEntity> getAllAccountsInfo() {
+        ArrayList<AccountsEntity> entityList = new ArrayList<AccountsEntity>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_ACCOUNTS;
 
@@ -151,6 +151,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+        db.close();
         
         if(entityList.isEmpty() == true){
             return null;

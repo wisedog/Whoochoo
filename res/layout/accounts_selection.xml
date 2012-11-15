@@ -7,27 +7,61 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Assets"
-        ></TextView>
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/accounts_selection_assets">
+        
+    </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="liabilities"
-        ></TextView>
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/accounts_selection_liabilities">
+        
+    </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="capital"
-        ></TextView>
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/accounts_selection_capital">
+        
+    </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="income"
-        ></TextView>
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/accounts_selection_income">
+        
+    </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="expenses"
-        ></TextView>
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/accounts_selection_expenses">
+    </LinearLayout>
     
 
 </LinearLayout>

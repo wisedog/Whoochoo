@@ -1,15 +1,17 @@
 /**
  * 
  */
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.activity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.Define;
+import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
@@ -24,7 +26,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -38,10 +39,17 @@ import android.widget.Toast;
 public class TransactionAdd extends Activity {
     
     protected static final int DATE_DIALOG_ID = 0;
+    protected static final int REQUEST_CODE_LEFT = 10;
+    protected static final int REQUEST_CODE_RIGHT = 11;
+    
     private TextView    mDateDisplay;
-    private List<AccountsEntity> mAccountsList = null;
+    private ArrayList<AccountsEntity> mAccountsList = null;
     private AccountsEntity  mLeftAccount = null;
     private AccountsEntity  mRightAccount = null;
+    
+    private int mYear;
+    private int mMonth;
+    private int mDay;
     
 
     /* (non-Javadoc)
@@ -98,6 +106,26 @@ public class TransactionAdd extends Activity {
         
         //TODO AccountsSelection연결하기, AccountsSelect인자는 left, right, all 
         return true;
+    }
+    
+    public void onClickLRAccount(View v){
+        Intent intent = new Intent(this, AccountsSelection.class);
+
+        intent.putParcelableArrayListExtra("accounts_list", mAccountsList);
+        intent.putExtra("year", mYear);
+        intent.putExtra("month", mMonth);
+        intent.putExtra("day", mDay);
+
+        int reqCode = REQUEST_CODE_LEFT;
+        
+        if(v.getId() == R.id.add_transaction_text_left_account){
+            intent.putExtra("mode", "left");
+            
+        }else{
+            intent.putExtra("mode", "right");
+            reqCode = REQUEST_CODE_RIGHT;
+        }
+        startActivityForResult(intent, reqCode);
     }
     
     public void setLeftAccount(){
@@ -179,6 +207,9 @@ public class TransactionAdd extends Activity {
             .append(year).append("-")
             .append(monthOfYear+1).append("-")
             .append(dayOfMonth));
+            mYear = year;
+            mMonth = monthOfYear+1;
+            mDay = dayOfMonth;
             getAccountsByDate(year, monthOfYear+1, dayOfMonth);
         }
     };
@@ -202,6 +233,14 @@ public class TransactionAdd extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
+            if(data == null){
+                return;
+            }
+            if(requestCode == REQUEST_CODE_LEFT){
+
+            }else{
+                
+            }
             
         }
         super.onActivityResult(requestCode, resultCode, data);
