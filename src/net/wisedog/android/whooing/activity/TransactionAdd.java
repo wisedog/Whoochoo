@@ -103,11 +103,13 @@ public class TransactionAdd extends Activity {
             textLeft.setText(mLeftAccount.title + GeneralProcessor.getPlusMinus(mLeftAccount, true));
             textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
         }
-        
-        //TODO AccountsSelection연결하기, AccountsSelect인자는 left, right, all 
         return true;
     }
     
+    /**
+     * Click Listener for Left/Right accounts button
+     * @param   v       View what be clicked
+     * */
     public void onClickLRAccount(View v){
         Intent intent = new Intent(this, AccountsSelection.class);
 
