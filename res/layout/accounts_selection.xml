@@ -6,61 +6,86 @@
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Assets"
+        android:text="@string/accounts_assets"
+        android:id="@+id/accounts_selection_title_assets"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dip"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/accounts_selection_assets">
+        android:id="@+id/accounts_selection_assets"
+        android:layout_marginBottom="10dip">
         
     </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="liabilities"
+        android:text="@string/accounts_liabilities"
+        android:id="@+id/accounts_selection_title_liabilities"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dip"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/accounts_selection_liabilities">
+        android:id="@+id/accounts_selection_liabilities"
+        android:layout_marginBottom="10dip">
         
     </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="capital"
+        android:text="@string/accounts_capital"
+        android:id="@+id/accounts_selection_title_capital"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dip"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/accounts_selection_capital">
+        android:id="@+id/accounts_selection_capital"
+        android:layout_marginBottom="10dip">
         
     </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="income"
+        android:text="@string/accounts_income"
+        android:id="@+id/accounts_selection_title_income"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dip"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/accounts_selection_income">
+        android:id="@+id/accounts_selection_income"
+        android:layout_marginBottom="10dip">
         
     </LinearLayout>
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="expenses"
+        android:text="@string/accounts_expenses"
+        android:id="@+id/accounts_selection_title_expenses"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dip"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/accounts_selection_expenses">
+        android:id="@+id/accounts_selection_expenses"
+        android:layout_marginBottom="10dip">
     </LinearLayout>
     
 

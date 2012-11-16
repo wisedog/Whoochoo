@@ -13,5 +13,9 @@
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
     <string name="main_title">Whooing</string>
-
+    <string name="accounts_assets">Assets</string>
+    <string name="accounts_liabilities">Liabilities</string>
+    <string name="accounts_capital">Capital</string>
+    <string name="accounts_income">Income</string>
+    <string name="accounts_expenses">Expenses</string>
 </resources>
