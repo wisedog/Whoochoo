@@ -100,6 +100,12 @@ public class TransactionAdd extends Activity {
         String date = DateFormat.format("yyyy-MM-dd", new java.util.Date()).toString();
         mDateDisplay.setText(date);
         
+        final Calendar c = Calendar.getInstance();
+        
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH)+1;
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        
         if(mLeftAccount != null && mRightAccount != null){
             TextView textLeft = (TextView)findViewById(R.id.add_transaction_text_left_account);
             TextView textRight = (TextView)findViewById(R.id.add_transaction_text_right_account);
@@ -246,7 +252,6 @@ public class TransactionAdd extends Activity {
             return;
         }
         Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
-        goBtn.setEnabled(false);
         EditText amountEdit = (EditText)findViewById(R.id.add_transaction_edit_amount);
         String amount = amountEdit.getText().toString();
         double amountDouble = Double.valueOf(amount);

@@ -71,7 +71,7 @@ public class ApiEntriesTests extends TestCase {
         bundle.putString("item", "abcdef_()#$%^&");
         bundle.putDouble("money", 12345.67);
         bundle.putString("memo", "1235678");
-        String result = mEntries.getSerializedObject(bundle); 
+        String result = mEntries.getSerializedObject(mAppSection, bundle); 
         assertNotNull(result);
         
     }

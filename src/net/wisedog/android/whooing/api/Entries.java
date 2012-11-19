@@ -3,13 +3,11 @@
  */
 package net.wisedog.android.whooing.api;
 
-import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.db.AccountsEntity;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.os.Bundle;
-import android.widget.EditText;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -32,7 +30,7 @@ public class Entries extends AbstractAPI{
             return null;
         }
         
-        String serializedString = getSerializedObject(bundle);
+        String serializedString = getSerializedObject(appSection, bundle);
         if(serializedString == null){
             return null;
         }
@@ -41,17 +39,21 @@ public class Entries extends AbstractAPI{
         return result;
     }
     
-    public String getSerializedObject(Bundle b){
+    public String getSerializedObject(String sectionId, Bundle b){
         if(b == null){
             return null;
         }
+        String value = "";
+        AccountsEntity left = b.getParcelable("l_account");
+        AccountsEntity right = b.getParcelable("r_account");
+        Double amount = b.getDouble("money");
         
-        /*bundle.putInt("entry_date", formattedDate);
-        bundle.putParcelable("l_account", mLeftAccount);
-        bundle.putParcelable("r_account", mRightAccount);
-        bundle.putString("item", ((EditText)findViewById(R.id.add_transaction_edit_item)).getText().toString());
-        bundle.putDouble("money", amountDouble);
-        bundle.putString("memo", "");*/
-        return null;
+        value = "?section_id=" + sectionId + "&entry_date=" + b.getInt("entry_date")
+                + "&l_account=" + left.accountType + "&l_account_id=" + left.account_id 
+                + "&r_account=" + right.accountType + "&r_account_id" + right.account_id
+                + "&item=" + b.getString("item") + "&money=" + String.valueOf(amount)
+                + "&memo="
+                ;
+        return value;
     }
 }
