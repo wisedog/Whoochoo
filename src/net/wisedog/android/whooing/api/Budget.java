@@ -38,7 +38,7 @@ public class Budget extends AbstractAPI {
 		String budgetURL = "https://whooing.com/api/budget/expenses.json_array"
 				+"?section_id="	+appSection + "&start_date="+year+startDate
 				+"&end_date="+year+endDate;
-		JSONObject result = callAPI(budgetURL, appID, token, appKey, tokenSecret);
+		JSONObject result = callApi(budgetURL, appID, token, appKey, tokenSecret);
 		return result;
 	}
 }

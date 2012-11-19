@@ -59,6 +59,6 @@ public class MainInfo extends AbstractAPI {
 				+"&mountain_start_date="+year+monthString
 				+"&mountain_end_date="+(year+1)+monthString;
  
-		return callAPI(mainInfoURL, appID, token, appKey, tokenSecret);
+		return callApi(mainInfoURL, appID, token, appKey, tokenSecret);
 	}
 }

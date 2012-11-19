@@ -19,6 +19,6 @@ public class Section extends AbstractAPI {
 	 * */
 	public JSONObject getSections(String appID, String token, String appKey, String tokenSecret){
 		String url = "https://whooing.com/api/sections.json_array";
-		return callAPI(url, appID, token, appKey, tokenSecret);
+		return callApi(url, appID, token, appKey, tokenSecret);
 	}
 }

@@ -13,7 +13,7 @@ import junit.framework.TestCase;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class BalanceApiTest extends TestCase {
+public class ApiBalanceTest extends TestCase {
     protected String mToken;
     protected String mPIN;
     protected String mTokenSecret;

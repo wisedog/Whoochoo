@@ -21,7 +21,7 @@ public class AbstractAPI {
 	 * @return	Returns JSONObject if it success, or null
 	 * @throws NotEnoughApiException 
 	 * */
-	protected JSONObject callAPI(String url, String appID, String token, String appKey, 
+	protected JSONObject callApi(String url, String appID, String token, String appKey, 
 			String tokenSecret){
 		String sig_raw = appKey+"|" +tokenSecret;
 		String signiture = SHA1Util.SHA1(sig_raw);
@@ -37,5 +37,23 @@ public class AbstractAPI {
 			e.printStackTrace();
 		} 
 		return null;
+	}
+	
+	protected JSONObject callApiPost(String url, String appID, String token, String appKey, 
+            String tokenSecret, String postValue){
+	    String sig_raw = appKey+"|" +tokenSecret;
+        String signiture = SHA1Util.SHA1(sig_raw);
+        String headerValue = "app_id="+appID+ ",token="+token + ",signiture="+ signiture+
+                ",nounce="+"abcde"+",timestamp="+Calendar.getInstance().getTimeInMillis();
+        try {
+            JSONObject result = JSONUtil.getJSONObjectPost(url, "X-API-KEY", headerValue, postValue);
+            return result;
+            
+        } catch (JSONException e) {
+            Log.e(AbstractAPI.class.toString(), "callAPI error");
+            e.printStackTrace();
+        } 
+        
+        return null;
 	}
 }

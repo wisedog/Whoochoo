@@ -9,11 +9,9 @@ import java.util.HashMap;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -32,7 +30,6 @@ public class AccountsSelection extends Activity {
     private static final int DYNAMIC_LAYOUT_ID = 20000;
     private static final int DYNAMIC_LAYOUT_ID_ADDED = 20100;
     private ArrayList<AccountsEntity> mList;
-    private Context mContext;
     
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -42,13 +39,25 @@ public class AccountsSelection extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accounts_selection);
         Intent intent = getIntent();
-        mContext = this;
         mList = intent.getParcelableArrayListExtra("accounts_list");
         setupUi();
     }
     
+    public void onSelectItem(View v){
+        Toast.makeText(this, "ID : "+ v.getId(), Toast.LENGTH_SHORT).show();
+        TextView textView = (TextView)v;
+        
+        AccountsEntity entity = (AccountsEntity) textView.getTag();
+        String mode = getIntent().getStringExtra("mode");
+        Intent intent = new Intent();
+        intent.putExtra("selection",entity);
+        intent.putExtra("mode", mode);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+    
     /**
-     * UI 셋업
+     * UI setup
      * */
     private void setupUi(){
         String mode = getIntent().getStringExtra("mode");
@@ -56,13 +65,19 @@ public class AccountsSelection extends Activity {
         TextView textViewIncome = (TextView) findViewById(R.id.accounts_selection_title_income);
         TextView textViewExpenses = (TextView) findViewById(R.id.accounts_selection_title_expenses);
         TextView textViewLiability = (TextView) findViewById(R.id.accounts_selection_title_liabilities);
+        TextView textViewCapital = (TextView) findViewById(R.id.accounts_selection_title_capital);
         LinearLayout layoutExpenses = (LinearLayout) findViewById(R.id.accounts_selection_expenses);
         LinearLayout layoutIncome = (LinearLayout) findViewById(R.id.accounts_selection_income);
         if(mode.compareTo("left") == 0){
             textViewAssets.setText(getString(R.string.accounts_assets)+"+");
+            textViewLiability.setText(getString(R.string.accounts_liabilities)+"-");
+            textViewCapital.setText(getString(R.string.accounts_capital)+"-");
             textViewIncome.setVisibility(View.GONE);
             layoutIncome.setVisibility(View.GONE);
         }else if(mode.compareTo("right") == 0){
+            textViewAssets.setText(getString(R.string.accounts_assets)+"-");
+            textViewLiability.setText(getString(R.string.accounts_liabilities)+"+");
+            textViewCapital.setText(getString(R.string.accounts_capital)+"+");
             textViewExpenses.setVisibility(View.GONE);
             layoutExpenses.setVisibility(View.GONE);
             
@@ -92,19 +107,23 @@ public class AccountsSelection extends Activity {
             tmp.add(DYNAMIC_LAYOUT_ID + j);
             map.put(accountsArray[j], tmp);
         }
+        
         Display display = getWindowManager().getDefaultDisplay();
         int maxWidth = display.getWidth() - 10;
         
         for(int i = 0; i < mList.size(); i++){
             AccountsEntity entity = mList.get(i);
+            
             //Creating accounts item
             TextView textView = new TextView(this);
             textView.setId(DYNAMIC_VIEW_ID+i);
             textView.setText(entity.title);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18.0f);
             textView.setClickable(true);
+            textView.setTag(entity);
+            
+            //For touch selection effect
             textView.setOnTouchListener(new View.OnTouchListener() {
-                
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN){
                         v.setBackgroundColor(Color.BLACK);
@@ -119,10 +138,11 @@ public class AccountsSelection extends Activity {
                     v.setBackgroundColor(Color.WHITE);
                     TextView textView = (TextView)v;
                     textView.setTextColor(Color.BLACK);
-                    Toast.makeText(mContext, "ID : "+ v.getId(), Toast.LENGTH_SHORT).show();
+                    onSelectItem(v);
                 }
             });
             
+            //Setup UI for textView
             textView.measure(0, 0);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT);
@@ -138,6 +158,8 @@ public class AccountsSelection extends Activity {
             if(ll.getMeasuredWidth() + textView.getMeasuredWidth() < maxWidth){    
                 ll.addView(textView);
             }else{
+                //Create new LinearLayout(Horizontal) and add the textview to new layout 
+                //and add new layout to the parent layout, 
                 LinearLayout layout = null;
                 if (entity.accountType.compareTo("assets") == 0) {
                     layout = (LinearLayout) findViewById(R.id.accounts_selection_assets);

@@ -9,6 +9,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,4 +60,37 @@ public class JSONUtil {
 
 		return null;
 	}
+
+	//TODO Need to be refactored    
+    static public JSONObject getJSONObjectPost(String url, String headerKey, String headerValue,
+            String postValue) throws JSONException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPost httpPost = new HttpPost(url);
+        if (headerKey != null && headerValue != null) {
+            httpPost.addHeader(headerKey, headerValue);
+        }
+	    try {
+            HttpResponse response = client.execute(httpPost);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                
+                // Load the requested page converted to a string into a JSONObject.
+                JSONObject result;
+                // Get the token value
+                result = new JSONObject(StringUtil.convertStreamToString(content));
+                return result;
+            } else {
+                Log.e(JSONUtil.class.toString(), "Failed to download file");
+            }
+        } catch (ClientProtocolException e) {
+            Log.e(JSONUtil.class.toString(), "HttpResponse Failed");
+        } catch (IOException e) {
+            Log.e(JSONUtil.class.toString(), "HttpResponse IO Failed");
+        }
+	    return null;
+	}
+    
 }

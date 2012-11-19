@@ -20,6 +20,6 @@ public class UserAPI extends AbstractAPI {
      * */
     public JSONObject getUserInfo(String appID, String token, String appKey, String tokenSecret){
         String url = "https://whooing.com/api/user.json_array";
-        return callAPI(url, appID, token, appKey, tokenSecret);
+        return callApi(url, appID, token, appKey, tokenSecret);
     }
 }

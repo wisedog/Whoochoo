@@ -8,10 +8,10 @@ import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.Section;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -25,6 +25,7 @@ public class ThreadRestAPI extends Thread {
 	private Handler mHandler;
 	private Activity mActivity;
 	private int mAPIName;
+	private Bundle mBundle;
 	
 	public ThreadRestAPI(Handler mHandler, Activity activity, int apiName) {
 		super();
@@ -32,6 +33,14 @@ public class ThreadRestAPI extends Thread {
 		this.mActivity = activity;
 		this.mAPIName = apiName;
 	}
+	
+	public ThreadRestAPI(Handler mHandler, Activity activity, int apiName, Bundle bundle) {
+        super();
+        this.mHandler = mHandler;
+        this.mActivity = activity;
+        this.mAPIName = apiName;
+        this.mBundle = bundle;
+    }
 
 	@Override
 	public void run() {
@@ -68,6 +77,16 @@ public class ThreadRestAPI extends Thread {
 		    result = entries.getLatest(Define.APP_SECTION, Define.APP_ID, 
 		            Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, 5);
 		    break;
+		case Define.API_GET_ENTRIES_INSERT:
+		    if(mBundle == null){
+		        Log.e(ThreadRestAPI.class.toString(), "Not enough information for Insert Entry");
+		        sendMessage(null, mAPIName);
+		        return;
+		    }
+            Entries entryInsert = new Entries();
+            result = entryInsert.insertEntry(Define.APP_SECTION, Define.APP_ID, 
+                    Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+            break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;

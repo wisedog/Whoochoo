@@ -29,7 +29,7 @@ public class Balance extends AbstractAPI {
         }
         String budgetURL = "https://whooing.com/api/bs.json_array" + "?section_id=" + appSection
                 + "&end_date=" + date;
-        JSONObject result = callAPI(budgetURL, appID, token, appKey, tokenSecret);
+        JSONObject result = callApi(budgetURL, appID, token, appKey, tokenSecret);
         return result;
     }
 }

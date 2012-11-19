@@ -37,4 +37,5 @@ public class Define {
 	public static final int API_GET_BALANCE = 2040;
 	public static final int API_GET_ACCOUNTS = 2050;
     public static final int API_GET_ENTRIES_LATEST = 2060;
+    public static final int API_GET_ENTRIES_INSERT = 2061;
 }

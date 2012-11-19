@@ -68,8 +68,11 @@ public class TransactionAdd extends Activity {
             mRightAccount = mAccountsList.get(0);
         }
 
-        if(initUi() == false)
+        if(initUi() == false){
+            setResult(RESULT_CANCELED);
+            finish();
             return;
+        }
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
         thread.start();
@@ -130,11 +133,30 @@ public class TransactionAdd extends Activity {
         startActivityForResult(intent, reqCode);
     }
     
-    public void setLeftAccount(){
-        
+    /**
+     * Set left account from selection of AccountsSelection 
+     * @param       entity      Chosen item from AccountsSelection Activity
+     * */
+    public void setLeftAccount(AccountsEntity entity){
+        if(entity == null){
+            return;
+        }
+        this.mLeftAccount = entity;
+        TextView textLeft = (TextView)findViewById(R.id.add_transaction_text_left_account);
+        textLeft.setText(mLeftAccount.title + GeneralProcessor.getPlusMinus(mLeftAccount, true));
     }
-    public void setRightAccount(){
-        
+    
+    /**
+     * Set right account from selection of AccountsSelection 
+     * @param       entity      Chosen item from AccountsSelection Activity
+     * */
+    public void setRightAccount(AccountsEntity entity){
+        if(entity == null){
+            return;
+        }
+        this.mRightAccount = entity;
+        TextView textRight = (TextView)findViewById(R.id.add_transaction_text_right_account);
+        textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
     }
     
     
@@ -167,6 +189,9 @@ public class TransactionAdd extends Activity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+                else if(msg.arg1 == Define.API_GET_ENTRIES_INSERT){
+                    
                 }
             }
             super.handleMessage(msg);
@@ -218,13 +243,27 @@ public class TransactionAdd extends Activity {
     
     public void onClickGo(View v){
         if(checkValidation() == false){
-            Toast.makeText(this, "확인해", Toast.LENGTH_SHORT).show();
             return;
         }
         Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
         goBtn.setEnabled(false);
-        // TODO 아래 ListView에 해당항목 넣기
-        // TODO 서버로 Entity Add 날리기 
+        EditText amountEdit = (EditText)findViewById(R.id.add_transaction_edit_amount);
+        String amount = amountEdit.getText().toString();
+        double amountDouble = Double.valueOf(amount);
+        
+        Bundle bundle = new Bundle();
+        int formattedDate = mYear * 10000 + mMonth * 100 + mDay;
+        bundle.putInt("entry_date", formattedDate);
+        bundle.putParcelable("l_account", mLeftAccount);
+        bundle.putParcelable("r_account", mRightAccount);
+        bundle.putString("item", ((EditText)findViewById(R.id.add_transaction_edit_item)).getText().toString());
+        bundle.putDouble("money", amountDouble);
+        bundle.putString("memo", "");
+        
+        
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_INSERT, bundle);
+        thread.run();
+        // TODO 아래 ListView에 해당항목 넣기 
     }
     
     
@@ -239,9 +278,11 @@ public class TransactionAdd extends Activity {
                 return;
             }
             if(requestCode == REQUEST_CODE_LEFT){
-
-            }else{
-                
+                AccountsEntity entity = data.getParcelableExtra("selection");
+                setLeftAccount(entity);
+            }else if(requestCode == REQUEST_CODE_RIGHT){
+                AccountsEntity entity = data.getParcelableExtra("selection");
+                setRightAccount(entity);
             }
             
         }
