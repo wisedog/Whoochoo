@@ -197,7 +197,8 @@ public class TransactionAdd extends Activity {
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_ENTRIES_INSERT){
-                    
+                    //TODO 맞는 값이 왔다면 상단 ProgressBar 끄고 
+                    //TODO 아래 ListView에 아이템 넣기
                 }
             }
             super.handleMessage(msg);
@@ -268,7 +269,7 @@ public class TransactionAdd extends Activity {
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_INSERT, bundle);
         thread.run();
-        // TODO 아래 ListView에 해당항목 넣기 
+        //TODO ProgressBar 넣기 
     }
     
     

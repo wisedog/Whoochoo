@@ -1,7 +1,5 @@
 package net.wisedog.android.whooing.api;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -24,13 +22,17 @@ import android.util.Log;
  * */
 public class AbstractAPI {
 	/**
-	 * Make header and call API
-	 * @param	url		URL string to call
+	 * Make header and call API(GET)
+	 * @param  url		URL string to call
+	 * @param  appID   issued from whooing application id
+	 * @param  token   token
+	 * @param  appKey  application key
+	 * @param  tokenSecret secret token
 	 * @return	Returns JSONObject if it success, or null
-	 * @throws NotEnoughApiException 
 	 * */
 	protected JSONObject callApi(String url, String appID, String token, String appKey, 
 			String tokenSecret){
+	    //make up header
 		String sig_raw = appKey+"|" +tokenSecret;
 		String signiture = SHA1Util.SHA1(sig_raw);
 		String headerValue = "app_id="+appID+ ",token="+token + ",signiture="+ signiture+
@@ -47,13 +49,26 @@ public class AbstractAPI {
 		return null;
 	}
 	
+	/**
+     * Make header and call API
+     * @param  url      URL string to call
+     * @param  appID   issued from whooing application id
+     * @param  token   token
+     * @param  appKey  application key
+     * @param  tokenSecret secret token
+     * @param   appSection  section
+     * @param   b   Bundle for post value
+     * @return  Returns JSONObject if it success, or null 
+     * */
 	protected JSONObject callApiPost(String url, String appID, String token, String appKey, 
             String tokenSecret, String appSection, Bundle b){
+	    //make up header
 	    String sig_raw = appKey+"|" +tokenSecret;
         String signiture = SHA1Util.SHA1(sig_raw);
         String headerValue = "app_id="+appID+ ",token="+token + ",signiture="+ signiture+
                 ",nounce="+"abcde"+",timestamp="+Calendar.getInstance().getTimeInMillis();
         
+        //make post value
         AccountsEntity left = b.getParcelable("l_account");
         AccountsEntity right = b.getParcelable("r_account");
         Double amount = b.getDouble("money");
@@ -71,6 +86,7 @@ public class AbstractAPI {
         nameValuePairs.add(new BasicNameValuePair("money", String.valueOf(amount)));
         nameValuePairs.add(new BasicNameValuePair("memo", b.getString("memo")));
         
+        //shot!
         try {
             JSONObject result = JSONUtil.getJSONObjectPost(url, "X-API-KEY", headerValue, nameValuePairs);
             return result;

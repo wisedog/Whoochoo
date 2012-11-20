@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -44,7 +43,6 @@ public class AccountsSelection extends Activity {
     }
     
     public void onSelectItem(View v){
-        Toast.makeText(this, "ID : "+ v.getId(), Toast.LENGTH_SHORT).show();
         TextView textView = (TextView)v;
         
         AccountsEntity entity = (AccountsEntity) textView.getTag();
