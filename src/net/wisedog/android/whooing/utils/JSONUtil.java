@@ -2,15 +2,19 @@ package net.wisedog.android.whooing.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -63,13 +67,18 @@ public class JSONUtil {
 
 	//TODO Need to be refactored    
     static public JSONObject getJSONObjectPost(String url, String headerKey, String headerValue,
-            String postValue) throws JSONException {
+            List<NameValuePair> postValue) throws JSONException {
         HttpClient client = new DefaultHttpClient();
+        client.getParams().setParameter("http.protocol.content-charset", HTTP.UTF_8);
         HttpPost httpPost = new HttpPost(url);
         if (headerKey != null && headerValue != null) {
             httpPost.addHeader(headerKey, headerValue);
         }
 	    try {
+	        
+	        //httpPost.setEntity(new UrlEncodedFormEntity(postValue));
+	        httpPost.setEntity(new UrlEncodedFormEntity(postValue, HTTP.UTF_8));
+	        
             HttpResponse response = client.execute(httpPost);
             StatusLine statusLine = response.getStatusLine();
             int statusCode = statusLine.getStatusCode();

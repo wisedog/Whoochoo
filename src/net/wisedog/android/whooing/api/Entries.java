@@ -30,12 +30,12 @@ public class Entries extends AbstractAPI{
             return null;
         }
         
-        String serializedString = getSerializedObject(appSection, bundle);
+        /*String serializedString = getSerializedObject(appSection, bundle);
         if(serializedString == null){
             return null;
-        }
+        }*/
         
-        JSONObject result = callApiPost(entriesURL, appID, token, appKey, tokenSecret, serializedString);
+        JSONObject result = callApiPost(entriesURL, appID, token, appKey, tokenSecret, appSection, bundle);
         return result;
     }
     
