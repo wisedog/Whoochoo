@@ -16,6 +16,7 @@ import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.ui.NavigationBar;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -59,9 +60,13 @@ public class TransactionAdd extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_transaction);
+        NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);
+        
         Intent intent = getIntent();
         if(intent.getBooleanExtra("showEntries", false))
             ;
+        navBar.setTitle(intent.getStringExtra("title"));
+        navBar.showPlusButton(false);
         
         if(getAllAccountsInfo() > 0){
             mLeftAccount = mAccountsList.get(0);

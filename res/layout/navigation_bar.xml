@@ -3,24 +3,22 @@
     android:id="@+id/navigation_bar"
     android:layout_width="fill_parent" android:layout_height="45dip"
     android:background="#4A566B" android:gravity="center_vertical">
-    <LinearLayout android:id="@+id/nav_btn_back_rect"
-	    android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:paddingLeft="3dip" android:paddingRight="5dip"
-        android:clickable="true">
 
-	    <ImageView
-	        android:id="@+id/nav_btn_head"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:background="@drawable/owl_normal" 
-	        />
-
-    </LinearLayout>
-    <TextView android:id="@+id/textTitle" 
+    <ImageView
+        android:id="@+id/nav_btn_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dip"
+        android:layout_marginRight="8dip"
+        android:background="@drawable/owl_normal" />
+    
+    <TextView android:id="@+id/nav_text_title" 
    		android:layout_width="wrap_content" android:layout_height="wrap_content"
-    	android:textSize="25sp" android:textColor="#FFFFFF"
+    	android:textSize="22sp" android:textColor="#FFFFFF"
     	android:typeface="sans" android:singleLine="true"
-    	android:layout_toRightOf="@id/nav_btn_back_rect"
+    	android:layout_toRightOf="@id/nav_btn_head"
     	android:layout_centerVertical="true"
     	android:text="TITLE"/>
     
@@ -31,11 +29,14 @@
     	android:textSize="20sp" android:textColor="#FFFFFF"
     	android:singleLine="true"
     	android:layout_centerVertical="true"
+    	android:layout_marginRight="8dip"
     	android:text="SMS"/>
-    <TextView android:id="@+id/textTitle" 
+    
+    <TextView android:id="@+id/nav_btn_plus" 
    		android:layout_width="wrap_content" android:layout_height="wrap_content"
-    	android:textSize="30dip" android:textColor="#FFFFFF"
+    	android:textSize="30sp" android:textColor="#FFFFFF"
     	android:layout_marginRight="10dip"
+    	android:layout_marginLeft="10dip"
     	android:singleLine="true"
     	android:layout_toLeftOf="@id/nav_btn_right"
     	android:layout_centerVertical="true"
@@ -46,7 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/textTitle"
+        android:layout_toLeftOf="@+id/nav_btn_plus"
         android:text="API:" />
+
     
 </RelativeLayout>
