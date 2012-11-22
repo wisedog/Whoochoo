@@ -2,7 +2,6 @@ package net.wisedog.android.whooing;
 
 import java.text.DecimalFormat;
 
-import net.wisedog.android.whooing.activity.TransactionAdd;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
@@ -35,7 +34,8 @@ import android.widget.Toast;
 public class WhooingMain extends Activity implements OnNavigationClick {
 	private ProgressDialog dialog;
 	private Activity mActivity;
-	@Override
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_main1);
@@ -210,7 +210,6 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 		}
 	};
 
-
 	@Override
 	public void onBackPressed() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -276,7 +275,8 @@ public class WhooingMain extends Activity implements OnNavigationClick {
      * @see net.wisedog.android.whooing.ui.NavigationBar.OnNavigationClick#onHeadButton(java.lang.String)
      */
     public void onHeadButton(String type) {
-        String[] itemArray = new String[]{"추가","b"};
+
+        /*String[] itemArray = new String[]{"추가","b"};
         new AlertDialog.Builder(this)
         .setTitle("asdf")
         .setItems(itemArray, new DialogInterface.OnClickListener() {
@@ -286,6 +286,21 @@ public class WhooingMain extends Activity implements OnNavigationClick {
                     startActivityForResult(intent, 1);
                 }
             }
-        }).setCancelable(true).create().show();
+        }).setCancelable(true).create().show();*/
     }
+    
+    //Tutorial of Left sliding menu
+/* 
+ * SlidingMenuLayout mSlidingLayout;   
+ * @Override
+    public void setContentView(int layoutResID) {
+        LinearLayout fullLayout= (LinearLayout) getLayoutInflater().inflate(layoutResID, null); 
+        mSlidingLayout = new SlidingMenuLayout(this);
+        mSlidingLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT, 0.0F));
+
+        mSlidingLayout.addView(new Test(this));
+        mSlidingLayout.addView(fullLayout);
+        super.setContentView(mSlidingLayout);
+    }*/
 }
