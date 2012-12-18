@@ -38,4 +38,9 @@ public class Define {
 	public static final int API_GET_ACCOUNTS = 2050;
     public static final int API_GET_ENTRIES_LATEST = 2060;
     public static final int API_GET_ENTRIES_INSERT = 2061;
+    
+    //flags
+    //If there is need to be refreshed by insert some transaction or something like that
+    //set this flag true
+    public static boolean NEED_TO_REFRESH = false;
 }

@@ -47,6 +47,7 @@
             android:name=".activity.AccountsSelection"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
+        <activity android:name=".activity.MainFragmentActivity" android:theme="@style/Theme.VPI"></activity>
     </application>
 
 </manifest>

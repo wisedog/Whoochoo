@@ -1,5 +1,6 @@
 package net.wisedog.android.whooing;
 
+import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +18,13 @@ public class Whooing extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
         setContentView(R.layout.main);
         mContext = this;
         Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
-				Intent intent = new Intent(mContext, WhooingMain.class);
+				Intent intent = new Intent(mContext, MainFragmentActivity.class);
 				startActivityForResult(intent, 1);
 			}			
 		};
@@ -52,6 +54,6 @@ public class Whooing extends Activity {
 				}
 			}
 		}
-		super.onActivityResult(requestCode, resultCode, data);
+		this.finish();
 	}
 }
