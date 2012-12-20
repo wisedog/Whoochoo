@@ -38,7 +38,7 @@ public class WhooingMain extends Activity implements OnNavigationClick {
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.whooing_main1);
+		setContentView(R.layout.whooing_main2);
 		mActivity = this;
 		
 		NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);
@@ -169,7 +169,7 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 					}
 				}
 				else if(msg.arg1 == Define.API_GET_BUDGET){
-					TextView monthlyBudgetText = (TextView)findViewById(R.id.budget_monthly);
+					TextView monthlyBudgetText = (TextView)findViewById(R.id.label_monthly);
 					TextView monthlyExpenseText = (TextView)findViewById(R.id.budget_monthly_expense);
 					JSONObject obj = (JSONObject)msg.obj;
 					try {
@@ -188,7 +188,7 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 				}
 				else if(msg.arg1 == Define.API_GET_BALANCE){
 					TextView currentBalance = (TextView)findViewById(R.id.balance_num);
-					TextView inoutBalance = (TextView)findViewById(R.id.inout_num);
+					TextView inoutBalance = (TextView)findViewById(R.id.doubt_num);
 					JSONObject obj = (JSONObject)msg.obj;
 					try{
 						JSONObject obj1 = obj.getJSONObject("assets");

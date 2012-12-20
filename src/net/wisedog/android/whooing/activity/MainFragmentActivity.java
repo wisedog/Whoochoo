@@ -1,8 +1,11 @@
 package net.wisedog.android.whooing.activity;
 
 import net.wisedog.android.whooing.R;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -42,7 +45,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		SubMenu subMenu1 = menu.addSubMenu("Lists");
-		subMenu1.add("Menu1");
+		subMenu1.add("History");
 		subMenu1.add("Menu2");
 		subMenu1.add("Setting");
 
@@ -52,6 +55,19 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
 
 		return super.onCreateOptionsMenu(menu);
 	}
-	
-	
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("wisedog", "ITEM : " + item.getTitle());
+        if (item.getTitle().equals("Plus")) {
+            Intent intent = new Intent(this, TransactionAdd.class);
+            intent.putExtra("title", "거래추가");
+            startActivityForResult(intent, 1);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    
+    
+
 }

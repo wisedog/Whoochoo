@@ -50,7 +50,7 @@
                 android:textStyle="bold" />
             
             <TextView
-                android:id="@+id/inout_num"
+                android:id="@+id/doubt_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"

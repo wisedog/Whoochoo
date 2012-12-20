@@ -3,8 +3,9 @@ package net.wisedog.android.whooing.activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class MainFragmentAdapter extends FragmentPagerAdapter {
+public class MainFragmentAdapter extends FragmentStatePagerAdapter {
     private static final String[] CONTENT = new String[] { "Dashboard", "Mountain", "Balance", "Profit/Loss"};
     private int mCount = CONTENT.length;
 

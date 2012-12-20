@@ -47,12 +47,12 @@ public class MainProcessor {
                 return false;
             }
            final int rest = result1.getInt("rest_of_api");
-           mActivity.runOnUiThread(new Runnable() {
+          /* mActivity.runOnUiThread(new Runnable() {
                 public void run() {
                     NavigationBar navBar = (NavigationBar)mActivity.findViewById(R.id.nav_bar);
                     navBar.setRestApi(rest);
                 }
-            } );
+            } );*/
         }
         catch(JSONException e){
             return false;
@@ -78,6 +78,9 @@ public class MainProcessor {
                     }
                     
                     TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
+                    if(monthlyExpenseText == null){
+                        return; //When leave this fragment
+                    }
                     TextView labelAssets = (TextView)mActivity.findViewById(R.id.label_asset);
                     Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
                     monthlyExpenseText.setTypeface(typeface, Typeface.BOLD);
@@ -100,7 +103,7 @@ public class MainProcessor {
                     
                     //Balance
                     TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
-                    TextView inoutBalance = (TextView)mActivity.findViewById(R.id.inout_num);
+                    TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
                     currentBalance.setTypeface(typeface);
                     inoutBalance.setTypeface(typeface);
                     try{
