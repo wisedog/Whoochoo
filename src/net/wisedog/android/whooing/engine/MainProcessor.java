@@ -13,7 +13,6 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
-import net.wisedog.android.whooing.ui.NavigationBar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;

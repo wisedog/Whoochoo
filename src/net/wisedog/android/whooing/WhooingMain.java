@@ -7,8 +7,6 @@ import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
-import net.wisedog.android.whooing.ui.NavigationBar;
-import net.wisedog.android.whooing.ui.NavigationBar.OnNavigationClick;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +29,7 @@ import android.widget.Toast;
 /**
  * 
  * */
-public class WhooingMain extends Activity implements OnNavigationClick {
+public class WhooingMain extends Activity {
 	private ProgressDialog dialog;
 	private Activity mActivity;
 
