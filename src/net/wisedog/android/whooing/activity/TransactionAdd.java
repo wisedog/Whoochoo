@@ -10,15 +10,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
+
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
-import net.wisedog.android.whooing.ui.NavigationBar;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
@@ -37,7 +40,7 @@ import android.widget.Toast;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class TransactionAdd extends Activity {
+public class TransactionAdd extends SherlockActivity {
     
     protected static final int DATE_DIALOG_ID = 0;
     protected static final int REQUEST_CODE_LEFT = 10;
@@ -58,15 +61,14 @@ public class TransactionAdd extends Activity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_Styled);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_transaction);
-        NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);
         
         Intent intent = getIntent();
         if(intent.getBooleanExtra("showEntries", false))
             ;
-        navBar.setTitle(intent.getStringExtra("title"));
-        navBar.showPlusButton(false);
+        this.setTitle(intent.getStringExtra("title"));
         
         if(getAllAccountsInfo() > 0){
             mLeftAccount = mAccountsList.get(0);
@@ -118,6 +120,20 @@ public class TransactionAdd extends Activity {
             textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
         }
         return true;
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        SubMenu subMenu1 = menu.addSubMenu("Lists");
+        subMenu1.add("History");
+        subMenu1.add("Menu2");
+        subMenu1.add("Setting");
+
+        MenuItem subMenu1Item = subMenu1.getItem();
+        subMenu1Item.setIcon(R.drawable.menu_lists_button);
+        subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        return super.onCreateOptionsMenu(menu);
     }
     
     /**

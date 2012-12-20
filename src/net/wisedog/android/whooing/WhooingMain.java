@@ -41,10 +41,10 @@ public class WhooingMain extends Activity implements OnNavigationClick {
 		setContentView(R.layout.whooing_main2);
 		mActivity = this;
 		
-		NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);
+		/*NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);
 		navBar.setTitle("Dashboard");
 		navBar.setNavigationListener(this);
-		navBar.setupNavbar();
+		navBar.setupNavbar();*/
 		//TODO 전월대비를 넣어보자 
 		//For Debug
 		Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";

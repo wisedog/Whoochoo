@@ -1,7 +1,6 @@
 package net.wisedog.android.whooing.activity;
 
 import net.wisedog.android.whooing.R;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -38,6 +37,20 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
         
         //TODO +, 메뉴, API 버튼, Progressive 버튼 추가
     }
+	/*
+	void addFragmentToStack() {
+
+        // Instantiate a new fragment.
+        Fragment newFragment = TestFragment2.newInstance("1");
+
+        // Add the fragment to the activity, pushing this transaction
+        // on to the back stack.
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.simple_fragment, newFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
+    }*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
