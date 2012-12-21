@@ -64,9 +64,9 @@ public final class TestFragment2 extends Fragment {
     @Override
 	public void onResume() {
     	LinearLayout llBody = (LinearLayout) (mActivity.findViewById(R.id.test1));
-    	/*WhooingGraph wg = new WhooingGraph();
-    	wg.showGraph2(mActivity);*/
-    	showGraph(llBody);
+    	WhooingGraph wg = new WhooingGraph();
+    	wg.showGraph(mActivity);
+    	//showGraph(llBody);
 		super.onResume();
 	}
 
@@ -167,9 +167,9 @@ public final class TestFragment2 extends Fragment {
 		}
 
 		// 그래프 객체 생성
-		GraphicalView gv = ChartFactory.getBarChartView(mActivity, dataset,
-				renderer, Type.STACKED);
-//		GraphicalView gv = ChartFactory.getLineChartView(mActivity, dataset, renderer);
+		/*GraphicalView gv = ChartFactory.getBarChartView(mActivity, dataset,
+				renderer, Type.STACKED);*/
+		GraphicalView gv = ChartFactory.getLineChartView(mActivity, dataset, renderer);
 		//gv = ChartFactory.getLineChartIntent(mActivity, dataset, renderer, "");
 
 //		gv.setBackgroundColor(Color.WHITE);

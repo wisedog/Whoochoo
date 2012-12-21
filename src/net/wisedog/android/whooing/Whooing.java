@@ -28,7 +28,7 @@ public class Whooing extends Activity {
 				startActivityForResult(intent, 1);
 			}			
 		};
-		handler.sendEmptyMessageDelayed(0, 2000);
+		handler.sendEmptyMessageDelayed(0, 500);
     }
     
     @Override

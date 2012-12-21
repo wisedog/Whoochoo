@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, Whooing!</string>
     <string name="app_name">Whooing</string>
     <string name="exit">종료하시겠습니까?</string>
     <string name="ok">확인</string>
@@ -21,4 +19,10 @@
     <string name="tab_page_num">This is tab: </string>
     <string name="tab_page_num_menu">This is tab with menu: </string>
     <string name="menu_item_refresh">Refresh</string>
+    <string-array name="main_fragment_items">
+        <item>Dashboard</item>
+        <item>Mountain</item>
+        <item>Balance</item>
+        <item>Profit/Loss</item>
+    </string-array>
 </resources>

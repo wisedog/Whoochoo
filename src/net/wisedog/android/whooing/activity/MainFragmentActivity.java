@@ -34,23 +34,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
 
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
-        
-        //TODO +, 메뉴, API 버튼, Progressive 버튼 추가
     }
-	/*
-	void addFragmentToStack() {
-
-        // Instantiate a new fragment.
-        Fragment newFragment = TestFragment2.newInstance("1");
-
-        // Add the fragment to the activity, pushing this transaction
-        // on to the back stack.
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.simple_fragment, newFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.addToBackStack(null);
-        ft.commit();
-    }*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -75,6 +59,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
         if (item.getTitle().equals("Plus")) {
             Intent intent = new Intent(this, TransactionAdd.class);
             intent.putExtra("title", "거래추가");
+            startActivityForResult(intent, 1);
+        }
+        else if(item.getTitle().equals("History")){
+            Intent intent = new Intent(this, TransactionEntries.class);
+            intent.putExtra("title", "History");
             startActivityForResult(intent, 1);
         }
 
