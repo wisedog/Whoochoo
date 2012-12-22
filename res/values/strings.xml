@@ -2,12 +2,12 @@
 <resources>
     <string name="app_name">Whooing</string>
     <string name="exit">종료하시겠습니까?</string>
-    <string name="ok">확인</string>
-    <string name="cancel">취소</string>
-    <string name="yes">네</string>
-    <string name="no">아니오</string>
+    <string name="ok">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="is_exit">종료하시겠습니까?</string>
-    <string name="authorizing">인증중입니다...</string>
+    <string name="authorizing">Authorizing...</string>
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
     <string name="main_title">Whooing</string>
@@ -16,13 +16,5 @@
     <string name="accounts_capital">Capital</string>
     <string name="accounts_income">Income</string>
     <string name="accounts_expenses">Expenses</string>
-    <string name="tab_page_num">This is tab: </string>
-    <string name="tab_page_num_menu">This is tab with menu: </string>
     <string name="menu_item_refresh">Refresh</string>
-    <string-array name="main_fragment_items">
-        <item>Dashboard</item>
-        <item>Mountain</item>
-        <item>Balance</item>
-        <item>Profit/Loss</item>
-    </string-array>
 </resources>

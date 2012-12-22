@@ -18,6 +18,8 @@ public class Whooing extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //String locale = getResources().getConfiguration().locale.getDisplayName();
+        //Toast.makeText(this, "Locale :"+ locale, Toast.LENGTH_SHORT).show();
         //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
         setContentView(R.layout.main);
         mContext = this;

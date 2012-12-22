@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>   
+    <string-array name="main_fragment_items">
+        <item>대쉬보드</item>
+        <item>자산변동</item>
+        <item>자산부채</item>
+        <item>비용수익</item>
+    </string-array>
+</resources>

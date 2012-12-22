@@ -1,16 +1,19 @@
 package net.wisedog.android.whooing.activity;
 
+import net.wisedog.android.whooing.R;
+import android.content.Context;
+import android.content.res.Resources;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class MainFragmentAdapter extends FragmentStatePagerAdapter {
-    private static final String[] CONTENT = new String[] { "Dashboard", "Mountain", "Balance", "Profit/Loss"};
-    private int mCount = CONTENT.length;
+    private String[] mIndicatorItems;
 
-    public MainFragmentAdapter(FragmentManager fm) {
+    public MainFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
+        Resources res = context.getResources();
+        mIndicatorItems = res.getStringArray(R.array.main_fragment_items);
     }
 
     @Override
@@ -18,16 +21,16 @@ public class MainFragmentAdapter extends FragmentStatePagerAdapter {
         Fragment result = null;
         switch(position){
         case 0:
-            result= DashboardFragment.newInstance(CONTENT[position % CONTENT.length]);
+            result= DashboardFragment.newInstance(mIndicatorItems[position % mIndicatorItems.length]);
             break;
         case 1:
-            result = TestFragment2.newInstance("ASDF");
+            result = MountainFragment.newInstance("ASDF");
             break;
         case 2:
-            result = TestFragment2.newInstance("B");
+            result = TestFragment.newInstance("B");
             break;
         case 3:
-            result = TestFragment2.newInstance("C");
+            result = TestFragment.newInstance("C");
             break;
         }
         return result;
@@ -35,12 +38,12 @@ public class MainFragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return mCount;
+        return mIndicatorItems.length;
     }
     
     @Override
     public CharSequence getPageTitle(int position) {
-        return CONTENT[position];
+        return mIndicatorItems[position];
     }
 
 }

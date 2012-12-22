@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>   
+    <string-array name="main_fragment_items">
+        <item>Dashboard</item>
+        <item>Mountain</item>
+        <item>Balance</item>
+        <item>Profit/Loss</item>
+    </string-array>
+</resources>

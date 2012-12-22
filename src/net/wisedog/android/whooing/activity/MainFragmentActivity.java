@@ -27,7 +27,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
         
         setContentView(R.layout.whooing_tabs);
         
-        mAdapter = new MainFragmentAdapter(getSupportFragmentManager());
+        mAdapter = new MainFragmentAdapter(getSupportFragmentManager(), this);
 
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);

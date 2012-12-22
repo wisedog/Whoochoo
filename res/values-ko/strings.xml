@@ -11,18 +11,11 @@
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
     <string name="main_title">Whooing</string>
-    <string name="accounts_assets">Assets</string>
-    <string name="accounts_liabilities">Liabilities</string>
-    <string name="accounts_capital">Capital</string>
-    <string name="accounts_income">Income</string>
-    <string name="accounts_expenses">Expenses</string>
-    <string name="tab_page_num">This is tab: </string>
-    <string name="tab_page_num_menu">This is tab with menu: </string>
+    <string name="accounts_assets">자산</string>
+    <string name="accounts_liabilities">부채</string>
+    <string name="accounts_capital">자본</string>
+    <string name="accounts_income">수입</string>
+    <string name="accounts_expenses">지출</string>
     <string name="menu_item_refresh">Refresh</string>
-    <string-array name="main_fragment_items">
-        <item>대쉬보드</item>
-        <item>Mountain</item>
-        <item>잔고</item>
-        <item>Profit/Loss</item>
-    </string-array>
+    
 </resources>
