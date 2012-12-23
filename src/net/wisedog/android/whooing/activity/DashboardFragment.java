@@ -30,7 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-
+/**
+ * 첫 페이지(대쉬보드)Fragment
+ * @author Wisedog(me@wisedog.net)
+ * */
 public class DashboardFragment extends SherlockFragment {
 	private static final String KEY_TAB_NUM = "key.tab.num";
 	
@@ -53,7 +56,6 @@ public class DashboardFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-	    Log.i("wisedog", "onCreateView");
 		View view = inflater.inflate(R.layout.whooing_main2, null);
 		
 		return view;
@@ -255,8 +257,6 @@ public class DashboardFragment extends SherlockFragment {
             bundle.putString("doubt_value", doubtValue);
         }
         
-        
-        
         bundle.putBoolean("first_calling", isFirstCalling);
         super.onSaveInstanceState(bundle);
     }
@@ -273,8 +273,4 @@ public class DashboardFragment extends SherlockFragment {
         }
         super.onActivityCreated(bundle);
     }
-    
-    
-    
-    
 }

@@ -1,6 +1,7 @@
 package net.wisedog.android.whooing;
 
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
+import net.wisedog.android.whooing.engine.DataRepository;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,8 @@ public class Whooing extends Activity {
         //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
         setContentView(R.layout.main);
         mContext = this;
+        DataRepository repository = DataRepository.getInstance();
+        repository.refreshAll();
         Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
