@@ -34,4 +34,31 @@ public class WhooingCalendar {
         }
         return date;
     }
+    
+    static public String getTodayYYYYMM(){
+        Calendar rightNow = Calendar.getInstance(); 
+        
+        int year = rightNow.get(Calendar.YEAR);
+        int month = rightNow.get(Calendar.MONTH);
+        month = month + 1;
+        String monthString = "";
+        if(month < 10){
+            monthString += "0";
+        }
+        monthString += month;
+        return "" + year + monthString;
+    }
+    
+    static public String getPreMonthYYYYMM(int premonth){
+        Calendar rightNow = Calendar.getInstance(); 
+        rightNow.add(Calendar.MONTH, -(premonth));
+        int year = rightNow.get(Calendar.YEAR);
+        int month = rightNow.get(Calendar.MONTH);
+        month = month + 1;
+        String monthString = "";
+        if(month < 10)
+            monthString += "0";
+        monthString += month;
+        return "" + year + monthString;
+    }
 }

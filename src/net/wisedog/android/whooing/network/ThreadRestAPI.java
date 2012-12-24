@@ -41,6 +41,19 @@ public class ThreadRestAPI extends Thread {
         this.mAPIName = apiName;
         this.mBundle = bundle;
     }
+	
+	public ThreadRestAPI(Handler mHandler, int apiName) {
+        super();
+        this.mHandler = mHandler;
+        this.mAPIName = apiName;
+    }
+	
+	public ThreadRestAPI(Handler mHandler, int apiName, Bundle bundle) {
+        super();
+        this.mHandler = mHandler;
+        this.mAPIName = apiName;
+        this.mBundle = bundle;
+    }
 
 	@Override
 	public void run() {
@@ -72,6 +85,20 @@ public class ThreadRestAPI extends Thread {
 					Define.APP_ID, Define.REAL_TOKEN,
 					 Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
+		case Define.API_GET_MOUNTAIN:
+		    if(mBundle == null){
+                Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_GET_MOUNTAIN");
+                sendMessage(null, mAPIName);
+                return;
+            }
+		    String startDate = mBundle.getString("start_date");
+		    String endDate = mBundle.getString("end_date");
+		    String requestUrl = "https://whooing.com/api/mountain.json_array?section_id="+Define.APP_SECTION + 
+		            "&start_date=" + startDate + "&end_date=" + endDate; 
+		    GeneralApi mountain = new GeneralApi();
+		    result = mountain.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                     Define.APP_SECRET, Define.TOKEN_SECRET);
+		    break;
 		case Define.API_GET_ENTRIES_LATEST:
 		    Entries entries = new Entries();
 		    result = entries.getLatest(Define.APP_SECTION, Define.APP_ID, 

@@ -25,7 +25,7 @@ public class Whooing extends Activity {
         setContentView(R.layout.main);
         mContext = this;
         DataRepository repository = DataRepository.getInstance();
-        repository.refreshAll();
+        repository.refreshDashboardValue();
         Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
@@ -33,7 +33,7 @@ public class Whooing extends Activity {
 				startActivityForResult(intent, 1);
 			}			
 		};
-		handler.sendEmptyMessageDelayed(0, 500);
+		handler.sendEmptyMessageDelayed(0, 200);
     }
     
     @Override

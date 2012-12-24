@@ -101,7 +101,7 @@ public class MainProcessor {
                     }
                     
                     //Balance
-                    TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
+                   /* TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
                     TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
                     currentBalance.setTypeface(typeface);
                     inoutBalance.setTypeface(typeface);
@@ -117,7 +117,7 @@ public class MainProcessor {
                         e.printStackTrace();
                     }catch(IllegalArgumentException e){
                         e.printStackTrace();
-                    }
+                    }*/
                     
                     try {
                         JSONArray array = objResult.getJSONObject("bill").getJSONObject("aggregate")
