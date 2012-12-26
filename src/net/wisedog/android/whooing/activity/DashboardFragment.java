@@ -9,14 +9,13 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingAuth;
-import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository;
+import net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
-import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -39,7 +38,7 @@ import com.actionbarsherlock.app.SherlockFragment;
  * 첫 페이지(대쉬보드)Fragment
  * @author Wisedog(me@wisedog.net)
  * */
-public class DashboardFragment extends SherlockFragment implements OnBsChangeListener, OnMountainChangeListener, OnPlChangeListener{
+public class DashboardFragment extends SherlockFragment implements OnMountainChangeListener, OnBudgetChangeListener{
     private static final String KEY_TAB_NUM = "key.tab.num";
 	
 	public static DashboardFragment newInstance(String text) {
@@ -82,7 +81,21 @@ public class DashboardFragment extends SherlockFragment implements OnBsChangeLis
 
     @Override
     public void onResume() {
-        // TODO 전월대비를 넣어보자
+        DataRepository repository = DataRepository.getInstance();
+        repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+        repository.registerObserver(this, DataRepository.BUDGET_MODE);
+        if(repository.getMtValue() != null){
+            showMountainValue(repository.getMtValue());
+            super.onResume();
+            return;
+        }
+        if(repository.getBudgetValue() != null){
+            showBudgetValue(repository.getBudgetValue());
+            super.onResume();
+            return;
+        }
+        
+       /* // TODO 전월대비를 넣어보자
         if(isFirstCalling == true || Define.NEED_TO_REFRESH == true){
             // For Debug
                Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
@@ -114,18 +127,21 @@ public class DashboardFragment extends SherlockFragment implements OnBsChangeLis
                Define.NEED_TO_REFRESH = false;
                
                DataRepository repository = DataRepository.getInstance();
-               repository.registerObserver(this, 3);
-           }
+               repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+           }*/
         super.onResume();
     }
     
+
     /* (non-Javadoc)
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
     public void onDestroyView() {
         DataRepository repository = DataRepository.getInstance();
-        repository.removeObserver(this, 3);
+        repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
+        repository.removeObserver(this, DataRepository.BUDGET_MODE);
+        
         super.onDestroyView();
     }
 
@@ -294,13 +310,10 @@ public class DashboardFragment extends SherlockFragment implements OnBsChangeLis
         super.onActivityCreated(bundle);
     }
 
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener#onBsUpdate()
-     */
-    public void onBsUpdate(JSONObject obj) {
+    /*public void onBsUpdate(JSONObject obj) {
         Log.i("wisedog", "Ok, onBsUpdate - " + obj.toString());
       //Balance
-        /*TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
+        TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
         TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
         Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
         currentBalance.setTypeface(typeface);
@@ -326,16 +339,11 @@ public class DashboardFragment extends SherlockFragment implements OnBsChangeLis
             e.printStackTrace();
         }catch(IllegalArgumentException e){
             e.printStackTrace();
-        }*/
+        }
         
-    }
-
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener#onMountainUpdate(org.json.JSONObject)
-     */
-    public void onMountainUpdate(JSONObject obj) {
-        //여기서 Dashboard의 Asset, Doubt, 전월대비 설정한다. 
-        Log.i("wisedog", "Ok, onMountainUpdate - " + obj.toString());
+    }*/
+    
+    private void showMountainValue(JSONObject obj){
         TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
         TextView doubtValue = (TextView)mActivity.findViewById(R.id.doubt_num);
         Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
@@ -381,14 +389,29 @@ public class DashboardFragment extends SherlockFragment implements OnBsChangeLis
             setErrorHandler("통신 오류! Err-MAIN2");
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * @param budgetValue
+     */
+    private void showBudgetValue(JSONObject budgetValue) {
+        // TODO Auto-generated method stub
         
     }
 
     /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener#onPlUpdate(org.json.JSONObject)
+     * @see net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener#onMountainUpdate(org.json.JSONObject)
      */
-    public void onPlUpdate(JSONObject obj) {
-        Log.i("wisedog", "Ok, onPlUpdate - " + obj.toString());
+    public void onMountainUpdate(JSONObject obj) {
+        //여기서 Dashboard의 Asset, Doubt, 전월대비 설정한다. 
+        showMountainValue(obj);
+    }
+
+    /* (non-Javadoc)
+     * @see net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener#onBudgetUpdate(org.json.JSONObject)
+     */
+    public void onBudgetUpdate(JSONObject obj) {
+       Log.i("wisedog", "OK, onBudgetUpdate : "+ obj.toString());
         
     }
 }

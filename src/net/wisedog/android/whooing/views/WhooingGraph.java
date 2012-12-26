@@ -14,6 +14,9 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -21,8 +24,106 @@ import android.graphics.Paint.Align;
 import android.widget.LinearLayout;
 
 public class WhooingGraph {
-    public void showGraph(Activity activity){
-        String[] titles = new String[] { "Sales growth" , "Fixed tickets" };
+    protected Date[] mMtDateValues = null;
+    protected double mMtMinY = 0.0f;
+    protected double mMtMaxY = 0.0f;
+    List<Double> mValue1 = new ArrayList<Double>();
+    List<Double> mValue2 = new ArrayList<Double>();
+    List<Double> mValue3 = new ArrayList<Double>();
+    
+    public boolean decodeMountainData(JSONArray data){
+        for(int i = 0; i < data.length(); i++){
+            try {
+                JSONObject obj = (JSONObject) data.get(i);
+                double value = obj.getDouble("liabilities");
+                double value1 = obj.getDouble("capital");
+                double value2 = obj.getDouble("assets");
+                mMtMaxY = getMax(mMtMaxY, value, value1, value2);
+                mMtMinY = getMin(mMtMinY, value, value1, value2);
+                mValue1.add(value);
+                mValue2.add(value1);
+                mValue3.add(value2);
+                
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @param mMtMaxY2
+     * @param value
+     * @param value1
+     * @param value2
+     * @return
+     */
+    private double getMin(double minY, double value, double value1, double value2) {
+        double min = Double.MAX_VALUE;
+        if(value <= min){
+            min = value;
+        }
+        if(value1 <= min){
+            min = value1;
+        }
+        if(value2 <= min){
+            min = value2;
+        }
+        if(minY <= min){
+            min = minY;
+        }
+        return min;
+    }
+
+    /**
+     * @param mMtMaxY2
+     * @param value
+     * @param value1
+     * @param value2
+     * @return
+     */
+    private double getMax(double maxY, double value, double value1, double value2) {
+        double max = Double.MIN_VALUE;
+        if(value >= max){
+            max = value;
+        }
+        if(value1 >= max){
+            max = value1;
+        }
+        if(value2 >= max){
+            max = value2;
+        }
+        if(maxY >= max){
+            max = maxY;
+        }
+        return max;
+    }
+    
+    public double[] toPrimitive(List<Double> list){
+        double[] result = new double[list.size()];
+        for(int i = 0; i< list.size(); i++){
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+
+    /**
+     * Draw graphs with given data. Data is like below: 
+     * "results":{"rows_type":"month","aggregate":{"capital":11593688,"liabilities":814335,"assets":12408023,"goal":0},
+     * "rows":[{"liabilities":0,"assets":0,"date":201206,"capital":0,"goal":null},
+     * {"liabilities":0,"assets":0,"date":201207,"capital":0,"goal":null},
+     * {"liabilities":0,"assets":0,"date":201208,"capital":0,"goal":null},
+     * {"liabilities":0,"assets":0,"date":201209,"capital":0,"goal":null},
+     * {"liabilities":567890,"assets":12395678,"date":201210,"capital":11827788,"goal":null},
+     * {"liabilities":694335,"assets":12408023,"date":201211,"capital":11713688,"goal":null},
+     * {"liabilities":814335,"assets":12408023,"date":201212,"capital":11593688,"goal":null}]}
+     * @param   activity        Activity
+     * @param   data            Graph data
+     * */
+    public void showGraph(Activity activity, LinearLayout insertLayout, JSONArray data){
+        String[] titles = new String[] { "liabilities" , "capital" };
+        this.decodeMountainData(data);
         List<Date[]> dates = new ArrayList<Date[]>();
         List<double[]> values = new ArrayList<double[]>();
         Date[] dateValues = new Date[] {
@@ -31,14 +132,14 @@ public class WhooingGraph {
         dates.add(dateValues);
         dates.add(dateValues);
 
-        values.add(new double[] { 0.4, 4.5, 3.4, 4.5, 4.3, 4 });
-        values.add(new double[] { 2.4, 7.5, 1.4, 2.5, 3.3, 6 });
+        values.add(toPrimitive(mValue1));
+        values.add(toPrimitive(mValue2));
         int[] colors = new int[] { Color.RED, Color.BLUE };
         PointStyle[] styles = new PointStyle[] { PointStyle.SQUARE, PointStyle.DIAMOND };
         XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer(2);
         setRenderer(renderer, colors, styles);
-        setChartSettings(renderer, "Sales growth", "Date", "%", dateValues[0].getTime(),
-            dateValues[dateValues.length - 1].getTime(), -4, 11, Color.GRAY, Color.LTGRAY);
+        setChartSettings(renderer, "Mountain", "Date", "%", dateValues[0].getTime(),
+            dateValues[dateValues.length - 1].getTime(), getMtMinY(), getMtMaxY(), Color.GRAY, Color.LTGRAY);
         renderer.setYLabels(6);
         renderer.setXLabels(6);
         renderer.setShowGrid(true);
@@ -54,9 +155,7 @@ public class WhooingGraph {
         
         GraphicalView gv = ChartFactory.getTimeChartView(activity, buildDateDataset(titles, dates, values),
                 renderer, "yyyy.MMM");
-        // 그래프를 LinearLayout에 추가
-        LinearLayout llBody = (LinearLayout) activity.findViewById(R.id.test1);
-        llBody.addView(gv);
+        insertLayout.addView(gv);
     }
     
     protected XYMultipleSeriesDataset buildDateDataset(String[] titles, List<Date[]> xValues,
@@ -128,14 +227,17 @@ public class WhooingGraph {
         //renderer.addYTextLabel(10, "New Test", 1);
 
         XYMultipleSeriesDataset dataset = buildDataset(titles, x, values);
-/*        values.clear();
-        values.add(new double[] { 4.3, 4.9, 5.9, 8.8, 10.8, 11.9 });
-        addXYSeries(dataset, new String[] { "Sunshine hours" }, x, values, 1);*/
-        //Intent intent = ChartFactory.getCubicLineChartIntent(this, dataset, renderer, 0.3f,"Average temperature");
+        /*
+         * values.clear(); values.add(new double[] { 4.3, 4.9, 5.9, 8.8, 10.8,
+         * 11.9 }); addXYSeries(dataset, new String[] { "Sunshine hours" }, x,
+         * values, 1);
+         */
+        // Intent intent = ChartFactory.getCubicLineChartIntent(this, dataset,
+        // renderer, 0.3f,"Average temperature");
         GraphicalView gv = ChartFactory.getLineChartView(activity, dataset, renderer);
-                // 그래프를 LinearLayout에 추가
-                LinearLayout llBody = (LinearLayout) activity.findViewById(R.id.test1);
-                llBody.addView(gv);
+        // 그래프를 LinearLayout에 추가
+        LinearLayout llBody = (LinearLayout) activity.findViewById(R.id.test1);
+        llBody.addView(gv);
     }
      
      protected void setChartSettings(XYMultipleSeriesRenderer renderer, String title, String xTitle,
@@ -196,5 +298,12 @@ public class WhooingGraph {
           }
           dataset.addSeries(series);
         }
+      }
+      
+      public double getMtMaxY(){
+          return mMtMaxY;
+      }
+      public double getMtMinY(){
+          return mMtMinY;
       }
 }

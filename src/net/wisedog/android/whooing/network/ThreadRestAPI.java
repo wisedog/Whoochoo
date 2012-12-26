@@ -58,6 +58,9 @@ public class ThreadRestAPI extends Thread {
 	@Override
 	public void run() {
 		JSONObject result = null;
+		String startDate = null;
+		String endDate = null;		        
+		        
 		switch(mAPIName){
 		case Define.API_GET_MAIN:
 			MainInfo mainInfo = new MainInfo();
@@ -69,12 +72,27 @@ public class ThreadRestAPI extends Thread {
 			result = section.getSections(Define.APP_ID, Define.REAL_TOKEN, 
 					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
-		case Define.API_GET_BUDGET:
-			Budget budget = new Budget();
-			result = budget.getBudget(Define.APP_SECTION, Define.APP_ID, 
-					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET);
-			break;
-		case Define.API_GET_BALANCE:
+        case Define.API_GET_BUDGET:
+            /*
+             * Budget budget = new Budget(); result =
+             * budget.getBudget(Define.APP_SECTION, Define.APP_ID,
+             * Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET);
+             */
+            GeneralApi budget = new GeneralApi();
+            if (mBundle == null) {
+                Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_GET_MOUNTAIN");
+                sendMessage(null, mAPIName);
+                return;
+            }
+            startDate = mBundle.getString("start_date");
+            endDate = mBundle.getString("end_date");
+            String account = mBundle.getString("account");
+            String requestURL = "https://whooing.com/api/budget/" + account + ".json_array?section_id=" + 
+                    Define.APP_SECTION + "&start_date=" + startDate + "&end_date=" + endDate;
+            result = budget.getInfo(requestURL, Define.APP_ID, Define.REAL_TOKEN, Define.APP_SECRET,
+                    Define.TOKEN_SECRET);
+            break;
+        case Define.API_GET_BALANCE:
 			Balance balance = new Balance();
 			result = balance.getBalance(Define.APP_SECTION, Define.APP_ID, 
 					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, null);
@@ -91,8 +109,8 @@ public class ThreadRestAPI extends Thread {
                 sendMessage(null, mAPIName);
                 return;
             }
-		    String startDate = mBundle.getString("start_date");
-		    String endDate = mBundle.getString("end_date");
+		    startDate = mBundle.getString("start_date");
+		    endDate = mBundle.getString("end_date");
 		    String requestUrl = "https://whooing.com/api/mountain.json_array?section_id="+Define.APP_SECTION + 
 		            "&start_date=" + startDate + "&end_date=" + endDate; 
 		    GeneralApi mountain = new GeneralApi();
