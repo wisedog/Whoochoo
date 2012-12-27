@@ -13,10 +13,7 @@ import com.actionbarsherlock.view.SubMenu;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
-public class MainFragmentActivity extends SherlockFragmentActivity {
-	
-	
-	
+public class MainFragmentActivity extends SherlockFragmentActivity{
 	MainFragmentAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
@@ -34,6 +31,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
 
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
+
     }
 
 	@Override
@@ -69,7 +67,5 @@ public class MainFragmentActivity extends SherlockFragmentActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    
-    
 
 }

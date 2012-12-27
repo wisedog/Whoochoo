@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wisedog.android.whooing.ui;
+package net.wisedog.android.whooing.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -395,7 +395,21 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param budgetValue
      */
     private void showBudgetValue(JSONObject budgetValue) {
-        // TODO Auto-generated method stub
+        TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
+        
+        try {
+            JSONObject obj = (JSONObject) budgetValue.getJSONObject("results").getJSONArray("rows").get(0);
+            JSONObject totalObj = obj.getJSONObject("total");
+            double budget = totalObj.getDouble("budget");
+            double expenses = totalObj.getDouble("money");
+            if(budget < expenses){
+                monthlyExpenseText.setTextColor(Color.RED);
+            }
+            monthlyExpenseText.setText(budget + " / " + expenses);
+            
+        } catch (JSONException e) {
+            setErrorHandler("통신 오류! Err-BDG1");
+        }
         
     }
 
@@ -412,6 +426,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      */
     public void onBudgetUpdate(JSONObject obj) {
        Log.i("wisedog", "OK, onBudgetUpdate : "+ obj.toString());
+       showBudgetValue(obj);
         
     }
 }
