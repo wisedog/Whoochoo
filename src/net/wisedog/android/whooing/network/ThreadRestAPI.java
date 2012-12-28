@@ -1,12 +1,12 @@
 package net.wisedog.android.whooing.network;
 
 import net.wisedog.android.whooing.Define;
-import net.wisedog.android.whooing.api.Balance;
 import net.wisedog.android.whooing.api.Budget;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.Section;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 
 import org.json.JSONObject;
 
@@ -93,10 +93,23 @@ public class ThreadRestAPI extends Thread {
                     Define.TOKEN_SECRET);
             break;
         case Define.API_GET_BALANCE:
-			Balance balance = new Balance();
-			result = balance.getBalance(Define.APP_SECTION, Define.APP_ID, 
-					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, null);
-			break;
+            String date = "";
+            if (mBundle == null) {
+                date = WhooingCalendar.getTodayYYYYMMDD();
+            } else {
+                date = mBundle.getString("end_date");
+            }
+
+            if (date == null) {
+                date = WhooingCalendar.getTodayYYYYMMDD();
+            }
+
+            String budgetURL = "https://whooing.com/api/bs.json_array" + "?section_id="
+                    + Define.APP_SECTION + "&end_date=" + date;
+            GeneralApi balanceApi = new GeneralApi();
+            result = balanceApi.getInfo(budgetURL, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+            break;
 		case Define.API_GET_ACCOUNTS:
 			GeneralApi api = new GeneralApi();
 			result = api.getInfo("https://whooing.com/api/accounts.json_array?section_id="+Define.APP_SECTION, 

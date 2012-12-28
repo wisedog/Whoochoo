@@ -88,6 +88,14 @@ public class DataRepository{
         thread1.start();
     }
     
+    public void refreshBsValue(){
+        init();
+        Bundle bundle = new Bundle();
+        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_BALANCE, bundle);
+        thread.start();
+    }
+    
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -189,6 +197,10 @@ public class DataRepository{
      * */
     public JSONObject getBudgetValue(){
         return mBudgetValue;
+    }
+    
+    public JSONObject getBsValue(){
+        return mBsValue;
     }
     
     /*public void removeBsObserver(OnBsChangeListener o) {
