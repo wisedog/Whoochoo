@@ -9,8 +9,10 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +35,7 @@ public class DataRepository{
     private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
     private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();
     private ArrayList<OnBudgetChangeListener> mBudgetObservers = new ArrayList<OnBudgetChangeListener>();
+	private Context mContext;
     
 //    private ArrayList<DataChangeListener> mDataObservers = new ArrayList<DataChangeListener>();
     // 대쉬보드 - Asset/Doubt: bs,pl / Monthly Budget : pl/ Credit Card : bs 
@@ -60,7 +63,10 @@ public class DataRepository{
         return dataRepository;
     }
     
-    public void init(){
+    /**
+     * Init here
+     * */
+    private void init(){
         Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
         Define.PIN = "992505";
         Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
@@ -72,29 +78,49 @@ public class DataRepository{
     	Log.i("wisedog", "Refresh All");
     }
     
-    public void refreshDashboardValue(){
-        init();
-        Bundle bundle = new Bundle();
-        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
-        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_MOUNTAIN, bundle);
-        thread.start();
-        
-        Bundle bundleBudget = new Bundle();
-        bundleBudget.putString("account", "expenses");
-        bundleBudget.putString("end_date", WhooingCalendar.getTodayYYYYMM());
-        bundleBudget.putString("start_date", WhooingCalendar.getTodayYYYYMM());
-        ThreadRestAPI thread1 = new ThreadRestAPI(mHandler, Define.API_GET_BUDGET, bundleBudget);
-        thread1.start();
+	/**
+	 * Refresh Dashboard infomation from server
+	 * */
+	public void refreshDashboardValue() {
+		init();
+		Bundle bundle = new Bundle();
+		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
+		bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
+		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+				Define.API_GET_MOUNTAIN, bundle);
+		thread.start();
+
+		Bundle bundleBudget = new Bundle();
+		bundleBudget.putString("account", "expenses");
+		bundleBudget.putString("end_date", WhooingCalendar.getTodayYYYYMM());
+		bundleBudget.putString("start_date", WhooingCalendar.getTodayYYYYMM());
+		ThreadRestAPI thread1 = new ThreadRestAPI(mHandler,
+				Define.API_GET_BUDGET, bundleBudget);
+		thread1.start();
+	}
+    
+    /**
+     * Refresh Balance infomation from server
+     * */
+    public void refreshBsValue(){
+		init();
+		Bundle bundle = new Bundle();
+		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+				Define.API_GET_BALANCE, bundle);
+		thread.start();
     }
     
-    public void refreshBsValue(){
-        init();
-        Bundle bundle = new Bundle();
-        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_BALANCE, bundle);
+    /**
+     * Refresh account infomation from server
+     * @param		context		Context that is needed for accessing database
+     * */
+    public void refreshAccount(Context context) {
+    	mContext = context;
+    	ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                Define.API_GET_ACCOUNTS);
         thread.start();
-    }
+	}
     
     Handler mHandler = new Handler() {
         @Override
@@ -123,6 +149,17 @@ public class DataRepository{
                     for (OnBudgetChangeListener observer : mBudgetObservers) {
                         observer.onBudgetUpdate(obj);
                     }
+                }
+                else if(msg.arg1 == Define.API_GET_ACCOUNTS){
+                	if(mContext != null){
+                		GeneralProcessor general = new GeneralProcessor(mContext);
+                		try {
+                			JSONObject objResult = obj.getJSONObject("results");
+							general.fillAccountsTable(objResult);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+                		}
                 }
             }
         }
@@ -202,6 +239,8 @@ public class DataRepository{
     public JSONObject getBsValue(){
         return mBsValue;
     }
+
+	
     
     /*public void removeBsObserver(OnBsChangeListener o) {
         int idx = mBsObservers.indexOf(o);

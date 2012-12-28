@@ -8,8 +8,8 @@
     <string name="no">No</string>
     <string name="is_exit">종료하시겠습니까?</string>
     <string name="authorizing">Authorizing...</string>
-    <string name="msg_auth_success">인증성공!</string>
-    <string name="msg_auth_fail">인증 실패!</string>
+    <string name="msg_auth_success">Authorization is succeed!</string>
+    <string name="msg_auth_fail">Authorization is failed...</string>
     <string name="main_title">Whooing</string>
     <string name="accounts_assets">Assets</string>
     <string name="accounts_liabilities">Liabilities</string>
@@ -17,4 +17,12 @@
     <string name="accounts_income">Income</string>
     <string name="accounts_expenses">Expenses</string>
     <string name="menu_item_refresh">Refresh</string>
+    
+    <string name="total_assets">Total Assets</string>
+    <string name="total_liabilities">Total Liabilities</string>
+    <string name="total_capital">Total Capital</string>
+    
+    <!-- Balance fragment -->
+    <string name="balance_label_account">Account</string>
+    <string name="balance_label_amount">Amount</string>
 </resources>

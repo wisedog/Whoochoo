@@ -9,11 +9,9 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingAuth;
-import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
-import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
@@ -86,13 +84,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         repository.registerObserver(this, DataRepository.BUDGET_MODE);
         if(repository.getMtValue() != null){
             showMountainValue(repository.getMtValue());
-            super.onResume();
-            return;
         }
         if(repository.getBudgetValue() != null){
             showBudgetValue(repository.getBudgetValue());
-            super.onResume();
-            return;
         }
         
        /* // TODO 전월대비를 넣어보자
@@ -269,32 +263,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void setErrorHandler(String errorMsg){
         if(dialog != null){
             dialog.dismiss();
-        }
+        }	
         Toast.makeText(mActivity, errorMsg, Toast.LENGTH_LONG).show();
-    }
-    
-    
-
-    @Override
-    public void onSaveInstanceState(Bundle bundle) {     
-        
-        //Save balance num value
-        TextView textView = (TextView)mActivity.findViewById(R.id.balance_num);
-        String assetsValue = "0";
-        if(textView != null){
-            assetsValue = textView.getText().toString();
-            bundle.putString("assets_value", assetsValue);
-        }
-        //Save doubt num value
-        textView = (TextView)mActivity.findViewById(R.id.doubt_num);
-        String doubtValue = "0";
-        if(textView != null){
-            doubtValue = textView.getText().toString();
-            bundle.putString("doubt_value", doubtValue);
-        }
-        
-        bundle.putBoolean("first_calling", isFirstCalling);
-        super.onSaveInstanceState(bundle);
     }
 
     @Override
@@ -309,40 +279,11 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         }
         super.onActivityCreated(bundle);
     }
-
-    /*public void onBsUpdate(JSONObject obj) {
-        Log.i("wisedog", "Ok, onBsUpdate - " + obj.toString());
-      //Balance
-        TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
-        TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
-        Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
-        currentBalance.setTypeface(typeface);
-        inoutBalance.setTypeface(typeface);
-        JSONObject objResult = null;
-        try{
-            objResult = obj.getJSONObject("results");
-        }
-        catch(JSONException e){
-            e.printStackTrace();
-            return;
-        }
-        try{
-            JSONObject obj1 = objResult.getJSONObject("capital");
-            JSONObject obj2 = objResult.getJSONObject("liabilities");
-            DecimalFormat df = new DecimalFormat("#,##0");
-            currentBalance.setText(df.format(obj1.getLong("total")));
-            
-            inoutBalance.setText(df.format(obj2.getLong("total")));                       
-            
-        }catch(JSONException e){
-            setErrorHandler("통신 오류! Err-MAIN2");
-            e.printStackTrace();
-        }catch(IllegalArgumentException e){
-            e.printStackTrace();
-        }
-        
-    }*/
     
+    /**
+     * Mountain 값을 보여준다. DashBoard 1,3 번째
+     * @param	obj		Data formatted in JSON
+     * */
     private void showMountainValue(JSONObject obj){
         TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
         TextView doubtValue = (TextView)mActivity.findViewById(R.id.doubt_num);
@@ -392,7 +333,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     }
     
     /**
-     * @param budgetValue
+     * Budget값을 보여준다. 2번째.
+     * @param budgetValue	data formatted in JSON
      */
     private void showBudgetValue(JSONObject budgetValue) {
         TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
@@ -425,7 +367,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @see net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener#onBudgetUpdate(org.json.JSONObject)
      */
     public void onBudgetUpdate(JSONObject obj) {
-       Log.i("wisedog", "OK, onBudgetUpdate : "+ obj.toString());
        showBudgetValue(obj);
         
     }

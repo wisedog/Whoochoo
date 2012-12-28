@@ -8,93 +8,80 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         android:id="@+id/balance_asset_table">
-
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/table_row_total_asset_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-            <TextView android:text="항목"
+            android:layout_height="wrap_content"
+            android:weightSum="1.0" >
+
+            <TextView
+                android:id="@+id/table_row_total_asset_label_account"
                 android:layout_width="0dip"
-                android:layout_weight="40"
-                android:layout_height="wrap_content"/>
-           <TextView android:text="금액"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:text="@string/balance_label_account" />
+
+            <TextView
+                android:id="@+id/table_row_total_asset_label_amount"
                 android:layout_width="0dip"
-               android:layout_height="wrap_content"
-               android:layout_weight="60"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:text="@string/balance_label_amount" />
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content" 
+            android:weightSum="1.0">
 
            <TextView
                android:layout_width="0dip"
                android:layout_height="wrap_content"
-               android:layout_weight="40"
-               android:text="총자산"
+               android:layout_weight="0.4"
+               android:text="@string/total_assets"
                android:textStyle="bold" />
 
             <LinearLayout
+                android:id="@+id/balance_total_asset_layout"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="60"
-                android:padding="2dip" >
+                android:layout_weight="0.6" >
 
                 <View
+                    android:id="@+id/bar_total_asset"
                     android:layout_width="90dip"
-                    android:layout_height="14dp"
+                    android:layout_height="14dip"
                     android:layout_gravity="center_vertical"
                     android:background="@color/md__defaultBackground" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/balance_total_asset_value"
+                    android:layout_width="95dip"
                     android:layout_height="wrap_content"
-                    android:text="744,444,333" />
+                    android:layout_marginLeft="4dip"
+                    android:text="" />
+
             </LinearLayout>
             
         </TableRow>
 
-        <TableRow
-            android:id="@+id/tableRow3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-           <TextView android:text="ABCD"
-                android:layout_width="0dip"
-                android:layout_weight="40"
-                android:layout_height="wrap_content"/>
-            <LinearLayout 
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="60"
-                android:padding="2dip">
-
-                <View
-                    android:layout_width="30dip"
-                    android:layout_height="14dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/md__defaultBackground" />
-
-	           <TextView android:text="123456"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </TableRow>
     </TableLayout>
     
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:id="@+id/balance_liabilities_table">
+        android:id="@+id/balance_liabilities_table"
+        android:layout_marginTop="20dip">
 
         <TableRow
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-            <TextView android:text="항목"
+            <TextView android:text="@string/balance_label_account"
                 android:layout_width="0dip"
                 android:layout_weight="40"
                 android:layout_height="wrap_content"/>
-           <TextView android:text="금액"
+           <TextView android:text="@string/balance_label_amount"
                 android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="60"/>
@@ -108,7 +95,7 @@
                android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="40"
-               android:text="총 부채"
+               android:text="@string/total_liabilities"
                android:textStyle="bold" />
 
             <LinearLayout
@@ -126,7 +113,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="744,444,333" />
+                    android:text="123,744,444,333" />
             </LinearLayout>
             
         </TableRow>
