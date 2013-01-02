@@ -288,6 +288,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
         TextView doubtValue = (TextView)mActivity.findViewById(R.id.doubt_num);
         Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
+        if(currentBalance == null || doubtValue == null){
+        	return;
+        }
         currentBalance.setTypeface(typeface);
         doubtValue.setTypeface(typeface);
         JSONObject objResult = null;

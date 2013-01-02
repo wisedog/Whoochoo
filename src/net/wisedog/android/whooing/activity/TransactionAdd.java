@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -125,15 +126,36 @@ public class TransactionAdd extends SherlockActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         SubMenu subMenu1 = menu.addSubMenu("Lists");
-        subMenu1.add("History");
-        subMenu1.add("Menu2");
         subMenu1.add("Setting");
+        subMenu1.add("About");
 
         MenuItem subMenu1Item = subMenu1.getItem();
         subMenu1Item.setIcon(R.drawable.menu_lists_button);
         subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i("wisedog", "ITEM : " + item.getTitle());
+        if (item.getTitle().equals("Setting")) {
+            /*Intent intent = new Intent(this, TransactionAdd.class);
+            intent.putExtra("title", "거래추가");
+            startActivityForResult(intent, 1);*/
+        }
+        else if(item.getTitle().equals("About")){
+            /*Intent intent = new Intent(this, TransactionEntries.class);
+            intent.putExtra("title", "History");
+            startActivityForResult(intent, 1);*/
+        }
+        else if (item.getItemId() == android.R.id.home) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                this.finish();
+            
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     
     /**

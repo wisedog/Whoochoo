@@ -49,7 +49,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW);
+        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
         mMenuDrawer.setContentView(R.layout.whooing_tabs);
 
         List<Object> items = new ArrayList<Object>();
@@ -85,7 +85,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         mFragmentAdapter.addTab(DashboardFragment.class, null);
         mFragmentAdapter.addTab(MountainFragment.class, null);
         mFragmentAdapter.addTab(BalanceFragment.class, null);
-        mFragmentAdapter.addTab(TestFragment.class, null);
+        mFragmentAdapter.addTab(ProfitLossFragment.class, null);
         
         mPager.setAdapter(mFragmentAdapter);
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
