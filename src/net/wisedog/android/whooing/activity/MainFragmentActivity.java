@@ -6,6 +6,7 @@ import java.util.List;
 import net.simonvt.widget.MenuDrawer;
 import net.wisedog.android.whooing.R;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -64,6 +65,8 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         // of the arrow indicator.
         mList = new MenuListView(this);
         mAdapter = new MenuAdapter(items);
+        
+        mList.setCacheColorHint(Color.TRANSPARENT);
         mList.setAdapter(mAdapter);
         mList.setOnItemClickListener(mItemClickListener);
         
@@ -73,8 +76,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             }
 
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                mMenuDrawer.invalidate();
-                Log.i("wisedog", "invalidate");
+                mMenuDrawer.invalidate();                
             }
         });
         
