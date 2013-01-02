@@ -25,4 +25,11 @@
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>
     <string name="balance_label_amount">Amount</string>
+    
+    <!--  Left Sliding menu -->
+    <string name="left_menu_category_report">Report</string>
+    <string name="left_menu_category_etc">Etc</string>
+    <string name="left_menu_item_history">History</string>
+    <string name="left_menu_item_exp_budget">Exp. Budget</string>
+    <string name="left_menu_item_credit">Credit Cards</string>
 </resources>

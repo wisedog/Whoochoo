@@ -18,4 +18,15 @@
     <string name="accounts_expenses">지출</string>
     <string name="menu_item_refresh">Refresh</string>
     
+    <!-- Balance fragment -->
+    <string name="balance_label_account">항목</string>
+    <string name="balance_label_amount">금액</string>
+    
+     <!--  Left Sliding menu -->
+    <string name="left_menu_category_report">리포트</string>
+    <string name="left_menu_category_etc">기타</string>
+    <string name="left_menu_item_history">거래내역</string>
+    <string name="left_menu_item_exp_budget">지출예산</string>
+    <string name="left_menu_item_credit">신용카드</string>
+    
 </resources>

@@ -6,10 +6,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class AccountsEntity implements Parcelable{
+    /** String for Asset, liabilities and so on*/
     public String accountType = null;
     public String account_id = null;
     public String type = null;
+    /** The name of the accounts */
     public String title = null;
+    /** Additional information for account*/
     public String memo = null;
     public int open_date = 0;
     public int close_date = 0;

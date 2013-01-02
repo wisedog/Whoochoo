@@ -8,21 +8,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
+import net.wisedog.android.whooing.engine.GeneralProcessor;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable.Orientation;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.MeasureSpec;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -67,6 +67,12 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 
     @Override
     public void onResume() {
+        TableLayout tl = (TableLayout) mActivity
+                .findViewById(R.id.balance_asset_table);
+        if(tl.getChildCount() > 2){
+            super.onResume();
+            return;
+        }
         DataRepository repository = DataRepository.getInstance();
         if(repository.getBsValue() != null){
             showBalance(repository.getBsValue());
@@ -112,84 +118,122 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 	 * "rest_of_api":4906}
 	 */
 	public void showBalance(JSONObject obj) {
-		TextView labelAccount = (TextView) mActivity
-				.findViewById(R.id.table_row_total_asset_label_account);
-		TextView labelAmount = (TextView) mActivity
-				.findViewById(R.id.table_row_total_asset_label_amount);
 		TextView labelTotalAssetValue = (TextView)mActivity.findViewById(R.id.balance_total_asset_value);
 		
-		final int firstColumnWidth = labelAccount.getWidth();
-		final int secondColumnWidth = labelAmount.getWidth();
 		TableLayout tl = (TableLayout) mActivity
 				.findViewById(R.id.balance_asset_table);
+		DisplayMetrics metrics = new DisplayMetrics();
+		mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		final int secondColumnWidth = (int) (metrics.widthPixels * 0.6);
+		Resources r = getResources();
+		final int valueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 95,
+                r.getDisplayMetrics());
+		final int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14,
+                r.getDisplayMetrics());
+		final int rightMargin4Dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
+                r.getDisplayMetrics());
 		try {
 			JSONObject objResult = obj.getJSONObject("results");
 			JSONObject objAssets = objResult.getJSONObject("assets");
 			double totalAssetValue = objAssets.getDouble("total");
-			if(labelTotalAssetValue != null){
-				labelTotalAssetValue.setText(""+objAssets.getInt("total"));
-				View bar = (View)mActivity.findViewById(R.id.bar_total_asset);
-				bar.setMinimumWidth(secondColumnWidth - labelTotalAssetValue.getWidth());
-				//labelTotalAssetValue.measure(MeasureSpec.EXACTLY, MeasureSpec.EXACTLY);
-/*				Log.i("wisedog", "Measure : " + labelTotalAssetValue.getWidth() + 
-						"Measure2 : " + labelTotalAssetValue.getMeasuredWidth());
-*/			}
-			JSONArray objAssetAccounts = objAssets.getJSONArray("accounts");
-			for(int i = 0; i < objAssetAccounts.length(); i++){
-				JSONObject accountItem = (JSONObject) objAssetAccounts.get(i);
-				
-				/* Create a new row to be added. */
-				TableRow tr = new TableRow(mActivity);
-				tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-						LayoutParams.WRAP_CONTENT));
-				tr.setWeightSum(1.0f);
-				
-				TextView accountText = new TextView(mActivity);
-				accountText.setText(accountItem.getString("account_id"));
-				accountText.setLayoutParams(new LayoutParams(
-						0, LayoutParams.WRAP_CONTENT, 0.4f));
-
-				tr.addView(accountText);
-				
-				LinearLayout amountLayout = new LinearLayout(mActivity);
-				amountLayout.setLayoutParams(new TableRow.LayoutParams(
-						0, 
-						LayoutParams.WRAP_CONTENT,0.6f));
-
-				int barWidth = getBarWidth(accountItem.getDouble("money"), totalAssetValue, 
-						secondColumnWidth, labelTotalAssetValue.getWidth());
-				Resources r = getResources();
-				int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics());
-				android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
-						barWidth, px);
-				
-				//set up view for horizontally bar graph 
-				View barView = new View(mActivity);
-				barView.setBackgroundColor(Color.BLUE);
-				int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
-				lParams.setMargins(0, 0, rightMargin, 0);
-				lParams.gravity = Gravity.CENTER_VERTICAL;
-				barView.setLayoutParams(lParams);
-				
-				
-				
-				//set up textview for showing amount
-				TextView amountText = new TextView(mActivity);
-				amountText.setText(""+accountItem.getInt("money"));
-				amountLayout.addView(barView);
-				amountLayout.addView(amountText);
-				tr.addView(amountLayout);
-				
-				/* Add row to TableLayout. */
-				tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-						LayoutParams.WRAP_CONTENT));
-			}
+            if (labelTotalAssetValue != null) {
+                labelTotalAssetValue.setText("" + objAssets.getInt("total"));
+                View bar = (View) mActivity.findViewById(R.id.bar_total_asset);
+                int barWidth = getBarWidth(objAssets.getInt("total"), totalAssetValue,
+                        secondColumnWidth, valueWidth);
+                
+                android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        barWidth, viewHeight);
+                lParams.setMargins(0, 0, rightMargin4Dip, 0);
+                lParams.gravity = Gravity.CENTER_VERTICAL;
+                bar.setLayoutParams(lParams);
+            }
 			
+			JSONArray objAssetAccounts = objAssets.getJSONArray("accounts");
+			showBalanceEntities(objAssetAccounts, totalAssetValue, secondColumnWidth, 
+			        valueWidth, tl);
+			
+			JSONObject objLiabilities = objResult.getJSONObject("liabilities");
+			JSONArray objLiabilitiesAccounts = objLiabilities.getJSONArray("accounts");
+			TableLayout tableLiabilites = (TableLayout) mActivity
+	                .findViewById(R.id.balance_liabilities_table);
+			
+			TextView labelTotalLiabilitiesValue = (TextView)mActivity.findViewById(R.id.balance_total_liabilities_value);
+			if(labelTotalLiabilitiesValue != null){
+			    labelTotalLiabilitiesValue.setText(""+objLiabilities.getInt("total"));
+                View bar = (View)mActivity.findViewById(R.id.bar_total_liabilities);
+                int barWidth = getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
+                        secondColumnWidth, valueWidth);
+                android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        barWidth, viewHeight);
+                lParams.setMargins(0, 0, rightMargin4Dip, 0);
+                lParams.gravity = Gravity.CENTER_VERTICAL;
+                bar.setLayoutParams(lParams);
+            }
+			
+			showBalanceEntities(objLiabilitiesAccounts, totalAssetValue, secondColumnWidth, 
+			        valueWidth, tableLiabilites);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void showBalanceEntities(JSONArray accounts, double totalAssetValue, 
+	        int secondColumnWidth, int labelWidth, TableLayout tl) throws JSONException{
+	    if(accounts == null){
+	        return;
+	    }
+	    GeneralProcessor genericProcessor = new GeneralProcessor(mActivity);
+	    for(int i = 0; i < accounts.length(); i++){
+	        JSONObject accountItem = (JSONObject) accounts.get(i);
+            
+            /* Create a new row to be added. */
+            TableRow tr = new TableRow(mActivity);
+            tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
+            tr.setWeightSum(1.0f);
+            
+            TextView accountText = new TextView(mActivity);
+            AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
+            accountText.setText(entity.title);
+            accountText.setLayoutParams(new LayoutParams(
+                    0, LayoutParams.WRAP_CONTENT, 0.4f));
+
+            tr.addView(accountText);
+            
+            LinearLayout amountLayout = new LinearLayout(mActivity);
+            amountLayout.setLayoutParams(new TableRow.LayoutParams(
+                    0, 
+                    LayoutParams.WRAP_CONTENT,0.6f));
+
+            int barWidth = getBarWidth(accountItem.getDouble("money"), totalAssetValue, 
+                    secondColumnWidth, labelWidth);
+            Resources r = getResources();
+            int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics());
+            android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                    barWidth, px);
+            
+            //set up view for horizontally bar graph 
+            View barView = new View(mActivity);
+            barView.setBackgroundColor(Color.BLUE);
+            int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
+            lParams.setMargins(0, 0, rightMargin, 0);
+            lParams.gravity = Gravity.CENTER_VERTICAL;
+            barView.setLayoutParams(lParams);
+            
+            //set up textview for showing amount
+            TextView amountText = new TextView(mActivity);
+            amountText.setText(""+accountItem.getInt("money"));
+            amountLayout.addView(barView);
+            amountLayout.addView(amountText);
+            tr.addView(amountLayout);
+            
+            /* Add row to TableLayout. */
+            tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
+	    }
 	}
 	
 	private int getBarWidth(double value, double maxValue, int limitWidth, int labelWidth){
@@ -198,7 +242,10 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 		if(width <= 5){
 			return 5;
 		}
-		return (int)width - labelWidth;
+		if((int)width >= limitWidth - labelWidth){
+		    return (int)width - labelWidth;
+		}
+	    return (int)width;
 	}
 
     /* (non-Javadoc)

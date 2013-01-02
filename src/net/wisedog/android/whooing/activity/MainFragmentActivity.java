@@ -27,7 +27,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	MainFragmentAdapter mFragmentAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
-    private static final String STATE_MENUDRAWER = "net.simonvt.menudrawer.samples.ContentSample.menuDrawer";
     private static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 
     private MenuDrawerManager mMenuDrawer;
@@ -53,11 +52,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         mMenuDrawer.setContentView(R.layout.whooing_tabs);
 
         List<Object> items = new ArrayList<Object>();
-        items.add(new Category("Category 1"));
-        items.add(new Item("거래내역", R.drawable.ic_action_refresh_dark));
-        items.add(new Item("수익예산", R.drawable.ic_action_select_all_dark));
-        items.add(new Item("신용카드", R.drawable.ic_action_select_all_dark));
-        items.add(new Category("Category 2"));
+        items.add(new Category(getString(R.string.left_menu_category_report)));
+        items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.ic_action_refresh_dark));
+        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.ic_action_select_all_dark));
+        items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.ic_action_select_all_dark));
+        items.add(new Category(getString(R.string.left_menu_category_etc)));
         items.add(new Item("게시판", R.drawable.ic_action_refresh_dark));
 
         // A custom ListView is needed so the drawer can be notified when it's
@@ -85,9 +84,15 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
         public void onItemClick(AdapterView<?> parent, View view, int position,
                 long id) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             mActivePosition = position;
             mMenuDrawer.setActiveView(view, position);
             mMenuDrawer.closeMenu();
+            if(position == 1){
+                Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
+                intent.putExtra("title", "History");
+                startActivityForResult(intent, 1);
+            }
         }
     };
 
