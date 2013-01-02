@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.simonvt.widget.MenuDrawer;
-import net.simonvt.widget.MenuDrawerManager;
 import net.wisedog.android.whooing.R;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
@@ -29,7 +29,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     PageIndicator mIndicator;
     private static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
 
-    private MenuDrawerManager mMenuDrawer;
+    private MenuDrawer mMenuDrawer;
 
     private MenuAdapter mAdapter;
     private MenuListView mList;
@@ -48,14 +48,14 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mMenuDrawer = new MenuDrawerManager(this, MenuDrawer.MENU_DRAG_CONTENT);
+        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_WINDOW);
         mMenuDrawer.setContentView(R.layout.whooing_tabs);
 
         List<Object> items = new ArrayList<Object>();
         items.add(new Category(getString(R.string.left_menu_category_report)));
-        items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.ic_action_refresh_dark));
-        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.ic_action_select_all_dark));
-        items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.ic_action_select_all_dark));
+        items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
+        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
+        items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
         items.add(new Category(getString(R.string.left_menu_category_etc)));
         items.add(new Item("게시판", R.drawable.ic_action_refresh_dark));
 
@@ -66,8 +66,17 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         mAdapter = new MenuAdapter(items);
         mList.setAdapter(mAdapter);
         mList.setOnItemClickListener(mItemClickListener);
-
+        
         mMenuDrawer.setMenuView(mList);
+        mList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                mMenuDrawer.invalidate();
+                Log.i("wisedog", "invalidate");
+            }
+        });
         
         mPager = (ViewPager) findViewById(R.id.pager);
         mFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), this);

@@ -2,6 +2,7 @@ package net.wisedog.android.whooing.activity;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ListView;
 
 public class MenuListView extends ListView {
@@ -28,7 +29,7 @@ public class MenuListView extends ListView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-
+        Log.i("wisedog", "OnScrollChange");
         if (mOnScrollChangedListener != null) mOnScrollChangedListener.onScrollChanged();
     }
 
