@@ -61,4 +61,25 @@ public class WhooingCalendar {
         monthString += month;
         return "" + year + monthString;
     }
+    
+    static public String getPreMonthYYYYMMDD(int premonth){
+        Calendar rightNow = Calendar.getInstance(); 
+        rightNow.add(Calendar.MONTH, -(premonth));
+        int year = rightNow.get(Calendar.YEAR);
+        int month = rightNow.get(Calendar.MONTH);
+        int days = rightNow.get(Calendar.DATE);
+        month = month + 1;
+        String monthString = "";
+        if(month < 10)
+            monthString += "0";
+        monthString += month;
+        
+        String dayString = "";
+        if(days < 10){
+            dayString += "0";
+        }
+        dayString += days;
+        
+        return "" + year + monthString + dayString;
+    }
 }

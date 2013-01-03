@@ -12,6 +12,7 @@ import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
+import net.wisedog.android.whooing.utils.FragmentUtil;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -37,24 +38,17 @@ import com.actionbarsherlock.app.SherlockFragment;
  */
 public class BalanceFragment extends SherlockFragment implements OnBsChangeListener{
 
-    private static final String KEY_CONTENT = "TestFragment:Content";
-
     public static BalanceFragment newInstance(String content) {
         BalanceFragment fragment = new BalanceFragment();
 
         return fragment;
     }
 
-    private String mContent = "???";
     private Activity mActivity;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mContent = savedInstanceState.getString(KEY_CONTENT);
-        }
     }
 
     @Override
@@ -89,7 +83,6 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_CONTENT, mContent);
     }
     
     @Override
@@ -139,7 +132,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             if (labelTotalAssetValue != null) {
                 labelTotalAssetValue.setText("" + objAssets.getInt("total"));
                 View bar = (View) mActivity.findViewById(R.id.bar_total_asset);
-                int barWidth = getBarWidth(objAssets.getInt("total"), totalAssetValue,
+                int barWidth = FragmentUtil.getBarWidth(objAssets.getInt("total"), totalAssetValue,
                         secondColumnWidth, valueWidth);
                 
                 android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
@@ -162,7 +155,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			if(labelTotalLiabilitiesValue != null){
 			    labelTotalLiabilitiesValue.setText(""+objLiabilities.getInt("total"));
                 View bar = (View)mActivity.findViewById(R.id.bar_total_liabilities);
-                int barWidth = getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
+                int barWidth = FragmentUtil.getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
                         secondColumnWidth, valueWidth);
                 android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                         barWidth, viewHeight);
@@ -208,7 +201,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
                     0, 
                     LayoutParams.WRAP_CONTENT,0.6f));
 
-            int barWidth = getBarWidth(accountItem.getDouble("money"), totalAssetValue, 
+            int barWidth = FragmentUtil.getBarWidth(accountItem.getDouble("money"), totalAssetValue, 
                     secondColumnWidth, labelWidth);
             Resources r = getResources();
             int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics());
@@ -236,17 +229,6 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 	    }
 	}
 	
-	private int getBarWidth(double value, double maxValue, int limitWidth, int labelWidth){
-		double ratio = value / (double)maxValue;
-		double width = (float)limitWidth * ratio;
-		if(width <= 5){
-			return 5;
-		}
-		if((int)width >= limitWidth - labelWidth){
-		    return (int)width - labelWidth;
-		}
-	    return (int)width;
-	}
 
     /* (non-Javadoc)
      * @see net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener#onBsUpdate(org.json.JSONObject)

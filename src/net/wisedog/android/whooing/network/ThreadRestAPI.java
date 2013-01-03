@@ -59,7 +59,8 @@ public class ThreadRestAPI extends Thread {
 	public void run() {
 		JSONObject result = null;
 		String startDate = null;
-		String endDate = null;		        
+		String endDate = null;		 
+		String requestUrl = null;
 		        
 		switch(mAPIName){
 		case Define.API_GET_MAIN:
@@ -124,7 +125,7 @@ public class ThreadRestAPI extends Thread {
             }
 		    startDate = mBundle.getString("start_date");
 		    endDate = mBundle.getString("end_date");
-		    String requestUrl = "https://whooing.com/api/mountain.json_array?section_id="+Define.APP_SECTION + 
+		    requestUrl = "https://whooing.com/api/mountain.json_array?section_id="+Define.APP_SECTION + 
 		            "&start_date=" + startDate + "&end_date=" + endDate; 
 		    GeneralApi mountain = new GeneralApi();
 		    result = mountain.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
@@ -144,6 +145,20 @@ public class ThreadRestAPI extends Thread {
             Entries entryInsert = new Entries();
             result = entryInsert.insertEntry(Define.APP_SECTION, Define.APP_ID, 
                     Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+            break;
+		case Define.API_GET_PL:
+		    if(mBundle == null){
+                Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_GET_PL");
+                sendMessage(null, mAPIName);
+                return;
+            }
+		    startDate = mBundle.getString("start_date");
+            endDate = mBundle.getString("end_date");
+            requestUrl = "https://whooing.com/api/pl.json_array?section_id="+Define.APP_SECTION + 
+                    "&start_date=" + startDate + "&end_date=" + endDate; 
+            GeneralApi pl = new GeneralApi();
+            result = pl.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                     Define.APP_SECRET, Define.TOKEN_SECRET);
             break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

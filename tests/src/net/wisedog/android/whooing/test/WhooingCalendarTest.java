@@ -13,9 +13,9 @@ import junit.framework.TestCase;
  */
 public class WhooingCalendarTest extends TestCase {
     //Important! Check the value before test.
-    private String mTodayStringYYYYMMDD = "20121224";
-    private int mTodayIntYYYYMMDD = 20121224;
-    private String mTodayStringYYYYMM = "201212";
+    private String mTodayStringYYYYMMDD = "20130103";
+    private int mTodayIntYYYYMMDD = 20130103;
+    private String mTodayStringYYYYMM = "201301";
     
     /**
      * Test method for {@link net.wisedog.android.whooing.utils.WhooingCalendar#getTodayYYYYMMDD()}.
@@ -33,8 +33,12 @@ public class WhooingCalendarTest extends TestCase {
     }
     
     public void testGetPreMonthYYYYMM(){
-        assertEquals("201206" , WhooingCalendar.getPreMonthYYYYMM(6));
-        assertEquals("201112" , WhooingCalendar.getPreMonthYYYYMM(12));
+        assertEquals("201207" , WhooingCalendar.getPreMonthYYYYMM(6));
+        assertEquals("201201" , WhooingCalendar.getPreMonthYYYYMM(12));
+    }
+    
+    public void testGetPreMonthYYYYMMDD(){
+        assertEquals("20121203" , WhooingCalendar.getPreMonthYYYYMMDD(1));
     }
 
 }

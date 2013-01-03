@@ -29,12 +29,13 @@ public class Whooing extends Activity {
         
         DataRepository repository = DataRepository.getInstance();
         repository.refreshDashboardValue();
-        
-        GeneralProcessor generalProcessor = new GeneralProcessor(this);
-        if (generalProcessor.checkingAccountsInfo() != true) {
+        repository.refreshAccount(this);
+        /*
+         * GeneralProcessor generalProcessor = new GeneralProcessor(this);
+         * if (generalProcessor.checkingAccountsInfo() != true) {
         	repository.refreshAccount(this);
         	
-        }
+        }*/
         Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {

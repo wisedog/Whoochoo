@@ -1,22 +1,42 @@
 package net.wisedog.android.whooing.activity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.actionbarsherlock.app.SherlockFragment;
+
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.engine.DataRepository;
+import net.wisedog.android.whooing.engine.GeneralProcessor;
+import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
+import net.wisedog.android.whooing.utils.FragmentUtil;
 import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 
-import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.TableRow.LayoutParams;
 
-public final class ProfitLossFragment extends Fragment {
+public final class ProfitLossFragment extends SherlockFragment implements OnPlChangeListener{
+    private Activity mActivity;
+    
     public static ProfitLossFragment newInstance() {
         ProfitLossFragment fragment = new ProfitLossFragment();
-
         return fragment;
-    }
-
-	private Activity mActivity;
+    }	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,10 +54,37 @@ public final class ProfitLossFragment extends Fragment {
 
     @Override
 	public void onResume() {
+        TableLayout tl = (TableLayout) mActivity
+                .findViewById(R.id.pl_fragment_expenses_table);
+        if(tl.getChildCount() > 2){
+            super.onResume();
+            return;
+        }
+        DataRepository repository = DataRepository.getInstance();
+        if(repository.getPlValue() != null){
+           showPl(repository.getPlValue());
+           super.onResume();
+           return;
+        }
+        else{
+            repository.refreshPlValue();
+            repository.registerObserver(this, DataRepository.PL_MODE);
+        }
 		super.onResume();
 	}
+    
 
-	@Override
+    /* (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onDestroyView()
+     */
+    @Override
+    public void onDestroyView() {
+        DataRepository repository = DataRepository.getInstance();
+        repository.removeObserver(this, DataRepository.PL_MODE);
+        super.onDestroyView();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
@@ -47,4 +94,154 @@ public final class ProfitLossFragment extends Fragment {
 		mActivity = activity;
 		super.onAttach(activity);
 	}
+    
+
+    /*Example
+     * {"error_parameters":[],"message":"","code":200,
+     * "results":{
+     * "net_income":{"total":-120000},
+     * "income":{"total_steady":0,"total":0,"total_floating":0,
+     *      "accounts":[{"money":0,"account_id":"x70"},{"money":0,"account_id":"x71"},
+     *      {"money":0,"account_id":"x72"},{"money":0,"account_id":"x73"},{"money":0,"account_id":"x74"}]},
+     * "expenses":{"total_steady":120000,"total":120000,"total_floating":0,
+     *      "accounts":[{"money":120000,"account_id":"x50"},{"money":0,"account_id":"x51"},
+     *      {"money":0,"account_id":"x52"},{"money":0,"account_id":"x53"},{"money":0,"account_id":"x54"},
+     *      {"money":0,"account_id":"x55"},{"money":0,"account_id":"x56"},{"money":0,"account_id":"x57"},
+     *      {"money":0,"account_id":"x58"},{"money":0,"account_id":"x59"},{"money":0,"account_id":"x60"}]}}
+     *      ,"rest_of_api":4994}
+     * */
+    /**
+     * @param obj       Profit/Loss value formatted JSON
+     */
+    private void showPl(JSONObject obj) {
+        TextView labelTotalExpensesValue = (TextView)mActivity.findViewById(R.id.pl_fragment_total_expenses_value);
+        
+        TableLayout tl = (TableLayout) mActivity
+                .findViewById(R.id.pl_fragment_expenses_table);
+        DisplayMetrics metrics = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        final int secondColumnWidth = (int) (metrics.widthPixels * 0.6);
+        Resources r = getResources();
+        final int valueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 95,
+                r.getDisplayMetrics());
+        final int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14,
+                r.getDisplayMetrics());
+        final int rightMargin4Dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
+                r.getDisplayMetrics());
+        try {
+            JSONObject objResult = obj.getJSONObject("results");
+            JSONObject objExpenses = objResult.getJSONObject("expenses");
+            double totalExpensesValue = objExpenses.getDouble("total");
+            if (labelTotalExpensesValue != null) {
+                labelTotalExpensesValue.setText("" + objExpenses.getInt("total"));
+                View bar = (View) mActivity.findViewById(R.id.bar_total_expense);
+                int barWidth = FragmentUtil.getBarWidth(objExpenses.getInt("total"), totalExpensesValue,
+                        secondColumnWidth, valueWidth);
+                
+                android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        barWidth, viewHeight);
+                lParams.setMargins(0, 0, rightMargin4Dip, 0);
+                lParams.gravity = Gravity.CENTER_VERTICAL;
+                bar.setLayoutParams(lParams);
+            }
+            
+            JSONArray objExpensesAccounts = objExpenses.getJSONArray("accounts");
+            showPlEntities(objExpensesAccounts, totalExpensesValue, secondColumnWidth, 
+                    valueWidth, tl);
+            
+            JSONObject objIncome = objResult.getJSONObject("income");
+            JSONArray objIncomeAccounts = objIncome.getJSONArray("accounts");
+            TableLayout tableIncome = (TableLayout) mActivity
+                    .findViewById(R.id.pl_fragment_income_table);
+            
+            TextView labelTotalIncomeValue = (TextView)mActivity.findViewById(R.id.pl_fragment_total_income_value);
+            if(labelTotalIncomeValue != null){
+                labelTotalIncomeValue.setText(""+objIncome.getInt("total"));
+                View bar = (View)mActivity.findViewById(R.id.bar_total_income);
+                int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalExpensesValue, 
+                        secondColumnWidth, valueWidth);
+                android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                        barWidth, viewHeight);
+                lParams.setMargins(0, 0, rightMargin4Dip, 0);
+                lParams.gravity = Gravity.CENTER_VERTICAL;
+                bar.setLayoutParams(lParams);
+            }
+            
+            showPlEntities(objIncomeAccounts, totalExpensesValue, secondColumnWidth, 
+                    valueWidth, tableIncome);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+    }
+    
+    private void showPlEntities(JSONArray accounts, double totalAssetValue, 
+            int secondColumnWidth, int labelWidth, TableLayout tl) throws JSONException{
+        if(accounts == null){
+            return;
+        }
+        GeneralProcessor genericProcessor = new GeneralProcessor(mActivity);
+        for(int i = 0; i < accounts.length(); i++){
+            JSONObject accountItem = (JSONObject) accounts.get(i);
+            
+            /* Create a new row to be added. */
+            TableRow tr = new TableRow(mActivity);
+            tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
+            tr.setWeightSum(1.0f);
+            
+            TextView accountText = new TextView(mActivity);
+            AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
+            if(entity == null){
+                continue;
+            }
+            accountText.setText(entity.title);
+            accountText.setLayoutParams(new LayoutParams(
+                    0, LayoutParams.WRAP_CONTENT, 0.4f));
+
+            tr.addView(accountText);
+            
+            LinearLayout amountLayout = new LinearLayout(mActivity);
+            amountLayout.setLayoutParams(new TableRow.LayoutParams(
+                    0, 
+                    LayoutParams.WRAP_CONTENT,0.6f));
+
+            int barWidth = FragmentUtil.getBarWidth(accountItem.getDouble("money"), totalAssetValue, 
+                    secondColumnWidth, labelWidth);
+            Resources r = getResources();
+            int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, r.getDisplayMetrics());
+            android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
+                    barWidth, px);
+            
+            //set up view for horizontally bar graph 
+            View barView = new View(mActivity);
+            barView.setBackgroundColor(Color.BLUE);
+            int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
+            lParams.setMargins(0, 0, rightMargin, 0);
+            lParams.gravity = Gravity.CENTER_VERTICAL;
+            barView.setLayoutParams(lParams);
+            
+            //set up textview for showing amount
+            TextView amountText = new TextView(mActivity);
+            amountText.setText(""+accountItem.getInt("money"));
+            amountLayout.addView(barView);
+            amountLayout.addView(amountText);
+            tr.addView(amountLayout);
+            
+            /* Add row to TableLayout. */
+            tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                    LayoutParams.WRAP_CONTENT));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener#onPlUpdate(org.json.JSONObject)
+     */
+    public void onPlUpdate(JSONObject obj) {
+        Log.i("wisedog", "onPlUpdate - " + obj.toString());
+        showPl(obj);
+        
+    }
 }

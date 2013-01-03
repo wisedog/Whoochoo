@@ -112,6 +112,19 @@ public class DataRepository{
     }
     
     /**
+     * Refresh Profit/Loss infomation from server
+     * */
+    public void refreshPlValue(){
+        init();
+        Bundle bundle = new Bundle();
+        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
+        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                Define.API_GET_PL, bundle);
+        thread.start();
+    }
+    
+    /**
      * Refresh account infomation from server
      * @param		context		Context that is needed for accessing database
      * */
@@ -183,18 +196,6 @@ public class DataRepository{
         }
         
     }
-/*
-    public void registerBsObserver(OnBsChangeListener o) {
-        if(o != null){
-            mBsObservers.add(o);
-        }
-    }
-    
-    public void registerPlObserver(OnPlChangeListener o){
-        if(o != null){
-            mPlObservers.add(o);
-        }
-    }*/
 
     public void removeObserver(DataChangeListener o, int observerMode) {
         if(observerMode == BS_MODE){
@@ -238,6 +239,10 @@ public class DataRepository{
     
     public JSONObject getBsValue(){
         return mBsValue;
+    }
+    
+    public JSONObject getPlValue(){
+        return mPlValue;
     }
 
 	

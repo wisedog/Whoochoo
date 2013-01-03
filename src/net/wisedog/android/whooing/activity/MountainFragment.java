@@ -19,35 +19,18 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public final class MountainFragment extends SherlockFragment implements OnMountainChangeListener {
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
-
-    private static final String KEY_CONTENT = "TestFragment:Content";
+    private Activity mActivity;
 
     public static MountainFragment newInstance(String content) {
         MountainFragment fragment = new MountainFragment();
-
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 2; i++) {
-            builder.append(content).append(" ");
-        }
-        builder.deleteCharAt(builder.length() - 1);
-        fragment.mContent = builder.toString();
-
         return fragment;
     }
 
-    private String mContent = "???";
-	private Activity mActivity;
+	
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
-            mContent = savedInstanceState.getString(KEY_CONTENT);
-        }
     }
 
     @Override
@@ -83,7 +66,6 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
 	@Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_CONTENT, mContent);
     }
     
     @Override

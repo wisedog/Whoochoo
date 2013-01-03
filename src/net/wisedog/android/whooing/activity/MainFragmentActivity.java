@@ -150,6 +150,23 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         return super.onOptionsItemSelected(item);
     }
     
+    
+    
+    /* (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        if(mMenuDrawer.isMenuVisible() == true){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            mMenuDrawer.closeMenu();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+
+
     private static final class Item {
 
         String mTitle;
