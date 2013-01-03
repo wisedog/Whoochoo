@@ -341,6 +341,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      */
     private void showBudgetValue(JSONObject budgetValue) {
         TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
+        if(monthlyExpenseText == null){
+            return;
+        }
         
         try {
             JSONObject obj = (JSONObject) budgetValue.getJSONObject("results").getJSONArray("rows").get(0);

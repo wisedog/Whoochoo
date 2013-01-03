@@ -10,7 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
@@ -19,6 +19,7 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.dialog.AccountChooserDialog;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
@@ -28,6 +29,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -41,7 +43,7 @@ import android.widget.Toast;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class TransactionAdd extends SherlockActivity {
+public class TransactionAdd extends SherlockFragmentActivity {
     
     protected static final int DATE_DIALOG_ID = 0;
     protected static final int REQUEST_CODE_LEFT = 10;
@@ -150,8 +152,8 @@ public class TransactionAdd extends SherlockActivity {
             startActivityForResult(intent, 1);*/
         }
         else if (item.getItemId() == android.R.id.home) {
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                this.finish();
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.finish();
             
         }
 
@@ -163,7 +165,18 @@ public class TransactionAdd extends SherlockActivity {
      * @param   v       View what be clicked
      * */
     public void onClickLRAccount(View v){
-        Intent intent = new Intent(this, AccountsSelection.class);
+        int reqCode = REQUEST_CODE_LEFT;
+        String mode = "";
+        if(v.getId() == R.id.add_transaction_text_left_account){
+            mode =  "left";
+            
+        }else{
+            mode = "right";
+            reqCode = REQUEST_CODE_RIGHT;
+        }
+        DialogFragment newFragment = AccountChooserDialog.newInstance(mAccountsList, mYear, mMonth, mDay, mode);
+        newFragment.show(getSupportFragmentManager(), "dialog");
+        /*Intent intent = new Intent(this, AccountsSelection.class);
 
         intent.putParcelableArrayListExtra("accounts_list", mAccountsList);
         intent.putExtra("year", mYear);
@@ -179,7 +192,7 @@ public class TransactionAdd extends SherlockActivity {
             intent.putExtra("mode", "right");
             reqCode = REQUEST_CODE_RIGHT;
         }
-        startActivityForResult(intent, reqCode);
+        startActivityForResult(intent, reqCode);*/
     }
     
     /**
