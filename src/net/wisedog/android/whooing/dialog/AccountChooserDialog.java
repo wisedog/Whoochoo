@@ -7,16 +7,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.activity.TransactionAdd;
 import net.wisedog.android.whooing.db.AccountsEntity;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
-import android.app.DialogFragment;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,11 +33,16 @@ public class AccountChooserDialog extends SherlockDialogFragment {
     private static final int DYNAMIC_LAYOUT_ID = 20000;
     private static final int DYNAMIC_LAYOUT_ID_ADDED = 20100;
     
+    public interface AccountChooserListener{
+    	void onFinishingChoosing(AccountsEntity entity, String mode);
+    }
+    
     
     static public AccountChooserDialog newInstance(
             ArrayList<AccountsEntity> accountsList, int year, int month, int day, String mode) {
         AccountChooserDialog f = new AccountChooserDialog();
-     // Supply num input as an argument.
+        
+        //Setting bundle
         Bundle args = new Bundle();
         args.putParcelableArrayList("accounts_list", accountsList);
         args.putInt("year", year);
@@ -51,7 +55,6 @@ public class AccountChooserDialog extends SherlockDialogFragment {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
         setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
     }
@@ -67,14 +70,13 @@ public class AccountChooserDialog extends SherlockDialogFragment {
     }
     
     public void onSelectItem(View v){
-        /*TextView textView = (TextView)v;
+        TextView textView = (TextView)v;
         
         AccountsEntity entity = (AccountsEntity) textView.getTag();
-        String mode = getIntent().getStringExtra("mode");
-        Intent intent = new Intent();
-        intent.putExtra("selection",entity);
-        intent.putExtra("mode", mode);
-        setResult(RESULT_OK, intent);*/
+        String mode = getArguments().getString("mode");
+        TransactionAdd activity = (TransactionAdd)getActivity();
+        activity.onFinishingChoosing(entity, mode);
+        
         this.dismiss();
     }
     
@@ -131,8 +133,9 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             map.put(accountsArray[j], tmp);
         }
         
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        int maxWidth = display.getWidth() - 10;
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int maxWidth = metrics.widthPixels - 10;
         
         for(int i = 0; i < list.size(); i++){
             AccountsEntity entity = list.get(i);

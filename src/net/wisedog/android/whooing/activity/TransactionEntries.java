@@ -7,13 +7,13 @@ import net.wisedog.android.whooing.R;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * @author wisedog(me@wisedog.net)
  *
  */
-public class TransactionEntries extends SherlockActivity {
+public class TransactionEntries extends SherlockFragmentActivity {
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)

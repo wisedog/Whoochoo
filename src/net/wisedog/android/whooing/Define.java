@@ -40,6 +40,7 @@ public class Define {
     public static final int API_GET_ENTRIES_INSERT = 2061;
     public static final int API_GET_PL = 2070;
     public static final int API_GET_MOUNTAIN = 2080;
+    public static final int API_GET_ENTRIES = 2090;
     
     //flags
     //If there is need to be refreshed by insert some transaction or something like that

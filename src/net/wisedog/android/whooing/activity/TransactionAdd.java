@@ -20,6 +20,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountChooserDialog;
+import net.wisedog.android.whooing.dialog.AccountChooserDialog.AccountChooserListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
@@ -43,7 +44,7 @@ import android.widget.Toast;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class TransactionAdd extends SherlockFragmentActivity {
+public class TransactionAdd extends SherlockFragmentActivity implements AccountChooserListener{
     
     protected static final int DATE_DIALOG_ID = 0;
     protected static final int REQUEST_CODE_LEFT = 10;
@@ -98,7 +99,8 @@ public class TransactionAdd extends SherlockFragmentActivity {
         mDateDisplay = (TextView)findViewById(R.id.add_transaction_text_date);
         Button dateChangeBtn = (Button)findViewById(R.id.add_transaction_change_btn);
         dateChangeBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            @SuppressWarnings("deprecation")
+			public void onClick(View v) {
                 showDialog(DATE_DIALOG_ID);
             }
         });
@@ -165,14 +167,12 @@ public class TransactionAdd extends SherlockFragmentActivity {
      * @param   v       View what be clicked
      * */
     public void onClickLRAccount(View v){
-        int reqCode = REQUEST_CODE_LEFT;
         String mode = "";
         if(v.getId() == R.id.add_transaction_text_left_account){
             mode =  "left";
             
         }else{
             mode = "right";
-            reqCode = REQUEST_CODE_RIGHT;
         }
         DialogFragment newFragment = AccountChooserDialog.newInstance(mAccountsList, mYear, mMonth, mDay, mode);
         newFragment.show(getSupportFragmentManager(), "dialog");
@@ -423,4 +423,14 @@ public class TransactionAdd extends SherlockFragmentActivity {
     public AccountsEntity getRightAccounts(){
         return mRightAccount;
     }
+
+	@Override
+	public void onFinishingChoosing(AccountsEntity entity, String mode) {
+		if(mode.equals("left")){
+            setLeftAccount(entity);
+        }else if(mode.equals("right")){
+            setRightAccount(entity);
+        }
+		
+	}
 }

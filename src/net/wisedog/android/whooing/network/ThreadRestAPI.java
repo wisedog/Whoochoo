@@ -1,7 +1,6 @@
 package net.wisedog.android.whooing.network;
 
 import net.wisedog.android.whooing.Define;
-import net.wisedog.android.whooing.api.Budget;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
@@ -74,11 +73,6 @@ public class ThreadRestAPI extends Thread {
 					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
         case Define.API_GET_BUDGET:
-            /*
-             * Budget budget = new Budget(); result =
-             * budget.getBudget(Define.APP_SECTION, Define.APP_ID,
-             * Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET);
-             */
             GeneralApi budget = new GeneralApi();
             if (mBundle == null) {
                 Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_GET_MOUNTAIN");
@@ -147,19 +141,38 @@ public class ThreadRestAPI extends Thread {
                     Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
             break;
 		case Define.API_GET_PL:
-		    if(mBundle == null){
-                Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_GET_PL");
-                sendMessage(null, mAPIName);
-                return;
-            }
-		    startDate = mBundle.getString("start_date");
-            endDate = mBundle.getString("end_date");
-            requestUrl = "https://whooing.com/api/pl.json_array?section_id="+Define.APP_SECTION + 
-                    "&start_date=" + startDate + "&end_date=" + endDate; 
-            GeneralApi pl = new GeneralApi();
-            result = pl.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
-                     Define.APP_SECRET, Define.TOKEN_SECRET);
-            break;
+			if (mBundle == null) {
+				Log.e(ThreadRestAPI.class.toString(),
+						"Not enough information for API_GET_PL");
+				sendMessage(null, mAPIName);
+				return;
+			}
+			startDate = mBundle.getString("start_date");
+			endDate = mBundle.getString("end_date");
+			requestUrl = "https://whooing.com/api/pl.json_array?section_id="
+					+ Define.APP_SECTION + "&start_date=" + startDate
+					+ "&end_date=" + endDate;
+			GeneralApi pl = new GeneralApi();
+			result = pl.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+					Define.APP_SECRET, Define.TOKEN_SECRET);
+			break;
+		case Define.API_GET_ENTRIES:
+			if (mBundle == null) {
+				Log.e(ThreadRestAPI.class.toString(),
+						"Not enough information for API_GET_ENTRIES");
+				sendMessage(null, mAPIName);
+				return;
+			}
+			startDate = mBundle.getString("start_date");
+			endDate = mBundle.getString("end_date");
+			
+			//TODO https://whooing.com/#forum/developer/ko/api_reference/entries
+			//TODO 여기 참조해서 각 parameter에 대해서 처리하기. 아마 max, limit, item밖에 쓰지않을 생각임
+			//TODO Entries API참조해서 할것. 
+			requestUrl = "https://whooing.com/api/entries.json_array?section_id="
+					+ Define.APP_SECTION + "&start_date=" + startDate
+					+ "&end_date=" + endDate;
+			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;
