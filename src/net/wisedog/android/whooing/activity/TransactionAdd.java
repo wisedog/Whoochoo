@@ -37,6 +37,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,7 +85,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             finish();
             return;
         }
-        
+                
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
         thread.start();
     }
@@ -237,17 +238,14 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     }
     
     protected Handler mHandler = new Handler(){
-
-        /* (non-Javadoc)
-         * @see android.os.Handler#handleMessage(android.os.Message)
-         */
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
                 if(msg.arg1 == Define.API_GET_ENTRIES_LATEST){
                     JSONObject obj = (JSONObject)msg.obj;
                     try {
-                        testPrint(obj.getJSONArray("results"));
+                        //testPrint(obj.getJSONArray("results"));
+                        showLatestTransaction(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -261,6 +259,38 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         }
         
     };
+    
+    /*Example value
+     * {"error_parameters":[],"message":"","code":200,
+     * "results":[
+     * {"total":"","entry_id":82762,"l_account":"assets","memo":"","l_account_id":"x2","item":"잔액","money":178300,"r_account_id":"x75","entry_date":"20121229.0001","app_id":1,"r_account":"capital"},
+     * {"total":"","entry_id":82488,"l_account":"expenses","memo":"","l_account_id":"x50","item":"선물","money":80000,"r_account_id":"x76","entry_date":"20121224.0002","app_id":1,"r_account":"liabilities"},
+     * {"total":"","entry_id":82487,"l_account":"expenses","memo":"","l_account_id":"x50","item":"외식","money":40000,"r_account_id":"x21","entry_date":"20121224.0001","app_id":1,"r_account":"liabilities"},
+     * {"total":"","entry_id":79575,"l_account":"assets","memo":"","l_account_id":"x1","item":"ㅁㄴㅇㄹ","money":12345,"r_account_id":"x22","entry_date":"20121120.0005","app_id":125,"r_account":"liabilities"},
+     * {"total":"","entry_id":78996,"l_account":"expenses","memo":"","l_account_id":"x52","item":"인터넷","money":78900,"r_account_id":"x76","entry_date":"20121112.0001","app_id":1,"r_account":"liabilities"}],
+     * "rest_of_api":4987}
+
+     * */
+    public void showLatestTransaction(JSONObject obj) throws JSONException{
+        ArrayList<TransactionItem> dataArray = new ArrayList<TransactionItem>();
+        Log.i("wisedog", "ShowLastestTransaction - " + obj.toString());
+        JSONArray array = obj.getJSONArray("results");
+        int count = array.length();
+        for(int i = 0; i < count; i++){
+            JSONObject entity = array.getJSONObject(i);
+            TransactionItem item = new TransactionItem(
+                    entity.getString("entry_date"),
+                    entity.getString("item"),
+                    String.valueOf(entity.getInt("money")),
+                    entity.getString("r_account_id"),
+                    entity.getString("l_account_id")
+                    );
+            dataArray.add(item);
+        }
+        ListView lastestTransactionList = (ListView)findViewById(R.id.list_lastest_transaction);
+        TransactionAddAdapter adapter = new TransactionAddAdapter(this, dataArray);
+        lastestTransactionList.setAdapter(adapter);
+    }
     
     public void testPrint(JSONArray array){
         if(array == null){
@@ -281,7 +311,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             }
             totalStr = totalStr + str + "\n";
         }
-        ((TextView)findViewById(R.id.add_transaction_text_test)).setText(totalStr);
+       // ((TextView)findViewById(R.id.add_transaction_text_test)).setText(totalStr);
     }
 
     private void getAccountsByDate(int year, int i, int dayOfMonth) {
@@ -424,7 +454,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         return mRightAccount;
     }
 
-	@Override
 	public void onFinishingChoosing(AccountsEntity entity, String mode) {
 		if(mode.equals("left")){
             setLeftAccount(entity);

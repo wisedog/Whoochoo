@@ -18,11 +18,18 @@
     <string name="accounts_expenses">Expenses</string>
     <string name="menu_item_refresh">Refresh</string>
     
+    <!-- Common Text -->
     <string name="total_assets">Total Assets</string>
     <string name="total_liabilities">Total Liabilities</string>
     <string name="total_capital">Total Capital</string>
     <string name="total_expenses">Total Expenses</string>
     <string name="total_income">Total Income</string>
+    <string name="text_item">Item</string>
+    <string name="text_amount">Amount</string>
+    <string name="text_left">Left</string>
+    <string name="text_right">Right</string>
+    <string name="text_date">Date</string>
+    <string name="text_change">Change</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>
