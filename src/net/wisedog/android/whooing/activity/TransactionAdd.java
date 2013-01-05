@@ -273,7 +273,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
      * */
     public void showLatestTransaction(JSONObject obj) throws JSONException{
         ArrayList<TransactionItem> dataArray = new ArrayList<TransactionItem>();
-        Log.i("wisedog", "ShowLastestTransaction - " + obj.toString());
         JSONArray array = obj.getJSONArray("results");
         int count = array.length();
         for(int i = 0; i < count; i++){
@@ -290,28 +289,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         ListView lastestTransactionList = (ListView)findViewById(R.id.list_lastest_transaction);
         TransactionAddAdapter adapter = new TransactionAddAdapter(this, dataArray);
         lastestTransactionList.setAdapter(adapter);
-    }
-    
-    public void testPrint(JSONArray array){
-        if(array == null){
-            return;
-        }
-        String totalStr = "";
-        for(int i = 0; i< array.length(); i++){
-            String str = "";
-            try {
-                JSONObject obj = (JSONObject) array.get(i);
-                str = str + obj.getInt("entry_id");
-                str = str + " / " + obj.getString("l_account");
-                str = str + " / " + obj.getString("r_account");
-                str = str + " / " + obj.getString("item");
-                str = str + " / " + obj.getInt("money");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            totalStr = totalStr + str + "\n";
-        }
-       // ((TextView)findViewById(R.id.add_transaction_text_test)).setText(totalStr);
     }
 
     private void getAccountsByDate(int year, int i, int dayOfMonth) {

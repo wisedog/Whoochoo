@@ -23,5 +23,6 @@ public class TransactionItem{
     public String Amount;
     public String LeftAccount;
     public String RightAccount;
+    public long Entry_ID;
     
 }

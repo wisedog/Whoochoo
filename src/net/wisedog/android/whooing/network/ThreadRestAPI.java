@@ -165,13 +165,17 @@ public class ThreadRestAPI extends Thread {
 			}
 			startDate = mBundle.getString("start_date");
 			endDate = mBundle.getString("end_date");
+			int limit = mBundle.getInt("limit");
 			
 			//TODO https://whooing.com/#forum/developer/ko/api_reference/entries
 			//TODO 여기 참조해서 각 parameter에 대해서 처리하기. 아마 max, limit, item밖에 쓰지않을 생각임
 			//TODO Entries API참조해서 할것. 
 			requestUrl = "https://whooing.com/api/entries.json_array?section_id="
 					+ Define.APP_SECTION + "&start_date=" + startDate
-					+ "&end_date=" + endDate;
+					+ "&end_date=" + endDate + "&limit=" + limit;
+			GeneralApi entriesAPI = new GeneralApi();
+			result = entriesAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
