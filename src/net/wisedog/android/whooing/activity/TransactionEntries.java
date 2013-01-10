@@ -4,6 +4,7 @@
 package net.wisedog.android.whooing.activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,14 +14,21 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Window;
 
 /**
  * @author wisedog(me@wisedog.net)
@@ -44,6 +52,15 @@ public class TransactionEntries extends SherlockFragmentActivity {
         bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
         bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
         bundle.putInt("limit", 20);
+        
+        TextView startDate = (TextView)findViewById(R.id.transaction_entries_from_date);
+        TextView endDate = (TextView)findViewById(R.id.transaction_entries_to_date);
+        
+        startDate.setText(WhooingCalendar.getPreMonthYYYYMMDD(1)); 
+        endDate.setText(WhooingCalendar.getTodayYYYYMMDD());
+        
+        setSupportProgress(Window.PROGRESS_END);
+        setSupportProgressBarIndeterminateVisibility(true);
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
         thread.start();
@@ -94,6 +111,34 @@ public class TransactionEntries extends SherlockFragmentActivity {
         ListView lastestTransactionList = (ListView)findViewById(R.id.transaction_entries_listview);
         TransactionAddAdapter adapter = new TransactionAddAdapter(this, dataArray);
         lastestTransactionList.setAdapter(adapter);
+        setSupportProgressBarIndeterminateVisibility(false);
     }
+    
+    public void onCalendarClick(View v){
+        //showDialog(0);
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+        Log.i("wisedog", "onCalendarClick");
+    }
+    
+    public static class DatePickerFragment extends DialogFragment implements
+            DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+        }
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+        }
+}
     
 }

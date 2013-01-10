@@ -7,25 +7,61 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_marginTop="10dip">
-        <TextView
-		    android:id="@+id/transaction_entries_from_date"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="24sp"
-		    android:text="2012.12.03"/>
-        <TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="20sp"
-		    android:text="~"/>
-        <TextView
-		    android:id="@+id/transaction_entries_to_date"	
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:textSize="24sp"
-		    android:text="2013.01.03"/>
+
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal" >
+
+	        <TextView
+			    android:layout_width="90dip"
+			    android:layout_height="wrap_content"
+			    android:textSize="22sp"
+			    android:text="From"/>
+	        <TextView
+	            android:id="@+id/transaction_entries_from_date"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textSize="22sp"/>
+
+	        <ImageButton
+	            android:id="@+id/image_button_calendar_from"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/btn_calendar" 
+	            android:layout_marginLeft="5dip"
+	            android:onClick="onCalendarClick"/>
+
+	    </LinearLayout>
+
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal" >
+
+	        <TextView
+			    android:layout_width="90dip"
+			    android:layout_height="wrap_content"
+			    android:textSize="22sp"
+			    android:text="To"/>
+	        <TextView
+			    android:id="@+id/transaction_entries_to_date"	
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:textSize="22sp"/>
+	        <ImageButton
+	            android:id="@+id/image_button_calendar_to"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:src="@drawable/btn_calendar" 
+	            android:layout_marginLeft="5dip"
+	            android:onClick="onCalendarClick"/>
+	    </LinearLayout>
     </LinearLayout>
     
     <LinearLayout
