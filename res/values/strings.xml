@@ -35,6 +35,9 @@
     <string name="text_from">From</string>
     <string name="text_to">To</string>
     <string name="text_add_transaction">Add Transaction</string>
+    <string name="text_expenses">Expenses</string>
+    <string name="text_income">Income</string>
+    <string name="text_etc">Etc</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>

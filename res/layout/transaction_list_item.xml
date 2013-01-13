@@ -11,11 +11,14 @@
         android:layout_width="40dip"
         android:layout_height="match_parent"
         >
-        <TextView 
+
+        <TextView
             android:id="@+id/transaction_listitem_head"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="12312"/>
+            android:gravity="center_vertical"
+            android:text="" />
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,6 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:maxLines="1"
             android:layout_marginLeft="70dip"
             android:textSize="16sp">
             

@@ -110,8 +110,8 @@ DatePickerDialog.OnDateSetListener{
                     entity.getString("entry_date"),
                     entity.getString("item"),
                     String.valueOf(entity.getInt("money")),
-                    entity.getString("r_account_id"),
-                    entity.getString("l_account_id")
+                    entity.getString("l_account_id"),
+                    entity.getString("r_account_id")
                     );
             item.Entry_ID = entity.getInt("entry_id");
             dataArray.add(item);

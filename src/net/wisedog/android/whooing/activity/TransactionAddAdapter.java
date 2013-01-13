@@ -17,16 +17,18 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 /**
- * @author newmoni
+ * @author Wisedog(me@wisedog.net)
  *
  */
 public class TransactionAddAdapter extends BaseAdapter {
     private ArrayList<TransactionItem> mDataArray;
     private LayoutInflater mInflater;
+	private Context mContext;
     
     public TransactionAddAdapter(Context context, ArrayList<TransactionItem> dataArray){
         mDataArray = dataArray;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mContext = context;
     }
 
     public int getCount() {
@@ -60,6 +62,7 @@ public class TransactionAddAdapter extends BaseAdapter {
        TextView textAmount = (TextView)convertView.findViewById(R.id.transaction_listitem_amount);
        TextView textLeft = (TextView)convertView.findViewById(R.id.transaction_listitem_left);
        TextView textRight = (TextView)convertView.findViewById(R.id.transaction_listitem_right);
+       TextView textHead = (TextView)convertView.findViewById(R.id.transaction_listitem_head);
        
        GeneralProcessor generic = null;
        if(parent != null){
@@ -70,8 +73,18 @@ public class TransactionAddAdapter extends BaseAdapter {
        AccountsEntity entityLeft = generic.findAccountById(item.LeftAccount);
        AccountsEntity entityRight = generic.findAccountById(item.RightAccount);
        
-       
-       textDate.setText(item.Date);
+       if(entityRight != null && entityLeft != null){
+    	   if(entityRight.accountType.equals("income")){
+    		   textHead.setText(mContext.getString(R.string.text_income));
+    	   }
+    	   else if(entityLeft.accountType.equals("expenses")){
+    		   textHead.setText(mContext.getString(R.string.text_expenses));
+    	   }
+    	   else{
+    		   textHead.setText(mContext.getString(R.string.text_etc));
+    	   }
+       }
+       textDate.setText(item.Date.subSequence(0, 8));
        textItem.setText(item.Item);
        textAmount.setText(item.Amount);
        textLeft.setText(entityLeft.title);

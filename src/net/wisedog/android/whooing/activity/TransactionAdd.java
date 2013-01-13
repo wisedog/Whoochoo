@@ -143,23 +143,10 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("wisedog", "ITEM : " + item.getTitle());
-        if (item.getTitle().equals("Setting")) {
-            /*Intent intent = new Intent(this, TransactionAdd.class);
-            intent.putExtra("title", "거래추가");
-            startActivityForResult(intent, 1);*/
-        }
-        else if(item.getTitle().equals("About")){
-            /*Intent intent = new Intent(this, TransactionEntries.class);
-            intent.putExtra("title", "History");
-            startActivityForResult(intent, 1);*/
-        }
-        else if (item.getItemId() == android.R.id.home) {
+    	if (item.getItemId() == android.R.id.home) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             this.finish();
-            
         }
-
         return super.onOptionsItemSelected(item);
     }
     
@@ -177,23 +164,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         }
         DialogFragment newFragment = AccountChooserDialog.newInstance(mAccountsList, mYear, mMonth, mDay, mode);
         newFragment.show(getSupportFragmentManager(), "dialog");
-        /*Intent intent = new Intent(this, AccountsSelection.class);
-
-        intent.putParcelableArrayListExtra("accounts_list", mAccountsList);
-        intent.putExtra("year", mYear);
-        intent.putExtra("month", mMonth);
-        intent.putExtra("day", mDay);
-
-        int reqCode = REQUEST_CODE_LEFT;
-        
-        if(v.getId() == R.id.add_transaction_text_left_account){
-            intent.putExtra("mode", "left");
-            
-        }else{
-            intent.putExtra("mode", "right");
-            reqCode = REQUEST_CODE_RIGHT;
-        }
-        startActivityForResult(intent, reqCode);*/
     }
     
     /**
@@ -244,7 +214,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
                 if(msg.arg1 == Define.API_GET_ENTRIES_LATEST){
                     JSONObject obj = (JSONObject)msg.obj;
                     try {
-                        //testPrint(obj.getJSONArray("results"));
                         showLatestTransaction(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
