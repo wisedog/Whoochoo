@@ -38,6 +38,7 @@
     <string name="text_expenses">Expenses</string>
     <string name="text_income">Income</string>
     <string name="text_etc">Etc</string>
+    <string name="text_budget">Budget</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>

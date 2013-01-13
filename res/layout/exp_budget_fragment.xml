@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content">
 	
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:id="@+id/balance_asset_table"
+        android:id="@+id/exp_budget_asset_table"
         android:layout_marginTop="4dip">
         <TableRow
             android:id="@+id/table_row_total_asset_label"
@@ -20,16 +19,23 @@
                 android:id="@+id/table_row_total_asset_label_account"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4"
-                android:text="@string/balance_label_account" 
+                android:layout_weight="0.3"
+                android:text="@string/text_account" 
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:id="@+id/table_row_total_asset_label_budget"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:text="@string/text_budget" 
                 android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/table_row_total_asset_label_amount"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6"
-                android:text="@string/balance_label_amount" 
+                android:layout_weight="0.5"
+                android:text="@string/text_amount" 
                 android:textColor="@android:color/white"/>
         </TableRow>
 
@@ -42,25 +48,31 @@
            <TextView
                android:layout_width="0dip"
                android:layout_height="wrap_content"
-               android:layout_weight="0.4"
-               android:text="@string/total_assets"
+               android:layout_weight="0.3"
+               android:text="@string/total_expenses"
+               android:textStyle="bold" />
+           <TextView
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="0.2"
+               android:text=""
                android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/balance_total_asset_layout"
+                android:id="@+id/exp_budget_total_budget_layout"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6" >
+                android:layout_weight="0.5" >
 
                 <View
-                    android:id="@+id/bar_total_asset"
+                    android:id="@+id/bar_total_budget"
                     android:layout_width="90dip"
                     android:layout_height="14dip"
                     android:layout_gravity="center_vertical"
                     android:background="@color/md__defaultBackground" />
 
                 <TextView
-                    android:id="@+id/balance_total_asset_value"
+                    android:id="@+id/exp_budget_total_budget_value"
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dip"
@@ -71,61 +83,4 @@
         </TableRow>
 
     </TableLayout>
-    
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:id="@+id/balance_liabilities_table"
-        android:layout_marginTop="20dip">
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:weightSum="1.0"
-            android:background="#444444">
-            <TextView android:text="@string/balance_label_account"
-                android:layout_width="0dip"
-                android:layout_weight="0.4"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"/>
-           <TextView android:text="@string/balance_label_amount"
-                android:layout_width="0dip"
-               android:layout_height="wrap_content"
-               android:layout_weight="0.6"
-               android:textColor="@android:color/white"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:weightSum="1.0">
-
-           <TextView
-               android:layout_width="0dip"
-               android:layout_height="wrap_content"
-               android:layout_weight="0.4"
-               android:text="@string/total_liabilities"
-               android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.6">
-
-                <View
-                    android:id="@+id/bar_total_liabilities"
-                    android:layout_width="90dip"
-                    android:layout_height="14dp"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/md__defaultBackground" />
-
-                <TextView
-                    android:id="@+id/balance_total_liabilities_value"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dip"
-                    android:text="" />
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+</ScrollView>
