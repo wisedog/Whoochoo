@@ -6,6 +6,8 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.engine.GeneralProcessor;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -38,6 +40,12 @@ public class TransactionAddAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
+    
+    public void clearAdapter()
+    {
+    	mDataArray.clear();
+        notifyDataSetChanged();
+    }
 
     /* (non-Javadoc)
      * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
@@ -53,12 +61,21 @@ public class TransactionAddAdapter extends BaseAdapter {
        TextView textLeft = (TextView)convertView.findViewById(R.id.transaction_listitem_left);
        TextView textRight = (TextView)convertView.findViewById(R.id.transaction_listitem_right);
        
+       GeneralProcessor generic = null;
+       if(parent != null){
+    	   generic = new GeneralProcessor(parent.getContext());
+       }
+       
        TransactionItem item = mDataArray.get(pos);
+       AccountsEntity entityLeft = generic.findAccountById(item.LeftAccount);
+       AccountsEntity entityRight = generic.findAccountById(item.RightAccount);
+       
+       
        textDate.setText(item.Date);
        textItem.setText(item.Item);
        textAmount.setText(item.Amount);
-       textLeft.setText(item.LeftAccount);
-       textRight.setText(item.RightAccount);
+       textLeft.setText(entityLeft.title);
+       textRight.setText(entityRight.title);
        
         return convertView;
     }

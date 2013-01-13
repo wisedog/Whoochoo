@@ -144,7 +144,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			
 			JSONArray objAssetAccounts = objAssets.getJSONArray("accounts");
 			showBalanceEntities(objAssetAccounts, totalAssetValue, secondColumnWidth, 
-			        valueWidth, tl);
+			        valueWidth, tl, 0xFFC36FBC);
 			
 			JSONObject objLiabilities = objResult.getJSONObject("liabilities");
 			JSONArray objLiabilitiesAccounts = objLiabilities.getJSONArray("accounts");
@@ -165,7 +165,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             }
 			
 			showBalanceEntities(objLiabilitiesAccounts, totalAssetValue, secondColumnWidth, 
-			        valueWidth, tableLiabilites);
+			        valueWidth, tableLiabilites, 0xFF5294FF);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -174,7 +174,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 	}
 	
 	private void showBalanceEntities(JSONArray accounts, double totalAssetValue, 
-	        int secondColumnWidth, int labelWidth, TableLayout tl) throws JSONException{
+	        int secondColumnWidth, int labelWidth, TableLayout tl, int color) throws JSONException{
 	    if(accounts == null){
 	        return;
 	    }
@@ -210,7 +210,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             
             //set up view for horizontally bar graph 
             View barView = new View(mActivity);
-            barView.setBackgroundColor(Color.BLUE);
+            barView.setBackgroundColor(color);
             int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
             lParams.setMargins(0, 0, rightMargin, 0);
             lParams.gravity = Gravity.CENTER_VERTICAL;

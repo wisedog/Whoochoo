@@ -25,11 +25,16 @@
     <string name="total_expenses">Total Expenses</string>
     <string name="total_income">Total Income</string>
     <string name="text_item">Item</string>
+    <string name="text_account">Account</string>
     <string name="text_amount">Amount</string>
     <string name="text_left">Left</string>
     <string name="text_right">Right</string>
     <string name="text_date">Date</string>
     <string name="text_change">Change</string>
+    <string name="text_search">Search</string>
+    <string name="text_from">From</string>
+    <string name="text_to">To</string>
+    <string name="text_add_transaction">Add Transaction</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>

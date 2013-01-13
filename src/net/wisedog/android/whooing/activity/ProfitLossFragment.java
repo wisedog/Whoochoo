@@ -147,7 +147,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             
             JSONArray objExpensesAccounts = objExpenses.getJSONArray("accounts");
             showPlEntities(objExpensesAccounts, totalExpensesValue, secondColumnWidth, 
-                    valueWidth, tl);
+                    valueWidth, tl, 0xFFF08537);
             
             JSONObject objIncome = objResult.getJSONObject("income");
             JSONArray objIncomeAccounts = objIncome.getJSONArray("accounts");
@@ -168,7 +168,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             }
             
             showPlEntities(objIncomeAccounts, totalExpensesValue, secondColumnWidth, 
-                    valueWidth, tableIncome);
+                    valueWidth, tableIncome, 0xFFBED431);
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -178,7 +178,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
     }
     
     private void showPlEntities(JSONArray accounts, double totalAssetValue, 
-            int secondColumnWidth, int labelWidth, TableLayout tl) throws JSONException{
+            int secondColumnWidth, int labelWidth, TableLayout tl, int color) throws JSONException{
         if(accounts == null){
             return;
         }
@@ -217,7 +217,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             
             //set up view for horizontally bar graph 
             View barView = new View(mActivity);
-            barView.setBackgroundColor(Color.BLUE);
+            barView.setBackgroundColor(color);
             int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
             lParams.setMargins(0, 0, rightMargin, 0);
             lParams.gravity = Gravity.CENTER_VERTICAL;
@@ -240,8 +240,9 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
      * @see net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener#onPlUpdate(org.json.JSONObject)
      */
     public void onPlUpdate(JSONObject obj) {
-        Log.i("wisedog", "onPlUpdate - " + obj.toString());
-        showPl(obj);
+        if(isAdded() == true){
+        	showPl(obj);
+        }
         
     }
 }

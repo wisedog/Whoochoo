@@ -17,10 +17,10 @@
 	        android:orientation="horizontal" >
 
 	        <TextView
-			    android:layout_width="90dip"
+			    android:layout_width="80dip"
 			    android:layout_height="wrap_content"
 			    android:textSize="22sp"
-			    android:text="From"/>
+			    android:text="@string/text_from"/>
 	        <TextView
 	            android:id="@+id/transaction_entries_from_date"
 			    android:layout_width="wrap_content"
@@ -28,7 +28,7 @@
 			    android:textSize="22sp"/>
 
 	        <ImageButton
-	            android:id="@+id/image_button_calendar_from"
+	            android:id="@+id/transaction_entries_imgbtn_calendar_from"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:src="@drawable/btn_calendar" 
@@ -45,17 +45,17 @@
 	        android:orientation="horizontal" >
 
 	        <TextView
-			    android:layout_width="90dip"
+			    android:layout_width="80dip"
 			    android:layout_height="wrap_content"
 			    android:textSize="22sp"
-			    android:text="To"/>
+			    android:text="@string/text_to"/>
 	        <TextView
 			    android:id="@+id/transaction_entries_to_date"	
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
 			    android:textSize="22sp"/>
 	        <ImageButton
-	            android:id="@+id/image_button_calendar_to"
+	            android:id="@+id/transaction_entries_imgbtn_calendar_to"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:src="@drawable/btn_calendar" 
@@ -68,26 +68,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
-        android:orientation="horizontal" >
-
+        android:orientation="horizontal">
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/text_account"
+	        android:layout_marginRight="4dip"></TextView>
+	        
         <EditText
-            android:id="@+id/editText1"
-            android:layout_width="wrap_content"
+            android:id="@+id/transaction_entries_edit_account"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" >
+            android:ems="10" 
+            android:layout_marginRight="4dip">
 
             <requestFocus />
         </EditText>
 
-        <Button
-            android:id="@+id/button1"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_item" />
+
+        <EditText
+            android:id="@+id/transaction_entries_edit_item"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="4dip"
+            android:ems="10" />
+        
+    </LinearLayout>
+    <Button
+            android:id="@+id/transaction_entries_search_btn"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
-    
+            android:text="@string/text_search" 
+            android:onClick="onSearchClick"/>
     <ListView 
         android:id="@+id/transaction_entries_listview"
         android:layout_width="match_parent"

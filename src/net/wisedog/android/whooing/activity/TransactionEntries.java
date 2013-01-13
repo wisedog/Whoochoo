@@ -34,7 +34,11 @@ import com.actionbarsherlock.view.Window;
  * @author wisedog(me@wisedog.net)
  *
  */
-public class TransactionEntries extends SherlockFragmentActivity {
+public class TransactionEntries extends SherlockFragmentActivity implements
+DatePickerDialog.OnDateSetListener{
+	int mFromDate;
+	int mToDate;
+	int mCalendarSelectionResId;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -49,6 +53,10 @@ public class TransactionEntries extends SherlockFragmentActivity {
         this.setTitle(intent.getStringExtra("title"));
         
         Bundle bundle = new Bundle();
+        String endDateStr = WhooingCalendar.getTodayYYYYMMDD();
+        String startDateStr = WhooingCalendar.getPreMonthYYYYMMDD(1);
+        mToDate = Integer.valueOf(endDateStr);
+        mFromDate = Integer.valueOf(startDateStr);
         bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
         bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
         bundle.putInt("limit", 20);
@@ -114,16 +122,65 @@ public class TransactionEntries extends SherlockFragmentActivity {
         setSupportProgressBarIndeterminateVisibility(false);
     }
     
+    /**
+     * Event Handler for 
+     * */
     public void onCalendarClick(View v){
-        //showDialog(0);
+    	if(v.getId() == R.id.transaction_entries_imgbtn_calendar_from){
+    		mCalendarSelectionResId = R.id.transaction_entries_from_date;
+    	}
+    	else if(v.getId() == R.id.transaction_entries_imgbtn_calendar_to){
+    		mCalendarSelectionResId = R.id.transaction_entries_to_date;
+    	}
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
-        Log.i("wisedog", "onCalendarClick");
     }
-    
-    public static class DatePickerFragment extends DialogFragment implements
-            DatePickerDialog.OnDateSetListener {
 
+	@Override
+	public void onDateSet(DatePicker view, int year, int month, int day) {
+        
+        String dateString = "" + String.valueOf(year);
+ 	   if(month >= 10){
+ 		   dateString = dateString + String.valueOf(month);
+ 	   }else{
+ 		   dateString = dateString + "0" + String.valueOf(month);
+ 	   }
+ 	   if(day >= 10){
+ 		   dateString = dateString + String.valueOf(day);
+ 	   }else{
+ 		   dateString = dateString + "0" + String.valueOf(day);
+ 	   }
+ 	   TextView textDate = (TextView)findViewById(mCalendarSelectionResId);
+ 	   if(textDate != null){
+ 		   textDate.setText(dateString);
+ 	   }
+ 	   
+ 	   if(mCalendarSelectionResId == R.id.transaction_entries_from_date){
+ 		   this.mFromDate = year * 10000 + month * 100 + day;
+ 	   }else if(mCalendarSelectionResId == R.id.transaction_entries_to_date){
+ 		  this.mToDate = year * 10000 + month * 100 + day;
+ 	   }
+		
+	}
+	
+	/**
+	 * Search button onClick event handler
+	 * @param	v	View of search button
+	 * @see transaction_entries.xml
+	 * */
+	public void onSearchClick(View v){
+		Bundle bundle = new Bundle();
+        bundle.putString("end_date", String.valueOf(mToDate));
+        bundle.putString("start_date", String.valueOf(mFromDate));
+        bundle.putInt("limit", 20);
+        
+		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
+        thread.start();
+        ListView lastestTransactionList = (ListView)findViewById(R.id.transaction_entries_listview);
+        ((TransactionAddAdapter)lastestTransactionList.getAdapter()).clearAdapter();
+	}
+	
+	static public class DatePickerFragment extends DialogFragment  {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
@@ -133,12 +190,9 @@ public class TransactionEntries extends SherlockFragmentActivity {
             int day = c.get(Calendar.DAY_OF_MONTH);
 
             // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+            return new DatePickerDialog(getActivity(), 
+            		(TransactionEntries)getActivity(), year, month, day);
         }
 
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-        }
-}
-    
+	}
 }

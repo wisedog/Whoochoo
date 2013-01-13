@@ -3,13 +3,13 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.widget.MenuDrawer;
+//import net.simonvt.widget.MenuDrawer;
+import net.simonvt.menudrawer.MenuDrawer;
 import net.wisedog.android.whooing.R;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -125,15 +125,14 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.i("wisedog", "ITEM : " + item.getTitle());
         if (item.getTitle().equals("Plus")) {
             Intent intent = new Intent(this, TransactionAdd.class);
-            intent.putExtra("title", "거래추가");
+            intent.putExtra("title", getString(R.string.text_add_transaction));
             startActivityForResult(intent, 1);
         }
         else if(item.getTitle().equals("History")){
             Intent intent = new Intent(this, TransactionEntries.class);
-            intent.putExtra("title", "History");
+            intent.putExtra("title", getString(R.string.left_menu_item_history));
             startActivityForResult(intent, 1);
         }
         else if (item.getItemId() == android.R.id.home) {
