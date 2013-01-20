@@ -50,6 +50,7 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity android:name="net.wisedog.android.whooing.activity.MainFragmentActivity" android:theme="@style/Theme.VPI"></activity>
+        <activity android:name=".activity.ExpBudgetFragment"></activity>
     </application>
 
 </manifest>

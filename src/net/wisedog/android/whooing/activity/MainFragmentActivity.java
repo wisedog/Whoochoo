@@ -99,10 +99,19 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             mActivePosition = position;
             mMenuDrawer.setActiveView(view, position);
             mMenuDrawer.closeMenu();
-            if(position == 1){
-                Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
-                intent.putExtra("title", "History");
-                startActivityForResult(intent, 1);
+            switch(position){
+            case 1:
+            	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
+				intent.putExtra("title", "History");
+				startActivityForResult(intent, 1);
+				break;
+            case 2:
+            	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragment.class);
+            	intentBudget.putExtra("title", "Exp. Budget");
+            	startActivityForResult(intentBudget, 1);
+            	break;
+            default:
+        		break;
             }
         }
     };
