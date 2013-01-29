@@ -26,15 +26,15 @@ public class DataRepository{
     static public final int BS_MODE = 0;
     static public final int PL_MODE = 1;
     static public final int MOUNTAIN_MODE = 2;
-    static public final int BUDGET_MODE = 3;
+    static public final int EXP_BUDGET_MODE = 3;
     private JSONObject mBsValue = null;	//자산부채 - bs
     private JSONObject mPlValue = null;	//비용수익 - pl
     private JSONObject mMtValue = null; //Mountain
-    private JSONObject mBudgetValue = null; //Budget
+    private JSONObject mExpBudgetValue = null; //Budget
     private ArrayList<OnBsChangeListener> mBsObservers = new ArrayList<OnBsChangeListener>();
     private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
     private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();
-    private ArrayList<OnBudgetChangeListener> mBudgetObservers = new ArrayList<OnBudgetChangeListener>();
+    private ArrayList<OnExpBudgetChangeListener> mExpBudgetObservers = new ArrayList<OnExpBudgetChangeListener>();
 	private Context mContext;
     
 //    private ArrayList<DataChangeListener> mDataObservers = new ArrayList<DataChangeListener>();
@@ -52,8 +52,8 @@ public class DataRepository{
     public static interface OnMountainChangeListener extends DataChangeListener{
         public void onMountainUpdate(JSONObject obj);
     }
-    public static interface OnBudgetChangeListener extends DataChangeListener{
-        public void onBudgetUpdate(JSONObject obj);
+    public static interface OnExpBudgetChangeListener extends DataChangeListener{
+        public void onExpBudgetUpdate(JSONObject obj);
     }
     
     //using singleton
@@ -65,8 +65,10 @@ public class DataRepository{
     
     /**
      * Init here
+     *
      * */
     private void init(){
+        //FIXME 여기 릴리즈 전 고칠것
         Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
         Define.PIN = "992505";
         Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
@@ -135,6 +137,16 @@ public class DataRepository{
         thread.start();
 	}
     
+    public void refreshExpBudget(){
+        init();
+        Bundle bundle = new Bundle();
+        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
+        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                Define.API_GET_PL, bundle);
+        thread.start();
+    }
+    
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -158,9 +170,9 @@ public class DataRepository{
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_BUDGET){
-                    mBudgetValue = obj;
-                    for (OnBudgetChangeListener observer : mBudgetObservers) {
-                        observer.onBudgetUpdate(obj);
+                    mExpBudgetValue = obj;
+                    for (OnExpBudgetChangeListener observer : mExpBudgetObservers) {
+                        observer.onExpBudgetUpdate(obj);
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_ACCOUNTS){
@@ -191,8 +203,8 @@ public class DataRepository{
         else if(observerMode == MOUNTAIN_MODE){
             mMtObservers.add((OnMountainChangeListener)o);
         }
-        else if(observerMode == BUDGET_MODE){
-            mBudgetObservers.add((OnBudgetChangeListener)o);
+        else if(observerMode == EXP_BUDGET_MODE){
+            mExpBudgetObservers.add((OnExpBudgetChangeListener)o);
         }
         
     }
@@ -215,10 +227,10 @@ public class DataRepository{
                 mMtObservers.remove(idx);
            }
         }
-        else if(observerMode == BUDGET_MODE){
-            int idx = mBudgetObservers.indexOf(o);
+        else if(observerMode == EXP_BUDGET_MODE){
+            int idx = mExpBudgetObservers.indexOf(o);
             if(idx > 0) {
-                mBudgetObservers.remove(idx);
+                mExpBudgetObservers.remove(idx);
            }
         }
     }
@@ -233,8 +245,8 @@ public class DataRepository{
     /**
      * @return  Return saved budget value
      * */
-    public JSONObject getBudgetValue(){
-        return mBudgetValue;
+    public JSONObject getExpBudgetValue(){
+        return mExpBudgetValue;
     }
     
     public JSONObject getBsValue(){

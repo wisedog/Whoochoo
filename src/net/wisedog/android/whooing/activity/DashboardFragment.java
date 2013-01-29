@@ -10,7 +10,7 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingAuth;
 import net.wisedog.android.whooing.engine.DataRepository;
-import net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener;
+import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.MainProcessor;
@@ -36,7 +36,7 @@ import com.actionbarsherlock.app.SherlockFragment;
  * 첫 페이지(대쉬보드)Fragment
  * @author Wisedog(me@wisedog.net)
  * */
-public class DashboardFragment extends SherlockFragment implements OnMountainChangeListener, OnBudgetChangeListener{
+public class DashboardFragment extends SherlockFragment implements OnMountainChangeListener, OnExpBudgetChangeListener{
     private static final String KEY_TAB_NUM = "key.tab.num";
 	
 	public static DashboardFragment newInstance(String text) {
@@ -81,12 +81,12 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void onResume() {
         DataRepository repository = DataRepository.getInstance();
         repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
-        repository.registerObserver(this, DataRepository.BUDGET_MODE);
+        repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
         if(repository.getMtValue() != null){
             showMountainValue(repository.getMtValue());
         }
-        if(repository.getBudgetValue() != null){
-            showBudgetValue(repository.getBudgetValue());
+        if(repository.getExpBudgetValue() != null){
+            showBudgetValue(repository.getExpBudgetValue());
         }
         
        /* // TODO 전월대비를 넣어보자
@@ -134,7 +134,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void onDestroyView() {
         DataRepository repository = DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
-        repository.removeObserver(this, DataRepository.BUDGET_MODE);
+        repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
         
         super.onDestroyView();
     }
@@ -372,7 +372,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     /* (non-Javadoc)
      * @see net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener#onBudgetUpdate(org.json.JSONObject)
      */
-    public void onBudgetUpdate(JSONObject obj) {
+    public void onExpBudgetUpdate(JSONObject obj) {
        showBudgetValue(obj);
         
     }

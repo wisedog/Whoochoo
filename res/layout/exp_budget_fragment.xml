@@ -6,10 +6,10 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:id="@+id/exp_budget_asset_table"
+        android:id="@+id/exp_budget_table"
         android:layout_marginTop="4dip">
         <TableRow
-            android:id="@+id/table_row_total_asset_label"
+            android:id="@+id/table_row_total_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:weightSum="1.0" 
@@ -72,7 +72,7 @@
                     android:background="@color/md__defaultBackground" />
 
                 <TextView
-                    android:id="@+id/exp_budget_total_budget_value"
+                    android:id="@+id/exp_budget_total_value"
                     android:layout_width="95dip"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="4dip"

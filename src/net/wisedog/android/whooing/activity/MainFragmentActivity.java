@@ -3,8 +3,7 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-//import net.simonvt.widget.MenuDrawer;
-import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.widget.MenuDrawer;
 import net.wisedog.android.whooing.R;
 import android.content.Intent;
 import android.graphics.Color;
