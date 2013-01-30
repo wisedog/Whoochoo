@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="-8dip"
             android:layout_marginTop="-5dip"
-            android:text="Assets"
+            android:text="@string/accounts_assets"
             android:textColor="#33B5E5"
             android:textSize="30sp"/>
 
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="20000000"
+            android:text="@string/text_loading"
             android:textColor="#000000"
             android:textSize="40sp" />
 
@@ -44,7 +44,7 @@
                 android:id="@+id/label_doubt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Doubt"
+                android:text="@string/text_doubt"
                 android:textColor="#FF0000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -54,23 +54,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="10000"
+                android:text="@string/text_loading"
                 android:textColor="#EE0000"
                 android:textSize="20sp" />
             
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/dashboard_main_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:text="More..." />
+            android:text="@string/dashboard_more" 
+            android:clickable="true"
+            android:onClick="onClickBalanceMore"/>
 	        
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dip"
+        android:layout_height="90dip"
         android:layout_marginTop="10dip"
         android:layout_marginRight="10dip"
         android:layout_marginLeft="10dip"
@@ -81,7 +83,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:background="#00000000"
-		        android:text="Monthly Budget"
+		        android:text="@string/dashboard_monthly_budget"
 		        android:id="@+id/label_monthly"
 		        android:textSize="24sp"
 	        />
@@ -89,10 +91,18 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:background="#00000000"
-		        android:text="Monthly Budget"
+		        android:text="@string/text_loading"
 		        android:id="@+id/budget_monthly_expense"
 		        android:textSize="15sp"
 	        />
+        <TextView
+            android:id="@+id/dashboard_budget_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="@string/dashboard_more" 
+            android:onClick="onClickBudgetMore"
+            android:clickable="true"/>
 	        
     </LinearLayout>
     
@@ -117,7 +127,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:background="#00000000"
-		        android:text="-----"
+		        android:text="@string/text_loading"
 		        android:id="@+id/text_compare_premonth_value"
 		        android:textSize="15sp"
 	        />

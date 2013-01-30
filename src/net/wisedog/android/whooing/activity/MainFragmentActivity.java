@@ -54,10 +54,14 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         List<Object> items = new ArrayList<Object>();
         items.add(new Category(getString(R.string.left_menu_category_report)));
         items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
-        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
+        items.add(new Item(getString(R.string.text_expenses_budget), R.drawable.left_menu_budget));
+        items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bill));
+        items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_bill));        
         items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
+        items.add(new Item(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_bill));
         items.add(new Category(getString(R.string.left_menu_category_etc)));
-        items.add(new Item("게시판", R.drawable.ic_action_refresh_dark));
+        items.add(new Item(getString(R.string.left_menu_item_board), R.drawable.ic_action_refresh_dark));
+        items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.ic_action_refresh_dark));
 
         // A custom ListView is needed so the drawer can be notified when it's
         // scrolled. This is to update the position
@@ -101,19 +105,42 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             switch(position){
             case 1:
             	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
-				intent.putExtra("title", "History");
+				intent.putExtra("title", R.string.left_menu_item_history);
 				startActivityForResult(intent, 1);
 				break;
             case 2:
             	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
-            	intentBudget.putExtra("title", "Exp. Budget");
+            	intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
             	startActivityForResult(intentBudget, 1);
             	break;
+            case 3:
+                mPager.setCurrentItem(2);
+                break;
+            case 4:
+                mPager.setCurrentItem(3);
+                break;
+            case 5:
+                
+                break;
+            case 6:
+                mPager.setCurrentItem(1);
+                break;
             default:
         		break;
             }
         }
     };
+    
+
+    public void onClickBudgetMore(View v){
+        Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
+        intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
+        startActivityForResult(intentBudget, 1);
+    }
+    
+    public void onClickBalanceMore(View v){
+        mPager.setCurrentItem(2);
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

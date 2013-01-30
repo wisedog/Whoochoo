@@ -7,9 +7,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="is_exit">종료하시겠습니까?</string>
-    <string name="authorizing">Authorizing...</string>
+    <string name="authorizing">Authorizing&#8230;</string>
     <string name="msg_auth_success">Authorization is succeed!</string>
-    <string name="msg_auth_fail">Authorization is failed...</string>
+    <string name="msg_auth_fail">Authorization is failed!</string>
     <string name="main_title">Whooing</string>
     <string name="accounts_assets">Assets</string>
     <string name="accounts_liabilities">Liabilities</string>
@@ -40,6 +40,13 @@
     <string name="text_etc">Etc</string>
     <string name="text_budget">Budget</string>
     <string name="text_remains">Remains</string>
+    <string name="text_loading">Loading</string>
+    <string name="text_doubt">Doubt</string>
+    <string name="text_expenses_budget">Expenses Budget</string>
+    
+    <!-- Dashboard -->
+    <string name="dashboard_more">More&#8230;</string>
+    <string name="dashboard_monthly_budget">Monthly Budget</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>
@@ -49,8 +56,14 @@
     <string name="left_menu_category_report">Report</string>
     <string name="left_menu_category_etc">Etc</string>
     <string name="left_menu_item_history">History</string>
-    <string name="left_menu_item_exp_budget">Exp. Budget</string>
+    <string name="left_menu_item_exp_budget">Expenses Budget</string>
     <string name="left_menu_item_credit">Credit Cards</string>
+    <string name="left_menu_item_balance">Balance</string>
+    <string name="left_menu_item_profit_loss">Profit/Loss</string>
+    <string name="left_menu_item_mountain">Mountain</string>
+    <string name="left_menu_item_board">Board1</string>
+    <string name="left_menu_item_post_it">Post it!</string>
+    
     
     <!-- Exp. Budget -->
     <string name="exp_budget_budget_exp">Spent/Budget</string>
