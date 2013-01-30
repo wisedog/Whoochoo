@@ -26,60 +26,17 @@
                 android:id="@+id/table_row_total_asset_label_budget"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:text="@string/text_budget" 
+                android:layout_weight="0.5"
+                android:text="@string/exp_budget_budget_exp" 
                 android:textColor="@android:color/white"/>
 
             <TextView
                 android:id="@+id/table_row_total_asset_label_amount"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/text_amount" 
+                android:layout_weight="0.2"
+                android:text="@string/text_remains" 
                 android:textColor="@android:color/white"/>
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:weightSum="1.0">
-
-           <TextView
-               android:layout_width="0dip"
-               android:layout_height="wrap_content"
-               android:layout_weight="0.3"
-               android:text="@string/total_expenses"
-               android:textStyle="bold" />
-           <TextView
-               android:layout_width="0dip"
-               android:layout_height="wrap_content"
-               android:layout_weight="0.2"
-               android:text=""
-               android:textStyle="bold" />
-
-            <LinearLayout
-                android:id="@+id/exp_budget_total_budget_layout"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5" >
-
-                <View
-                    android:id="@+id/bar_total_budget"
-                    android:layout_width="90dip"
-                    android:layout_height="14dip"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/md__defaultBackground" />
-
-                <TextView
-                    android:id="@+id/exp_budget_total_value"
-                    android:layout_width="95dip"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="4dip"
-                    android:text="" />
-
-            </LinearLayout>
-            
         </TableRow>
 
     </TableLayout>

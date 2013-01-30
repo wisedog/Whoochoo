@@ -105,7 +105,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 				startActivityForResult(intent, 1);
 				break;
             case 2:
-            	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragment.class);
+            	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
             	intentBudget.putExtra("title", "Exp. Budget");
             	startActivityForResult(intentBudget, 1);
             	break;

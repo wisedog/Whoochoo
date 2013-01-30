@@ -39,6 +39,7 @@
     <string name="text_income">Income</string>
     <string name="text_etc">Etc</string>
     <string name="text_budget">Budget</string>
+    <string name="text_remains">Remains</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>
@@ -50,4 +51,7 @@
     <string name="left_menu_item_history">History</string>
     <string name="left_menu_item_exp_budget">Exp. Budget</string>
     <string name="left_menu_item_credit">Credit Cards</string>
+    
+    <!-- Exp. Budget -->
+    <string name="exp_budget_budget_exp">Spent/Budget</string>
 </resources>
