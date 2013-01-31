@@ -72,7 +72,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
            return;
         }
         else{
-            repository.refreshBsValue();
+            repository.refreshBsValue(getSherlockActivity());
             repository.registerObserver(this, DataRepository.BS_MODE);
         }
         super.onResume();

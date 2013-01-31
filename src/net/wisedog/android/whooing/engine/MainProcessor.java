@@ -119,7 +119,7 @@ public class MainProcessor {
                         e.printStackTrace();
                     }*/
                     
-                    try {
+                   /* try {
                         JSONArray array = objResult.getJSONObject("bill").getJSONObject("aggregate")
                                 .getJSONArray("accounts");
                         int[] creditNameArray = new int[]{R.id.label_credit1, R.id.label_credit2};
@@ -141,7 +141,7 @@ public class MainProcessor {
                     } catch (JSONException e) {
                         setErrorHandler("통신 오류! Err-MAIN3");
                         e.printStackTrace();
-                    }
+                    }*/
                 }
             }
         }

@@ -67,7 +67,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
            return;
         }
         else{
-            repository.refreshPlValue();
+            repository.refreshPlValue(getSherlockActivity());
             repository.registerObserver(this, DataRepository.PL_MODE);
         }
 		super.onResume();

@@ -36,7 +36,7 @@ public class WhooingMain extends Activity {
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.whooing_main2);
+		setContentView(R.layout.whooing_main);
 		mActivity = this;
 		
 		/*NavigationBar navBar = (NavigationBar)findViewById(R.id.nav_bar);

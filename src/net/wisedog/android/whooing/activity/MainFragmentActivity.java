@@ -5,10 +5,12 @@ import java.util.List;
 
 import net.simonvt.widget.MenuDrawer;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.engine.DataRepository;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -24,27 +26,27 @@ import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 public class MainFragmentActivity extends SherlockFragmentActivity{
-	MainFragmentAdapter mFragmentAdapter;
-    ViewPager mPager;
-    PageIndicator mIndicator;
-    private static final String STATE_ACTIVE_POSITION = "net.simonvt.menudrawer.samples.ContentSample.activePosition";
+	private MainFragmentAdapter mFragmentAdapter;
+    private ViewPager mPager;
+    private PageIndicator mIndicator;
 
+    /**Left sliding menu drawer*/
     private MenuDrawer mMenuDrawer;
 
+    /** Adpater for left menu*/
     private MenuAdapter mAdapter;
     private MenuListView mList;
+    
+    private TextView mRestApiText = null;
 
     private int mActivePosition = -1;
+    
+    public static final int API_MENUITEM_ID = 100000;
     
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        //setContentView(R.layout.whooing_tabs);
-        if (savedInstanceState != null) {
-            mActivePosition = savedInstanceState.getInt(STATE_ACTIVE_POSITION);
-        }
         
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -55,13 +57,18 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         items.add(new Category(getString(R.string.left_menu_category_report)));
         items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
         items.add(new Item(getString(R.string.text_expenses_budget), R.drawable.left_menu_budget));
-        items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bill));
-        items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_bill));        
+        items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bs));
+        items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_pl));        
         items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
-        items.add(new Item(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_bill));
-        items.add(new Category(getString(R.string.left_menu_category_etc)));
-        items.add(new Item(getString(R.string.left_menu_item_board), R.drawable.ic_action_refresh_dark));
-        items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.ic_action_refresh_dark));
+        items.add(new Item(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_mountain));
+        items.add(new Category(getString(R.string.left_menu_category_tool)));
+        items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.left_menu_post_it));
+        items.add(new Category(getString(R.string.left_menu_category_comm)));
+        items.add(new Item(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs));
+        items.add(new Item(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs));
+        items.add(new Item(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs));
+        items.add(new Item(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs));        
+        
 
         // A custom ListView is needed so the drawer can be notified when it's
         // scrolled. This is to update the position
@@ -93,6 +100,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         mPager.setAdapter(mFragmentAdapter);
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
+        
     }
 	
 	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
@@ -144,16 +152,26 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+	    mRestApiText = new TextView(this);
+	    mRestApiText.setId(API_MENUITEM_ID);
+	    mRestApiText.setText("-");
+	    mRestApiText.setClickable(true);
+	    mRestApiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+	    mRestApiText.setTextColor(Color.WHITE);
+	    menu.add("Api").setActionView(mRestApiText).setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+	    
 		menu.add("Plus").setIcon(R.drawable.menu_plus_button_white)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 		SubMenu subMenu1 = menu.addSubMenu("Lists");		
 		subMenu1.add("Setting");
+		subMenu1.add("Help");
 		subMenu1.add("About");
+		
 
 		MenuItem subMenu1Item = subMenu1.getItem();
 		subMenu1Item.setIcon(R.drawable.menu_lists_button);
-		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -165,7 +183,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             intent.putExtra("title", getString(R.string.text_add_transaction));
             startActivityForResult(intent, 1);
         }
-        else if(item.getTitle().equals("History")){
+        else if(item.getTitle().equals("Help")){
             Intent intent = new Intent(this, TransactionEntries.class);
             intent.putExtra("title", getString(R.string.left_menu_item_history));
             startActivityForResult(intent, 1);

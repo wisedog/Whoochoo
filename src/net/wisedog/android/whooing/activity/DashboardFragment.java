@@ -53,12 +53,11 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     private Activity mActivity;
     private ProgressDialog dialog;
-    private boolean isFirstCalling = true;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.whooing_main2, null);
+		View view = inflater.inflate(R.layout.whooing_main, null);
 		
 		return view;
 	}
@@ -88,6 +87,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         if(repository.getExpBudgetValue() != null){
             showBudgetValue(repository.getExpBudgetValue());
         }
+      //TODO 임시로... Splash 클래스를 바꾸면 이것도 사라져야한다. 
+        repository.refreshRestApi(getSherlockActivity());
         
        /* // TODO 전월대비를 넣어보자
         if(isFirstCalling == true || Define.NEED_TO_REFRESH == true){
@@ -275,7 +276,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             textView.setText(bundle.getString("assets_value"));
             textView = (TextView)mActivity.findViewById(R.id.doubt_num);
             textView.setText(bundle.getString("doubt_value"));
-            isFirstCalling = bundle.getBoolean("first_calling");
+            //isFirstCalling = bundle.getBoolean("first_calling");
         }
         super.onActivityCreated(bundle);
     }

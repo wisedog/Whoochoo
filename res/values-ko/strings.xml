@@ -18,6 +18,11 @@
     <string name="accounts_expenses">지출</string>
     <string name="menu_item_refresh">Refresh</string>
     
+    <!-- Dashboard -->
+    <string name="dashboard_more">정보 더보기&#8230;</string>
+    <string name="dashboard_monthly_budget">월 예산</string>
+    <string name="dashboard_compare_last_month">전월대비</string>
+    
     <!-- Balance fragment -->
     <string name="balance_label_account">항목</string>
     <string name="balance_label_amount">금액</string>

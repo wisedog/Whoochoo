@@ -6,17 +6,20 @@ package net.wisedog.android.whooing.engine;
 import java.util.ArrayList;
 
 import net.wisedog.android.whooing.Define;
+import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.TextView;
 
 /**
  * FragmentPager에서 Fragment가 DestroyView되기때문에 값을 가지고 있다. 
@@ -36,6 +39,8 @@ public class DataRepository{
     private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();
     private ArrayList<OnExpBudgetChangeListener> mExpBudgetObservers = new ArrayList<OnExpBudgetChangeListener>();
 	private Context mContext;
+	
+	private int mRestApiNum = 0;
     
 //    private ArrayList<DataChangeListener> mDataObservers = new ArrayList<DataChangeListener>();
     // 대쉬보드 - Asset/Doubt: bs,pl / Monthly Budget : pl/ Credit Card : bs 
@@ -83,7 +88,8 @@ public class DataRepository{
 	/**
 	 * Refresh Dashboard infomation from server
 	 * */
-	public void refreshDashboardValue() {
+	public void refreshDashboardValue(Context context) {
+	    mContext = context;
 		init();
 		Bundle bundle = new Bundle();
 		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
@@ -104,7 +110,8 @@ public class DataRepository{
     /**
      * Refresh Balance infomation from server
      * */
-    public void refreshBsValue(){
+    public void refreshBsValue(Context context){
+        mContext = context;
 		init();
 		Bundle bundle = new Bundle();
 		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
@@ -116,7 +123,8 @@ public class DataRepository{
     /**
      * Refresh Profit/Loss infomation from server
      * */
-    public void refreshPlValue(){
+    public void refreshPlValue(Context context){
+        mContext = context;
         init();
         Bundle bundle = new Bundle();
         bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
@@ -137,7 +145,8 @@ public class DataRepository{
         thread.start();
 	}
     
-    public void refreshExpBudget(){
+    public void refreshExpBudget(Context context){
+        mContext = context;
         init();
         Bundle bundle = new Bundle();
         bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
@@ -152,6 +161,20 @@ public class DataRepository{
         public void handleMessage(Message msg) {
             if (msg.what == Define.MSG_API_OK) {
                 JSONObject obj = (JSONObject)msg.obj;
+                if(obj != null){
+                    int returnCode = 200;
+                    try{                        
+                        mRestApiNum = obj.getInt("rest_of_api");
+                        setRestApi(mContext, mRestApiNum);
+                        returnCode = obj.getInt("code");
+                    }catch(JSONException e){
+                        setRestApi(mContext, 0);
+                    }
+                    if(setCodeHandling(returnCode) == false){
+                        return;
+                    }
+                }
+                
                 if (msg.arg1 == Define.API_GET_BALANCE) {
                     mBsValue = obj;
                     for (OnBsChangeListener observer : mBsObservers) {
@@ -190,6 +213,32 @@ public class DataRepository{
         }
     };
     
+    protected void setRestApi(Context context, final int apiNum){
+        if(context != null){
+            TextView textView = (TextView) ((Activity)context).findViewById(MainFragmentActivity.API_MENUITEM_ID);
+            if(textView != null){
+                if(apiNum == 0){
+                    textView.setText("Api\r\n -");
+                }else{
+                    textView.setText("Api\r\n "+String.valueOf(apiNum));
+                }
+            }
+        }
+    }
+    
+    public void refreshRestApi(Context context){
+        setRestApi(context, mRestApiNum);
+    }
+    
+    /**
+     * @param returnCode
+     * @return
+     */
+    protected boolean setCodeHandling(int returnCode) {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
     public void registerObserver(DataChangeListener o, int observerMode){
         if(o == null){
             return;

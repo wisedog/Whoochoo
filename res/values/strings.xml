@@ -47,6 +47,7 @@
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
     <string name="dashboard_monthly_budget">Monthly Budget</string>
+    <string name="dashboard_compare_last_month">Compared with Last Month</string>
     
     <!-- Balance fragment -->
     <string name="balance_label_account">Account</string>
@@ -54,14 +55,18 @@
     
     <!--  Left Sliding menu -->
     <string name="left_menu_category_report">Report</string>
-    <string name="left_menu_category_etc">Etc</string>
+    <string name="left_menu_category_tool">Tool</string>
+    <string name="left_menu_category_comm">Communication</string>
     <string name="left_menu_item_history">History</string>
     <string name="left_menu_item_exp_budget">Expenses Budget</string>
     <string name="left_menu_item_credit">Credit Cards</string>
     <string name="left_menu_item_balance">Balance</string>
     <string name="left_menu_item_profit_loss">Profit/Loss</string>
     <string name="left_menu_item_mountain">Mountain</string>
-    <string name="left_menu_item_board">Board1</string>
+    <string name="left_menu_item_board_free">Free Board</string>
+    <string name="left_menu_item_board_finance">Finance</string>
+    <string name="left_menu_item_board_counseling">Counseling</string>
+    <string name="left_menu_item_board_support">Support</string>
     <string name="left_menu_item_post_it">Post it!</string>
     
     

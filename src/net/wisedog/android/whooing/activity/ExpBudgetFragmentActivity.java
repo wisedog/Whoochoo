@@ -46,7 +46,7 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
            return;
 	    }
 	    else{
-	        repository.refreshExpBudget();
+	        repository.refreshExpBudget(this);
 	        repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
 	    }
 		super.onResume();
@@ -164,4 +164,18 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
         showExpBudget(obj);
         
     }
+
+
+
+    /* (non-Javadoc)
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
+     */
+    @Override
+    protected void onDestroy() {
+        DataRepository repository = DataRepository.getInstance();
+        repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
+        super.onDestroy();
+    }
+    
+    
 }

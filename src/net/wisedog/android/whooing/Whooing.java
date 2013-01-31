@@ -2,8 +2,6 @@ package net.wisedog.android.whooing;
 
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.engine.DataRepository;
-import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +19,11 @@ public class Whooing extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            if(savedInstanceState.getBoolean("execute_before", false)){
+                this.finish();
+            }           
+        }
         //String locale = getResources().getConfiguration().locale.getDisplayName();
         //Toast.makeText(this, "Locale :"+ locale, Toast.LENGTH_SHORT).show();
         //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
@@ -28,7 +31,7 @@ public class Whooing extends Activity {
         mContext = this;
         
         DataRepository repository = DataRepository.getInstance();
-        repository.refreshDashboardValue();
+        repository.refreshDashboardValue(this);
         repository.refreshAccount(this);
         /*
          * GeneralProcessor generalProcessor = new GeneralProcessor(this);
@@ -71,4 +74,13 @@ public class Whooing extends Activity {
 		}
 		this.finish();
 	}
+	
+	/* (non-Javadoc)
+     * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("execute_before", true);
+        super.onSaveInstanceState(outState);
+    }
 }
