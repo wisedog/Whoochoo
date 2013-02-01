@@ -33,7 +33,7 @@ import com.actionbarsherlock.view.Window;
 
 /**
  * @author wisedog(me@wisedog.net)
- *
+ *  @TODO   Account를 Spinner로 처리하도록 하기
  */
 public class TransactionEntries extends SherlockFragmentActivity implements
 DatePickerDialog.OnDateSetListener{

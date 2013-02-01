@@ -14,11 +14,9 @@ import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
 import net.wisedog.android.whooing.utils.FragmentUtil;
 import android.app.Activity;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;

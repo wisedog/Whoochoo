@@ -10,15 +10,11 @@ import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
 import net.wisedog.android.whooing.ui.TableRowExpBudgetItem;
-import net.wisedog.android.whooing.utils.FragmentUtil;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -76,12 +72,12 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         
         final int secondColumnWidth = (int) (metrics.widthPixels * 0.7);
-        Resources r = getResources();
+        /*Resources r = getResources();
         
         final int valueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 95,
                 r.getDisplayMetrics());
         final int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14,
-                r.getDisplayMetrics());
+                r.getDisplayMetrics());*/
         
         try {
             JSONObject objResult = obj.getJSONObject("results");

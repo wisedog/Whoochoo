@@ -92,7 +92,7 @@ public class AccountsSelection extends Activity {
           //creating linearlayout for item wrapping. 
             LinearLayout llAlso = new LinearLayout(this);
             llAlso.setId(DYNAMIC_LAYOUT_ID + j);
-            llAlso.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,
+            llAlso.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
             llAlso.setOrientation(LinearLayout.HORIZONTAL);
             

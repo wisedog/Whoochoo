@@ -2,14 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#E5E5E5"
+    android:background="#EEEEEE"
     android:orientation="vertical"
     android:paddingLeft="5dp"
     android:paddingRight="5dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="1.0" >
 
@@ -17,33 +19,55 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
-            android:text="@string/text_account"
+            android:text="우리카드"
             android:textColor="#333333" />
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6" >
+            android:layout_weight="0.6"
+            android:gravity="center_vertical" >
 
             <View
                 android:id="@+id/credit_graph"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content" >
+                android:layout_width="3dp"
+                android:layout_height="wrap_content" 
+                android:layout_centerVertical="true">
             </View>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/credit_graph"
                 android:text="12345"
                 android:textColor="#333333" />
+
         </RelativeLayout>
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="0dp">
+        <TextView 
+            android:id="@+id/bill_period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.10 ~ "
+            android:textSize="15sp"
+            />
+        <TextView
+            android:id="@+id/bill_payment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="111"
+            android:textSize="15sp"
+            />
     </RelativeLayout>
 
 </LinearLayout>
