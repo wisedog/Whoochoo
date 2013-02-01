@@ -82,4 +82,19 @@ public class WhooingCalendar {
         
         return "" + year + monthString + dayString;
     }
+    
+    static public String getNextMonthYYYYMM(int nextMonth){
+        Calendar rightNow = Calendar.getInstance(); 
+        rightNow.add(Calendar.MONTH, nextMonth);
+        int year = rightNow.get(Calendar.YEAR);
+        int month = rightNow.get(Calendar.MONTH);
+        month = month + 1;
+        String monthString = "";
+        if(month < 10)
+            monthString += "0";
+        monthString += month;
+        
+        
+        return "" + year + monthString;
+    }
 }

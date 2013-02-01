@@ -16,7 +16,6 @@
     <string name="accounts_capital">Capital</string>
     <string name="accounts_income">Income</string>
     <string name="accounts_expenses">Expenses</string>
-    <string name="menu_item_refresh">Refresh</string>
     
     <!-- Common Text -->
     <string name="total_assets">Total Assets</string>
@@ -43,6 +42,8 @@
     <string name="text_loading">Loading</string>
     <string name="text_doubt">Doubt</string>
     <string name="text_expenses_budget">Expenses Budget</string>
+    <string name="text_bill">Bill</string>
+    <string name="text_total_amount">Total Amount</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -68,8 +69,12 @@
     <string name="left_menu_item_board_counseling">Counseling</string>
     <string name="left_menu_item_board_support">Support</string>
     <string name="left_menu_item_post_it">Post it!</string>
+    <string name="left_menu_item_dashboard">Dashboard</string>
     
     
     <!-- Exp. Budget -->
     <string name="exp_budget_budget_exp">Spent/Budget</string>
+    
+    <!-- Bill -->
+    <string name="bill_amount_due">Amount Due</string>
 </resources>

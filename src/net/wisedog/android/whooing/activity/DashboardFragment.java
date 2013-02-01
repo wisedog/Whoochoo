@@ -83,12 +83,12 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
         if(repository.getMtValue() != null){
             showMountainValue(repository.getMtValue());
+          //TODO 임시로... Splash 클래스를 바꾸면 이것도 사라져야한다. 
+            repository.refreshRestApi(getSherlockActivity());
         }
         if(repository.getExpBudgetValue() != null){
             showBudgetValue(repository.getExpBudgetValue());
         }
-      //TODO 임시로... Splash 클래스를 바꾸면 이것도 사라져야한다. 
-        repository.refreshRestApi(getSherlockActivity());
         
        /* // TODO 전월대비를 넣어보자
         if(isFirstCalling == true || Define.NEED_TO_REFRESH == true){
@@ -368,6 +368,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void onMountainUpdate(JSONObject obj) {
         //여기서 Dashboard의 Asset, Doubt, 전월대비 설정한다. 
         showMountainValue(obj);
+        DataRepository repository = DataRepository.getInstance();
+        repository.refreshRestApi(getSherlockActivity());
     }
 
     /* (non-Javadoc)
@@ -375,6 +377,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      */
     public void onExpBudgetUpdate(JSONObject obj) {
        showBudgetValue(obj);
+       DataRepository repository = DataRepository.getInstance();
+       repository.refreshRestApi(getSherlockActivity());
         
     }
     

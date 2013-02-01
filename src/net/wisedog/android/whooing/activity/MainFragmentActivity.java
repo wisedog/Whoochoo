@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.simonvt.widget.MenuDrawer;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.engine.DataRepository;
+import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -55,8 +55,9 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
         List<Object> items = new ArrayList<Object>();
         items.add(new Category(getString(R.string.left_menu_category_report)));
+        items.add(new Item(getString(R.string.left_menu_item_dashboard), R.drawable.left_menu_dashboard));
         items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
-        items.add(new Item(getString(R.string.text_expenses_budget), R.drawable.left_menu_budget));
+        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
         items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bs));
         items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_pl));        
         items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
@@ -64,10 +65,10 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         items.add(new Category(getString(R.string.left_menu_category_tool)));
         items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.left_menu_post_it));
         items.add(new Category(getString(R.string.left_menu_category_comm)));
-        items.add(new Item(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs));
-        items.add(new Item(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs));
-        items.add(new Item(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs));
-        items.add(new Item(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs));        
+        items.add(new Item(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs_free));
+        items.add(new Item(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs_moneytalk));
+        items.add(new Item(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs_counseling));
+        items.add(new Item(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs_whooing));        
         
 
         // A custom ListView is needed so the drawer can be notified when it's
@@ -111,26 +112,31 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             mMenuDrawer.setActiveView(view, position);
             mMenuDrawer.closeMenu();
             switch(position){
-            case 1:
+            case 1: //Dashboard
+                mPager.setCurrentItem(0);
+                break;
+            case 2: //Transaction entries fragment activity
             	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
 				intent.putExtra("title", R.string.left_menu_item_history);
 				startActivityForResult(intent, 1);
 				break;
-            case 2:
+            case 3: //Exp. budget fragment activity
             	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
             	intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
             	startActivityForResult(intentBudget, 1);
             	break;
-            case 3:
+            case 4: //Balance
                 mPager.setCurrentItem(2);
                 break;
-            case 4:
+            case 5: //Profit/Loss
                 mPager.setCurrentItem(3);
                 break;
-            case 5:
-                
+            case 6: //Bill fragment activity
+                Intent intentBill = new Intent(MainFragmentActivity.this, BillFragmentActivity.class);
+                intentBill.putExtra("title", getString(R.string.text_bill));
+                startActivityForResult(intentBill, 1);
                 break;
-            case 6:
+            case 7: //Mountain 
                 mPager.setCurrentItem(1);
                 break;
             default:

@@ -35,7 +35,7 @@ import com.actionbarsherlock.view.Window;
  * @author wisedog(me@wisedog.net)
  *
  */
-public class TransactionEntries extends SherlockFragmentActivity implements
+public class BillFragmentActivity extends SherlockFragmentActivity implements
 DatePickerDialog.OnDateSetListener{
 	int mFromDate;
 	int mToDate;
@@ -58,9 +58,8 @@ DatePickerDialog.OnDateSetListener{
         String startDateStr = WhooingCalendar.getPreMonthYYYYMMDD(1);
         mToDate = Integer.valueOf(endDateStr);
         mFromDate = Integer.valueOf(startDateStr);
-        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
-        bundle.putInt("limit", 20);
+        bundle.putString("end_date", WhooingCalendar.getNextMonthYYYYMM(1));
+        bundle.putString("start_date", WhooingCalendar.getTodayYYYYMM());
         
         TextView startDate = (TextView)findViewById(R.id.transaction_entries_from_date);
         TextView endDate = (TextView)findViewById(R.id.transaction_entries_to_date);
@@ -192,7 +191,7 @@ DatePickerDialog.OnDateSetListener{
 
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), 
-            		(TransactionEntries)getActivity(), year, month, day);
+            		(BillFragmentActivity)getActivity(), year, month, day);
         }
 
 	}

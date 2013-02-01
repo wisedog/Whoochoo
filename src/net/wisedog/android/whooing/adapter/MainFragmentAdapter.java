@@ -1,4 +1,4 @@
-package net.wisedog.android.whooing.activity;
+package net.wisedog.android.whooing.adapter;
 
 import java.util.ArrayList;
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:background="#E5E5E5"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    >
+    <TextView 
+        android:id="@+id/bill_label_month"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text="2013 01"
+        android:textSize="25sp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#444444"
+        android:orientation="horizontal"
+        android:weightSum="1.0" >
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/text_account"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:text="@string/bill_amount_due"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1.0"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" 
+        android:background="#E5E9EA">
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/text_total_amount"
+            android:textStyle="bold" 
+            android:textColor="#333333"/>
+
+        <LinearLayout            
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6" >
+
+            <View
+                android:id="@+id/bar_total_asset"
+                android:layout_width="90dip"
+                android:layout_height="14dip"
+                android:layout_gravity="center_vertical"
+                android:background="@color/md__defaultBackground" />
+
+            <TextView
+                android:id="@+id/balance_total_asset_value"
+                android:layout_width="95dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dip"
+                android:text="" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/bill_month_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/bill_month_duedate"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:text=""
+        android:textSize="18sp" 
+        android:background="#E5E9EA"/>
+
+</LinearLayout>

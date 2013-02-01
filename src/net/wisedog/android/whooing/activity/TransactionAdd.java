@@ -17,6 +17,7 @@ import com.actionbarsherlock.view.SubMenu;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountChooserDialog;
@@ -250,8 +251,8 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
                     entity.getString("entry_date"),
                     entity.getString("item"),
                     String.valueOf(entity.getInt("money")),
-                    entity.getString("r_account_id"),
-                    entity.getString("l_account_id")
+                    entity.getString("l_account_id"),
+                    entity.getString("r_account_id")
                     );
             dataArray.add(item);
         }

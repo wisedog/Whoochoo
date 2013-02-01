@@ -7,7 +7,7 @@
     <string name="yes">네</string>
     <string name="no">아니오</string>
     <string name="is_exit">종료하시겠습니까?</string>
-    <string name="authorizing">인증중입니다...</string>
+    <string name="authorizing">인증중입니다&#8230;</string>
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
     <string name="main_title">Whooing</string>
@@ -16,7 +16,13 @@
     <string name="accounts_capital">자본</string>
     <string name="accounts_income">수입</string>
     <string name="accounts_expenses">지출</string>
-    <string name="menu_item_refresh">Refresh</string>
+    <string name="text_income">수입</string>
+    <string name="text_etc">Etc</string>
+    <string name="text_budget">예산</string>
+    <string name="text_remains">잔액</string>
+    <string name="text_loading">로딩중</string>
+    <string name="text_doubt">부채</string>
+    <string name="text_expenses_budget">지출예산</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">정보 더보기&#8230;</string>
@@ -29,9 +35,22 @@
     
      <!--  Left Sliding menu -->
     <string name="left_menu_category_report">리포트</string>
-    <string name="left_menu_category_etc">기타</string>
+    <string name="left_menu_category_tool">도구</string>
+    <string name="left_menu_category_comm">커뮤니케이션</string>
     <string name="left_menu_item_history">거래내역</string>
     <string name="left_menu_item_exp_budget">지출예산</string>
     <string name="left_menu_item_credit">신용카드</string>
+    <string name="left_menu_item_balance">자산부채</string>
+    <string name="left_menu_item_profit_loss">비용수익</string>
+    <string name="left_menu_item_mountain">자산변동</string>
+    <string name="left_menu_item_board_free">자유게시판</string>
+    <string name="left_menu_item_board_finance">알뜰살뜰</string>
+    <string name="left_menu_item_board_counseling">고민상담</string>
+    <string name="left_menu_item_board_support">고객지원</string>
+    <string name="left_menu_item_post_it">포스트잇!</string>
+    <string name="left_menu_item_dashboard">대쉬보드</string>
+    
+    <!-- Exp. Budget -->
+    <string name="exp_budget_budget_exp">지출/예산</string>
     
 </resources>
