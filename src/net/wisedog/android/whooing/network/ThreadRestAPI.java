@@ -177,6 +177,23 @@ public class ThreadRestAPI extends Thread {
 			result = entriesAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
 					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
+		case Define.API_GET_BILL:
+			if (mBundle == null) {
+				Log.e(ThreadRestAPI.class.toString(),
+						"Not enough information for API_GET_ENTRIES");
+				sendMessage(null, mAPIName);
+				return;
+			}
+			startDate = mBundle.getString("start_date");
+			endDate = mBundle.getString("end_date");
+			
+			requestUrl = "https://whooing.com/api/bill.json_array?section_id="
+					+ Define.APP_SECTION + "&start_date=" + startDate
+					+ "&end_date=" + endDate;
+			GeneralApi billAPI = new GeneralApi();
+			result = billAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+					Define.APP_SECRET, Define.TOKEN_SECRET);
+			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;

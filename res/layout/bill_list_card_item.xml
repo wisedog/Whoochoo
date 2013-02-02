@@ -16,10 +16,11 @@
         android:weightSum="1.0" >
 
         <TextView
+            android:id="@+id/bill_listitem_label_card_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.4"
-            android:text="우리카드"
+            android:text=""
             android:textColor="#333333" />
 
         <RelativeLayout
@@ -36,11 +37,12 @@
             </View>
 
             <TextView
+                android:id="@+id/bill_listitem_label_payment_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/credit_graph"
-                android:text="12345"
+                android:text=""
                 android:textColor="#333333" />
 
         </RelativeLayout>
@@ -54,14 +56,14 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="0dp">
         <TextView 
-            android:id="@+id/bill_period"
+            android:id="@+id/bill_listitem_period"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1.10 ~ "
             android:textSize="15sp"
             />
         <TextView
-            android:id="@+id/bill_payment_date"
+            android:id="@+id/bill_listitem_payment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

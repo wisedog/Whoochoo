@@ -6,7 +6,7 @@ package net.wisedog.android.whooing.adapter;
 import java.util.ArrayList;
 
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.activity.TransactionItem;
+import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 

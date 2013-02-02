@@ -1,7 +1,7 @@
 /**
  * 
  */
-package net.wisedog.android.whooing.activity;
+package net.wisedog.android.whooing.dataset;
 
 /**
  * @author Wisedog(me@wisedog.net)

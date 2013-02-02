@@ -13,7 +13,10 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
+import net.wisedog.android.whooing.dataset.BillMonthlyItem;
+import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.ui.BillMonthlyEntity;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -25,6 +28,7 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -48,7 +52,7 @@ DatePickerDialog.OnDateSetListener{
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_Styled);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.transaction_entries);
+        setContentView(R.layout.bill_fragment);
         
         Intent intent = getIntent();
         this.setTitle(intent.getStringExtra("title"));
@@ -61,16 +65,10 @@ DatePickerDialog.OnDateSetListener{
         bundle.putString("end_date", WhooingCalendar.getNextMonthYYYYMM(1));
         bundle.putString("start_date", WhooingCalendar.getTodayYYYYMM());
         
-        TextView startDate = (TextView)findViewById(R.id.transaction_entries_from_date);
-        TextView endDate = (TextView)findViewById(R.id.transaction_entries_to_date);
-        
-        startDate.setText(WhooingCalendar.getPreMonthYYYYMMDD(1)); 
-        endDate.setText(WhooingCalendar.getTodayYYYYMMDD());
-        
-        setSupportProgress(Window.PROGRESS_END);
+        setSupportProgress(Window.PROGRESS_INDETERMINATE_ON);
         setSupportProgressBarIndeterminateVisibility(true);
         
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_BILL, bundle);
         thread.start();
     }
     
@@ -78,18 +76,13 @@ DatePickerDialog.OnDateSetListener{
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_GET_ENTRIES){
+                if(msg.arg1 == Define.API_GET_BILL){
                     JSONObject obj = (JSONObject)msg.obj;
                     try {
-                        //testPrint(obj.getJSONArray("results"));
-                        showTransaction(obj);
+                        showBill(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                else if(msg.arg1 == Define.API_GET_ENTRIES_INSERT){
-                    //TODO 맞는 값이 왔다면 상단 ProgressBar 끄고 
-                    //TODO 아래 ListView에 아이템 넣기
                 }
             }
             super.handleMessage(msg);
@@ -97,28 +90,46 @@ DatePickerDialog.OnDateSetListener{
         
     };
 
-    private void showTransaction(JSONObject obj) throws JSONException{
-    	ArrayList<TransactionItem> dataArray = new ArrayList<TransactionItem>();
-        Log.i("wisedog", "ShowLastestTransaction - " + obj.toString());
+    /*
+     * "results":{"rows_type":"month",
+     * "aggregate":{"total":200000,
+     * "accounts":[
+     * {"end_use_date":20130228,"money":200000,"pay_date":25,
+     * "account_id":"x21","start_use_date":20130101},
+     * {"end_use_date":20130228,"money":0,"pay_date":28,
+     * "account_id":"x76","start_use_date":20130101}]},
+     * 
+     * "rows":[
+     * {"total":200000,"date":201302,
+     * "accounts":[
+     * {"end_use_date":20130131,"money":200000,"pay_date":25,
+     * "account_id":"x21","start_use_date":20130101},
+     * {"end_use_date":20130131,"money":0,"pay_date":28,"account_id":"x76",
+     * "start_use_date":20130101}
+     * ]},
+     * {"total":0,"date":201303,
+     * "accounts":[{"end_use_date":20130228,"money":0,
+     * "pay_date":25,"account_id":"x21","start_use_date":20130201},
+     * {"end_use_date":20130228,"money":0,"pay_date":28,"account_id":"x76",
+     * "start_use_date":20130201}]}]}
+     * 
+     * */
+    private void showBill(JSONObject obj) throws JSONException{
+    	LinearLayout baseLayout = (LinearLayout)findViewById(R.id.bill_main_layout);
+    	if(baseLayout == null){
+    		return;
+    	}
         JSONObject result = obj.getJSONObject("results");
         JSONArray array = result.getJSONArray("rows");
         
         int count = array.length();
         for(int i = 0; i < count; i++){
-            JSONObject entity = array.getJSONObject(i);
-            TransactionItem item = new TransactionItem(
-                    entity.getString("entry_date"),
-                    entity.getString("item"),
-                    String.valueOf(entity.getInt("money")),
-                    entity.getString("l_account_id"),
-                    entity.getString("r_account_id")
-                    );
-            item.Entry_ID = entity.getInt("entry_id");
-            dataArray.add(item);
+        	JSONObject objRowItem = array.getJSONObject(i);
+        	BillMonthlyEntity monthly = new BillMonthlyEntity(this);
+        	monthly.setupMonthlyCard(objRowItem);
+        	baseLayout.addView(monthly);
         }
-        ListView lastestTransactionList = (ListView)findViewById(R.id.transaction_entries_listview);
-        TransactionAddAdapter adapter = new TransactionAddAdapter(this, dataArray);
-        lastestTransactionList.setAdapter(adapter);
+        baseLayout.requestLayout();
         setSupportProgressBarIndeterminateVisibility(false);
     }
     
