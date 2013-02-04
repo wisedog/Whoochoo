@@ -3,7 +3,6 @@
  */
 package net.wisedog.android.whooing.activity;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.json.JSONArray;
@@ -13,8 +12,6 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
-import net.wisedog.android.whooing.dataset.BillMonthlyItem;
-import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.ui.BillMonthlyEntity;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
@@ -25,7 +22,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
