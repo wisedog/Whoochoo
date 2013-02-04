@@ -32,14 +32,16 @@
             <View
                 android:id="@+id/credit_graph"
                 android:layout_width="3dp"
-                android:layout_height="wrap_content" 
-                android:layout_centerVertical="true">
+                android:layout_height="14dp" 
+                android:layout_centerVertical="true"
+                android:background="#333333">
             </View>
 
             <TextView
                 android:id="@+id/bill_listitem_label_payment_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/credit_graph"
                 android:text=""
