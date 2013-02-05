@@ -44,6 +44,7 @@
     <string name="text_expenses_budget">Expenses Budget</string>
     <string name="text_bill">Bill</string>
     <string name="text_total_amount">Total Amount</string>
+    <string name="text_post_it">Post it!</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>

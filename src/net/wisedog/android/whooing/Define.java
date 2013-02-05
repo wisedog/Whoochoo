@@ -42,9 +42,11 @@ public class Define {
     public static final int API_GET_MOUNTAIN = 2080;
     public static final int API_GET_ENTRIES = 2090;
     public static final int API_GET_BILL = 2100;
+    public static final int API_GET_POST_IT = 2110;
     
     //flags
     //If there is need to be refreshed by insert some transaction or something like that
     //set this flag true
     public static boolean NEED_TO_REFRESH = false;
+    
 }

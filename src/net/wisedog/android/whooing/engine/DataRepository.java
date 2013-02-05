@@ -30,10 +30,12 @@ public class DataRepository{
     static public final int PL_MODE = 1;
     static public final int MOUNTAIN_MODE = 2;
     static public final int EXP_BUDGET_MODE = 3;
+    
     private JSONObject mBsValue = null;	//자산부채 - bs
     private JSONObject mPlValue = null;	//비용수익 - pl
     private JSONObject mMtValue = null; //Mountain
     private JSONObject mExpBudgetValue = null; //Budget
+    
     private ArrayList<OnBsChangeListener> mBsObservers = new ArrayList<OnBsChangeListener>();
     private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
     private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();

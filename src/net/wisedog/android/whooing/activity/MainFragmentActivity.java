@@ -3,7 +3,7 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.menudrawer.MenuDrawer;
+import net.simonvt.widget.MenuDrawer;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
 import android.content.Intent;
@@ -139,6 +139,12 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             case 7: //Mountain 
                 mPager.setCurrentItem(1);
                 break;
+            case 9://Postit
+                Intent intentPostIt = new Intent(MainFragmentActivity.this, PostItFragmentActivity.class);
+                intentPostIt.putExtra("title", getString(R.string.text_post_it));
+                startActivityForResult(intentPostIt, 1);
+                break;
+                
             default:
         		break;
             }

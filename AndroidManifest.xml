@@ -52,6 +52,7 @@
         <activity android:name="net.wisedog.android.whooing.activity.MainFragmentActivity" android:theme="@style/Theme.VPI"></activity>
         <activity android:name="net.wisedog.android.whooing.activity.ExpBudgetFragmentActivity"></activity>
         <activity android:name=".activity.BillFragmentActivity"></activity>
+        <activity android:name=".activity.PostItFragmentActivity"></activity>
     </application>
 
 </manifest>

@@ -194,6 +194,15 @@ public class ThreadRestAPI extends Thread {
 			result = billAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
 					Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
+			
+		case Define.API_GET_POST_IT:
+		    requestUrl = "https://whooing.com/api/post_it.json?section_id="
+                    + Define.APP_SECTION;
+		    GeneralApi postitAPI = new GeneralApi();
+            result = postitAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+		    break;
+			
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;
