@@ -93,7 +93,6 @@ public class ThreadHandshake extends Thread {
 			e.printStackTrace();
 		} 
 		if(firstToken != null){
-			//Define.FIRST_TOKEN = firstToken;
 			Log.d("wisedog", "TOKEN : " + firstToken);
 		}
 		
@@ -183,7 +182,7 @@ public class ThreadHandshake extends Thread {
 				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(Define.KEY_SHARED_TOKEN_SECRET, token_secret);
-		editor.putString(Define.USER_ID, user_id);
+		editor.putString(Define.KEY_SHARED_USER_ID, user_id);
 		editor.putString(Define.KEY_SHARED_TOKEN, realToken);
 		editor.commit();
 		

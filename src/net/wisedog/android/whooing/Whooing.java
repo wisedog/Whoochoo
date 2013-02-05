@@ -3,11 +3,9 @@ package net.wisedog.android.whooing;
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.engine.DataRepository;
-import net.wisedog.android.whooing.engine.GeneralProcessor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,12 +39,9 @@ public class Whooing extends Activity {
             return;
         }
         else{
-            GeneralProcessor generalProcessor = new GeneralProcessor(this);
-            if (generalProcessor.checkingAccountsInfo() != true) {
-                DataRepository repository = DataRepository.getInstance();
-                repository.refreshDashboardValue(this);
-                repository.refreshAccount(this);
-            }
+            DataRepository repository = DataRepository.getInstance();
+            repository.refreshDashboardValue(this);
+            repository.refreshAccount(this);
                
             Handler handler = new Handler(){
                 @Override
@@ -57,22 +52,6 @@ public class Whooing extends Activity {
             };
             handler.sendEmptyMessageDelayed(0, 200);
         }
-        
-        
-        /*
-         * GeneralProcessor generalProcessor = new GeneralProcessor(this);
-         * if (generalProcessor.checkingAccountsInfo() != true) {
-        	repository.refreshAccount(this);
-        	
-        }*/
-        /*Handler handler = new Handler(){
-			@Override
-			public void handleMessage(Message msg) {
-				Intent intent = new Intent(mContext, MainFragmentActivity.class);
-				startActivityForResult(intent, 1);
-			}			
-		};
-		handler.sendEmptyMessageDelayed(0, 200);*/
     }
     
     @Override
@@ -111,11 +90,20 @@ public class Whooing extends Activity {
     }
     
     protected void getLoginInfo(){
-        SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
+        //FIXME for debug
+        Define.REAL_TOKEN = "70a73d146ca6209947ad59bdfdb1ee3755b06873";
+        Define.PIN = "409713";
+        Define.TOKEN_SECRET = "8bd064ccc751575cef4c0235a8ac946a2f2924a4";
+        Define.APP_SECTION = "s10550";
+        Define.USER_ID = "8955";
+        
+        /*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
         Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
         Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
         Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
         Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
         Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
+        Log.i("wisedog", "user_id: " + Define.USER_ID + " app_section : " + Define.APP_SECTION + " real_token:" + Define.REAL_TOKEN
+                + " pin : " + Define.PIN + " token_secret : " + Define.TOKEN_SECRET);*/
     }
 }

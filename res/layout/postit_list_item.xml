@@ -3,32 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#EEEEEE"
-    android:padding="5dp">
-    <ImageButton 
+    android:gravity="center_vertical"
+    android:padding="5dp" 
+    android:layout_marginBottom="5dp">
+
+    <ImageButton
         android:id="@+id/post_it_btn_remove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_alignParentRight="true"/>
-    <ImageButton 
+        android:layout_marginRight="5dp" />
+
+    <ImageButton
         android:id="@+id/post_it_btn_modify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/post_it_btn_remove"
-        />
+        android:layout_toLeftOf="@id/post_it_btn_remove" />
 
-    <TextView 
+    <TextView
         android:id="@+id/post_it_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/post_it_btn_modify"
         android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/post_it_btn_modify"
+        android:gravity="center_vertical"
         android:text=""
-        android:textSize="14sp"
         android:textColor="#333333"
-        
-        />
+        android:textSize="16sp" />
+
 </RelativeLayout>
