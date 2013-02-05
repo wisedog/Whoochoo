@@ -1,5 +1,8 @@
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.auth;
 
+import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.R.id;
+import net.wisedog.android.whooing.R.layout;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,13 +11,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class WhooingAuth extends Activity{
+public class WhooingAuthWeb extends Activity{
 
 	
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.whooing_auth);
+		setContentView(R.layout.whooing_auth_web);
 	}
 	
 	

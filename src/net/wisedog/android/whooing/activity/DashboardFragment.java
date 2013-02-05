@@ -8,7 +8,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.WhooingAuth;
+import net.wisedog.android.whooing.auth.WhooingAuthWeb;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
@@ -90,40 +90,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             showBudgetValue(repository.getExpBudgetValue());
         }
         
-       /* // TODO 전월대비를 넣어보자
-        if(isFirstCalling == true || Define.NEED_TO_REFRESH == true){
-            // For Debug
-               Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
-               Define.PIN = "992505";
-               Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
-               Define.USER_ID = "8955";
-               Define.APP_SECTION = "s10550";
-               if (mActivity != null) {
-                   mActivity.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
-               }
-               if (Define.PIN == null || Define.REAL_TOKEN == null) {
-                   ThreadHandshake thread = new ThreadHandshake(mHandler, mActivity, false);
-                   thread.start();
-                   dialog = ProgressDialog.show(mActivity, "", getString(R.string.authorizing), true);
-                   dialog.setCancelable(true);
-               } else {
-                   GeneralProcessor generalProcessor = new GeneralProcessor(mActivity);
-                   if (generalProcessor.checkingAccountsInfo()) {
-                       MainProcessor mainProcessor = new MainProcessor(mActivity);
-                       mainProcessor.refreshAll();
-                   } else {
-                       Toast.makeText(mActivity, "Getting accounts information", Toast.LENGTH_LONG).show();
-                       ThreadRestAPI thread = new ThreadRestAPI(mGeneralHandler, mActivity,
-                               Define.API_GET_ACCOUNTS);
-                       thread.start();
-                   }
-               }
-               isFirstCalling = false;
-               Define.NEED_TO_REFRESH = false;
-               
-               DataRepository repository = DataRepository.getInstance();
-               repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
-           }*/
         super.onResume();
     }
     
@@ -183,7 +149,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                 Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
             }
             else if(msg.what == Define.MSG_REQ_AUTH){
-                Intent intent = new Intent(mActivity, WhooingAuth.class);
+                Intent intent = new Intent(mActivity, WhooingAuthWeb.class);
                 intent.putExtra("first_token", (String)msg.obj);
                 
                 startActivityForResult(intent, Define.REQUEST_AUTH);

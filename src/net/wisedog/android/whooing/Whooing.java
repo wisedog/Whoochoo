@@ -1,10 +1,13 @@
 package net.wisedog.android.whooing;
 
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
+import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.engine.DataRepository;
+import net.wisedog.android.whooing.engine.GeneralProcessor;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,34 +33,51 @@ public class Whooing extends Activity {
         setContentView(R.layout.main);
         mContext = this;
         
-        DataRepository repository = DataRepository.getInstance();
-        repository.refreshDashboardValue(this);
-        repository.refreshAccount(this);
+        getLoginInfo();
+        
+        if(Define.PIN == null || Define.REAL_TOKEN == null){
+            Intent intent = new Intent(Whooing.this, WhooingAuthMain.class);
+            startActivityForResult(intent, 1);
+            return;
+        }
+        else{
+            GeneralProcessor generalProcessor = new GeneralProcessor(this);
+            if (generalProcessor.checkingAccountsInfo() != true) {
+                DataRepository repository = DataRepository.getInstance();
+                repository.refreshDashboardValue(this);
+                repository.refreshAccount(this);
+            }
+               
+            Handler handler = new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    Intent intent = new Intent(mContext, MainFragmentActivity.class);
+                    startActivityForResult(intent, 1);
+                }           
+            };
+            handler.sendEmptyMessageDelayed(0, 200);
+        }
+        
+        
         /*
          * GeneralProcessor generalProcessor = new GeneralProcessor(this);
          * if (generalProcessor.checkingAccountsInfo() != true) {
         	repository.refreshAccount(this);
         	
         }*/
-        Handler handler = new Handler(){
+        /*Handler handler = new Handler(){
 			@Override
 			public void handleMessage(Message msg) {
 				Intent intent = new Intent(mContext, MainFragmentActivity.class);
 				startActivityForResult(intent, 1);
 			}			
 		};
-		handler.sendEmptyMessageDelayed(0, 200);
+		handler.sendEmptyMessageDelayed(0, 200);*/
     }
     
     @Override
 	public void onBackPressed() {
 		// block back button event
-	}
-    
-    
-    @Override
-	protected void onResume() {
-		super.onResume();
 	}
 
 	@Override
@@ -65,11 +85,17 @@ public class Whooing extends Activity {
 		if(resultCode != RESULT_OK){
 			switch(resultCode){
 				case Define.RESPONSE_EXIT:
-				{
 					setResult(Define.RESPONSE_EXIT);
 					this.finish();
 					break;
-				}
+				case Define.MSG_AUTH_TOTAL_DONE:
+				    getLoginInfo();
+				    DataRepository repository = DataRepository.getInstance();
+			        repository.refreshDashboardValue(this);
+			        repository.refreshAccount(this);
+			        Intent intent = new Intent(mContext, MainFragmentActivity.class);
+	                startActivityForResult(intent, 1);
+				    break;
 			}
 		}
 		this.finish();
@@ -82,5 +108,14 @@ public class Whooing extends Activity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("execute_before", true);
         super.onSaveInstanceState(outState);
+    }
+    
+    protected void getLoginInfo(){
+        SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
+        Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
+        Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
+        Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
+        Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
+        Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
     }
 }

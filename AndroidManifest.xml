@@ -29,11 +29,11 @@
             </intent-filter>
         </receiver>
         <activity
-            android:name="WhooingMain"
+            android:name="net.wisedog.android.whooing.auth.WhooingAuthMain"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
-            android:name="WhooingAuth"
+            android:name=".auth.WhooingAuthWeb"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
         <activity

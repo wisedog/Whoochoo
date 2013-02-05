@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.wisedog.android.whooing.Define;
-import net.wisedog.android.whooing.WhooingMain;
+import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.utils.StringUtil;
 import net.wisedog.android.whooing.utils.JSONUtil;
 
@@ -87,14 +87,14 @@ public class ThreadHandshake extends Thread {
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
 			firstToken = result.getString("token");
-			Log.i("whooing", "FIRST TOKEN:"+firstToken);
+			Log.i("wisedog", "FIRST TOKEN:"+firstToken);
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");
 			e.printStackTrace();
 		} 
 		if(firstToken != null){
 			//Define.FIRST_TOKEN = firstToken;
-			Log.d("whooing", "TOKEN : " + firstToken);
+			Log.d("wisedog", "TOKEN : " + firstToken);
 		}
 		
 		/*SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
@@ -135,16 +135,16 @@ public class ThreadHandshake extends Thread {
 				mHandler.sendMessage(msg);
 			}
 			else {
-				Log.e(WhooingMain.class.toString(), "Failed to download file");
+				Log.e(WhooingAuthMain.class.toString(), "Failed to download file");
 				return false;
 			}
 		}
 		catch(ClientProtocolException e){
-			Log.e(WhooingMain.class.toString(), "HttpResponse Failed");
+			Log.e(WhooingAuthMain.class.toString(), "HttpResponse Failed");
 			return false;
 		} 
 		catch (IOException e) {
-			Log.e(WhooingMain.class.toString(), "HttpResponse IO Failed");
+			Log.e(WhooingAuthMain.class.toString(), "HttpResponse IO Failed");
 			return false;
 		}
 		return false;
@@ -167,11 +167,11 @@ public class ThreadHandshake extends Thread {
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
 			token_secret = result.getString("token_secret");
-			Log.d("whooing", "Token secret:"+token_secret);
+			Log.d("wisedog", "Token secret:"+token_secret);
 			user_id = result.getString("user_id");
-			Log.d("whooing", "USER ID:"+user_id);
+			Log.d("wisedog", "USER ID:"+user_id);
 			realToken = result.getString("token");
-			Log.d("whooing", "Real Token:"+user_id);
+			Log.d("wisedog", "Real Token:"+user_id);
 			
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");

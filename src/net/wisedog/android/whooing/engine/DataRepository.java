@@ -76,11 +76,11 @@ public class DataRepository{
      * */
     private void init(){
         //FIXME 여기 릴리즈 전 고칠것
-        Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
+        /*Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
         Define.PIN = "992505";
         Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
         Define.USER_ID = "8955"; 
-        Define.APP_SECTION = "s10550";
+        Define.APP_SECTION = "s10550";*/
     }
     
     public void refreshAll(){

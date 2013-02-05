@@ -26,6 +26,7 @@ public class Define {
 	public static final int MSG_REQ_AUTH = 100;
 	public static final int MSG_FAIL = 101;
 	public static final int MSG_AUTH_DONE = 102;
+	public static final int MSG_AUTH_TOTAL_DONE = 103;
 	
 	public static final int MSG_API_OK = 1000;
 	public static final int MSG_API_FAIL = 1003;

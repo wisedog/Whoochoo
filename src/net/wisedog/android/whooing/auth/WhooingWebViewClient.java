@@ -1,4 +1,4 @@
-package net.wisedog.android.whooing;
+package net.wisedog.android.whooing.auth;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.utils.RegExUtil;
 
 public class WhooingWebViewClient extends WebViewClient {
