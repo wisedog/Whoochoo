@@ -33,6 +33,7 @@ public class PostItFragmentActivity extends SherlockFragmentActivity {
         setTheme(R.style.Theme_Styled);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_it_fragment);
+        setTitle(getIntent().getStringExtra("title"));
     }
     
     @Override

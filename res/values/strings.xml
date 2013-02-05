@@ -78,4 +78,8 @@
     
     <!-- Bill -->
     <string name="bill_amount_due">Amount Due</string>
+    
+    <!-- Content Description -->
+    <string name="desc_imgbtn_delete">Delete</string>
+    <string name="desc_imgbtn_modify">Modify</string>
 </resources>

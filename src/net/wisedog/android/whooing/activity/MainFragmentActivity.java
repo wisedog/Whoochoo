@@ -3,7 +3,7 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.widget.MenuDrawer;
+import net.simonvt.menudrawer.MenuDrawer;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
 import android.content.Intent;
@@ -144,7 +144,14 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
                 intentPostIt.putExtra("title", getString(R.string.text_post_it));
                 startActivityForResult(intentPostIt, 1);
                 break;
-                
+			case 11: // Free board
+				Intent intentBbsFree = new Intent(MainFragmentActivity.this,
+						BbsFragmentActivity.class);
+				intentBbsFree
+						.putExtra("title", getString(R.string.text_post_it));
+				intentBbsFree.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_FREE);
+				startActivityForResult(intentBbsFree, 1);
+                break;
             default:
         		break;
             }

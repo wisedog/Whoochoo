@@ -1,6 +1,7 @@
 package net.wisedog.android.whooing.network;
 
 import net.wisedog.android.whooing.Define;
+import net.wisedog.android.whooing.activity.BbsFragmentActivity;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
@@ -202,7 +203,24 @@ public class ThreadRestAPI extends Thread {
             result = postitAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 		    break;
-			
+		case Define.API_GET_BOARD:
+			int boardType = mBundle.getInt("board_type");
+			String type = "";
+			if(boardType == BbsFragmentActivity.BOARD_TYPE_FREE){
+				type = "free";
+			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_MONEY_TALK){
+				type = "moneytalk";
+			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_COUNSELING){
+				type = "counseling";
+			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_WHOOING){
+				type = "whooing";
+			}
+			requestUrl = "https://whooing.com/api/bbs/" + type + ".json?section_id="
+                    + Define.APP_SECTION;
+		    GeneralApi boardAPI = new GeneralApi();
+            result = boardAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;

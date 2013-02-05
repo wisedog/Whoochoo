@@ -9,21 +9,27 @@
 
     <ImageButton
         android:id="@+id/post_it_btn_remove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp" />
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp" 
+        android:background="#777777"
+        android:src="@drawable/icon_delete"
+        android:contentDescription="@string/desc_imgbtn_delete"/>
 
     <ImageButton
         android:id="@+id/post_it_btn_modify"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_toLeftOf="@id/post_it_btn_remove" />
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:background="#777777"
+        android:layout_toLeftOf="@id/post_it_btn_remove" 
+        android:src="@drawable/icon_modify"
+        android:contentDescription="@string/desc_imgbtn_modify"/>
 
     <TextView
         android:id="@+id/post_it_text"

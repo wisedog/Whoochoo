@@ -53,6 +53,7 @@
         <activity android:name="net.wisedog.android.whooing.activity.ExpBudgetFragmentActivity"></activity>
         <activity android:name=".activity.BillFragmentActivity"></activity>
         <activity android:name=".activity.PostItFragmentActivity"></activity>
+        <activity android:name=".activity.BbsFragmentActivity"></activity>
     </application>
 
 </manifest>
