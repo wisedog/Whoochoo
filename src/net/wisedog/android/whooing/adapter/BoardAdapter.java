@@ -43,7 +43,7 @@ public class BoardAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return "AAAA";
+        return mDataArray.get(position);
     }
 
     public long getItemId(int position) {
@@ -66,11 +66,22 @@ public class BoardAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.bbs_list_item, parent, false);
         }
-        TextView textContent = (TextView) convertView.findViewById(R.id.bbs_text_content);
-        BoardItem item = mDataArray.get(pos);
         
-        if(item != null && textContent != null){
-            textContent.setText(item.content);
+        BoardItem item = mDataArray.get(pos);
+        if(item != null){
+            TextView textContent = (TextView) convertView.findViewById(R.id.bbs_text_content);
+            if(textContent != null){
+                textContent.setText(item.content);
+            }
+            TextView textCommentNum = (TextView) convertView.findViewById(R.id.bbs_text_comment_num);
+            if(textCommentNum != null){
+                textCommentNum.setText(String.valueOf(item.commentNum));
+            }
+            
+            TextView textAuthor = (TextView) convertView.findViewById(R.id.bbs_text_author);
+            if(textAuthor != null){
+                textAuthor.setText(item.userName);
+            }
         }
         return convertView;
     }

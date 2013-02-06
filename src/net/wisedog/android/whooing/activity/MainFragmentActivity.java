@@ -148,9 +148,33 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 				Intent intentBbsFree = new Intent(MainFragmentActivity.this,
 						BbsFragmentActivity.class);
 				intentBbsFree
-						.putExtra("title", getString(R.string.text_post_it));
+						.putExtra("title", getString(R.string.text_free_board));
 				intentBbsFree.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_FREE);
 				startActivityForResult(intentBbsFree, 1);
+                break;
+			case 12: // Finance board
+                Intent intentBbsFinance = new Intent(MainFragmentActivity.this,
+                        BbsFragmentActivity.class);
+                intentBbsFinance
+                        .putExtra("title", getString(R.string.text_free_finance));
+                intentBbsFinance.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_MONEY_TALK);
+                startActivityForResult(intentBbsFinance, 1);
+                break;
+			case 13: // Counseling board
+                Intent intentBbsCounseling = new Intent(MainFragmentActivity.this,
+                        BbsFragmentActivity.class);
+                intentBbsCounseling
+                        .putExtra("title", getString(R.string.text_free_counseling));
+                intentBbsCounseling.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_COUNSELING);
+                startActivityForResult(intentBbsCounseling, 1);
+                break;
+			case 14: // Support Board
+                Intent intentBbsSupport = new Intent(MainFragmentActivity.this,
+                        BbsFragmentActivity.class);
+                intentBbsSupport
+                        .putExtra("title", getString(R.string.text_free_support));
+                intentBbsSupport.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_WHOOING);
+                startActivityForResult(intentBbsSupport, 1);
                 break;
             default:
         		break;

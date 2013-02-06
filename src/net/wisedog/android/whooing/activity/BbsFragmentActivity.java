@@ -15,6 +15,7 @@ import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,9 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -81,7 +85,8 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
             {
-                if (load(firstVisibleItem, visibleItemCount, totalItemCount))
+                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount;
+                if (loadMore && !loading)
                 {
                     loading = true;
                     mListView.addFooterView(footerView, null, false);
@@ -96,14 +101,29 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
         });
 	}
 	
-	protected boolean load(int firstVisibleItem, int visibleItemCount, int totalItemCount)
-    {
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+	    menu.add("write").setIcon(R.drawable.icon_write)
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-	    boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount;
-	    /*Log.i("wisedog", "Loadmore : " + loadMore + " first : " + firstVisibleItem + " visible : " 
-	    + visibleItemCount + " total : "+ totalItemCount  + " loading : " + loading);*/
-        return loadMore && !loading;
-        
+        SubMenu subMenu1 = menu.addSubMenu("Lists");        
+        subMenu1.add("Setting");
+        subMenu1.add("Help");
+        subMenu1.add("About");
+
+        return super.onCreateOptionsMenu(menu);
+    }
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getTitle().equals("write")) {
+            /*Intent intent = new Intent(this, TransactionAdd.class);
+            intent.putExtra("title", getString(R.string.text_add_transaction));
+            startActivityForResult(intent, 1);*/
+            Toast.makeText(this, "Press Write button", Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 	
@@ -137,7 +157,11 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
             JSONObject entity = array.getJSONObject(i);
             int id = entity.getInt("bbs_id");
             String content = entity.getString("subject");
-            BoardItem item = new BoardItem(id, "", "", content);
+            int commentNum = entity.getInt("comments");
+            JSONObject objWriter = entity.getJSONObject("writer");
+            String userName = objWriter.getString("username");
+                    
+            BoardItem item = new BoardItem(id, userName, commentNum, content);
             mDataArray.add(item);
         }
         BoardAdapter adapter = (BoardAdapter) ((HeaderViewListAdapter)mListView.getAdapter()).getWrappedAdapter();
@@ -155,7 +179,9 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
          */
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
-            Toast.makeText(BbsFragmentActivity.this, "position : " + position, Toast.LENGTH_SHORT).show();            
+            BoardItem item = (BoardItem)mListView.getItemAtPosition(position);
+            Toast.makeText(BbsFragmentActivity.this, "position : " + position + 
+                    "item content: " + item.content + "id : " + item.id, Toast.LENGTH_SHORT).show();            
         }
 	    
     };
