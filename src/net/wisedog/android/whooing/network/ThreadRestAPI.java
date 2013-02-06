@@ -215,8 +215,10 @@ public class ThreadRestAPI extends Thread {
 			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_WHOOING){
 				type = "whooing";
 			}
+			int pageBoard = mBundle.getInt("page");
+			int limitBoard = mBundle.getInt("limit");
 			requestUrl = "https://whooing.com/api/bbs/" + type + ".json?section_id="
-                    + Define.APP_SECTION;
+                    + Define.APP_SECTION + "&page=" + pageBoard + "&limit=" + limitBoard;
 		    GeneralApi boardAPI = new GeneralApi();
             result = boardAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);

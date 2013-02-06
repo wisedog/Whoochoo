@@ -29,6 +29,14 @@ public class BoardAdapter extends BaseAdapter {
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;
     }
+    
+    public ArrayList<BoardItem> getData(){
+        return mDataArray;
+    }
+    
+    public void setData(ArrayList<BoardItem> array){
+        mDataArray = array;
+    }
 
     public int getCount() {
         return mDataArray.size();
