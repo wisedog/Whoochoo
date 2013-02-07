@@ -3,25 +3,11 @@
  */
 package net.wisedog.android.whooing.activity;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -38,15 +24,8 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	public static final int BOARD_TYPE_MONEY_TALK = 1;
 	public static final int BOARD_TYPE_COUNSELING = 2;
 	public static final int BOARD_TYPE_WHOOING = 3;
-	
-	private JSONObject mBbsValue = null;
+
 	private int mBoardType = -1;
-	private int mPageNum = 1;
-	protected View footerView;
-	protected boolean loading = false;
-	
-	protected ListView mListView = null;
-	protected ArrayList<BoardItem> mDataArray;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
