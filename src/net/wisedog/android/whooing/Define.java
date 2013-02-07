@@ -50,6 +50,8 @@ public class Define {
     public static final int API_GET_BOARD_MONEY_TALK = 2201;
     public static final int API_GET_BOARD_COUNSELING = 2202;
     public static final int API_GET_BOARD_WHOOING = 2203;
+    public static final int API_GET_BOARD_ARTICLE = 2210;
+    
     
     //flags
     //If there is need to be refreshed by insert some transaction or something like that

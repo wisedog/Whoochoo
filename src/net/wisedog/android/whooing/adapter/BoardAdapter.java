@@ -71,7 +71,7 @@ public class BoardAdapter extends BaseAdapter {
         if(item != null){
             TextView textContent = (TextView) convertView.findViewById(R.id.bbs_text_content);
             if(textContent != null){
-                textContent.setText(item.content);
+                textContent.setText(item.subject);
             }
             TextView textCommentNum = (TextView) convertView.findViewById(R.id.bbs_text_comment_num);
             if(textCommentNum != null){

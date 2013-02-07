@@ -107,17 +107,30 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         JSONArray array = obj.getJSONArray("results");
         int length = array.length();
         
-        //ArrayList<BoardItem> dataArray = ((BoardAdapter)mListView.getAdapter()).getData();
-        
         for(int i = 0; i < length; i++){
             JSONObject entity = array.getJSONObject(i);
             int id = entity.getInt("bbs_id");
-            String content = entity.getString("subject");
+            String subject = entity.getString("subject");
             int commentNum = entity.getInt("comments");
+            int hits = entity.getInt("hits");
+            String contents = entity.getString("contents");
+            int recommandation = entity.getInt("recommandation");
+            
             JSONObject objWriter = entity.getJSONObject("writer");
             String userName = objWriter.getString("username");
+            String userImage = objWriter.getString("image_url");
+            int userId = objWriter.getInt("user_id");
+            int userLevel = objWriter.getInt("level");
+            
                     
-            BoardItem item = new BoardItem(id, userName, commentNum, content);
+            BoardItem item = new BoardItem(id, userName, commentNum, subject);
+            item.hits = hits;
+            item.contents = contents;
+            item.recommandation = recommandation;
+            item.userId = userId;
+            item.userLevel = userLevel;
+            item.userImage = userImage;
+            
             mDataArray.add(item);
         }
         HeaderViewListAdapter a1 = (HeaderViewListAdapter)getListView().getAdapter();
@@ -135,7 +148,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
         boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount -1;
-        Log.i("wisedog", "first : " + firstVisibleItem + " visible : " + visibleItemCount + " total : " + totalItemCount + " page : " + mPageNum);
+        //Log.i("wisedog", "first : " + firstVisibleItem + " visible : " + visibleItemCount + " total : " + totalItemCount + " page : " + mPageNum);
         if (loadMore && !loading)
         {
             loading = true;
@@ -156,23 +169,5 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     @Override
     public void onScrollStateChanged(AbsListView arg0, int arg1) {
         ; //Do nothing        
-    }
-
-    /* (non-Javadoc)
-     * @see android.support.v4.app.ListFragment#onDestroyView()
-     */
-    @Override
-    public void onDestroyView() {
-       Log.i("wisedog", "onDestroyView");
-        super.onDestroyView();
-    }
-
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onPause()
-     */
-    @Override
-    public void onPause() {
-        Log.i("wisedog", "onPause");
-        super.onPause();
     }
 }

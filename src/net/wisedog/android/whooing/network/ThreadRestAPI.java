@@ -61,6 +61,28 @@ public class ThreadRestAPI extends Thread {
 		String startDate = null;
 		String endDate = null;		 
 		String requestUrl = null;
+		
+		int boardType = BbsFragmentActivity.BOARD_TYPE_FREE;
+		String type = "";
+		if(mAPIName == Define.API_GET_BOARD || mAPIName == Define.API_GET_BOARD_ARTICLE){
+		    if (mBundle == null) {
+                Log.e(ThreadRestAPI.class.toString(),
+                        "Not enough information for API_GET_BOARD or API_GET_BOARD_ARTICLE");
+                sendMessage(null, mAPIName);
+                return;
+            }
+		    boardType = mBundle.getInt("board_type");
+	        if(boardType == BbsFragmentActivity.BOARD_TYPE_FREE){
+	            type = "free";
+	        }else if(boardType == BbsFragmentActivity.BOARD_TYPE_MONEY_TALK){
+	            type = "moneytalk";
+	        }else if(boardType == BbsFragmentActivity.BOARD_TYPE_COUNSELING){
+	            type = "counseling";
+	        }else if(boardType == BbsFragmentActivity.BOARD_TYPE_WHOOING){
+	            type = "whooing";
+	        }
+		}
+		
 		        
 		switch(mAPIName){
 		case Define.API_GET_MAIN:
@@ -204,17 +226,7 @@ public class ThreadRestAPI extends Thread {
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 		    break;
 		case Define.API_GET_BOARD:
-			int boardType = mBundle.getInt("board_type");
-			String type = "";
-			if(boardType == BbsFragmentActivity.BOARD_TYPE_FREE){
-				type = "free";
-			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_MONEY_TALK){
-				type = "moneytalk";
-			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_COUNSELING){
-				type = "counseling";
-			}else if(boardType == BbsFragmentActivity.BOARD_TYPE_WHOOING){
-				type = "whooing";
-			}
+		    
 			int pageBoard = mBundle.getInt("page");
 			int limitBoard = mBundle.getInt("limit");
 			requestUrl = "https://whooing.com/api/bbs/" + type + ".json?section_id="
@@ -223,6 +235,14 @@ public class ThreadRestAPI extends Thread {
             result = boardAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
+		case Define.API_GET_BOARD_ARTICLE:
+		    int bbsId = mBundle.getInt("bbs_id");
+		    requestUrl = "https://whooing.com/api/bbs/" + type + bbsId + ".json?section_id="
+                    + Define.APP_SECTION;
+		    GeneralApi bbsArticleAPI = new GeneralApi();
+            result = bbsArticleAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+		    break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;
