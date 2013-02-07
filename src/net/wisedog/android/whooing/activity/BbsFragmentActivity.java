@@ -13,20 +13,16 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -56,7 +52,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Styled);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bbs_fragment);
+		setContentView(R.layout.bbs_fragment1);
 		setTitle(getIntent().getStringExtra("title"));
 		
 		mBoardType = getIntent().getIntExtra("board_type", -1);
@@ -65,40 +61,28 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 			return;
 		}
 		
-		mListView = (ListView)findViewById(R.id.bbs_listview);
-		mDataArray = new ArrayList<BoardItem>();
-		BoardAdapter adapter = new BoardAdapter(this, mDataArray);
-		footerView = ((LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
-       mListView.addFooterView(footerView, null, false);
-		mListView.setAdapter(adapter);
-		mListView.setOnItemClickListener(mItemClickListener);
-		
-		
-		mListView.setOnScrollListener(new OnScrollListener()
-        {
-            @Override
-            public void onScrollStateChanged(AbsListView arg0, int arg1)
-            {
-                // nothing here
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount)
-            {
-                boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount;
-                if (loadMore && !loading)
-                {
-                    loading = true;
-                    mListView.addFooterView(footerView, null, false);
-                    Bundle b = new Bundle();
-                    b.putInt("board_type", mBoardType);
-                    b.putInt("page", mPageNum);
-                    b.putInt("limit", 20);
-                    ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_GET_BOARD, b);
-                    thread.start();
-                }
-            }
-        });
+		 if (getSupportFragmentManager().findFragmentById(R.id.bbs_fragment_container) == null) {
+		     BbsListFragment list = new BbsListFragment();
+		     list.setData(mBoardType);
+            getSupportFragmentManager().beginTransaction().add(R.id.bbs_fragment_container, 
+                    list,BbsListFragment.LIST_FRAGMENT_TAG).commit();
+		 }
+	}
+	
+	/**
+	 * Add Article Fragment with given Item
+	 * @param  item    item info what the user selected        
+	 * */
+	public void addArticleFragment(BoardItem item){
+	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.LIST_FRAGMENT_TAG);
+	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        BbsArticleFragment fragment = new BbsArticleFragment();        
+        ft.hide(fr0);
+        ft.add(R.id.bbs_fragment_container, fragment, "abc");
+        ft.show(fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+        
 	}
 	
 	@Override
@@ -125,7 +109,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+	/*
 	
 	protected Handler mHandler = new Handler(){
         @Override
@@ -170,19 +154,5 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
         mListView.removeFooterView(footerView);
         loading = false;
 
-	}
-	
-	AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
-
-        /* (non-Javadoc)
-         * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
-         */
-        @Override
-        public void onItemClick(AdapterView parent, View view, int position, long id) {
-            BoardItem item = (BoardItem)mListView.getItemAtPosition(position);
-            Toast.makeText(BbsFragmentActivity.this, "position : " + position + 
-                    "item content: " + item.content + "id : " + item.id, Toast.LENGTH_SHORT).show();            
-        }
-	    
-    };
+	}*/
 }
