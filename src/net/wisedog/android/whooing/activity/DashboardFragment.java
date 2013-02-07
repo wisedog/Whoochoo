@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -185,7 +186,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         e.printStackTrace();
                     }
                 }
-                else if(msg.arg1 == Define.API_GET_BUDGET){
+                /*else if(msg.arg1 == Define.API_GET_BUDGET){
                     TextView monthlyBudgetText = (TextView)mActivity.findViewById(R.id.label_monthly);
                     TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
                     JSONObject obj = (JSONObject)msg.obj;
@@ -202,7 +203,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         setErrorHandler("통신 오류! Err-BDG1");
                     }
                     
-                }
+                }*/
                 else if(msg.arg1 == Define.API_GET_BALANCE){
                     TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
                     TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
@@ -284,6 +285,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             e.printStackTrace();
         }
         
+        int diff = 0;
         //set 전월대비
         try {
             JSONArray objArray = objResult.getJSONArray("rows");
@@ -291,14 +293,40 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             JSONObject preLast = (JSONObject) objArray.get(objArray.length() - 2);
             double lastCapital = last.getDouble("capital");
             double preLastCapital = preLast.getDouble("capital");
-            int diff = (int)(lastCapital - preLastCapital);
-            TextView compareValue = (TextView)mActivity.findViewById(R.id.text_compare_premonth_value);
-            compareValue.setTypeface(typeface);
-            compareValue.setText(String.valueOf(diff));
-            
+            diff = (int)(lastCapital - preLastCapital);
+
         } catch (JSONException e) {
             setErrorHandler("통신 오류! Err-MAIN2");
             e.printStackTrace();
+        }
+        setCompareArrow(diff);
+        TextView compareValue = (TextView)mActivity.findViewById(R.id.text_compare_premonth_value);
+        compareValue.setTypeface(typeface);
+        compareValue.setText(String.valueOf(diff));
+    }
+    
+    /**
+     * 전월대비 금액에 대한 화살표 설정
+     * @param		diff		전월대비 금액
+     * */
+    private void setCompareArrow(int diff){
+    	String locale = getResources().getConfiguration().locale.getDisplayName();
+    	ImageView arrow = (ImageView)getActivity().findViewById(R.id.compare_arrow);
+    	if(diff > 0){
+        	if(locale.equals("kor") || locale.equals("jpn") || locale.equals("chn")){
+        		arrow.setImageResource(R.drawable.arrow_up_red);
+        	}else{
+        		arrow.setImageResource(R.drawable.arrow_up_green);
+        	}
+        }else if(diff < 0){
+        	if(locale.equals("kor") || locale.equals("jpn") || locale.equals("chn")){
+        		arrow.setImageResource(R.drawable.arrow_dn_blue);
+        	}else{
+        		arrow.setImageResource(R.drawable.arrow_dn_red);
+        	}
+        }
+        else{
+        	//TODO Minus 그림 넣기
         }
     }
     
@@ -317,10 +345,23 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             JSONObject totalObj = obj.getJSONObject("total");
             double budget = totalObj.getDouble("budget");
             double expenses = totalObj.getDouble("money");
+            double possibility = obj.getJSONObject("misc").getDouble("possibility");
             if(budget < expenses){
                 monthlyExpenseText.setTextColor(Color.RED);
             }
             monthlyExpenseText.setText(budget + " / " + expenses);
+            ImageView possibleView = (ImageView)getActivity().findViewById(R.id.dashboard_budget_possiblities);
+            if(possibility >= 80){
+            	possibleView.setImageResource(R.drawable.icon_sunny);
+            }else if(possibility >= 60){
+            	possibleView.setImageResource(R.drawable.icon_cloudy2);
+            }else if(possibility >= 40){
+            	possibleView.setImageResource(R.drawable.icon_cloudy);
+            }else if(possibility >= 20){
+            	possibleView.setImageResource(R.drawable.icon_rainy);
+            }else{
+            	possibleView.setImageResource(R.drawable.icon_stormy);
+            }
             
         } catch (JSONException e) {
             setErrorHandler("통신 오류! Err-BDG1");
