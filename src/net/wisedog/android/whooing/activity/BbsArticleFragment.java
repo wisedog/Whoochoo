@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,6 +18,8 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
+import net.wisedog.android.whooing.ui.BbsReplyEntity;
+import net.wisedog.android.whooing.utils.DateUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -119,15 +123,12 @@ public class BbsArticleFragment extends SherlockFragment {
         }
         TextView textLevel = (TextView)getActivity().findViewById(R.id.bbs_article_text_level);
         if(textLevel != null){
-            textLevel.setText(String.valueOf(objWriter.getInt("level")));
+            textLevel.setText("lv. " + objWriter.getInt("level"));
         }
         
         TextView textDate = (TextView)getActivity().findViewById(R.id.bbs_article_text_date);
         if(textDate != null){
-            //TODO locale Date formatting 
-            Date date = new Date(objResult.getLong("timestamp") * 1000);
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-            String dateString = sdf.format(date);
+            String dateString = DateUtil.getDateWithTimestamp(objResult.getLong("timestamp") * 1000);
             textDate.setText(dateString);
         }
         
@@ -157,6 +158,17 @@ public class BbsArticleFragment extends SherlockFragment {
                 profileImage.setImageResource(R.drawable.profile_anonymous);
             }
         }
+        
+        //inflate reply
+        JSONArray replyArray = objResult.getJSONArray("rows");
+        int len = replyArray.length();
+        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
+        for(int i = 0;i < len; i++){
+        	BbsReplyEntity entity = new BbsReplyEntity(getActivity());
+        	entity.setupReply((JSONObject) replyArray.get(i));
+        	ll.addView(entity);
+        }
+        
     }
     
 }

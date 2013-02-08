@@ -1,74 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/border"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    
-    <LinearLayout 
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
-        android:orientation="vertical"
-        android:layout_margin="5dp"
-        android:padding="8dp">
+        android:layout_marginBottom="10dp" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            >
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="50dp"
-                android:layout_height="50dp" 
-                android:layout_marginRight="15dp"/>
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/imageView1"
-                android:layout_marginTop="10dp"
-                android:text="Name" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/imageView1"
-                android:layout_below="@id/textView2"
-                android:layout_marginTop="5dp"
-                android:text="Lv.1" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:text="2012/05/05" />
-
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/bbs_article_chunk_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="15dp" />
 
         <TextView
+            android:id="@+id/bbs_article_chunk_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="blahblahblah.."
-            android:textSize="16sp"
-            android:textColor="#333333"
-            />
-        <TextView 
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/bbs_article_chunk_img"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/bbs_article_chunk_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="comments"
-            android:textSize="16sp"
-            android:textColor="#333333"
-            />
-        
-    </LinearLayout>
+            android:layout_below="@id/bbs_article_chunk_name"
+            android:layout_toRightOf="@id/bbs_article_chunk_img"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/bbs_article_chunk_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/bbs_article_chunk_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#333333"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/bbs_article_chunk_comment_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="comments"
+        android:textColor="#333333"
+        android:textSize="16sp" />
+    
+    <LinearLayout
+        android:id="@+id/bbs_article_chunk_comment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
 
 </LinearLayout>
