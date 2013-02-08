@@ -26,5 +26,6 @@ public class BoardItem{
     public int userId;
     public int userLevel;
     public String userImage;
+    public long timestamp;
     
 }

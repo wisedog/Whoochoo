@@ -237,7 +237,7 @@ public class ThreadRestAPI extends Thread {
 			break;
 		case Define.API_GET_BOARD_ARTICLE:
 		    int bbsId = mBundle.getInt("bbs_id");
-		    requestUrl = "https://whooing.com/api/bbs/" + type + bbsId + ".json?section_id="
+		    requestUrl = "https://whooing.com/api/bbs/" + type + "/" + bbsId + ".json?section_id="
                     + Define.APP_SECTION;
 		    GeneralApi bbsArticleAPI = new GeneralApi();
             result = bbsArticleAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,

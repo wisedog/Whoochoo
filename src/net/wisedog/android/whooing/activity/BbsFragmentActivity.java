@@ -55,7 +55,8 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	public void addArticleFragment(BoardItem item){
 	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.LIST_FRAGMENT_TAG);
 	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        BbsArticleFragment fragment = new BbsArticleFragment();        
+        BbsArticleFragment fragment = new BbsArticleFragment();
+        fragment.setData(mBoardType, item);
         ft.hide(fr0);
         ft.add(R.id.bbs_fragment_container, fragment, "abc");
         ft.show(fragment);

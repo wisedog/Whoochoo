@@ -115,6 +115,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
             int hits = entity.getInt("hits");
             String contents = entity.getString("contents");
             int recommandation = entity.getInt("recommandation");
+            long timestamp = entity.getLong("timestamp");
             
             JSONObject objWriter = entity.getJSONObject("writer");
             String userName = objWriter.getString("username");
@@ -130,6 +131,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
             item.userId = userId;
             item.userLevel = userLevel;
             item.userImage = userImage;
+            item.timestamp = timestamp;
             
             mDataArray.add(item);
         }
