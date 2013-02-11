@@ -104,7 +104,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_marginRight="10dp"
-	                android:src="@drawable/icon_cloudy" />
+	                android:src="@drawable/icon_none_96" />
 
 	            <TextView
 	                android:id="@+id/budget_monthly_expense"
@@ -156,7 +156,7 @@
 	                android:id="@+id/compare_arrow"
 	                android:layout_width="24dp"
 	                android:layout_height="24dp"
-	                android:src="@drawable/arrow_up_red" 
+	                android:src="@drawable/arrow_none" 
 	                android:layout_marginRight="5dp"
 	                android:layout_marginLeft="20dp"
 	                />

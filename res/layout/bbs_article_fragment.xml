@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
-            android:text="@string/text_loading"
             android:textColor="#333333"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -47,7 +46,6 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/bbs_article_profile_image"
-                    android:text="@string/text_loading" 
                     android:textSize="18sp"
                     android:textStyle="bold"/>
 
@@ -57,8 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/bbs_article_text_name"
                     android:layout_marginTop="4dp"
-                    android:layout_toRightOf="@+id/bbs_article_profile_image"
-                    android:text="@string/text_loading" />
+                    android:layout_toRightOf="@+id/bbs_article_profile_image"/>
 
                 <TextView
                     android:id="@+id/bbs_article_text_date"
@@ -66,17 +63,53 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:text="@string/text_loading" />
+                    android:layout_marginRight="20dp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true" />
+
             </RelativeLayout>
 
             <TextView
                 android:id="@+id/bbs_article_text_contents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_loading"
                 android:textColor="#333333"
                 android:textSize="16sp" />
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:background="@drawable/border_gray"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ABCD" />
+            
+            <EditText
+                android:id="@+id/editText1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:minLines="3" >
+
+            </EditText>
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm" />
+            
         </LinearLayout>
 
         <LinearLayout
