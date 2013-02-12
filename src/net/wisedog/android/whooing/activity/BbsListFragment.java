@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
+import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -132,6 +134,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
             item.userLevel = userLevel;
             item.userImage = userImage;
             item.timestamp = timestamp;
+            item.category = entity.getString("category");
             
             mDataArray.add(item);
         }
@@ -148,22 +151,33 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
      * @see android.widget.AbsListView.OnScrollListener#onScroll(android.widget.AbsListView, int, int, int)
      */
     @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount){
-        boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount -1;
-        //Log.i("wisedog", "first : " + firstVisibleItem + " visible : " + visibleItemCount + " total : " + totalItemCount + " page : " + mPageNum);
-        if (loadMore && !loading)
-        {
-            loading = true;
-            getListView().addFooterView(footerView, null, false);
-            Bundle b = new Bundle();
-            b.putInt("board_type", mBoardType);
-            b.putInt("page", mPageNum);
-            b.putInt("limit", 20);
-            ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_GET_BOARD, b);
-            thread.start();
-        }
-        
-    }
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
+		// Log.i("wisedog", "first : " + firstVisibleItem + " visible : " +
+		// visibleItemCount + " total : " + totalItemCount + " page : " +
+		// mPageNum);
+		if (loadMore && !loading) {
+			loading = true;
+			getListView().addFooterView(footerView, null, false);
+			Bundle b = new Bundle();
+			b.putInt("board_type", mBoardType);
+			b.putInt("page", mPageNum);
+			b.putInt("limit", 20);
+			JSONObject obj = DataRepository.getInstance().getUserValue();
+			String language = "en";
+			try {
+				language = obj.getString("language");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			b.putString("language", language);
+			ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+					Define.API_GET_BOARD, b);
+			thread.start();
+		}
+
+	}
 
     /* (non-Javadoc)
      * @see android.widget.AbsListView.OnScrollListener#onScrollStateChanged(android.widget.AbsListView, int)

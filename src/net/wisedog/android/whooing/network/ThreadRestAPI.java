@@ -2,6 +2,7 @@ package net.wisedog.android.whooing.network;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.activity.BbsFragmentActivity;
+import net.wisedog.android.whooing.api.Board;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
@@ -225,6 +226,12 @@ public class ThreadRestAPI extends Thread {
             result = postitAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 		    break;
+		case Define.API_GET_USER_INFO:
+			requestUrl = "https://whooing.com/api/user.json";
+			GeneralApi userAPI = new GeneralApi();
+            result = userAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+			break;
 		case Define.API_GET_BOARD:
 		    
 			int pageBoard = mBundle.getInt("page");
@@ -243,6 +250,11 @@ public class ThreadRestAPI extends Thread {
             result = bbsArticleAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 		    break;
+		case Define.API_POST_BOARD_REPLY:
+			Board boardReply = new Board();
+			result = boardReply.postReply(Define.APP_SECTION, Define.APP_ID, 
+					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+			break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;

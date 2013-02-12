@@ -23,6 +23,9 @@
     <string name="text_loading">로딩중</string>
     <string name="text_doubt">부채</string>
     <string name="text_expenses_budget">지출예산</string>
+    <string name="text_write_reply">답글쓰기</string>
+    <string name="text_confirm">확인</string>
+    <string name="text_me">나</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">정보 더보기&#8230;</string>

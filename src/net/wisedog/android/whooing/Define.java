@@ -51,11 +51,15 @@ public class Define {
     public static final int API_GET_BOARD_COUNSELING = 2202;
     public static final int API_GET_BOARD_WHOOING = 2203;
     public static final int API_GET_BOARD_ARTICLE = 2210;
+    public static final int API_POST_BOARD_REPLY = 2211;
+    public static final int API_POST_BOARD_COMMENT = 2212;
+    public static final int API_GET_USER_INFO = 2300;
     
     
     //flags
     //If there is need to be refreshed by insert some transaction or something like that
     //set this flag true
     public static boolean NEED_TO_REFRESH = false;
+	
     
 }

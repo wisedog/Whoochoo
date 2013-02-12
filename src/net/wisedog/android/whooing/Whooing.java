@@ -42,6 +42,7 @@ public class Whooing extends Activity {
             DataRepository repository = DataRepository.getInstance();
             repository.refreshDashboardValue(this);
             repository.refreshAccount(this);
+            repository.refreshUserInfo(this);
                
             Handler handler = new Handler(){
                 @Override

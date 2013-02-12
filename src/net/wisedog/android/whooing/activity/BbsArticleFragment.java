@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.BoardItem;
+import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.ui.BbsReplyEntity;
@@ -28,10 +29,15 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -70,6 +76,38 @@ public class BbsArticleFragment extends SherlockFragment {
      */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+    	ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.bbs_article_progress);
+        if(progress != null){
+        	progress.setVisibility(View.VISIBLE);
+        }
+        
+        Button confirmButton = (Button)getActivity().findViewById(R.id.bbs_article_post_reply_btn);
+        if(confirmButton != null){
+        	confirmButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					EditText text = (EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box);
+			    	if(text != null){
+			    		String str = text.getText().toString();
+			    		if(str == null || str.equals("")){
+			    			Toast.makeText(getActivity(), "입력좀해", Toast.LENGTH_SHORT).show();
+			    			return;
+			    		}
+			    		Bundle b = new Bundle();
+			    		b.putInt("bbs_id", mItemData.id);
+			    		b.putString("contents", str);
+			    		b.putString("category", mItemData.category);
+			    		ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_BOARD_REPLY, b);
+			           thread.start();
+			           setEnableStatus(false);
+			           /*((Button)getActivity().findViewById(R.id.bbs_article_post_reply_btn)).setEnabled(false);
+			           ((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setEnabled(false);*/
+			    	}
+				}
+			});
+        }
+        
         
         super.onActivityCreated(savedInstanceState);
     }
@@ -86,7 +124,14 @@ public class BbsArticleFragment extends SherlockFragment {
                         e.printStackTrace();
                     }
                 }
+                else if(msg.arg1 == Define.API_POST_BOARD_REPLY){
+                	JSONObject obj = (JSONObject)msg.obj;
+                	Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
+                	setEnableStatus(true);
+                	//TODO Comment container에 해당 내용 추가
+                }
             }
+            
             else if(msg.what == 0){
                 ImageView image = 
                         (ImageView)getActivity().findViewById(R.id.bbs_article_profile_image);
@@ -108,9 +153,29 @@ public class BbsArticleFragment extends SherlockFragment {
         mItemData = item;
     }
     
+    public void setEnableStatus(boolean enable){
+    	((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setEnabled(enable);
+    	((Button)getActivity().findViewById(R.id.bbs_article_post_reply_btn)).setEnabled(enable);
+    	
+    	if(enable){
+    		((ProgressBar)getActivity().findViewById(R.id.bbs_article_post_reply_progress)).setVisibility(View.INVISIBLE);
+    	}else{
+    		((ProgressBar)getActivity().findViewById(R.id.bbs_article_post_reply_progress)).setVisibility(View.VISIBLE);
+    	}
+    }
+    
+    /**
+     * Show article data
+     * @param		Bbs data formatted in JSON
+     * */
     protected void showArticle(JSONObject obj) throws JSONException{
         JSONObject objResult = obj.getJSONObject("results");
         JSONObject objWriter = objResult.getJSONObject("writer");
+        
+        ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.bbs_article_progress);
+        if(progress != null){
+        	progress.setVisibility(View.GONE);
+        }
 
         TextView textSubject = (TextView)getActivity().findViewById(R.id.bbs_article_subject);
         if(textSubject != null){
@@ -170,5 +235,4 @@ public class BbsArticleFragment extends SherlockFragment {
         }
         
     }
-    
 }

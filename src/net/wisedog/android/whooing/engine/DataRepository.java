@@ -30,16 +30,19 @@ public class DataRepository{
     static public final int PL_MODE = 1;
     static public final int MOUNTAIN_MODE = 2;
     static public final int EXP_BUDGET_MODE = 3;
+    static public final int USER_MODE = 4;
     
     private JSONObject mBsValue = null;	//자산부채 - bs
     private JSONObject mPlValue = null;	//비용수익 - pl
     private JSONObject mMtValue = null; //Mountain
     private JSONObject mExpBudgetValue = null; //Budget
+    private JSONObject mUserValue = null;	//User data
     
     private ArrayList<OnBsChangeListener> mBsObservers = new ArrayList<OnBsChangeListener>();
     private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
     private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();
     private ArrayList<OnExpBudgetChangeListener> mExpBudgetObservers = new ArrayList<OnExpBudgetChangeListener>();
+    private ArrayList<OnUserChangeListener> mUserObservers = new ArrayList<OnUserChangeListener>();
 	private Context mContext;
 	
 	private int mRestApiNum = 0;
@@ -61,6 +64,9 @@ public class DataRepository{
     }
     public static interface OnExpBudgetChangeListener extends DataChangeListener{
         public void onExpBudgetUpdate(JSONObject obj);
+    }
+    public static interface OnUserChangeListener extends DataChangeListener{
+        public void onUserUpdate(JSONObject obj);
     }
     
     //using singleton
@@ -158,6 +164,13 @@ public class DataRepository{
         thread.start();
     }
     
+	public void refreshUserInfo(Context context) {
+		mContext = context;
+		init();
+		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_USER_INFO);
+		thread.start();
+	}
+    
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -211,6 +224,15 @@ public class DataRepository{
 						}
                 		}
                 }
+                else if(msg.arg1 == Define.API_GET_USER_INFO){
+                	if(mContext != null){
+                		mUserValue = obj;
+                		Log.i("wisedog", "USER INFO :" + mUserValue.toString());
+                        for (OnUserChangeListener observer : mUserObservers) {
+                            observer.onUserUpdate(obj);
+                        }
+                	}
+                }
             }
         }
     };
@@ -257,6 +279,9 @@ public class DataRepository{
         else if(observerMode == EXP_BUDGET_MODE){
             mExpBudgetObservers.add((OnExpBudgetChangeListener)o);
         }
+        else if(observerMode == USER_MODE){
+            mUserObservers.add((OnUserChangeListener)o);
+        }
         
     }
 
@@ -284,6 +309,12 @@ public class DataRepository{
                 mExpBudgetObservers.remove(idx);
            }
         }
+        else if(observerMode == USER_MODE){
+        	int idx = mUserObservers.indexOf(o);
+        	if(idx > 0){
+        		mUserObservers.remove(idx);
+        	}
+        }
     }
     
     /**
@@ -306,6 +337,10 @@ public class DataRepository{
     
     public JSONObject getPlValue(){
         return mPlValue;
+    }
+    
+    public JSONObject getUserValue(){
+    	return mUserValue;
     }
 
 	
