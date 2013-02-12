@@ -5,9 +5,6 @@ package net.wisedog.android.whooing.activity;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,7 +13,6 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.BoardItem;
-import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.ui.BbsReplyEntity;
@@ -25,7 +21,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,9 +121,27 @@ public class BbsArticleFragment extends SherlockFragment {
                 }
                 else if(msg.arg1 == Define.API_POST_BOARD_REPLY){
                 	JSONObject obj = (JSONObject)msg.obj;
-                	Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
                 	setEnableStatus(true);
-                	//TODO Comment container에 해당 내용 추가
+                	((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setText("");
+                	
+                	int result = 0;
+                	try {
+						result = obj.getInt("code");
+					} catch (JSONException e) {
+						e.printStackTrace();
+						//TODO Toast
+					}
+                	if(result == Define.RESULT_OK){
+                		LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
+                		BbsReplyEntity entity = new BbsReplyEntity(getActivity());
+                    	try {
+							entity.setupReply(obj);
+							ll.addView(entity, 0);
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+                	}
+                	Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
                 }
             }
             

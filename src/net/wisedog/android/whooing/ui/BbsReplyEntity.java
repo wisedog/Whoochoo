@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.utils.DateUtil;
@@ -14,6 +15,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -78,6 +81,16 @@ public class BbsReplyEntity extends LinearLayout {
 		if(textComments != null){
 			textComments.setText(obj.getInt("additions") + " comments");
 		}
+		
+		Button confirmBtn = (Button)findViewById(R.id.bbs_article_chunk_comment_confirm_btn);
+		confirmBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// TODO Disable edittext, btn, turn on progressbar
+				// TODO run thread
+				
+			}
+		});
 
 		LinearLayout ll = (LinearLayout)findViewById(R.id.bbs_article_chunk_comment_container);
 		
@@ -93,7 +106,23 @@ public class BbsReplyEntity extends LinearLayout {
 	protected Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what == 0){
+        	if(msg.what == Define.MSG_API_OK){
+        		if(msg.arg1 == Define.API_POST_BOARD_COMMENT){
+        			JSONObject obj = (JSONObject)msg.obj;
+        			//TODO turn off progress
+        			LinearLayout ll = (LinearLayout)findViewById(R.id.bbs_article_chunk_comment_container);
+        			BbsCommentEntity entity = new BbsCommentEntity(mContext);
+        			try {
+						entity.setup(obj);
+						ll.addView(entity);
+					} catch (JSONException e) {
+						e.printStackTrace();
+						//TODO toast
+					}
+        			
+        		}
+        	}
+        	else if(msg.what == 0){
                 ImageView image = 
                         (ImageView)findViewById(R.id.bbs_article_chunk_img);
                 if(msg.obj == null){

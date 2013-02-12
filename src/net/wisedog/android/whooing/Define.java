@@ -28,6 +28,11 @@ public class Define {
 	public static final int MSG_AUTH_DONE = 102;
 	public static final int MSG_AUTH_TOTAL_DONE = 103;
 	
+	public static final int RESULT_OK = 200;
+	public static final int RESULT_NONE_RECORD = 204;
+	public static final int RESULT_ERROR = 400;
+	public static final int RESULT_INSUFFIENT_API = 402;
+	
 	public static final int MSG_API_OK = 1000;
 	public static final int MSG_API_FAIL = 1003;
 	public static final int MSG_API_FAIL_WITH_404 = 404;

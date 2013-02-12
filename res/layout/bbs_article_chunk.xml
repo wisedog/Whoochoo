@@ -88,6 +88,13 @@
                 android:layout_weight="0.80"
                 android:ems="10" >
             </EditText>
+
+            <Button
+                android:id="@+id/bbs_article_chunk_comment_confirm_btn"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_confirm" />
         </LinearLayout>
     </LinearLayout>
 
