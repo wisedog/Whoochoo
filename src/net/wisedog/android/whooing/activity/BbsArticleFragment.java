@@ -96,8 +96,6 @@ public class BbsArticleFragment extends SherlockFragment {
 			    		ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_BOARD_REPLY, b);
 			           thread.start();
 			           setEnableStatus(false);
-			           /*((Button)getActivity().findViewById(R.id.bbs_article_post_reply_btn)).setEnabled(false);
-			           ((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setEnabled(false);*/
 			    	}
 				}
 			});
@@ -135,7 +133,7 @@ public class BbsArticleFragment extends SherlockFragment {
                 		LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
                 		BbsReplyEntity entity = new BbsReplyEntity(getActivity());
                     	try {
-							entity.setupReply(obj);
+							entity.setupReply(obj, null);
 							ll.addView(entity, 0);
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -243,7 +241,7 @@ public class BbsArticleFragment extends SherlockFragment {
         LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
         for(int i = 0;i < len; i++){
         	BbsReplyEntity entity = new BbsReplyEntity(getActivity());
-        	entity.setupReply((JSONObject) replyArray.get(i));
+        	entity.setupReply((JSONObject) replyArray.get(i), objResult);
         	ll.addView(entity);
         }
         

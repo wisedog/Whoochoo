@@ -65,7 +65,8 @@ public class ThreadRestAPI extends Thread {
 		
 		int boardType = BbsFragmentActivity.BOARD_TYPE_FREE;
 		String type = "";
-		if(mAPIName == Define.API_GET_BOARD || mAPIName == Define.API_GET_BOARD_ARTICLE){
+		if(mAPIName == Define.API_GET_BOARD || mAPIName == Define.API_GET_BOARD_ARTICLE
+				|| mAPIName == Define.API_POST_BOARD_COMMENT){
 		    if (mBundle == null) {
                 Log.e(ThreadRestAPI.class.toString(),
                         "Not enough information for API_GET_BOARD or API_GET_BOARD_ARTICLE");
@@ -253,6 +254,11 @@ public class ThreadRestAPI extends Thread {
 		case Define.API_POST_BOARD_REPLY:
 			Board boardReply = new Board();
 			result = boardReply.postReply(Define.APP_SECTION, Define.APP_ID, 
+					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+			break;
+		case Define.API_POST_BOARD_COMMENT:
+			Board boardComment = new Board();
+			result = boardComment.postComment(Define.APP_SECTION, Define.APP_ID, 
 					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
 			break;
 		default:

@@ -27,5 +27,24 @@ public class Board extends AbstractAPI{
         
         JSONObject result = callRawApiPost(entriesURL, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
         return result;
-    } 
+    }
+
+	public JSONObject postComment(String appSection, String appID, String token, 
+            String appKey, String tokenSecret, Bundle bundle){
+		String entriesURL = "https://whooing.com/api/bbs/";
+        if(bundle == null){
+            return null;
+        }
+        String category = bundle.getString("category");
+        int bbsId = bundle.getInt("bbs_id");
+        String contents = bundle.getString("contents");
+        String commentId = bundle.getString("comment_id");
+        entriesURL = entriesURL + category + "/" + bbsId + "/" + commentId + ".json";
+        
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+        nameValuePairs.add(new BasicNameValuePair("contents", contents));
+        
+        JSONObject result = callRawApiPost(entriesURL, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
+        return result;
+	} 
 }
