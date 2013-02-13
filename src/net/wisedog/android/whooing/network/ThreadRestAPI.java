@@ -6,6 +6,7 @@ import net.wisedog.android.whooing.api.Board;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
+import net.wisedog.android.whooing.api.PostIt;
 import net.wisedog.android.whooing.api.Section;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 
@@ -259,6 +260,11 @@ public class ThreadRestAPI extends Thread {
 		case Define.API_POST_BOARD_COMMENT:
 			Board boardComment = new Board();
 			result = boardComment.postComment(Define.APP_SECTION, Define.APP_ID, 
+					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+			break;
+		case Define.API_POST_POSTIT:
+			PostIt postPostIt = new PostIt();
+			result = postPostIt.postPostIt(Define.APP_SECTION, Define.APP_ID, 
 					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
 			break;
 		default:

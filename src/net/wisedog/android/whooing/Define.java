@@ -49,6 +49,9 @@ public class Define {
     public static final int API_GET_ENTRIES = 2090;
     public static final int API_GET_BILL = 2100;
     public static final int API_GET_POST_IT = 2110;
+    public static final int API_POST_POSTIT = 2111;
+    public static final int API_PUT_POSTIT = 2112;
+    public static final int API_DEL_POSTIT = 2112;
     public static final int API_GET_BOARD = 2190;
     public static final int API_GET_BOARD_BASE = 2200;
     public static final int API_GET_BOARD_FREE = 2200;
@@ -59,12 +62,14 @@ public class Define {
     public static final int API_POST_BOARD_REPLY = 2211;
     public static final int API_POST_BOARD_COMMENT = 2212;
     public static final int API_GET_USER_INFO = 2300;
+	
     
     
     //flags
     //If there is need to be refreshed by insert some transaction or something like that
     //set this flag true
     public static boolean NEED_TO_REFRESH = false;
+	
 	
     
 }

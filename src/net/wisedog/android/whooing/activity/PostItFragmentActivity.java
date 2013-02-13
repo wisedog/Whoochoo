@@ -1,13 +1,10 @@
 package net.wisedog.android.whooing.activity;
 
-import org.json.JSONObject;
-
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.PostItItem;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -19,6 +16,9 @@ import com.actionbarsherlock.view.SubMenu;
  * @author wisedog(me@wisedog.net)
  * */
 public class PostItFragmentActivity extends SherlockFragmentActivity {
+	protected boolean mRefreshFlag = false;
+	//See http://developer.android.com/training/basics/fragments/communicating.html
+	//아무래도 interface 로 통신해서 해야할듯 
 
     /* (non-Javadoc)
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -70,9 +70,17 @@ public class PostItFragmentActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getTitle().equals("write")) {
             addArticleFragment(null, true);
-            Toast.makeText(this, "Press Write button", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+	public void needToRefresh(boolean b) {
+		mRefreshFlag = b;
+		
+	}
+	
+	public boolean getNeedRefresh(){
+		return mRefreshFlag;
+	}
 }

@@ -20,6 +20,12 @@
         android:layout_height="wrap_content"
         android:gravity="right" >
 
+        <ProgressBar
+            android:id="@+id/post_it_article_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:visibility="invisible"/>
+
         <Button
             android:id="@+id/post_it_article_btn_modify"
             android:layout_width="wrap_content"

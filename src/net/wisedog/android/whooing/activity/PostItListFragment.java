@@ -18,6 +18,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HeaderViewListAdapter;
@@ -52,15 +53,38 @@ public class PostItListFragment extends SherlockListFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if(((PostItFragmentActivity)getActivity()).getNeedRefresh()){
+        	//Clear All
+        	mDataArray.clear();
+        	HeaderViewListAdapter a1 = (HeaderViewListAdapter)getListView().getAdapter();
+            PostItAdapter adapter = (PostItAdapter) a1.getWrappedAdapter();
+            adapter.setData(mDataArray);
+            adapter.notifyDataSetChanged();
+        	ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
+            thread.start();
+        }
         footerView = ((LayoutInflater) getActivity().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);
         setListAdapter(mAdapter);
-        //getListView().removeFooterView(footerView);
     }
+    
+    
     
 
     @Override
+	public void onResume() {
+		Log.i("wisedog", "onResume");
+		super.onResume();
+	}
+
+	@Override
+	public void onStart() {
+		Log.i("wisedog", "onStart");
+		super.onStart();
+	}
+
+	@Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
         
         PostItItem item = (PostItItem)getListView().getItemAtPosition(position);
@@ -85,6 +109,7 @@ public class PostItListFragment extends SherlockListFragment{
         }
         
     };
+    
     
     protected void showPostIt(JSONObject obj) throws JSONException{
         JSONArray array = obj.getJSONArray("results");
