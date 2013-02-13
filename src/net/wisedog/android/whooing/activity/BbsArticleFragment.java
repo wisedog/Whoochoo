@@ -133,7 +133,7 @@ public class BbsArticleFragment extends SherlockFragment {
                 		LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
                 		BbsReplyEntity entity = new BbsReplyEntity(getActivity());
                     	try {
-							entity.setupReply(obj, null);
+							entity.setupReply(obj.getJSONObject("results"), null);
 							ll.addView(entity, 0);
 						} catch (JSONException e) {
 							e.printStackTrace();

@@ -31,7 +31,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Styled);
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.bbs_fragment1);
+		setContentView(R.layout.bbs_fragment);
 		setTitle(getIntent().getStringExtra("title"));
 		
 		mBoardType = getIntent().getIntExtra("board_type", -1);
@@ -89,50 +89,4 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 
         return super.onOptionsItemSelected(item);
     }
-	/*
-	
-	protected Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_GET_BOARD){
-                    mPageNum = mPageNum + 1;
-                    JSONObject obj = (JSONObject)msg.obj;
-                    mBbsValue = obj;
-                    try {
-                        showBoard(obj);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            super.handleMessage(msg);
-        }
-        
-    };
-
-	protected void showBoard(JSONObject obj) throws JSONException{
-		JSONArray array = obj.getJSONArray("results");
-        int length = array.length();
-        
-        //ArrayList<BoardItem> dataArray = ((BoardAdapter)mListView.getAdapter()).getData();
-        
-        for(int i = 0; i < length; i++){
-            JSONObject entity = array.getJSONObject(i);
-            int id = entity.getInt("bbs_id");
-            String content = entity.getString("subject");
-            int commentNum = entity.getInt("comments");
-            JSONObject objWriter = entity.getJSONObject("writer");
-            String userName = objWriter.getString("username");
-                    
-            BoardItem item = new BoardItem(id, userName, commentNum, content);
-            mDataArray.add(item);
-        }
-        BoardAdapter adapter = (BoardAdapter) ((HeaderViewListAdapter)mListView.getAdapter()).getWrappedAdapter();
-        adapter.setData(mDataArray);
-        adapter.notifyDataSetChanged();
-        mListView.removeFooterView(footerView);
-        loading = false;
-
-	}*/
 }

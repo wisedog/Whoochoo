@@ -22,12 +22,14 @@ import android.widget.TextView;
 public class PostItAdapter extends BaseAdapter {
     private ArrayList<PostItItem> mDataArray;
     private LayoutInflater mInflater;
-	private Context mContext;
     
     public PostItAdapter(Context context, ArrayList<PostItItem> dataArray){
         mDataArray = dataArray;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mContext = context;
+    }
+    
+    public void setData(ArrayList<PostItItem> dataArray){
+        mDataArray = dataArray;
     }
 
     public int getCount() {
@@ -35,7 +37,7 @@ public class PostItAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return "AAAA";
+        return mDataArray.get(position);
     }
 
     public long getItemId(int position) {

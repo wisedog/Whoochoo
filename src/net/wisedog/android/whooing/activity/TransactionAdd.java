@@ -35,6 +35,10 @@ import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -61,6 +65,11 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     private int mMonth;
     private int mDay;
     
+    //For test
+    private static final String[] COUNTRIES = new String[] {
+        "Belgium", "France", "Italy", "Germany", "Spain", "Germany1","Germany2"
+    };
+    
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -86,6 +95,24 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             finish();
             return;
         }
+        
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.select_dialog_item, COUNTRIES);
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.auto_complete);
+        textView.setAdapter(adapter);
+
+        
+        textView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                String str = (String) arg0.getAdapter().getItem(position);
+                Toast.makeText(TransactionAdd.this, "position " + position + " name : " + str, Toast.LENGTH_SHORT).show();
+                
+            }
+        });
+        
                 
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
         thread.start();

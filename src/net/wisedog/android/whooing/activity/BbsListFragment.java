@@ -154,9 +154,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-		// Log.i("wisedog", "first : " + firstVisibleItem + " visible : " +
-		// visibleItemCount + " total : " + totalItemCount + " page : " +
-		// mPageNum);
 		if (loadMore && !loading) {
 			loading = true;
 			getListView().addFooterView(footerView, null, false);

@@ -147,11 +147,11 @@ public class BbsReplyEntity extends LinearLayout {
         	if(msg.what == Define.MSG_API_OK){
         		if(msg.arg1 == Define.API_POST_BOARD_COMMENT){
         			JSONObject obj = (JSONObject)msg.obj;
-        			//TODO turn off progress
+        			setLoadingStatus(false);
         			LinearLayout ll = (LinearLayout)findViewById(R.id.bbs_article_chunk_comment_container);
         			BbsCommentEntity entity = new BbsCommentEntity(mContext);
         			try {
-						entity.setup(obj);
+						entity.setup(obj.getJSONObject("results"));
 						ll.addView(entity, 0);
 					} catch (JSONException e) {
 						e.printStackTrace();

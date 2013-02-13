@@ -1,22 +1,18 @@
 package net.wisedog.android.whooing.activity;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.adapter.PostItAdapter;
 import net.wisedog.android.whooing.dataset.PostItItem;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.widget.ListView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 
 /**
  * Fragment Activity for Post it!
@@ -24,7 +20,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * */
 public class PostItFragmentActivity extends SherlockFragmentActivity {
 
-    private JSONObject mPostItValue = null;
     /* (non-Javadoc)
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
@@ -34,60 +29,50 @@ public class PostItFragmentActivity extends SherlockFragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_it_fragment);
         setTitle(getIntent().getStringExtra("title"));
+        if (getSupportFragmentManager().findFragmentById(R.id.bbs_fragment_container) == null) {
+            PostItListFragment list = new PostItListFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.post_it_fragment_container, list, PostItListFragment.LIST_FRAGMENT_TAG)
+                    .commit();
+        }
     }
     
     @Override
-    protected void onResume() {
-        if(mPostItValue == null){
-            ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_POST_IT);
-            thread.start();
-        }
-        else{
-            //show Postit 
-        }
-        super.onResume();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("write").setIcon(R.drawable.icon_write)
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        SubMenu subMenu1 = menu.addSubMenu("Lists");        
+        subMenu1.add("Setting");
+        subMenu1.add("Help");
+        subMenu1.add("About");
+
+        return super.onCreateOptionsMenu(menu);
     }
     
-    protected Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_GET_POST_IT){
-                    JSONObject obj = (JSONObject)msg.obj;
-                    mPostItValue = obj;
-                    try {
-                        showPostIt(obj);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            super.handleMessage(msg);
-        }
-        
-    };
-    
     /**
-     * Show post it
-     * @param obj   JSON formatted data
-     */
-    protected void showPostIt(JSONObject obj) throws JSONException{
-        JSONArray array = obj.getJSONArray("results");
-        int length = array.length();
-        
-        ArrayList<PostItItem> dataArray = new ArrayList<PostItItem>();
-        
-        for(int i = 0; i < length; i++){
-            JSONObject entity = array.getJSONObject(i);
-            int id = entity.getInt("post_it_id");
-            String page = entity.getString("page");
-            String everywhere = entity.getString("everywhere");
-            String content = entity.getString("contents");
-            PostItItem item = new PostItItem(id, page, everywhere, content);
-            dataArray.add(item);
+     * Add Article Fragment with given Item
+     * @param  item    item info what the user selected        
+     * */
+    public void addArticleFragment(PostItItem item, boolean isAdd){
+        Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(PostItListFragment.LIST_FRAGMENT_TAG);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        PostItArticleFragment fragment = new PostItArticleFragment();
+        fragment.setData(item, isAdd);
+        ft.hide(fr0);
+        ft.add(R.id.post_it_fragment_container, fragment, "abc");
+        ft.show(fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getTitle().equals("write")) {
+            addArticleFragment(null, true);
+            Toast.makeText(this, "Press Write button", Toast.LENGTH_SHORT).show();
         }
-        ListView postItList = (ListView)findViewById(R.id.post_it_listview);
-        PostItAdapter adapter = new PostItAdapter(this, dataArray);
-        postItList.setAdapter(adapter);
+
+        return super.onOptionsItemSelected(item);
     }
 }
