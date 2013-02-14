@@ -3,8 +3,6 @@
  */
 package net.wisedog.android.whooing.activity;
 
-import org.json.JSONObject;
-
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.PostItItem;
@@ -14,11 +12,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -36,6 +35,7 @@ public class PostItArticleFragment extends SherlockFragment {
     private PostItItem mItem = null;
     private boolean mInEditMode = false;
     private boolean mInAddMode = false;
+    private boolean mIsConfirm = false;
     
     public void setData(PostItItem item, boolean addMode){
         this.mItem = item;
@@ -51,7 +51,7 @@ public class PostItArticleFragment extends SherlockFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         final EditText editText = (EditText)getActivity().findViewById(R.id.post_it_article_edit_text);
         final Button modifyBtn = (Button)getActivity().findViewById(R.id.post_it_article_btn_modify);
-        Button removeBtn = (Button)getActivity().findViewById(R.id.post_it_article_btn_remove);
+        final Button removeBtn = (Button)getActivity().findViewById(R.id.post_it_article_btn_remove);
         final Button confirmBtn = (Button)getActivity().findViewById(R.id.post_it_article_btn_confirm);
         
         if(editText == null || modifyBtn == null || removeBtn == null || confirmBtn == null){
@@ -136,9 +136,16 @@ public class PostItArticleFragment extends SherlockFragment {
                 public void onClick(View v) {
                     if (mInEditMode) {
                         editText.setEnabled(false);
-                        modifyBtn.setText(getString(R.string.text_modify));
-                        //TODO Thread to modify
-                        Toast.makeText(getActivity(), "Modified", Toast.LENGTH_SHORT).show();
+                        modifyBtn.setText(getString(R.string.text_loading));
+                        modifyBtn.setEnabled(false);
+                        ((ProgressBar)getActivity().findViewById(R.id.post_it_article_progress))
+                        .setVisibility(View.VISIBLE);
+                        Bundle b = new Bundle();
+                        b.putInt("post_it_id", mItem.id);
+                        b.putString("contents", editText.getText().toString());
+                        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                                Define.API_PUT_POSTIT, b);
+                        thread.start();
                     } else {
                         editText.setEnabled(true);
                         editText.requestFocus();
@@ -149,14 +156,25 @@ public class PostItArticleFragment extends SherlockFragment {
                 }
             });
             removeBtn.setOnClickListener(new OnClickListener() {
-
                 @Override
-                public void onClick(View arg0) {
-                    Bundle b = new Bundle();
-                    b.putInt("post_it_id", mItem.id);
-                    ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-                            Define.API_DEL_POSTIT, b);
-                    thread.start();
+                public void onClick(View v) {
+                    if(mIsConfirm){
+                        removeBtn.setEnabled(false);
+                        ((ProgressBar)getActivity().findViewById(R.id.post_it_article_progress))
+                        .setVisibility(View.VISIBLE);
+                        Bundle b = new Bundle();
+                        b.putInt("post_it_id", mItem.id);
+                        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                                Define.API_DEL_POSTIT, b);
+                        thread.start();
+                    }
+                    else{
+                        removeBtn.setText(getString(R.string.post_it_question_delete));
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                        removeBtn.startAnimation(shake);
+                        mIsConfirm = true;
+                    }
+                    
                 }
             });
             confirmBtn.setVisibility(View.GONE);
@@ -166,31 +184,35 @@ public class PostItArticleFragment extends SherlockFragment {
         super.onActivityCreated(savedInstanceState);
     }
     
-    protected Handler mHandler = new Handler(){
-    	@Override
-        public void handleMessage(Message msg) {
-            if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_POST_POSTIT){
-                    ((ProgressBar)getActivity().findViewById(R.id.post_it_article_progress))
-                    .setVisibility(View.INVISIBLE);
-                    ((PostItFragmentActivity)getActivity()).needToRefresh(true);
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    
-                }
-                else if(msg.arg1 == Define.API_PUT_POSTIT){
-                	
-                }
-                else if(msg.arg1 == Define.API_DEL_POSTIT){
-                    JSONObject obj = (JSONObject) msg.obj;
-                    Log.i("wisedog", "" + obj.toString());
-                    Toast.makeText(getActivity(), "The post is deleted", Toast.LENGTH_SHORT).show();   //TODO Localization
-                    ((PostItFragmentActivity)getActivity()).needToRefresh(true);
-                    getActivity().getSupportFragmentManager().popBackStack();
-                }
-            }
-            super.handleMessage(msg);
-        }
-    };
+	protected Handler mHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == Define.MSG_API_OK) {
+				if (msg.arg1 == Define.API_POST_POSTIT) {
+					((ProgressBar) getActivity().findViewById(
+							R.id.post_it_article_progress))
+							.setVisibility(View.INVISIBLE);
+					((PostItFragmentActivity) getActivity())
+							.needToRefresh(true);
+					getActivity().getSupportFragmentManager().popBackStack();
+
+				} else if (msg.arg1 == Define.API_PUT_POSTIT) {
+					Toast.makeText(getActivity(), "The post is modified",
+							Toast.LENGTH_SHORT).show(); // TODO Localization
+					((PostItFragmentActivity) getActivity())
+							.needToRefresh(true);
+					getActivity().getSupportFragmentManager().popBackStack();
+				} else if (msg.arg1 == Define.API_DEL_POSTIT) {
+					Toast.makeText(getActivity(), "The post is deleted",
+							Toast.LENGTH_SHORT).show(); // TODO Localization
+					((PostItFragmentActivity) getActivity())
+							.needToRefresh(true);
+					getActivity().getSupportFragmentManager().popBackStack();
+				}
+			}
+			super.handleMessage(msg);
+		}
+	};
     
     
     public boolean allowBackPressed(){

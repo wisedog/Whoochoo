@@ -274,7 +274,7 @@ public class ThreadRestAPI extends Thread {
 		    break;
 		case Define.API_PUT_POSTIT:
             PostIt putPostIt = new PostIt();
-            result = putPostIt.delPutIt(Define.APP_SECTION, Define.APP_ID, 
+            result = putPostIt.putPostIt(Define.APP_SECTION, Define.APP_ID, 
                     Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
             break;
 		default:

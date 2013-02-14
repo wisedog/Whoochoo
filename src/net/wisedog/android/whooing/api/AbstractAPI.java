@@ -147,7 +147,7 @@ public class AbstractAPI {
 	/**
      * Call raw POST api 
      * */
-    protected JSONObject callRawApiPut(String url, String appID, String token, String appKey, 
+    protected JSONObject callApiPut(String url, String appID, String token, String appKey, 
             String tokenSecret, String appSection, List<NameValuePair> nameValuePairs){
         //make up header
         String sig_raw = appKey+"|" +tokenSecret;

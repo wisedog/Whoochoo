@@ -19,15 +19,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
@@ -68,7 +65,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //BoardAdapter adapter = new BoardAdapter(getActivity(), mDataArray);
         footerView = ((LayoutInflater) getActivity().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);

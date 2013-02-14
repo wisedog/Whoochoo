@@ -88,7 +88,12 @@
     <!-- Bill -->
     <string name="bill_amount_due">Amount Due</string>
     
+    <!-- Postit -->
+    <string name="post_it_question_delete">Really?</string>
+    
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>
+    
+    
 </resources>

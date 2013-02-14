@@ -57,10 +57,17 @@ public class PostIt extends AbstractAPI{
      * @param mBundle
      * @return
      */
-    public JSONObject delPutIt(String appSection, String appID, String token, 
+    public JSONObject putPostIt(String appSection, String appID, String token, 
             String appKey, String tokenSecret, Bundle bundle) {
-        // TODO Auto-generated method stub
-        return null;
+    	 if(bundle == null){
+             return null;
+         }
+         String entriesURL = "https://whooing.com/api/post_it/" + bundle.getInt("post_it_id") + ".json";
+         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+         nameValuePairs.add(new BasicNameValuePair("contents", bundle.getString("contents")));
+         nameValuePairs.add(new BasicNameValuePair("section_id", appSection));
+         JSONObject result = callApiPut(entriesURL, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
+         return result;
     }
 
 }

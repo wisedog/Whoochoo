@@ -53,36 +53,21 @@ public class PostItListFragment extends SherlockListFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(((PostItFragmentActivity)getActivity()).getNeedRefresh()){
-        	//Clear All
-        	mDataArray.clear();
-        	HeaderViewListAdapter a1 = (HeaderViewListAdapter)getListView().getAdapter();
+        if (((PostItFragmentActivity) getActivity()).getNeedRefresh()) {
+            // Clear All
+            mDataArray.clear();
+            HeaderViewListAdapter a1 = (HeaderViewListAdapter) getListView().getAdapter();
             PostItAdapter adapter = (PostItAdapter) a1.getWrappedAdapter();
             adapter.setData(mDataArray);
             adapter.notifyDataSetChanged();
-        	ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
+            ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
             thread.start();
         }
-        footerView = ((LayoutInflater) getActivity().getSystemService(
-                Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
+        footerView = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+                R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);
         setListAdapter(mAdapter);
     }
-    
-    
-    
-
-    @Override
-	public void onResume() {
-		Log.i("wisedog", "onResume");
-		super.onResume();
-	}
-
-	@Override
-	public void onStart() {
-		Log.i("wisedog", "onStart");
-		super.onStart();
-	}
 
 	@Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
@@ -97,7 +82,6 @@ public class PostItListFragment extends SherlockListFragment{
             if(msg.what == Define.MSG_API_OK){
                 if(msg.arg1 == Define.API_GET_POST_IT){
                     JSONObject obj = (JSONObject)msg.obj;
-                    //mPostItValue = obj;
                     try {
                         showPostIt(obj);
                     } catch (JSONException e) {
@@ -109,7 +93,6 @@ public class PostItListFragment extends SherlockListFragment{
         }
         
     };
-    
     
     protected void showPostIt(JSONObject obj) throws JSONException{
         JSONArray array = obj.getJSONArray("results");
