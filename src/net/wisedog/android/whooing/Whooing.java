@@ -23,6 +23,7 @@ public class Whooing extends Activity {
         if(savedInstanceState != null){
             if(savedInstanceState.getBoolean("execute_before", false)){
                 this.finish();
+                return;
             }           
         }
         //String locale = getResources().getConfiguration().locale.getDisplayName();

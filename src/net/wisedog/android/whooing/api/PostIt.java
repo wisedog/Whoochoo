@@ -29,4 +29,38 @@ public class PostIt extends AbstractAPI{
         return result;
     }
 
+    /**
+     * @param appSection
+     * @param appID
+     * @param token
+     * @param appKey
+     * @param tokenSecret
+     * @param bundle
+     * @return
+     */
+    public JSONObject delPostIt(String appSection, String appID, String token, 
+            String appKey, String tokenSecret, Bundle bundle) {
+        if(bundle == null){
+            return null;
+        }
+        String entriesURL = "https://whooing.com/api/post_it/" + bundle.getInt("post_it_id") + ".json";
+        JSONObject result = callApiDelete(entriesURL, appID, token, appKey, tokenSecret, appSection);
+        return result;
+    }
+
+    /**
+     * @param aPP_SECTION
+     * @param aPP_ID
+     * @param rEAL_TOKEN
+     * @param aPP_SECRET
+     * @param tOKEN_SECRET
+     * @param mBundle
+     * @return
+     */
+    public JSONObject delPutIt(String appSection, String appID, String token, 
+            String appKey, String tokenSecret, Bundle bundle) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

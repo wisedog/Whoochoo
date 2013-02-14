@@ -11,8 +11,10 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
@@ -48,10 +50,14 @@ public class JSONUtil {
 				HttpEntity entity = response.getEntity();
 				InputStream content = entity.getContent();
 				
+				String strContent = StringUtil.convertStreamToString(content);
+                if(strContent == null){
+                    return null;
+                }
 				// Load the requested page converted to a string into a JSONObject.
                 JSONObject result;
 				// Get the token value
-				result = new JSONObject(StringUtil.convertStreamToString(content));
+				result = new JSONObject(strContent);
 				return result;
 			} else {
 				Log.e(JSONUtil.class.toString(), "Failed to download file");
@@ -75,8 +81,6 @@ public class JSONUtil {
             httpPost.addHeader(headerKey, headerValue);
         }
 	    try {
-	        
-	        //httpPost.setEntity(new UrlEncodedFormEntity(postValue));
 	        httpPost.setEntity(new UrlEncodedFormEntity(postValue, HTTP.UTF_8));
 	        
             HttpResponse response = client.execute(httpPost);
@@ -85,11 +89,14 @@ public class JSONUtil {
             if (statusCode == 200) {
                 HttpEntity entity = response.getEntity();
                 InputStream content = entity.getContent();
-                
+                String strContent = StringUtil.convertStreamToString(content);
+                if(strContent == null){
+                    return null;
+                }
                 // Load the requested page converted to a string into a JSONObject.
                 JSONObject result;
                 // Get the token value
-                result = new JSONObject(StringUtil.convertStreamToString(content));
+                result = new JSONObject(strContent);
                 return result;
             } else {
                 Log.e(JSONUtil.class.toString(), "Failed to download file");
@@ -101,5 +108,84 @@ public class JSONUtil {
         }
 	    return null;
 	}
+    
+  //TODO Need to be refactored    
+    static public JSONObject getJSONObjectDelete(String url, String headerKey, String headerValue) throws JSONException {
+        HttpClient client = new DefaultHttpClient();
+        client.getParams().setParameter("http.protocol.content-charset", HTTP.UTF_8);
+        HttpDelete httpDelete = new HttpDelete(url);
+        if (headerKey != null && headerValue != null) {
+            httpDelete.addHeader(headerKey, headerValue);
+        }
+        try {
+            HttpResponse response = client.execute(httpDelete);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                String strContent = StringUtil.convertStreamToString(content);
+                // Load the requested page converted to a string into a JSONObject.
+                if(strContent == null){
+                    return null;
+                }
+             // Get the token value
+                JSONObject result = new JSONObject(strContent);
+                return result;
+            } else {
+                Log.e(JSONUtil.class.toString(), "Failed to download file");
+            }
+        } catch (ClientProtocolException e) {
+            Log.e(JSONUtil.class.toString(), "HttpResponse Failed");
+        } catch (IOException e) {
+            Log.e(JSONUtil.class.toString(), "HttpResponse IO Failed");
+        }
+        return null;
+    }
+
+    /**
+     * @param url
+     * @param string
+     * @param headerValue
+     * @param putValue
+     * @return
+     */
+    public static JSONObject getJSONObjectPut(String url, String headerKey, String headerValue,
+            List<NameValuePair> putValue) throws JSONException {
+        HttpClient client = new DefaultHttpClient();
+        client.getParams().setParameter("http.protocol.content-charset", HTTP.UTF_8);
+        //HttpPost httpPost = new HttpPost(url);
+        HttpPut httpPut = new HttpPut(url);
+        if (headerKey != null && headerValue != null) {
+            httpPut.addHeader(headerKey, headerValue);
+        }
+        try {
+            httpPut.setEntity(new UrlEncodedFormEntity(putValue, HTTP.UTF_8));
+            
+            HttpResponse response = client.execute(httpPut);
+            StatusLine statusLine = response.getStatusLine();
+            int statusCode = statusLine.getStatusCode();
+            if (statusCode == 200) {
+                HttpEntity entity = response.getEntity();
+                InputStream content = entity.getContent();
+                String strContent = StringUtil.convertStreamToString(content);
+                if(strContent == null){
+                    return null;
+                }
+                // Load the requested page converted to a string into a JSONObject.
+                JSONObject result;
+                // Get the token value
+                result = new JSONObject(strContent);
+                return result;
+            } else {
+                Log.e(JSONUtil.class.toString(), "Failed to download file");
+            }
+        } catch (ClientProtocolException e) {
+            Log.e(JSONUtil.class.toString(), "HttpResponse Failed");
+        } catch (IOException e) {
+            Log.e(JSONUtil.class.toString(), "HttpResponse IO Failed");
+        }
+        return null;
+    }
     
 }

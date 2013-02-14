@@ -122,4 +122,51 @@ public class AbstractAPI {
         
         return null;
 	}
+	
+	protected JSONObject callApiDelete(String url, String appID, String token, String appKey, 
+            String tokenSecret, String appSection){
+        //make up header
+        String sig_raw = appKey+"|" +tokenSecret;
+        String signiture = SHA1Util.SHA1(sig_raw);
+        String headerValue = "app_id="+appID+ ",token="+token + ",signiture="+ signiture+
+                ",nounce="+"abcde"+",timestamp="+Calendar.getInstance().getTimeInMillis();
+        
+        //shot!
+        try {
+            JSONObject result = JSONUtil.getJSONObjectDelete(url, "X-API-KEY", headerValue);
+            return result;
+            
+        } catch (JSONException e) {
+            Log.e(AbstractAPI.class.toString(), "callAPI error");
+            e.printStackTrace();
+        } 
+        
+        return null;
+    }
+	
+	/**
+     * Call raw POST api 
+     * */
+    protected JSONObject callRawApiPut(String url, String appID, String token, String appKey, 
+            String tokenSecret, String appSection, List<NameValuePair> nameValuePairs){
+        //make up header
+        String sig_raw = appKey+"|" +tokenSecret;
+        String signiture = SHA1Util.SHA1(sig_raw);
+        String headerValue = "app_id="+appID+ ",token="+token + ",signiture="+ signiture+
+                ",nounce="+"abcde"+",timestamp="+Calendar.getInstance().getTimeInMillis();
+        
+        //shot!
+        try {
+            JSONObject result = JSONUtil.getJSONObjectPut(url, "X-API-KEY", headerValue, nameValuePairs);
+            return result;
+            
+        } catch (JSONException e) {
+            Log.e(AbstractAPI.class.toString(), "callAPI error");
+            e.printStackTrace();
+        } 
+        
+        return null;
+    }
+	
+	
 }

@@ -267,6 +267,16 @@ public class ThreadRestAPI extends Thread {
 			result = postPostIt.postPostIt(Define.APP_SECTION, Define.APP_ID, 
 					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
 			break;
+		case Define.API_DEL_POSTIT:
+		    PostIt delPostIt = new PostIt();
+		    result = delPostIt.delPostIt(Define.APP_SECTION, Define.APP_ID, 
+                    Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+		    break;
+		case Define.API_PUT_POSTIT:
+            PostIt putPostIt = new PostIt();
+            result = putPostIt.delPutIt(Define.APP_SECTION, Define.APP_ID, 
+                    Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+            break;
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;

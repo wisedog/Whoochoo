@@ -3,6 +3,8 @@
  */
 package net.wisedog.android.whooing.activity;
 
+import org.json.JSONObject;
+
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.PostItItem;
@@ -91,7 +93,7 @@ public class PostItArticleFragment extends SherlockFragment {
 				@Override
 				public void onClick(View v) {
 					Bundle b = new Bundle();
-					b.putString("page", "_dashboard");
+					b.putString("page", "_main/insert");
 					b.putString("contents", editText.getText().toString());
 					((ProgressBar)getActivity().findViewById(R.id.post_it_article_progress)).setVisibility(View.VISIBLE);
 					confirmBtn.setEnabled(false);
@@ -135,6 +137,7 @@ public class PostItArticleFragment extends SherlockFragment {
                     if (mInEditMode) {
                         editText.setEnabled(false);
                         modifyBtn.setText(getString(R.string.text_modify));
+                        //TODO Thread to modify
                         Toast.makeText(getActivity(), "Modified", Toast.LENGTH_SHORT).show();
                     } else {
                         editText.setEnabled(true);
@@ -149,8 +152,11 @@ public class PostItArticleFragment extends SherlockFragment {
 
                 @Override
                 public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-
+                    Bundle b = new Bundle();
+                    b.putInt("post_it_id", mItem.id);
+                    ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                            Define.API_DEL_POSTIT, b);
+                    thread.start();
                 }
             });
             confirmBtn.setVisibility(View.GONE);
@@ -173,6 +179,13 @@ public class PostItArticleFragment extends SherlockFragment {
                 }
                 else if(msg.arg1 == Define.API_PUT_POSTIT){
                 	
+                }
+                else if(msg.arg1 == Define.API_DEL_POSTIT){
+                    JSONObject obj = (JSONObject) msg.obj;
+                    Log.i("wisedog", "" + obj.toString());
+                    Toast.makeText(getActivity(), "The post is deleted", Toast.LENGTH_SHORT).show();   //TODO Localization
+                    ((PostItFragmentActivity)getActivity()).needToRefresh(true);
+                    getActivity().getSupportFragmentManager().popBackStack();
                 }
             }
             super.handleMessage(msg);
