@@ -44,6 +44,7 @@ public class Whooing extends Activity {
             repository.refreshDashboardValue(this);
             repository.refreshAccount(this);
             repository.refreshUserInfo(this);
+            repository.refreshLastestItems(this);
                
             Handler handler = new Handler(){
                 @Override

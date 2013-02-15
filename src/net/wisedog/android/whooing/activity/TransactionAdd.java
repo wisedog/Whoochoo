@@ -18,11 +18,13 @@ import com.actionbarsherlock.view.SubMenu;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
+import net.wisedog.android.whooing.dataset.LastestEntryItem;
 import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountChooserDialog;
 import net.wisedog.android.whooing.dialog.AccountChooserDialog.AccountChooserListener;
+import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
@@ -34,6 +36,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,14 +64,11 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     private AccountsEntity  mLeftAccount = null;
     private AccountsEntity  mRightAccount = null;
     
+    private ArrayList<LastestEntryItem> mEntryItemArray = null;
+    
     private int mYear;
     private int mMonth;
     private int mDay;
-    
-    //For test
-    private static final String[] COUNTRIES = new String[] {
-        "Belgium", "France", "Italy", "Germany", "Spain", "Germany1","Germany2"
-    };
     
 
     /* (non-Javadoc)
@@ -95,6 +95,36 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             finish();
             return;
         }
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
+        thread.start();
+        
+        DataRepository repository = DataRepository.getInstance();
+        JSONObject obj = repository.getLastestItems();
+        JSONArray array = null;
+        mEntryItemArray = new ArrayList<LastestEntryItem>();
+        ArrayList<String> entryItemStringArray = new ArrayList<String>();
+        if(obj != null){
+            try {
+                array = obj.getJSONArray("results");
+                for(int i = 0; i < array.length(); i++){
+                    JSONObject objItem = (JSONObject) array.get(i);
+                    //TODO TransactionItem 과 통합할것. money 부분 유의
+                    LastestEntryItem item = new LastestEntryItem();
+                    item.item = objItem.getString("item");
+                    item.l_account = objItem.getString("l_account");
+                    item.l_account_id = objItem.getString("l_account_id");
+                    item.r_account = objItem.getString("r_account");
+                    item.r_account_id = objItem.getString("r_account_id");
+                    item.money = objItem.getDouble("money");
+                    mEntryItemArray.add(item);
+                    entryItemStringArray.add(item.item);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+        String[] COUNTRIES = entryItemStringArray.toArray(new String[entryItemStringArray.size()]);
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.select_dialog_item, COUNTRIES);
@@ -108,14 +138,28 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 String str = (String) arg0.getAdapter().getItem(position);
+                setEntry(str);
                 Toast.makeText(TransactionAdd.this, "position " + position + " name : " + str, Toast.LENGTH_SHORT).show();
                 
             }
         });
-        
-                
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
-        thread.start();
+    }
+    
+    protected void setEntry(String itemName){
+        if(itemName == null){
+            return;
+        }
+        for(int i = 0; i < mEntryItemArray.size(); i++){
+            LastestEntryItem item = mEntryItemArray.get(i);
+            if(item.item.compareToIgnoreCase(itemName) == 0){
+                GeneralProcessor processor = new GeneralProcessor(this);
+                AccountsEntity leftEntity = processor.findAccountById(item.l_account_id);
+                AccountsEntity rightEntity = processor.findAccountById(item.r_account_id);
+                setLeftAccount(leftEntity);
+                setRightAccount(rightEntity);
+                break;
+            }
+        }
     }
     
     /**

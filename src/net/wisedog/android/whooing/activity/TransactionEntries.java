@@ -101,7 +101,6 @@ DatePickerDialog.OnDateSetListener{
 
     private void showTransaction(JSONObject obj) throws JSONException{
     	ArrayList<TransactionItem> dataArray = new ArrayList<TransactionItem>();
-        Log.i("wisedog", "ShowLastestTransaction - " + obj.toString());
         JSONObject result = obj.getJSONObject("results");
         JSONArray array = result.getJSONArray("rows");
         

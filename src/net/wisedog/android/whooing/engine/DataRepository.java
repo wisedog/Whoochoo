@@ -37,6 +37,8 @@ public class DataRepository{
     private JSONObject mMtValue = null; //Mountain
     private JSONObject mExpBudgetValue = null; //Budget
     private JSONObject mUserValue = null;	//User data
+    /** Frequent item info*/
+    private JSONObject mLastestItem = null;    
     
     private ArrayList<OnBsChangeListener> mBsObservers = new ArrayList<OnBsChangeListener>();
     private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
@@ -87,10 +89,6 @@ public class DataRepository{
         Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
         Define.USER_ID = "8955"; 
         Define.APP_SECTION = "s10550";*/
-    }
-    
-    public void refreshAll(){
-    	Log.i("wisedog", "Refresh All");
     }
     
 	/**
@@ -170,6 +168,12 @@ public class DataRepository{
 		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_USER_INFO);
 		thread.start();
 	}
+	
+	public void refreshLastestItems(Context context){
+	    init();
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES_LATEST_ITEMS);
+        thread.start();
+	}
     
     Handler mHandler = new Handler() {
         @Override
@@ -227,11 +231,18 @@ public class DataRepository{
                 else if(msg.arg1 == Define.API_GET_USER_INFO){
                 	if(mContext != null){
                 		mUserValue = obj;
-                		Log.i("wisedog", "USER INFO :" + mUserValue.toString());
                         for (OnUserChangeListener observer : mUserObservers) {
                             observer.onUserUpdate(obj);
                         }
                 	}
+                }
+                else if(msg.arg1 == Define.API_GET_ENTRIES_LATEST_ITEMS){
+                    mLastestItem = obj;
+                    Log.i("wisedog", "lastest items : " + obj.toString());
+                }
+                else if(msg.arg1 == Define.API_GET_FREQUENT_ITEM){
+                    mLastestItem = obj;
+                    Log.i("wisedog", "Frequent Item " + obj.toString());
                 }
             }
         }
@@ -342,30 +353,8 @@ public class DataRepository{
     public JSONObject getUserValue(){
     	return mUserValue;
     }
-
-	
     
-    /*public void removeBsObserver(OnBsChangeListener o) {
-        int idx = mBsObservers.indexOf(o);
-        if(idx > 0) {
-            mBsObservers.remove(idx);
-       }
+    public JSONObject getLastestItems(){
+        return mLastestItem;
     }
-    
-    public void removePlObserver(OnPlChangeListener o) {
-        int idx = mPlObservers.indexOf(o);
-        if(idx > 0) {
-            mPlObservers.remove(idx);
-       }
-    }*/
-/*
-    public void notifyObservers() {
-        for (OnBsChangeListener observer : mBsObservers) {
-            observer.onBsUpdate();
-        }
-        for (OnPlChangeListener observer : mPlObservers) {
-            observer.onPlUpdate();
-        }
-    }*/
-
 }

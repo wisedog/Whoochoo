@@ -277,6 +277,20 @@ public class ThreadRestAPI extends Thread {
             result = putPostIt.putPostIt(Define.APP_SECTION, Define.APP_ID, 
                     Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
             break;
+		case Define.API_GET_FREQUENT_ITEM:
+		    requestUrl = "https://whooing.com/api/frequent_items.json_array?section_id=" + Define.APP_SECTION;
+            GeneralApi frequentApi = new GeneralApi();
+            result = frequentApi.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+            break;
+		case Define.API_GET_ENTRIES_LATEST_ITEMS:
+		    requestUrl = "https://whooing.com/api/entries/latest_items.json?section_id="
+                    + Define.APP_SECTION;
+            GeneralApi entriesLastestItemAPI = new GeneralApi();
+            result = entriesLastestItemAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+		    break;
+		    
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");
 			return;
