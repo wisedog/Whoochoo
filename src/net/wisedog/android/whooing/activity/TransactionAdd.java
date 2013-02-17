@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.SubMenu;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
+import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.dataset.LastestEntryItem;
 import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
@@ -31,6 +32,7 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,6 +40,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -292,7 +295,9 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_ENTRIES_INSERT){
-                    //TODO 맞는 값이 왔다면 상단 ProgressBar 끄고 
+                	Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
+                	goBtn.setEnabled(true);
+                	goBtn.setText("go");
                     //TODO 아래 ListView에 아이템 넣기
                 }
             }
@@ -361,7 +366,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         String amount = amountEdit.getText().toString();
         double amountDouble = Double.valueOf(amount);
         
-        Bundle bundle = new Bundle();
+        final Bundle bundle = new Bundle();
         int formattedDate = mYear * 10000 + mMonth * 100 + mDay;
         bundle.putInt("entry_date", formattedDate);
         bundle.putParcelable("l_account", mLeftAccount);
@@ -370,10 +375,31 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         bundle.putDouble("money", amountDouble);
         bundle.putString("memo", "");
         
-        
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_INSERT, bundle);
-        thread.run();
-        //TODO ProgressBar 넣기 
+        AsyncTask<Void, Integer, JSONObject> mTask = new AsyncTask<Void, Integer, JSONObject>(){
+
+			@Override
+			protected JSONObject doInBackground(Void... arg0) {
+				Entries entryInsert = new Entries();
+	            JSONObject result = entryInsert.insertEntry(Define.APP_SECTION, Define.APP_ID, 
+	                    Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, bundle);
+				return result;
+			}
+
+			@Override
+			protected void onPostExecute(JSONObject result) {
+				Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
+            	goBtn.setEnabled(true);
+            	goBtn.setText("go");
+				super.onPostExecute(result);
+			}
+
+        };
+     // 작업 시작
+        mTask.execute();
+        /*ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_INSERT, bundle);
+        thread.run();*/
+        goBtn.setEnabled(false);
+        goBtn.setText(getString(R.string.text_loading));
     }
     
     
