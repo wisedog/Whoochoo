@@ -91,9 +91,14 @@
     <!-- Postit -->
     <string name="post_it_question_delete">Really?</string>
     
+    <!-- Transaction Add -->
+    <string name="add_transaction_add_complete">Add complete</string>
+    
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>
+    <string name="desc_imgbtn_calendar">Calendar</string>
+    <string name="desc_img_possibility">Possibility to archive object</string>
     
     
 </resources>

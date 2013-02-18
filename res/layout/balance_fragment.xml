@@ -57,7 +57,7 @@
                     android:layout_width="90dip"
                     android:layout_height="14dip"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/md__defaultBackground" />
+                    android:background="#C36FBC" />
 
                 <TextView
                     android:id="@+id/balance_total_asset_value"
@@ -117,7 +117,7 @@
                     android:layout_width="90dip"
                     android:layout_height="14dp"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/md__defaultBackground" />
+                    android:background="#5294FF" />
 
                 <TextView
                     android:id="@+id/balance_total_liabilities_value"

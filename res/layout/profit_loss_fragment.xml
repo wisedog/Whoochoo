@@ -59,7 +59,7 @@
 	                    android:layout_width="90dip"
 	                    android:layout_height="14dip"
 	                    android:layout_gravity="center_vertical"
-	                    android:background="@color/md__defaultBackground" />
+	                    android:background="#F08537" />
 	
 	                <TextView
 	                    android:id="@+id/pl_fragment_total_expenses_value"
@@ -117,7 +117,7 @@
 	                    android:layout_width="90dip"
 	                    android:layout_height="14dp"
 	                    android:layout_gravity="center_vertical"
-	                    android:background="@color/md__defaultBackground" />
+	                    android:background="#BED431" />
 	
 	                <TextView
 	                    android:id="@+id/pl_fragment_total_income_value"

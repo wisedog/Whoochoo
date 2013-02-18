@@ -104,17 +104,55 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:layout_marginRight="10dp"
-	                android:src="@drawable/icon_none_96" />
+	                android:src="@drawable/icon_none_96" 
+	                android:contentDescription="@string/desc_img_possibility"/>
+	            <LinearLayout
+	                android:id="@+id/budget_monthly_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/dashboard_budget_possiblities"
+                    android:orientation="vertical" >
 
-	            <TextView
-	                android:id="@+id/budget_monthly_expense"
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:layout_centerVertical="true"
-	                android:layout_toRightOf="@+id/dashboard_budget_possiblities"
-	                android:background="#00000000"
-	                android:text="@string/text_loading"
-	                android:textSize="18sp" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp" >
+
+                        <View
+                            android:id="@+id/budget_monthly_expense_budget_graph"
+                            android:layout_width="1dp"
+                            android:layout_height="24dp"
+                            android:background="#999999" />
+
+                        <TextView
+                            android:id="@+id/budget_monthly_expense_budget"
+                            android:layout_toRightOf="@id/budget_monthly_expense_budget_graph"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:textColor="#000000"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <View
+                            android:id="@+id/budget_monthly_expense_spent_graph"
+                            android:layout_width="1dp"
+                            android:layout_height="24dp"
+                            android:background="#999999" />
+
+                        <TextView
+                            android:id="@+id/budget_monthly_expense_spent"
+                            android:layout_toRightOf="@id/budget_monthly_expense_spent_graph"
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:textColor="#000000"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+	            </LinearLayout>
 
 	        </RelativeLayout>
 	        
@@ -167,7 +205,7 @@
 	                android:layout_height="wrap_content"
 	                android:layout_gravity="center_vertical"
 	                android:background="#00000000"
-	                android:text="@string/text_loading"
+	                android:text=""
 	                android:textSize="18sp" />
 
 	        </LinearLayout>

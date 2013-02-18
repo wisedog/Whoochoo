@@ -29,6 +29,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -186,24 +187,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         e.printStackTrace();
                     }
                 }
-                /*else if(msg.arg1 == Define.API_GET_BUDGET){
-                    TextView monthlyBudgetText = (TextView)mActivity.findViewById(R.id.label_monthly);
-                    TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
-                    JSONObject obj = (JSONObject)msg.obj;
-                    try {
-                        int budget = obj.getInt("budget");
-                        int expenses = obj.getInt("money");
-                        if(budget < expenses){
-                            monthlyExpenseText.setTextColor(Color.RED);
-                        }
-                        monthlyBudgetText.setText("예산:"+budget);
-                        monthlyExpenseText.setText("지출 : "+expenses);
-                        
-                    } catch (JSONException e) {
-                        setErrorHandler("통신 오류! Err-BDG1");
-                    }
-                    
-                }*/
                 else if(msg.arg1 == Define.API_GET_BALANCE){
                     TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
                     TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
@@ -335,7 +318,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param budgetValue	data formatted in JSON
      */
     private void showBudgetValue(JSONObject budgetValue) {
-        TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
+        TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense_spent);
         if(monthlyExpenseText == null){
             return;
         }
@@ -346,10 +329,11 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             double budget = totalObj.getDouble("budget");
             double expenses = totalObj.getDouble("money");
             double possibility = obj.getJSONObject("misc").getDouble("possibility");
+            showBudgetGraph(budget, expenses);
             if(budget < expenses){
-                monthlyExpenseText.setTextColor(Color.RED);
+                ;//monthlyExpenseText.setTextColor(Color.RED);
             }
-            monthlyExpenseText.setText(budget + " / " + expenses);
+            //monthlyExpenseText.setText(budget + " / " + expenses);
             ImageView possibleView = (ImageView)getActivity().findViewById(R.id.dashboard_budget_possiblities);
             if(possibility >= 80){
             	possibleView.setImageResource(R.drawable.icon_sunny);
@@ -366,7 +350,16 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         } catch (JSONException e) {
             setErrorHandler("통신 오류! Err-BDG1");
         }
-        
+    }
+    
+    public void showBudgetGraph(double budget, double expenses){
+    	LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.budget_monthly_layout);
+    	TextView budgetText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_budget);
+    	TextView spentText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
+    	budgetText.setText(String.valueOf(budget));	//TODO localization
+    	spentText.setText(String.valueOf(expenses));
+    	//TODO ll width 구하기
+    	//TODO graph 구하기 . Text가 다 보기긴 해야한다. 그래프는 남는공간에 적기.
     }
 
     /* (non-Javadoc)

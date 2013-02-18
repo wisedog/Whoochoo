@@ -76,7 +76,7 @@ public class MainProcessor {
                         return;
                     }
                     
-                    TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense);
+                    TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense_spent);
                     if(monthlyExpenseText == null){
                         return; //When leave this fragment
                     }

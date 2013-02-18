@@ -157,7 +157,9 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         });
         
         //Initialize edittext
-        ((EditText)findViewById(R.id.add_transaction_edit_item)).setText("");
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.add_transaction_auto_complete);
+        textView.setText("");
         ((EditText)findViewById(R.id.add_transaction_edit_amount)).setText("");
 
         String date = DateFormat.format("yyyy-MM-dd", new java.util.Date()).toString();
@@ -203,8 +205,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.select_dialog_item, lastestStringItems);
-        AutoCompleteTextView textView = (AutoCompleteTextView)
-                findViewById(R.id.auto_complete);
         textView.setAdapter(adapter);
 
         
@@ -214,7 +214,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 String str = (String) arg0.getAdapter().getItem(position);
                 setEntry(str);
-                Toast.makeText(TransactionAdd.this, "position " + position + " name : " + str, Toast.LENGTH_SHORT).show();
                 
             }
         });
@@ -361,7 +360,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         bundle.putInt("entry_date", formattedDate);
         bundle.putParcelable("l_account", mLeftAccount);
         bundle.putParcelable("r_account", mRightAccount);
-        bundle.putString("item", ((EditText)findViewById(R.id.add_transaction_edit_item)).getText().toString());
+        bundle.putString("item", ((EditText)findViewById(R.id.add_transaction_auto_complete)).getText().toString());
         bundle.putDouble("money", amountDouble);
         bundle.putString("memo", "");
         
@@ -402,6 +401,13 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            	Toast.makeText(TransactionAdd.this, TransactionAdd.this.getString(
+            			R.string.add_transaction_add_complete), Toast.LENGTH_SHORT).show();
+            	AutoCompleteTextView textView = (AutoCompleteTextView)
+                        findViewById(R.id.add_transaction_auto_complete);
+            	textView.setText("");
+            	((EditText)findViewById(R.id.add_transaction_edit_amount)).setText("");
+            	textView.requestFocus();
 				super.onPostExecute(result);
 			}
 
@@ -439,7 +445,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
      * */
     public boolean checkValidation(){
         //Check Item edit
-        final EditText editItem = (EditText)findViewById(R.id.add_transaction_edit_item); 
+        final AutoCompleteTextView editItem = (AutoCompleteTextView)findViewById(R.id.add_transaction_auto_complete); 
         String itemStr = editItem.getText().toString();
         if(itemStr.equals("")){
             Toast.makeText(this, "Check Item", Toast.LENGTH_SHORT).show();
