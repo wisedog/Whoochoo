@@ -37,7 +37,7 @@ public class TransactionAddAdapter extends BaseAdapter {
     }
 
     public Object getItem(int position) {
-        return "AAAA";
+        return mDataArray.get(position);
     }
 
     public long getItemId(int position) {
@@ -71,8 +71,8 @@ public class TransactionAddAdapter extends BaseAdapter {
        }
        
        TransactionItem item = mDataArray.get(pos);
-       AccountsEntity entityLeft = generic.findAccountById(item.LeftAccount);
-       AccountsEntity entityRight = generic.findAccountById(item.RightAccount);
+       AccountsEntity entityLeft = generic.findAccountById(item.l_account_id);
+       AccountsEntity entityRight = generic.findAccountById(item.r_account_id);
        
        if(entityRight != null && entityLeft != null){
     	   if(entityRight.accountType.equals("income")){
@@ -85,13 +85,20 @@ public class TransactionAddAdapter extends BaseAdapter {
     		   textHead.setText(mContext.getString(R.string.text_etc));
     	   }
        }
-       textDate.setText(item.Date.subSequence(0, 8));
-       textItem.setText(item.Item);
-       textAmount.setText(item.Amount);
+       textDate.setText(item.date.subSequence(0, 8));
+       textItem.setText(item.item);
+       textAmount.setText(String.valueOf(item.money));
        textLeft.setText(entityLeft.title);
        textRight.setText(entityRight.title);
        
         return convertView;
+    }
+
+    /**
+     * @param dataArray     set data array
+     */
+    public void setData(ArrayList<TransactionItem> dataArray) {
+        mDataArray = dataArray;
     }
 
 }

@@ -110,8 +110,10 @@ DatePickerDialog.OnDateSetListener{
             TransactionItem item = new TransactionItem(
                     entity.getString("entry_date"),
                     entity.getString("item"),
-                    String.valueOf(entity.getInt("money")),
+                    entity.getDouble("money"),
+                    entity.getString("l_account"),
                     entity.getString("l_account_id"),
+                    entity.getString("r_account"),
                     entity.getString("r_account_id")
                     );
             item.Entry_ID = entity.getInt("entry_id");

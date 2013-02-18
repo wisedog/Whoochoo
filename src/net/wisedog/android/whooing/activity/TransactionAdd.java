@@ -19,7 +19,6 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
 import net.wisedog.android.whooing.api.Entries;
-import net.wisedog.android.whooing.dataset.LastestEntryItem;
 import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
@@ -27,20 +26,16 @@ import net.wisedog.android.whooing.dialog.AccountChooserDialog;
 import net.wisedog.android.whooing.dialog.AccountChooserDialog.AccountChooserListener;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -66,8 +61,9 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     private ArrayList<AccountsEntity> mAccountsList = null;
     private AccountsEntity  mLeftAccount = null;
     private AccountsEntity  mRightAccount = null;
-    
-    private ArrayList<LastestEntryItem> mEntryItemArray = null;
+    private ArrayList<TransactionItem> mDataArray = null;
+    private ArrayList<TransactionItem> mEntryItemArray = null;
+    private TransactionAddAdapter mLastestadapter = null;
     
     private int mYear;
     private int mMonth;
@@ -98,54 +94,33 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             finish();
             return;
         }
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_LATEST);
-        thread.start();
         
-        DataRepository repository = DataRepository.getInstance();
-        JSONObject obj = repository.getLastestItems();
-        JSONArray array = null;
-        mEntryItemArray = new ArrayList<LastestEntryItem>();
-        ArrayList<String> entryItemStringArray = new ArrayList<String>();
-        if(obj != null){
-            try {
-                array = obj.getJSONArray("results");
-                for(int i = 0; i < array.length(); i++){
-                    JSONObject objItem = (JSONObject) array.get(i);
-                    //TODO TransactionItem 과 통합할것. money 부분 유의
-                    LastestEntryItem item = new LastestEntryItem();
-                    item.item = objItem.getString("item");
-                    item.l_account = objItem.getString("l_account");
-                    item.l_account_id = objItem.getString("l_account_id");
-                    item.r_account = objItem.getString("r_account");
-                    item.r_account_id = objItem.getString("r_account_id");
-                    item.money = objItem.getDouble("money");
-                    mEntryItemArray.add(item);
-                    entryItemStringArray.add(item.item);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return;
-            }
-        }
-        String[] COUNTRIES = entryItemStringArray.toArray(new String[entryItemStringArray.size()]);
-        
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, COUNTRIES);
-        AutoCompleteTextView textView = (AutoCompleteTextView)
-                findViewById(R.id.auto_complete);
-        textView.setAdapter(adapter);
-
-        
-        textView.setOnItemClickListener(new OnItemClickListener() {
+        AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
 
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                String str = (String) arg0.getAdapter().getItem(position);
-                setEntry(str);
-                Toast.makeText(TransactionAdd.this, "position " + position + " name : " + str, Toast.LENGTH_SHORT).show();
-                
+            protected JSONObject doInBackground(Void... arg0) {
+                Entries entries = new Entries();
+                JSONObject result = entries.getLatest(Define.APP_SECTION, Define.APP_ID, 
+                        Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, 5);
+                return result;
             }
-        });
+
+            @Override
+            protected void onPostExecute(JSONObject result) {
+                if(Define.DEBUG && result != null){
+                    Log.i("wisedog", "API Call - API_GET_ENTRIES_LATEST : " + result.toString());
+                }
+                try {
+                    showLatestTransaction(result);                    
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                super.onPostExecute(result);
+            }
+
+        };
+        
+        task.execute();
     }
     
     protected void setEntry(String itemName){
@@ -153,7 +128,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             return;
         }
         for(int i = 0; i < mEntryItemArray.size(); i++){
-            LastestEntryItem item = mEntryItemArray.get(i);
+            TransactionItem item = mEntryItemArray.get(i);
             if(item.item.compareToIgnoreCase(itemName) == 0){
                 GeneralProcessor processor = new GeneralProcessor(this);
                 AccountsEntity leftEntity = processor.findAccountById(item.l_account_id);
@@ -200,6 +175,50 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             textLeft.setText(mLeftAccount.title + GeneralProcessor.getPlusMinus(mLeftAccount, true));
             textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
         }
+        
+        //To support transaction insert suggest
+        DataRepository repository = DataRepository.getInstance();
+        JSONObject obj = repository.getLastestItems();
+        JSONArray array = null;
+        mEntryItemArray = new ArrayList<TransactionItem>();
+        ArrayList<String> entryItemStringArray = new ArrayList<String>();
+        if(obj != null){
+            try {
+                array = obj.getJSONArray("results");
+                for(int i = 0; i < array.length(); i++){
+                    JSONObject objItem = (JSONObject) array.get(i);
+                    TransactionItem item = new TransactionItem("",objItem.getString("item"), objItem.getDouble("money"), 
+                            objItem.getString("l_account"), objItem.getString("l_account_id"), 
+                            objItem.getString("l_account_id"), objItem.getString("r_account_id"));
+                    
+                    mEntryItemArray.add(item);
+                    entryItemStringArray.add(item.item);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        String[] lastestStringItems = entryItemStringArray.toArray(new String[entryItemStringArray.size()]);
+        
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.select_dialog_item, lastestStringItems);
+        AutoCompleteTextView textView = (AutoCompleteTextView)
+                findViewById(R.id.auto_complete);
+        textView.setAdapter(adapter);
+
+        
+        textView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                String str = (String) arg0.getAdapter().getItem(position);
+                setEntry(str);
+                Toast.makeText(TransactionAdd.this, "position " + position + " name : " + str, Toast.LENGTH_SHORT).show();
+                
+            }
+        });
+        
         return true;
     }
     
@@ -282,43 +301,12 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         return 0;
     }
     
-    protected Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_GET_ENTRIES_LATEST){
-                    JSONObject obj = (JSONObject)msg.obj;
-                    try {
-                        showLatestTransaction(obj);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                else if(msg.arg1 == Define.API_GET_ENTRIES_INSERT){
-                	Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
-                	goBtn.setEnabled(true);
-                	goBtn.setText("go");
-                    //TODO 아래 ListView에 아이템 넣기
-                }
-            }
-            super.handleMessage(msg);
-        }
-        
-    };
-    
-    /*Example value
-     * {"error_parameters":[],"message":"","code":200,
-     * "results":[
-     * {"total":"","entry_id":82762,"l_account":"assets","memo":"","l_account_id":"x2","item":"잔액","money":178300,"r_account_id":"x75","entry_date":"20121229.0001","app_id":1,"r_account":"capital"},
-     * {"total":"","entry_id":82488,"l_account":"expenses","memo":"","l_account_id":"x50","item":"선물","money":80000,"r_account_id":"x76","entry_date":"20121224.0002","app_id":1,"r_account":"liabilities"},
-     * {"total":"","entry_id":82487,"l_account":"expenses","memo":"","l_account_id":"x50","item":"외식","money":40000,"r_account_id":"x21","entry_date":"20121224.0001","app_id":1,"r_account":"liabilities"},
-     * {"total":"","entry_id":79575,"l_account":"assets","memo":"","l_account_id":"x1","item":"ㅁㄴㅇㄹ","money":12345,"r_account_id":"x22","entry_date":"20121120.0005","app_id":125,"r_account":"liabilities"},
-     * {"total":"","entry_id":78996,"l_account":"expenses","memo":"","l_account_id":"x52","item":"인터넷","money":78900,"r_account_id":"x76","entry_date":"20121112.0001","app_id":1,"r_account":"liabilities"}],
-     * "rest_of_api":4987}
-
+    /**
+     * Show lastest Transaction 
+     * @param   obj     JSON formatted data from calling API_GET_ENTRIES_LATEST
      * */
     public void showLatestTransaction(JSONObject obj) throws JSONException{
-        ArrayList<TransactionItem> dataArray = new ArrayList<TransactionItem>();
+        mDataArray = new ArrayList<TransactionItem>();
         JSONArray array = obj.getJSONArray("results");
         int count = array.length();
         for(int i = 0; i < count; i++){
@@ -326,15 +314,17 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             TransactionItem item = new TransactionItem(
                     entity.getString("entry_date"),
                     entity.getString("item"),
-                    String.valueOf(entity.getInt("money")),
+                    entity.getDouble("money"),
+                    entity.getString("l_account"),
                     entity.getString("l_account_id"),
+                    entity.getString("r_account"),
                     entity.getString("r_account_id")
                     );
-            dataArray.add(item);
+            mDataArray.add(item);
         }
         ListView lastestTransactionList = (ListView)findViewById(R.id.list_lastest_transaction);
-        TransactionAddAdapter adapter = new TransactionAddAdapter(this, dataArray);
-        lastestTransactionList.setAdapter(adapter);
+        mLastestadapter = new TransactionAddAdapter(this, mDataArray);
+        lastestTransactionList.setAdapter(mLastestadapter);
     }
 
     private void getAccountsByDate(int year, int i, int dayOfMonth) {
@@ -375,6 +365,9 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         bundle.putDouble("money", amountDouble);
         bundle.putString("memo", "");
         
+        goBtn.setEnabled(false);
+        goBtn.setText(getString(R.string.text_loading));
+        
         AsyncTask<Void, Integer, JSONObject> mTask = new AsyncTask<Void, Integer, JSONObject>(){
 
 			@Override
@@ -387,19 +380,34 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
 
 			@Override
 			protected void onPostExecute(JSONObject result) {
+			    if(Define.DEBUG && result != null){
+                    Log.i("wisedog", "API Call - API_POST_ENTRIES : " + result.toString());
+                }
 				Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
             	goBtn.setEnabled(true);
             	goBtn.setText("go");
+            	try {
+                    JSONArray objResult = result.getJSONArray("results");
+                    if(mDataArray != null){
+                        for(int i = 0; i < objResult.length() ; i++){
+                            TransactionItem item = new TransactionItem((JSONObject) objResult.get(i));
+                            mDataArray.add(i, item);
+                        }
+                        if(mLastestadapter != null){
+                            mLastestadapter.setData(mDataArray);
+                            mLastestadapter.notifyDataSetChanged();
+                        }
+                    }
+                    
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 				super.onPostExecute(result);
 			}
 
         };
      // 작업 시작
         mTask.execute();
-        /*ThreadRestAPI thread = new ThreadRestAPI(mHandler, this, Define.API_GET_ENTRIES_INSERT, bundle);
-        thread.run();*/
-        goBtn.setEnabled(false);
-        goBtn.setText(getString(R.string.text_loading));
     }
     
     

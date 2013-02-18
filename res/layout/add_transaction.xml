@@ -147,7 +147,11 @@
 	    <ListView
 	        android:id="@+id/list_lastest_transaction"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
+	        android:layout_height="wrap_content" 
+	        android:layout_marginRight="10dip"
+	        android:layout_marginLeft="10dip"
+	        android:paddingLeft="10dip"
+	        android:paddingRight="10dip">
 	    </ListView>
 	
 	</LinearLayout>
