@@ -25,11 +25,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -358,6 +360,35 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     	TextView spentText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
     	budgetText.setText(String.valueOf(budget));	//TODO localization
     	spentText.setText(String.valueOf(expenses));
+    	int totalWidth = ll.getMeasuredWidth();
+    	budgetText.measure(0, 0);
+    	int budgetWidth = budgetText.getMeasuredWidth();
+    	spentText.measure(0, 0);
+    	int spentWidth = spentText.getMeasuredWidth();
+    	
+    	int budgetGraphWidth = 0;
+    	int spentGraphWidth = 0;
+    	if(budget > expenses){
+    	    budgetGraphWidth = totalWidth - budgetWidth;
+    	    spentGraphWidth = (int) (budgetGraphWidth * (expenses / budget));
+    	    
+    	}
+    	else if(budget < expenses){
+    	    spentGraphWidth = totalWidth - spentWidth;
+    	    budgetGraphWidth = (int) (spentGraphWidth * (budget / expenses));
+    	}
+    	View budgetGraph = (View)getActivity().findViewById(R.id.budget_monthly_expense_budget_graph);
+    	View spentGraph = (View)getActivity().findViewById(R.id.budget_monthly_expense_spent_graph);
+    	
+    	LayoutParams params1 = (LayoutParams) budgetGraph.getLayoutParams();
+    	LayoutParams params2 = (LayoutParams) spentGraph.getLayoutParams();
+    	
+    	params1.width = budgetGraphWidth - 10; //add margin
+    	params2.width = spentGraphWidth - 10; //add margin
+    	budgetGraph.setLayoutParams(params1);
+    	spentGraph.setLayoutParams(params2);
+    	
+    	Log.i("wisedog", "width : " + totalWidth + ", " + budgetWidth + ", " + spentWidth);
     	//TODO ll width 구하기
     	//TODO graph 구하기 . Text가 다 보기긴 해야한다. 그래프는 남는공간에 적기.
     }

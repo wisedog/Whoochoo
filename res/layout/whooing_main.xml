@@ -117,21 +117,24 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp" >
+                        android:layout_marginBottom="2dp" >
 
                         <View
                             android:id="@+id/budget_monthly_expense_budget_graph"
                             android:layout_width="1dp"
-                            android:layout_height="24dp"
-                            android:background="#999999" />
+                            android:layout_height="16dp"
+                            android:layout_centerVertical="true"
+                            android:background="#5294FF" 
+                            android:layout_marginRight="5dp"/>
 
                         <TextView
                             android:id="@+id/budget_monthly_expense_budget"
                             android:layout_toRightOf="@id/budget_monthly_expense_budget_graph"
                             android:layout_width="wrap_content"
-                            android:layout_height="24dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
                             android:textColor="#000000"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -141,16 +144,21 @@
                         <View
                             android:id="@+id/budget_monthly_expense_spent_graph"
                             android:layout_width="1dp"
-                            android:layout_height="24dp"
-                            android:background="#999999" />
+                            android:layout_height="16dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:background="#E3582D" />
 
                         <TextView
                             android:id="@+id/budget_monthly_expense_spent"
-                            android:layout_toRightOf="@id/budget_monthly_expense_spent_graph"
                             android:layout_width="wrap_content"
-                            android:layout_height="24dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/budget_monthly_expense_spent_graph"
+                            android:text=""
                             android:textColor="#000000"
-                            android:textSize="18sp" />
+                            android:textSize="16sp" />
+
                     </RelativeLayout>
 	            </LinearLayout>
 
