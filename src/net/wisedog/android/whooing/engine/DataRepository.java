@@ -32,9 +32,12 @@ public class DataRepository{
     static public final int EXP_BUDGET_MODE = 3;
     static public final int USER_MODE = 4;
     
-    private JSONObject mBsValue = null;	//자산부채 - bs
-    private JSONObject mPlValue = null;	//비용수익 - pl
-    private JSONObject mMtValue = null; //Mountain
+    /**자산부채 - bs*/
+    private JSONObject mBsValue = null;
+    /**비용수익 - pl*/
+    private JSONObject mPlValue = null;
+    /**Mountain*/
+    private JSONObject mMtValue = null;
     private JSONObject mExpBudgetValue = null; //Budget
     private JSONObject mUserValue = null;	//User data
     /** Frequent item info*/
@@ -231,6 +234,14 @@ public class DataRepository{
                 else if(msg.arg1 == Define.API_GET_USER_INFO){
                 	if(mContext != null){
                 		mUserValue = obj;
+                		try {
+							JSONObject objResults = obj.getJSONObject("results");
+							Define.CURRENCY_CODE = objResults.getString("currency");
+							//TODO preference update
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+                		
                         for (OnUserChangeListener observer : mUserObservers) {
                             observer.onUserUpdate(obj);
                         }
@@ -238,7 +249,9 @@ public class DataRepository{
                 }
                 else if(msg.arg1 == Define.API_GET_ENTRIES_LATEST_ITEMS){
                     mLastestItem = obj;
-                    Log.i("wisedog", "lastest items : " + obj.toString());
+                    if(Define.DEBUG){
+                    	Log.i("wisedog", "lastest items : " + obj.toString());
+                    }
                 }
                 else if(msg.arg1 == Define.API_GET_FREQUENT_ITEM){
                     mLastestItem = obj;

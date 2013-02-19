@@ -6,6 +6,7 @@ import net.wisedog.android.whooing.engine.DataRepository;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ public class Whooing extends Activity {
                 return;
             }           
         }
+        Define.ROBOFONT = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         //String locale = getResources().getConfiguration().locale.getDisplayName();
         //Toast.makeText(this, "Locale :"+ locale, Toast.LENGTH_SHORT).show();
         //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
@@ -41,9 +43,9 @@ public class Whooing extends Activity {
         }
         else{
             DataRepository repository = DataRepository.getInstance();
+            repository.refreshUserInfo(this);
             repository.refreshDashboardValue(this);
             repository.refreshAccount(this);
-            repository.refreshUserInfo(this);
             repository.refreshLastestItems(this);
                
             Handler handler = new Handler(){
@@ -99,6 +101,7 @@ public class Whooing extends Activity {
         Define.TOKEN_SECRET = "8bd064ccc751575cef4c0235a8ac946a2f2924a4";
         Define.APP_SECTION = "s10550";
         Define.USER_ID = "8955";
+        Define.CURRENCY_CODE = "KRW";
         
         /*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
         Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);

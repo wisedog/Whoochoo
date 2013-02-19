@@ -5,7 +5,8 @@ package net.wisedog.android.whooing.utils;
 
 import java.text.NumberFormat;
 import java.util.Currency;
-import java.util.Locale;
+
+import net.wisedog.android.whooing.Define;
 
 import android.util.Log;
 
@@ -160,22 +161,34 @@ public class WhooingCurrency {
             "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE",
             "YT", "YU", "ZA", "ZM", "ZR", "ZW", "ZZ" };
     private static final String CURRENCY[] = {};
-    private static final int CURRENCY_E[] = {};
     
-    private static String mCountryCode = null; 
+    private static WhooingCurrency mInstance = new WhooingCurrency();
     
+    public static WhooingCurrency getInstance(){
+    	if(mInstance == null){
+    		mInstance = new WhooingCurrency();
+    	}
+    	return mInstance;
+    }
+    
+    
+    /**
+     * Return string formatted locale currency
+     * @param	d	value
+     * */
     public static String getFormattedValue(double d){
         NumberFormat format = NumberFormat.getInstance();
         
-        Currency currency = Currency.getInstance("KMF");
+        Currency currency = Currency.getInstance(Define.CURRENCY_CODE);
         format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
-        format.setCurrency(currency);
-        Log.i("wisedog", "format1 : " + format.format(1234.23434));
+        try{
+        	format.setCurrency(currency);
+        }
+        catch(UnsupportedOperationException e){
+        	e.printStackTrace();
+        	return String.valueOf(d);
+        }
         
-        currency = Currency.getInstance("BIF");
-        format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
-        format.setCurrency(currency);
-        Log.i("wisedog", "format2 : " + format.format(1234.23434));
-        return null;
+        return format.format(d);
     }
 }

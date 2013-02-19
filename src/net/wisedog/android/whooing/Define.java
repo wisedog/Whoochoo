@@ -1,5 +1,7 @@
 package net.wisedog.android.whooing;
 
+import android.graphics.Typeface;
+
 public class Define {
     public static boolean DEBUG = true;
     
@@ -11,6 +13,8 @@ public class Define {
 	public static String TOKEN_SECRET = null;
 	public static String APP_SECTION = null;
 	
+	public static String CURRENCY_CODE = null;
+	
 	// General Key and Shared Preference Key
 	public static String SHARED_PREFERENCE = "SHARED_AUTH";
 	public static String KEY_SHARED_PIN = "SHARED_PIN";
@@ -19,6 +23,7 @@ public class Define {
 	public static String KEY_SHARED_USER_ID = "SHARED_USER_ID";
 	public static String KEY_SHARED_SECTION_ID = "SHARED_SECTION_ID";
 	public static String KEY_SHARED_USER_INFO = "SHARED_USER_INFO";
+	public static String KEY_SHARED_CURRENCY_CODE = "SHARED_CURRENCY_CODE";
 	
 	// Response/Request Key
 	public static final int RESPONSE_EXIT = 10;
@@ -67,12 +72,13 @@ public class Define {
     public static final int API_GET_USER_INFO = 2300;
     public static final int API_GET_FREQUENT_ITEM = 2310;
     
-	
+	public static Typeface ROBOFONT = null;
     
     
     //flags
     //If there is need to be refreshed by insert some transaction or something like that
     //set this flag true
     public static boolean NEED_TO_REFRESH = false;
+    
 
 }

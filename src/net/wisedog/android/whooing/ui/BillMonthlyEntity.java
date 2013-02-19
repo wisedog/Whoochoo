@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.BillMonthlyItem;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
+import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -55,7 +56,7 @@ public class BillMonthlyEntity extends RelativeLayout{
     	double total = objRowItem.getDouble("total");
     	TextView totalAmount = (TextView)findViewById(R.id.bill_label_total_value);
     	if(totalAmount != null){
-    		totalAmount.setText(String.valueOf(total));
+    		totalAmount.setText(WhooingCurrency.getFormattedValue(total));
     	}
     	
     	int date = objRowItem.getInt("date");
@@ -117,7 +118,7 @@ public class BillMonthlyEntity extends RelativeLayout{
     	for(int i = 0; i < 31; i++){
     		Double d = paymentDateArray[i];
     		if(d > 0.0f){
-    			paymentInfo = paymentInfo + i + " : " + String.valueOf(d) + "   ";
+    			paymentInfo = paymentInfo + i + " : " + WhooingCurrency.getFormattedValue(d) + "   ";
     		}
     	}
     	

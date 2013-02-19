@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.FragmentUtil;
+import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -96,18 +97,10 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
         super.onDestroyView();
     }
     
-	/*
-	 * {"error_parameters":[],"message"
-	 * :"","code":200,"results":
-	 * {"capital":{"total" :11593688},
-	 * "liabilities":{"total":814335,
-	 * "accounts":[{"money":0,"account_id":"x20"},
-	 * {"money":643090,"account_id":"x21"},
-	 * {"money":12345,"account_id":"x22"},{"money":158900,"account_id":"x76"}]},
-	 * "assets":{"total":12408023,"accounts":[{"money":12408023,"account_id":
-	 * "x1"},{"money":0,"account_id":"x2"}]}},
-	 * "rest_of_api":4906}
-	 */
+	/**
+	 * Show Balance
+	 * @param	obj		JSON formatted balance data
+	 * */
 	public void showBalance(JSONObject obj) {
 		TextView labelTotalAssetValue = (TextView)mActivity.findViewById(R.id.balance_total_asset_value);
 		
@@ -128,7 +121,8 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			JSONObject objAssets = objResult.getJSONObject("assets");
 			double totalAssetValue = objAssets.getDouble("total");
             if (labelTotalAssetValue != null) {
-                labelTotalAssetValue.setText("" + objAssets.getInt("total"));
+            	double totalAssetValue1 = objAssets.getDouble("total");
+                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1));
                 View bar = (View) mActivity.findViewById(R.id.bar_total_asset);
                 int barWidth = FragmentUtil.getBarWidth(objAssets.getInt("total"), totalAssetValue,
                         secondColumnWidth, valueWidth);
@@ -151,7 +145,8 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			
 			TextView labelTotalLiabilitiesValue = (TextView)mActivity.findViewById(R.id.balance_total_liabilities_value);
 			if(labelTotalLiabilitiesValue != null){
-			    labelTotalLiabilitiesValue.setText(""+objLiabilities.getInt("total"));
+				double totalLiabilities = objLiabilities.getDouble("total");
+			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities));
                 View bar = (View)mActivity.findViewById(R.id.bar_total_liabilities);
                 int barWidth = FragmentUtil.getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
                         secondColumnWidth, valueWidth);
@@ -216,7 +211,8 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             
             //set up textview for showing amount
             TextView amountText = new TextView(mActivity);
-            amountText.setText(""+accountItem.getInt("money"));
+            double money = accountItem.getDouble("money");
+            amountText.setText(WhooingCurrency.getFormattedValue(money));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);

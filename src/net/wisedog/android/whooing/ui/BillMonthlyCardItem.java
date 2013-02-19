@@ -2,6 +2,7 @@ package net.wisedog.android.whooing.ui;
 
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.BillMonthlyItem;
+import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
@@ -37,8 +38,9 @@ public class BillMonthlyCardItem extends LinearLayout{
 		                r.getDisplayMetrics());
 				double barWidth = valueWidth * ratio;
 				
-				android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) graphView.getLayoutParams();
-				params.width = (int)barWidth;
+				android.widget.RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams) graphView
+						.getLayoutParams();
+				params.width = (int) barWidth;
 				graphView.setLayoutParams(params);
 				
 			}
@@ -51,7 +53,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 
 		TextView textAmount = (TextView) findViewById(R.id.bill_listitem_label_payment_amount);
 		if (textAmount != null) {
-			textAmount.setText(String.valueOf(item.amount));
+			textAmount.setText(WhooingCurrency.getFormattedValue(item.amount));
 		}
 
 		TextView textPaymentDate = (TextView) findViewById(R.id.bill_listitem_payment_date);

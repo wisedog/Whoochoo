@@ -43,6 +43,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -148,7 +149,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             return false;
         }
         mDateDisplay = (TextView)findViewById(R.id.add_transaction_text_date);
-        Button dateChangeBtn = (Button)findViewById(R.id.add_transaction_change_btn);
+        ImageButton dateChangeBtn = (ImageButton)findViewById(R.id.add_transaction_change_btn);
         dateChangeBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressWarnings("deprecation")
 			public void onClick(View v) {

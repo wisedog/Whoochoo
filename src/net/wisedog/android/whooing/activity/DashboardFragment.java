@@ -1,7 +1,5 @@
 package net.wisedog.android.whooing.activity;
 
-import java.text.DecimalFormat;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,9 +10,8 @@ import net.wisedog.android.whooing.auth.WhooingAuthWeb;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
-import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -25,7 +22,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,16 +37,13 @@ import com.actionbarsherlock.app.SherlockFragment;
  * @author Wisedog(me@wisedog.net)
  * */
 public class DashboardFragment extends SherlockFragment implements OnMountainChangeListener, OnExpBudgetChangeListener{
-    private static final String KEY_TAB_NUM = "key.tab.num";
 	
 	public static DashboardFragment newInstance(String text) {
         DashboardFragment fragment = new DashboardFragment();
         
         // Supply num input as an argument.
         Bundle args = new Bundle();
-        args.putString(KEY_TAB_NUM, text);
         fragment.setArguments(args);
-
         
         return fragment;
     }
@@ -115,36 +108,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         thread.start();
     }
     
-    Handler mGeneralHandler = new Handler(){
-
-        @Override
-        public void handleMessage(Message msg) {
-            if(msg.what == Define.MSG_FAIL){
-                dialog.dismiss();
-                Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
-            }
-            else if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_GET_ACCOUNTS){
-                    JSONObject result = (JSONObject)msg.obj;
-                    try {
-                        JSONObject objResult = result.getJSONObject("results");
-                        GeneralProcessor general = new GeneralProcessor(mActivity);
-                        general.fillAccountsTable(objResult);
-                        Toast.makeText(mActivity, "Complete", Toast.LENGTH_LONG).show();
-                        MainProcessor mainProcessor = new MainProcessor(mActivity);
-                      mainProcessor.refreshAll();
-                    }
-                    catch(JSONException e){
-                        e.printStackTrace();
-                        Toast.makeText(mActivity, "Exception", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-            super.handleMessage(msg);
-        }
-        
-    };
-    
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -190,17 +153,16 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_BALANCE){
-                    TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
-                    TextView inoutBalance = (TextView)mActivity.findViewById(R.id.doubt_num);
+                    TextView currentBalance = (TextView)getActivity().findViewById(R.id.balance_num);
+                    TextView inoutBalance = (TextView)getActivity().findViewById(R.id.doubt_num);
                     JSONObject obj = (JSONObject)msg.obj;
                     try{
                         JSONObject obj1 = obj.getJSONObject("assets");
-                        DecimalFormat df = new DecimalFormat("#,##0");
-                        currentBalance.setText(df.format(obj1.getLong("total")));
-                        
+                        double totalAsset =  obj1.getDouble("total");
                         JSONObject obj2 = obj.getJSONObject("liabilities");
-                        inoutBalance.setText(df.format(obj2.getLong("total")));                     
-                        
+                        double totalLiailities = obj2.getDouble("total");
+                        currentBalance.setText(WhooingCurrency.getFormattedValue(totalAsset));
+                        inoutBalance.setText(WhooingCurrency.getFormattedValue(totalLiailities));
                     }catch(JSONException e){
                         setErrorHandler("통신 오류! Err-BNC1");
                         e.printStackTrace();
@@ -217,7 +179,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         if(dialog != null){
             dialog.dismiss();
         }	
-        Toast.makeText(mActivity, errorMsg, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -226,7 +188,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         if(Define.NEED_TO_REFRESH == false && bundle != null){
             TextView textView = (TextView)mActivity.findViewById(R.id.balance_num);
             textView.setText(bundle.getString("assets_value"));
-            textView = (TextView)mActivity.findViewById(R.id.doubt_num);
+            textView = (TextView)getActivity().findViewById(R.id.doubt_num);
             textView.setText(bundle.getString("doubt_value"));
             //isFirstCalling = bundle.getBoolean("first_calling");
         }
@@ -238,9 +200,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param	obj		Data formatted in JSON
      * */
     private void showMountainValue(JSONObject obj){
-        TextView currentBalance = (TextView)mActivity.findViewById(R.id.balance_num);
-        TextView doubtValue = (TextView)mActivity.findViewById(R.id.doubt_num);
-        Typeface typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/Roboto-Light.ttf");
+        TextView currentBalance = (TextView)getActivity().findViewById(R.id.balance_num);
+        TextView doubtValue = (TextView)getActivity().findViewById(R.id.doubt_num);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
         if(currentBalance == null || doubtValue == null){
         	return;
         }
@@ -258,11 +220,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         //Set Assets, Doubt value
         try{
             JSONObject objAggregate = objResult.getJSONObject("aggregate");
-            
-            DecimalFormat df = new DecimalFormat("#,##0");  //TODO apply Localization
-            currentBalance.setText(df.format(objAggregate.getDouble("capital")));
-            doubtValue.setText(df.format(objAggregate.getDouble("liabilities")));                       
-            
+            double capital = objAggregate.getDouble("capital");
+            double liabilities = objAggregate.getDouble("liabilities");
+            currentBalance.setText(WhooingCurrency.getFormattedValue(capital));
+            doubtValue.setText(WhooingCurrency.getFormattedValue(liabilities));
         }catch(JSONException e){
             setErrorHandler("통신 오류! Err-MAIN2");
             e.printStackTrace();
@@ -287,7 +248,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         setCompareArrow(diff);
         TextView compareValue = (TextView)mActivity.findViewById(R.id.text_compare_premonth_value);
         compareValue.setTypeface(typeface);
-        compareValue.setText(String.valueOf(diff));
+        compareValue.setText(WhooingCurrency.getFormattedValue(diff));
     }
     
     /**
@@ -311,7 +272,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         	}
         }
         else{
-        	//TODO Minus 그림 넣기
+        	arrow.setImageResource(R.drawable.arrow_none);
         }
     }
     
@@ -332,10 +293,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             double expenses = totalObj.getDouble("money");
             double possibility = obj.getJSONObject("misc").getDouble("possibility");
             showBudgetGraph(budget, expenses);
-            if(budget < expenses){
-                ;//monthlyExpenseText.setTextColor(Color.RED);
-            }
-            //monthlyExpenseText.setText(budget + " / " + expenses);
+
             ImageView possibleView = (ImageView)getActivity().findViewById(R.id.dashboard_budget_possiblities);
             if(possibility >= 80){
             	possibleView.setImageResource(R.drawable.icon_sunny);
@@ -354,12 +312,19 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         }
     }
     
+    /**
+     * Calculate and create graph for showing budget and spent value
+     * @param	budget		budget amount
+     * @param	expenses	spent amount
+     * */
     public void showBudgetGraph(double budget, double expenses){
     	LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.budget_monthly_layout);
     	TextView budgetText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_budget);
     	TextView spentText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
-    	budgetText.setText(String.valueOf(budget));	//TODO localization
-    	spentText.setText(String.valueOf(expenses));
+    	budgetText.setText(WhooingCurrency.getFormattedValue(budget));
+    	spentText.setText(WhooingCurrency.getFormattedValue(expenses));
+    	
+    	//Calculate width
     	int totalWidth = ll.getMeasuredWidth();
     	budgetText.measure(0, 0);
     	int budgetWidth = budgetText.getMeasuredWidth();
@@ -373,9 +338,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     	    spentGraphWidth = (int) (budgetGraphWidth * (expenses / budget));
     	    
     	}
-    	else if(budget < expenses){
+    	else if(budget < expenses){	//Over-spent
     	    spentGraphWidth = totalWidth - spentWidth;
     	    budgetGraphWidth = (int) (spentGraphWidth * (budget / expenses));
+    	    spentText.setTextColor(Color.RED);
     	}
     	View budgetGraph = (View)getActivity().findViewById(R.id.budget_monthly_expense_budget_graph);
     	View spentGraph = (View)getActivity().findViewById(R.id.budget_monthly_expense_spent_graph);
@@ -387,10 +353,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     	params2.width = spentGraphWidth - 10; //add margin
     	budgetGraph.setLayoutParams(params1);
     	spentGraph.setLayoutParams(params2);
-    	
-    	Log.i("wisedog", "width : " + totalWidth + ", " + budgetWidth + ", " + spentWidth);
-    	//TODO ll width 구하기
-    	//TODO graph 구하기 . Text가 다 보기긴 해야한다. 그래프는 남는공간에 적기.
     }
 
     /* (non-Javadoc)

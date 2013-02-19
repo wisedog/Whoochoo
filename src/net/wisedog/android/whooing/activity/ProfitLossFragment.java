@@ -12,6 +12,7 @@ import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
 import net.wisedog.android.whooing.utils.FragmentUtil;
+import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -93,21 +94,6 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
 		super.onAttach(activity);
 	}
     
-
-    /*Example
-     * {"error_parameters":[],"message":"","code":200,
-     * "results":{
-     * "net_income":{"total":-120000},
-     * "income":{"total_steady":0,"total":0,"total_floating":0,
-     *      "accounts":[{"money":0,"account_id":"x70"},{"money":0,"account_id":"x71"},
-     *      {"money":0,"account_id":"x72"},{"money":0,"account_id":"x73"},{"money":0,"account_id":"x74"}]},
-     * "expenses":{"total_steady":120000,"total":120000,"total_floating":0,
-     *      "accounts":[{"money":120000,"account_id":"x50"},{"money":0,"account_id":"x51"},
-     *      {"money":0,"account_id":"x52"},{"money":0,"account_id":"x53"},{"money":0,"account_id":"x54"},
-     *      {"money":0,"account_id":"x55"},{"money":0,"account_id":"x56"},{"money":0,"account_id":"x57"},
-     *      {"money":0,"account_id":"x58"},{"money":0,"account_id":"x59"},{"money":0,"account_id":"x60"}]}}
-     *      ,"rest_of_api":4994}
-     * */
     /**
      * @param obj       Profit/Loss value formatted JSON
      */
@@ -126,12 +112,15 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
                 r.getDisplayMetrics());
         final int rightMargin4Dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
                 r.getDisplayMetrics());
+        
+        WhooingCurrency currency = WhooingCurrency.getInstance();
         try {
             JSONObject objResult = obj.getJSONObject("results");
             JSONObject objExpenses = objResult.getJSONObject("expenses");
             double totalExpensesValue = objExpenses.getDouble("total");
             if (labelTotalExpensesValue != null) {
-                labelTotalExpensesValue.setText("" + objExpenses.getInt("total"));
+            	double value1 = objExpenses.getDouble("total");
+                labelTotalExpensesValue.setText(currency.getFormattedValue(value1));
                 View bar = (View) mActivity.findViewById(R.id.bar_total_expense);
                 int barWidth = FragmentUtil.getBarWidth(objExpenses.getInt("total"), totalExpensesValue,
                         secondColumnWidth, valueWidth);
@@ -154,7 +143,8 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             
             TextView labelTotalIncomeValue = (TextView)mActivity.findViewById(R.id.pl_fragment_total_income_value);
             if(labelTotalIncomeValue != null){
-                labelTotalIncomeValue.setText(""+objIncome.getInt("total"));
+            	double value1 = objIncome.getDouble("total");
+                labelTotalIncomeValue.setText(currency.getFormattedValue(value1));
                 View bar = (View)mActivity.findViewById(R.id.bar_total_income);
                 int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalExpensesValue, 
                         secondColumnWidth, valueWidth);
@@ -223,7 +213,8 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             
             //set up textview for showing amount
             TextView amountText = new TextView(mActivity);
-            amountText.setText(""+accountItem.getInt("money"));
+            double value1 = accountItem.getDouble("money");
+            amountText.setText(WhooingCurrency.getFormattedValue(value1));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);
