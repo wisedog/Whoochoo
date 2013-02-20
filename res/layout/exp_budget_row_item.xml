@@ -27,7 +27,7 @@
         android:layout_centerVertical="true"
         android:text="" /> 
 
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/exp_budget_spent_budget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

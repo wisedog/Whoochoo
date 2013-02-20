@@ -5,19 +5,18 @@ package net.wisedog.android.whooing.adapter;
 
 import java.util.ArrayList;
 
-import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
+import net.wisedog.android.whooing.widget.WiTextView;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -60,13 +59,12 @@ public class TransactionAddAdapter extends BaseAdapter {
        if(convertView == null){
            convertView = mInflater.inflate(R.layout.transaction_list_item, parent, false);
        }
-       TextView textDate = (TextView)convertView.findViewById(R.id.transaction_listitem_date);
-       TextView textItem = (TextView)convertView.findViewById(R.id.transaction_listitem_item);
-       TextView textAmount = (TextView)convertView.findViewById(R.id.transaction_listitem_amount);
-       TextView textLeft = (TextView)convertView.findViewById(R.id.transaction_listitem_left);
-       TextView textRight = (TextView)convertView.findViewById(R.id.transaction_listitem_right);
-       TextView textHead = (TextView)convertView.findViewById(R.id.transaction_listitem_head);
-       textHead.setTypeface(Define.ROBOFONT);
+       WiTextView textDate = (WiTextView)convertView.findViewById(R.id.transaction_listitem_date);
+       WiTextView textItem = (WiTextView)convertView.findViewById(R.id.transaction_listitem_item);
+       WiTextView textAmount = (WiTextView)convertView.findViewById(R.id.transaction_listitem_amount);
+       WiTextView textLeft = (WiTextView)convertView.findViewById(R.id.transaction_listitem_left);
+       WiTextView textRight = (WiTextView)convertView.findViewById(R.id.transaction_listitem_right);
+       WiTextView textHead = (WiTextView)convertView.findViewById(R.id.transaction_listitem_head);
        
        GeneralProcessor generic = null;
        if(parent != null){
@@ -89,15 +87,10 @@ public class TransactionAddAdapter extends BaseAdapter {
     	   }
        }
        textDate.setText(item.date.subSequence(0, 8));
-       textDate.setTypeface(Define.ROBOFONT);
        textItem.setText(item.item);
-       textItem.setTypeface(Define.ROBOFONT);
        textAmount.setText(WhooingCurrency.getFormattedValue(item.money));
-       textAmount.setTypeface(Define.ROBOFONT);
        textLeft.setText(entityLeft.title);
-       textLeft.setTypeface(Define.ROBOFONT);
        textRight.setText(entityRight.title);
-       textRight.setTypeface(Define.ROBOFONT);
        
         return convertView;
     }

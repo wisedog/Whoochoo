@@ -12,6 +12,7 @@ import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListen
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
+import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -28,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -134,7 +134,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         String section = obj.getString("section_id");
                         if(section != null){
                             Define.APP_SECTION = section;
-                            Log.d("whooing", "APP SECTION:"+ Define.APP_SECTION);
+                            if(Define.DEBUG){
+                                Log.d("whooing", "APP SECTION:"+ Define.APP_SECTION);
+                            }
                             SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
                                     Activity.MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
@@ -153,8 +155,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_BALANCE){
-                    TextView currentBalance = (TextView)getActivity().findViewById(R.id.balance_num);
-                    TextView inoutBalance = (TextView)getActivity().findViewById(R.id.doubt_num);
+                    WiTextView currentBalance = (WiTextView)getActivity().findViewById(R.id.balance_num);
+                    WiTextView inoutBalance = (WiTextView)getActivity().findViewById(R.id.doubt_num);
                     JSONObject obj = (JSONObject)msg.obj;
                     try{
                         JSONObject obj1 = obj.getJSONObject("assets");
@@ -186,9 +188,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void onActivityCreated(Bundle bundle) {
         
         if(Define.NEED_TO_REFRESH == false && bundle != null){
-            TextView textView = (TextView)mActivity.findViewById(R.id.balance_num);
+            WiTextView textView = (WiTextView)mActivity.findViewById(R.id.balance_num);
             textView.setText(bundle.getString("assets_value"));
-            textView = (TextView)getActivity().findViewById(R.id.doubt_num);
+            textView = (WiTextView)getActivity().findViewById(R.id.doubt_num);
             textView.setText(bundle.getString("doubt_value"));
             //isFirstCalling = bundle.getBoolean("first_calling");
         }
@@ -200,8 +202,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param	obj		Data formatted in JSON
      * */
     private void showMountainValue(JSONObject obj){
-        TextView currentBalance = (TextView)getActivity().findViewById(R.id.balance_num);
-        TextView doubtValue = (TextView)getActivity().findViewById(R.id.doubt_num);
+        WiTextView currentBalance = (WiTextView)getActivity().findViewById(R.id.balance_num);
+        WiTextView doubtValue = (WiTextView)getActivity().findViewById(R.id.doubt_num);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
         if(currentBalance == null || doubtValue == null){
         	return;
@@ -246,7 +248,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             e.printStackTrace();
         }
         setCompareArrow(diff);
-        TextView compareValue = (TextView)mActivity.findViewById(R.id.text_compare_premonth_value);
+        WiTextView compareValue = (WiTextView)mActivity.findViewById(R.id.text_compare_premonth_value);
         compareValue.setTypeface(typeface);
         compareValue.setText(WhooingCurrency.getFormattedValue(diff));
     }
@@ -281,7 +283,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param budgetValue	data formatted in JSON
      */
     private void showBudgetValue(JSONObject budgetValue) {
-        TextView monthlyExpenseText = (TextView)mActivity.findViewById(R.id.budget_monthly_expense_spent);
+        WiTextView monthlyExpenseText = (WiTextView)mActivity.findViewById(R.id.budget_monthly_expense_spent);
         if(monthlyExpenseText == null){
             return;
         }
@@ -319,8 +321,8 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * */
     public void showBudgetGraph(double budget, double expenses){
     	LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.budget_monthly_layout);
-    	TextView budgetText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_budget);
-    	TextView spentText = (TextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
+    	WiTextView budgetText = (WiTextView)getActivity().findViewById(R.id.budget_monthly_expense_budget);
+    	WiTextView spentText = (WiTextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
     	budgetText.setText(WhooingCurrency.getFormattedValue(budget));
     	spentText.setText(WhooingCurrency.getFormattedValue(expenses));
     	

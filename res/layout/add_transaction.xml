@@ -22,14 +22,14 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal">
 
-		        <TextView
+		        <net.wisedog.android.whooing.widget.WiTextView
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_vertical"
 		            android:text="@string/text_date"
 		            android:textSize="24sp" />
 
-		        <TextView
+		        <net.wisedog.android.whooing.widget.WiTextView
 		            android:id="@+id/add_transaction_text_date"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
 	        <LinearLayout android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal">
-		        <TextView 
+		        <net.wisedog.android.whooing.widget.WiTextView 
 		        android:layout_width="60dip"
 		        android:layout_height="wrap_content"
 		        android:text="@string/text_item"/>
@@ -76,7 +76,7 @@
 		    <LinearLayout android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:orientation="horizontal">
-		    	<TextView 
+		    	<net.wisedog.android.whooing.widget.WiTextView 
 		        android:layout_width="60dip"
 		        android:layout_height="wrap_content"
 		        android:text="@string/text_amount"/>
@@ -110,7 +110,7 @@
 	            android:layout_height="wrap_content"
 	            android:orientation="horizontal" >
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:layout_width="0dip"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="50"
@@ -118,7 +118,7 @@
 	                android:text="@string/text_left"
 	                android:textSize="20sp" />
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:layout_width="0dip"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="50"
@@ -133,7 +133,7 @@
 	            android:orientation="horizontal" 
 	            android:layout_marginBottom="10dip">
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/add_transaction_text_left_account"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
 	                android:clickable="true" 
 	                android:onClick="onClickLRAccount"/>
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/add_transaction_text_right_account"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"

@@ -6,9 +6,11 @@ package net.wisedog.android.whooing.dialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.activity.TransactionAdd;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.widget.WiTextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
@@ -86,11 +88,11 @@ public class AccountChooserDialog extends SherlockDialogFragment {
     private void setupUi(View v){
         ArrayList<AccountsEntity> list = getArguments().getParcelableArrayList("accounts_list");
         String mode = getArguments().getString("mode");
-        TextView textViewAssets = (TextView) v.findViewById(R.id.accounts_selection_title_assets);
-        TextView textViewIncome = (TextView) v.findViewById(R.id.accounts_selection_title_income);
-        TextView textViewExpenses = (TextView) v.findViewById(R.id.accounts_selection_title_expenses);
-        TextView textViewLiability = (TextView) v.findViewById(R.id.accounts_selection_title_liabilities);
-        TextView textViewCapital = (TextView) v.findViewById(R.id.accounts_selection_title_capital);
+        WiTextView textViewAssets = (WiTextView) v.findViewById(R.id.accounts_selection_title_assets);
+        WiTextView textViewIncome = (WiTextView) v.findViewById(R.id.accounts_selection_title_income);
+        WiTextView textViewExpenses = (WiTextView) v.findViewById(R.id.accounts_selection_title_expenses);
+        WiTextView textViewLiability = (WiTextView) v.findViewById(R.id.accounts_selection_title_liabilities);
+        WiTextView textViewCapital = (WiTextView) v.findViewById(R.id.accounts_selection_title_capital);
         LinearLayout layoutExpenses = (LinearLayout) v.findViewById(R.id.accounts_selection_expenses);
         LinearLayout layoutIncome = (LinearLayout) v.findViewById(R.id.accounts_selection_income);
         if(mode.compareTo("left") == 0){
@@ -141,7 +143,7 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             AccountsEntity entity = list.get(i);
             
             //Creating accounts item
-            TextView textView = new TextView(getActivity());
+            WiTextView textView = new WiTextView(getActivity());
             textView.setId(DYNAMIC_VIEW_ID+i);
             textView.setText(entity.title);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
@@ -154,7 +156,7 @@ public class AccountChooserDialog extends SherlockDialogFragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     if(event.getAction() == MotionEvent.ACTION_DOWN){
                         v.setBackgroundColor(Color.BLACK);
-                        TextView textView = (TextView)v;
+                        WiTextView textView = (WiTextView)v;
                         textView.setTextColor(Color.WHITE);
                     }
                     return false;
@@ -163,7 +165,7 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             textView.setOnClickListener(new View.OnClickListener(){
                 public void onClick(View v) {
                     v.setBackgroundColor(Color.WHITE);
-                    TextView textView = (TextView)v;
+                    WiTextView textView = (WiTextView)v;
                     textView.setTextColor(Color.BLACK);
                     onSelectItem(v);
                 }
@@ -182,7 +184,7 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             LinearLayout ll = (LinearLayout) v.findViewById(layoutId);
             ll.measure(0, 0);
             
-            if(ll.getMeasuredWidth() + textView.getMeasuredWidth() < maxWidth){    
+            if(ll.getMeasuredWidth() + textView.getMeasuredWidth() + 20 < maxWidth){    
                 ll.addView(textView);
             }else{
                 //Create new LinearLayout(Horizontal) and add the textview to new layout 

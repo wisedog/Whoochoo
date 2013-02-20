@@ -10,7 +10,7 @@
         android:background="#ffffff"
         android:orientation="vertical" >
 
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/bbs_article_subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                     android:layout_height="50dp"
                     android:layout_marginRight="15dp" />
 
-                <TextView
+                <net.wisedog.android.whooing.widget.WiTextView
                     android:id="@+id/bbs_article_text_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,23 +47,26 @@
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/bbs_article_profile_image"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:textIsSelectable="true"/>
 
-                <TextView
+                <net.wisedog.android.whooing.widget.WiTextView
                     android:id="@+id/bbs_article_text_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/bbs_article_text_name"
                     android:layout_marginTop="4dp"
-                    android:layout_toRightOf="@+id/bbs_article_profile_image"/>
+                    android:layout_toRightOf="@+id/bbs_article_profile_image"
+                    android:textIsSelectable="true"/>
 
-                <TextView
+                <net.wisedog.android.whooing.widget.WiTextView
                     android:id="@+id/bbs_article_text_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp" />
+                    android:layout_marginRight="20dp" 
+                    android:textIsSelectable="true"/>
 
                 <ProgressBar
                     android:id="@+id/bbs_article_progress"
@@ -74,12 +77,13 @@
 
             </RelativeLayout>
 
-            <TextView
+            <net.wisedog.android.whooing.widget.WiTextView
                 android:id="@+id/bbs_article_text_contents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#333333"
-                android:textSize="16sp" />
+                android:textSize="16sp" 
+                android:textIsSelectable="true"/>
         </LinearLayout>
         <LinearLayout 
             android:id="@+id/bbs_article_post_reply_container"
@@ -90,7 +94,7 @@
             android:background="@drawable/border_gray"
             android:padding="8dp">
 
-            <TextView
+            <net.wisedog.android.whooing.widget.WiTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_write_reply" />

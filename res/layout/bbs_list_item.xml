@@ -12,7 +12,7 @@
     android:layout_marginBottom="5dp"
     android:weightSum="1.0">
 
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_text_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         android:textColor="#333333"
         android:textSize="16sp" />
 
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_text_comment_num"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
         android:textColor="#333333" 
         android:textStyle="bold"/>
     
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_text_author"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

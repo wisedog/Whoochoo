@@ -18,7 +18,7 @@
 	        android:orientation="vertical" 
 	        android:padding="10dip">
 	
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 	            android:id="@+id/label_asset"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
 	            android:textColor="#33B5E5"
 	            android:textSize="30sp"/>
 	
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 	            android:id="@+id/balance_num"
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
 	            android:orientation="horizontal" 
 	            >
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/label_doubt"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
 	                android:textSize="20sp"
 	                android:textStyle="bold" />
 	            
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/doubt_num"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
 	            
 	        </LinearLayout>
 	
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 	            android:id="@+id/dashboard_main_more"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
 	        android:paddingRight="10dp"
 	        android:paddingTop="5dp"
 	        android:paddingBottom="5dp">
-	        <TextView 
+	        <net.wisedog.android.whooing.widget.WiTextView 
 			        android:layout_width="fill_parent"
 			        android:layout_height="wrap_content"
 			        android:background="#00000000"
@@ -127,7 +127,7 @@
                             android:background="#5294FF" 
                             android:layout_marginRight="5dp"/>
 
-                        <TextView
+                        <net.wisedog.android.whooing.widget.WiTextView
                             android:id="@+id/budget_monthly_expense_budget"
                             android:layout_toRightOf="@id/budget_monthly_expense_budget_graph"
                             android:layout_width="wrap_content"
@@ -149,7 +149,7 @@
                             android:layout_marginRight="5dp"
                             android:background="#E3582D" />
 
-                        <TextView
+                        <net.wisedog.android.whooing.widget.WiTextView
                             android:id="@+id/budget_monthly_expense_spent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
 
 	        </RelativeLayout>
 	        
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 	            android:id="@+id/dashboard_budget_more"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -185,7 +185,7 @@
 	        android:background="#FFFFFF"
 	        android:orientation="vertical" 
 	        android:padding="10dip">
-	        <TextView 
+	        <net.wisedog.android.whooing.widget.WiTextView 
 			        android:layout_width="fill_parent"
 			        android:layout_height="wrap_content"
 			        android:background="#00000000"
@@ -207,7 +207,7 @@
 	                android:layout_marginLeft="20dp"
 	                />
 
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/text_compare_premonth_value"
 	                android:layout_width="match_parent"
 	                android:layout_height="wrap_content"

@@ -14,6 +14,7 @@ import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.FragmentUtil;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
+import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
-import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -102,7 +102,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 	 * @param	obj		JSON formatted balance data
 	 * */
 	public void showBalance(JSONObject obj) {
-		TextView labelTotalAssetValue = (TextView)mActivity.findViewById(R.id.balance_total_asset_value);
+	    WiTextView labelTotalAssetValue = (WiTextView)mActivity.findViewById(R.id.balance_total_asset_value);
 		
 		TableLayout tl = (TableLayout) mActivity
 				.findViewById(R.id.balance_asset_table);
@@ -143,7 +143,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			TableLayout tableLiabilites = (TableLayout) mActivity
 	                .findViewById(R.id.balance_liabilities_table);
 			
-			TextView labelTotalLiabilitiesValue = (TextView)mActivity.findViewById(R.id.balance_total_liabilities_value);
+			WiTextView labelTotalLiabilitiesValue = (WiTextView)mActivity.findViewById(R.id.balance_total_liabilities_value);
 			if(labelTotalLiabilitiesValue != null){
 				double totalLiabilities = objLiabilities.getDouble("total");
 			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities));
@@ -181,7 +181,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
             
-            TextView accountText = new TextView(mActivity);
+            WiTextView accountText = new WiTextView(mActivity);
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
             accountText.setText(entity.title);
             accountText.setLayoutParams(new LayoutParams(
@@ -210,7 +210,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             barView.setLayoutParams(lParams);
             
             //set up textview for showing amount
-            TextView amountText = new TextView(mActivity);
+            WiTextView amountText = new WiTextView(mActivity);
             double money = accountItem.getDouble("money");
             amountText.setText(WhooingCurrency.getFormattedValue(money));
             amountLayout.addView(barView);

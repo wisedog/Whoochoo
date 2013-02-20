@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         >
 
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_head"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -26,21 +26,19 @@
         android:orientation="vertical"
         android:layout_marginLeft="10dip"
         >
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="16sp">
-            
-        </TextView>
-        <LinearLayout
+            android:textSize="16sp" />
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
 
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_item"
             android:layout_width="100dip"
             android:layout_height="wrap_content"
@@ -48,26 +46,23 @@
             android:lines="1"
             android:maxLines="1"
             android:text="" 
-            android:textSize="16sp">
-            
-        </TextView>
-        <TextView
+            android:textSize="16sp"/>
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
             android:text=""
-            android:layout_marginLeft="70dip"
-            android:textSize="16sp">
-            
-        </TextView>
-        </LinearLayout>
+            android:textSize="16sp"/>
+        </RelativeLayout>
         <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
 
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_left"
             android:layout_width="100dip"
             android:layout_height="wrap_content"
@@ -75,19 +70,15 @@
             android:lines="1"
             android:maxLines="1"
             android:text="" 
-            android:textSize="16sp">
-            
-        </TextView>
-        <TextView
+            android:textSize="16sp"/>
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
             android:maxLines="1"
             android:layout_marginLeft="70dip"
-            android:textSize="16sp">
-            
-        </TextView>
+            android:textSize="16sp"/>
         </LinearLayout>
         
     </LinearLayout>

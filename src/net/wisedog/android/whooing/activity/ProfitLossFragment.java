@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
 import net.wisedog.android.whooing.utils.FragmentUtil;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
+import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
 public final class ProfitLossFragment extends SherlockFragment implements OnPlChangeListener{
@@ -98,7 +98,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
      * @param obj       Profit/Loss value formatted JSON
      */
     private void showPl(JSONObject obj) {
-        TextView labelTotalExpensesValue = (TextView)mActivity.findViewById(R.id.pl_fragment_total_expenses_value);
+        WiTextView labelTotalExpensesValue = (WiTextView)mActivity.findViewById(R.id.pl_fragment_total_expenses_value);
         
         TableLayout tl = (TableLayout) mActivity
                 .findViewById(R.id.pl_fragment_expenses_table);
@@ -113,14 +113,13 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
         final int rightMargin4Dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
                 r.getDisplayMetrics());
         
-        WhooingCurrency currency = WhooingCurrency.getInstance();
         try {
             JSONObject objResult = obj.getJSONObject("results");
             JSONObject objExpenses = objResult.getJSONObject("expenses");
             double totalExpensesValue = objExpenses.getDouble("total");
             if (labelTotalExpensesValue != null) {
             	double value1 = objExpenses.getDouble("total");
-                labelTotalExpensesValue.setText(currency.getFormattedValue(value1));
+                labelTotalExpensesValue.setText(WhooingCurrency.getFormattedValue(value1));
                 View bar = (View) mActivity.findViewById(R.id.bar_total_expense);
                 int barWidth = FragmentUtil.getBarWidth(objExpenses.getInt("total"), totalExpensesValue,
                         secondColumnWidth, valueWidth);
@@ -141,10 +140,10 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             TableLayout tableIncome = (TableLayout) mActivity
                     .findViewById(R.id.pl_fragment_income_table);
             
-            TextView labelTotalIncomeValue = (TextView)mActivity.findViewById(R.id.pl_fragment_total_income_value);
+            WiTextView labelTotalIncomeValue = (WiTextView)mActivity.findViewById(R.id.pl_fragment_total_income_value);
             if(labelTotalIncomeValue != null){
             	double value1 = objIncome.getDouble("total");
-                labelTotalIncomeValue.setText(currency.getFormattedValue(value1));
+                labelTotalIncomeValue.setText(WhooingCurrency.getFormattedValue(value1));
                 View bar = (View)mActivity.findViewById(R.id.bar_total_income);
                 int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalExpensesValue, 
                         secondColumnWidth, valueWidth);
@@ -159,7 +158,6 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
                     valueWidth, tableIncome, 0xFFBED431);
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
@@ -180,7 +178,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
             
-            TextView accountText = new TextView(mActivity);
+            WiTextView accountText = new WiTextView(mActivity);
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
             if(entity == null){
                 continue;
@@ -212,7 +210,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             barView.setLayoutParams(lParams);
             
             //set up textview for showing amount
-            TextView amountText = new TextView(mActivity);
+            WiTextView amountText = new WiTextView(mActivity);
             double value1 = accountItem.getDouble("money");
             amountText.setText(WhooingCurrency.getFormattedValue(value1));
             amountLayout.addView(barView);

@@ -5,7 +5,7 @@
     android:orientation="horizontal" 
     android:weightSum="1.0">
 
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_comment_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -14,14 +14,14 @@
         android:text="" 
         android:textStyle="bold"/>
 
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_comment_contents"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.6"
         android:text="" />
 
-    <TextView
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_comment_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

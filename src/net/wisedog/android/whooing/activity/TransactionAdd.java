@@ -5,6 +5,7 @@ package net.wisedog.android.whooing.activity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +27,7 @@ import net.wisedog.android.whooing.dialog.AccountChooserDialog;
 import net.wisedog.android.whooing.dialog.AccountChooserDialog.AccountChooserListener;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
+import net.wisedog.android.whooing.widget.WiTextView;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -45,7 +47,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -58,7 +59,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     protected static final int REQUEST_CODE_LEFT = 10;
     protected static final int REQUEST_CODE_RIGHT = 11;
     
-    private TextView    mDateDisplay;
+    private WiTextView    mDateDisplay;
     private ArrayList<AccountsEntity> mAccountsList = null;
     private AccountsEntity  mLeftAccount = null;
     private AccountsEntity  mRightAccount = null;
@@ -148,7 +149,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         if(mAccountsList == null){
             return false;
         }
-        mDateDisplay = (TextView)findViewById(R.id.add_transaction_text_date);
+        mDateDisplay = (WiTextView)findViewById(R.id.add_transaction_text_date);
         ImageButton dateChangeBtn = (ImageButton)findViewById(R.id.add_transaction_change_btn);
         dateChangeBtn.setOnClickListener(new View.OnClickListener() {
             @SuppressWarnings("deprecation")
@@ -163,7 +164,10 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         textView.setText("");
         ((EditText)findViewById(R.id.add_transaction_edit_amount)).setText("");
 
-        String date = DateFormat.format("yyyy-MM-dd", new java.util.Date()).toString();
+        Locale locale = new Locale("en","US");//TODO change for localize
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
+        //String date = DateFormat.format("yyyy-MM-dd", new java.util.Date()).toString();
+        String date = df.format(new java.util.Date()).toString();
         mDateDisplay.setText(date);
         
         final Calendar c = Calendar.getInstance();
@@ -173,8 +177,8 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         mDay = c.get(Calendar.DAY_OF_MONTH);
         
         if(mLeftAccount != null && mRightAccount != null){
-            TextView textLeft = (TextView)findViewById(R.id.add_transaction_text_left_account);
-            TextView textRight = (TextView)findViewById(R.id.add_transaction_text_right_account);
+            WiTextView textLeft = (WiTextView)findViewById(R.id.add_transaction_text_left_account);
+            WiTextView textRight = (WiTextView)findViewById(R.id.add_transaction_text_right_account);
             textLeft.setText(mLeftAccount.title + GeneralProcessor.getPlusMinus(mLeftAccount, true));
             textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
         }
@@ -269,7 +273,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             return;
         }
         this.mLeftAccount = entity;
-        TextView textLeft = (TextView)findViewById(R.id.add_transaction_text_left_account);
+        WiTextView textLeft = (WiTextView)findViewById(R.id.add_transaction_text_left_account);
         textLeft.setText(mLeftAccount.title + GeneralProcessor.getPlusMinus(mLeftAccount, true));
     }
     
@@ -282,7 +286,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             return;
         }
         this.mRightAccount = entity;
-        TextView textRight = (TextView)findViewById(R.id.add_transaction_text_right_account);
+        WiTextView textRight = (WiTextView)findViewById(R.id.add_transaction_text_right_account);
         textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
     }
     

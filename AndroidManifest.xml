@@ -45,10 +45,6 @@
             android:name=".activity.TransactionEntries"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
-        <activity
-            android:name=".activity.AccountsSelection"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
         <activity android:name="net.wisedog.android.whooing.activity.MainFragmentActivity" android:theme="@style/Theme.VPI"></activity>
         <activity android:name="net.wisedog.android.whooing.activity.ExpBudgetFragmentActivity"></activity>
         <activity android:name=".activity.BillFragmentActivity"></activity>

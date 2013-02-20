@@ -19,7 +19,7 @@
 	            android:weightSum="1.0" 
 	            android:background="#444444">
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/table_row_total_expenses_label_account"
 	                android:layout_width="0dip"
 	                android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
 	                android:text="@string/balance_label_account" 
 	                android:textColor="@android:color/white"/>
 	
-	            <TextView
+	            <net.wisedog.android.whooing.widget.WiTextView
 	                android:id="@+id/table_row_total_expenses_label_amount"
 	                android:layout_width="0dip"
 	                android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
 	            android:layout_height="wrap_content" 
 	            android:weightSum="1.0">
 	
-	           <TextView
+	           <net.wisedog.android.whooing.widget.WiTextView
 	               android:layout_width="0dip"
 	               android:layout_height="wrap_content"
 	               android:layout_weight="0.4"
@@ -61,7 +61,7 @@
 	                    android:layout_gravity="center_vertical"
 	                    android:background="#F08537" />
 	
-	                <TextView
+	                <net.wisedog.android.whooing.widget.WiTextView
 	                    android:id="@+id/pl_fragment_total_expenses_value"
 	                    android:layout_width="95dip"
 	                    android:layout_height="wrap_content"
@@ -83,12 +83,14 @@
 	            android:layout_height="wrap_content" 
 	            android:weightSum="1.0"
 	            android:background="#444444">
-	            <TextView android:text="@string/balance_label_account"
+	            <net.wisedog.android.whooing.widget.WiTextView 
+	                android:text="@string/balance_label_account"
 	                android:layout_width="0dip"
 	                android:layout_weight="0.4"
 	                android:layout_height="wrap_content"
 	                android:textColor="@android:color/white"/>
-	           <TextView android:text="@string/balance_label_amount"
+	           <net.wisedog.android.whooing.widget.WiTextView 
+	               android:text="@string/balance_label_amount"
 	                android:layout_width="0dip"
 	               android:layout_height="wrap_content"
 	               android:layout_weight="0.6"
@@ -100,7 +102,7 @@
 	            android:layout_height="wrap_content" 
 	            android:weightSum="1.0">
 	
-	           <TextView
+	           <net.wisedog.android.whooing.widget.WiTextView
 	               android:layout_width="0dip"
 	               android:layout_height="wrap_content"
 	               android:layout_weight="0.4"
@@ -119,7 +121,7 @@
 	                    android:layout_gravity="center_vertical"
 	                    android:background="#BED431" />
 	
-	                <TextView
+	                <net.wisedog.android.whooing.widget.WiTextView
 	                    android:id="@+id/pl_fragment_total_income_value"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"

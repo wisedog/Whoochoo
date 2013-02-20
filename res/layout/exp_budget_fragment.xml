@@ -15,14 +15,14 @@
             android:weightSum="1.0" 
             android:background="#444444">
 
-            <TextView
+            <net.wisedog.android.whooing.widget.WiTextView
                 android:id="@+id/table_row_total_asset_label_account"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
                 android:text="@string/text_account" 
                 android:textColor="@android:color/white"/>
-            <TextView
+            <net.wisedog.android.whooing.widget.WiTextView
                 android:id="@+id/table_row_total_asset_label_budget"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:text="@string/exp_budget_budget_exp" 
                 android:textColor="@android:color/white"/>
 
-            <TextView
+            <net.wisedog.android.whooing.widget.WiTextView
                 android:id="@+id/table_row_total_asset_label_amount"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
