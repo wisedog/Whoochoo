@@ -154,25 +154,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         e.printStackTrace();
                     }
                 }
-                else if(msg.arg1 == Define.API_GET_BALANCE){
-                    WiTextView currentBalance = (WiTextView)getActivity().findViewById(R.id.balance_num);
-                    WiTextView inoutBalance = (WiTextView)getActivity().findViewById(R.id.doubt_num);
-                    JSONObject obj = (JSONObject)msg.obj;
-                    try{
-                        JSONObject obj1 = obj.getJSONObject("assets");
-                        double totalAsset =  obj1.getDouble("total");
-                        JSONObject obj2 = obj.getJSONObject("liabilities");
-                        double totalLiailities = obj2.getDouble("total");
-                        currentBalance.setText(WhooingCurrency.getFormattedValue(totalAsset));
-                        inoutBalance.setText(WhooingCurrency.getFormattedValue(totalLiailities));
-                    }catch(JSONException e){
-                        setErrorHandler("통신 오류! Err-BNC1");
-                        e.printStackTrace();
-                    }catch(IllegalArgumentException e){
-                        setErrorHandler("통신 오류! Err-BNC2");
-                        e.printStackTrace();
-                    }
-                }
             }
         }
     };
