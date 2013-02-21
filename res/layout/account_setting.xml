@@ -13,19 +13,21 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/text_complete" />
-    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/account_setting_complete">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_above="@id/account_setting_complete"
         >
 
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_setting_username_optional"
-            android:textColor="#333333"
+            android:textColor="#AAAAAA"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -54,58 +56,59 @@
                 android:layout_height="wrap_content"
                 android:visibility="invisible" />
         </LinearLayout>
-
-        <net.wisedog.android.whooing.widget.WiTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/text_country"
-            android:textColor="#333333"
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/account_setting_spinner_country"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp" />
-
-        <net.wisedog.android.whooing.widget.WiTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/account_setting_language_for_whooing"
-            android:textColor="#333333"
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/account_setting_spinner_language_for_whooing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp" />
-
+        
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_currency"
-            android:textColor="#333333"
+            android:textColor="#AAAAAA"
             android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/account_setting_spinner_currency"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginBottom="10dp" />
         
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/account_setting_language_for_app"
-            android:textColor="#333333"
+            android:textColor="#AAAAAA"
             android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/account_setting_spinner_language_app"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/text_country"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" 
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/account_setting_spinner_country"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setting_language_for_whooing"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/account_setting_spinner_timezone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_marginBottom="10dp" />
     </LinearLayout>
-
+</ScrollView>
 </RelativeLayout>

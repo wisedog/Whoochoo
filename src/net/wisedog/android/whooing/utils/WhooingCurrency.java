@@ -8,14 +8,13 @@ import java.util.Currency;
 
 import net.wisedog.android.whooing.Define;
 
-import android.util.Log;
 
 /**
  * @author Wisedog(me@wisedog.net)
  *
  */
 public class WhooingCurrency {
-    private static final String TIMEZONE[] = { "America/Anchorage", "America/Phoenix",
+    public static final String TIMEZONE[] = {"", "America/Anchorage", "America/Phoenix",
             "America/Los_Angeles", "America/Denver", "Pacific/Honolulu", "America/Indianapolis",
             "America/Chicago", "America/New_York", "America/Edmonton", "America/Vancouver",
             "America/Winnipeg", "America/St_Johns", "America/Yellowknife", "America/Halifax",
@@ -97,7 +96,7 @@ public class WhooingCurrency {
             "Europe/Zaporozhye", "Asia/Samarkand", "Asia/Tashkent", "Asia/Dili",
             "Pacific/Marquesas", "America/Curacao" };
     
-    private static final String COUNTRY[] = { "Andorra", "United Arab Emirates", "Afghanistan",
+    public static final String COUNTRY[] = {"", "Andorra", "United Arab Emirates", "Afghanistan",
             "Antigua & Barbuda", "Anguilla", "Albania", "Armenia", "Netherlands Antilles",
             "Angola", "Antarctica", "Argentina", "American Samoa", "Austria", "Australia", "Aruba",
             "Azerbaijan", "Bosnia and Herzegovina", "Barbados", "Bangladesh", "Belgium",
@@ -142,7 +141,7 @@ public class WhooingCurrency {
             "Venezuela", "British Virgin Islands", "United States Virgin Islands", "Viet Nam",
             "Vanuatu", "Wallis & Futuna Islands", "Samoa", "Yemen", "Mayotte", "Yugoslavia",
             "South Africa", "Zambia", "Zaire", "Zimbabwe", "Unknown or unspecified country" };
-    private static final String COUNTRY_CODE[] = { "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AN",
+    public static final String COUNTRY_CODE[] = {"", "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AN",
             "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AZ", "BA", "BB", "BD", "BE", "BF", "BG",
             "BH", "BI", "BJ", "BM", "BN", "BO", "BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA",
             "CC", "CF", "CG", "CH", "CI", "CK", "CL", "CM", "CN", "CO", "CR", "CU", "CV", "CX",
@@ -160,7 +159,8 @@ public class WhooingCurrency {
             "TH", "TJ", "TK", "TM", "TN", "TO", "TP", "TR", "TT", "TV", "TW", "TZ", "UA", "UG",
             "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE",
             "YT", "YU", "ZA", "ZM", "ZR", "ZW", "ZZ" };
-    private static final String CURRENCY[] = {};
+    public static final String CURRENCY[] = {"EUR","JPY", "CNY","KRW","USD"};
+    public static final String LANGUAGE[] = {"English","Korean", "Dutch"};
     
     private static WhooingCurrency mInstance = new WhooingCurrency();
     

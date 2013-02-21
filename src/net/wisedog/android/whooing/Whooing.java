@@ -1,5 +1,6 @@
 package net.wisedog.android.whooing;
 
+import net.wisedog.android.whooing.activity.AccountSetting;
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -51,8 +52,12 @@ public class Whooing extends Activity {
             Handler handler = new Handler(){
                 @Override
                 public void handleMessage(Message msg) {
+                    /*
+                     * Account Setting 테스트할때 repository.refreshUserInfo(this); 주석처리하고할것
+                     * Intent intent = new Intent(mContext, AccountSetting.class);
+                    startActivityForResult(intent, Define.MSG_USER_SETTING_DONE);*/
                     Intent intent = new Intent(mContext, MainFragmentActivity.class);
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, Define.MSG_AUTH_TOTAL_DONE);
                 }           
             };
             handler.sendEmptyMessageDelayed(0, 200);
@@ -64,26 +69,31 @@ public class Whooing extends Activity {
 		// block back button event
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if(resultCode != RESULT_OK){
-			switch(resultCode){
-				case Define.RESPONSE_EXIT:
-					setResult(Define.RESPONSE_EXIT);
-					this.finish();
-					break;
-				case Define.MSG_AUTH_TOTAL_DONE:
-				    getLoginInfo();
-				    DataRepository repository = DataRepository.getInstance();
-			        repository.refreshDashboardValue(this);
-			        repository.refreshAccount(this);
-			        Intent intent = new Intent(mContext, MainFragmentActivity.class);
-	                startActivityForResult(intent, 1);
-				    break;
-			}
-		}
-		this.finish();
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            switch (resultCode) {
+            case Define.RESPONSE_EXIT:
+                setResult(Define.RESPONSE_EXIT);
+                this.finish();
+                break;
+            case Define.MSG_AUTH_TOTAL_DONE:
+                DataRepository repository = DataRepository.getInstance();
+                repository.refreshUserInfo(this);
+                Intent intent = new Intent(mContext, AccountSetting.class);
+                startActivityForResult(intent, Define.MSG_USER_SETTING_DONE);
+                break;
+            case Define.MSG_USER_SETTING_DONE:
+                getLoginInfo();
+                DataRepository repository2 = DataRepository.getInstance();
+                repository2.refreshDashboardValue(this);
+                repository2.refreshAccount(this);
+                Intent intent2 = new Intent(mContext, MainFragmentActivity.class);
+                startActivityForResult(intent2, 1);
+                break;
+            }
+        }
+    }
 	
 	/* (non-Javadoc)
      * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)

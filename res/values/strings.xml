@@ -99,10 +99,11 @@
     <string name="add_transaction_add_complete">Add complete</string>
     
     <!-- User Account -->
-    <string name="account_setting_language_for_whooing">Language for Whooing</string>
-    <string name="account_setting_language_for_app">Display Language for App</string>
+    <string name="account_setting_language_for_whooing">Timezone</string>
+    <string name="account_setting_language_for_app">Language</string>
     <string name="account_setting_username_hint">Nick name here</string>
     <string name="account_setting_username_optional">User Name(Optional)</string>
+    <string name="account_setting_progress">Loading User Information</string>
     
     
     <!-- Content Description -->

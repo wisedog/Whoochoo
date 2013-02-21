@@ -50,6 +50,7 @@
         <activity android:name=".activity.BillFragmentActivity"></activity>
         <activity android:name=".activity.PostItFragmentActivity"></activity>
         <activity android:name=".activity.BbsFragmentActivity"></activity>
+        <activity android:name=".activity.AccountSetting"></activity>
     </application>
 
 </manifest>

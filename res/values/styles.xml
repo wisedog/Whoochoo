@@ -8,7 +8,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?android:attr/textColorSecondaryInverse</item>
         <item name="android:textSize">14sp</item>
-        <item name="android:textAllCaps">true</item>
 
         <item name="android:gravity">center_vertical</item>
         <item name="android:paddingLeft">16dp</item>
@@ -40,5 +39,4 @@
         <item name="mdActiveIndicator">@drawable/menu_arrow_right</item>
         <item name="mdMenuSize">150dp</item>
     </style>
-
 </resources>

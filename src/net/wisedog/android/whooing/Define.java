@@ -14,6 +14,9 @@ public class Define {
 	public static String APP_SECTION = null;
 	
 	public static String CURRENCY_CODE = null;
+	public static String COUNTRY_CODE = null;
+	public static String LANGUAGE_WHOOING = null;
+	public static String LANGUAGE_APP = null;
 	
 	// General Key and Shared Preference Key
 	public static String SHARED_PREFERENCE = "SHARED_AUTH";
@@ -23,7 +26,11 @@ public class Define {
 	public static String KEY_SHARED_USER_ID = "SHARED_USER_ID";
 	public static String KEY_SHARED_SECTION_ID = "SHARED_SECTION_ID";
 	public static String KEY_SHARED_USER_INFO = "SHARED_USER_INFO";
+	
 	public static String KEY_SHARED_CURRENCY_CODE = "SHARED_CURRENCY_CODE";
+	public static String KEY_SHARED_COUNTRY_CODE = "SHARED_COUNTRY_CODE";
+	public static String KEY_SHARED_LANGUAGE_WHOOING  = "SHARED_LANGUAGE_WHOOING";
+	public static String KEY_SHARED_LANGUAGE_APP = "SHARED_LANGUAGE_APP";
 	
 	// Response/Request Key
 	public static final int RESPONSE_EXIT = 10;
@@ -34,6 +41,7 @@ public class Define {
 	public static final int MSG_FAIL = 101;
 	public static final int MSG_AUTH_DONE = 102;
 	public static final int MSG_AUTH_TOTAL_DONE = 103;
+	public static final int MSG_USER_SETTING_DONE = 104;
 	
 	public static final int RESULT_OK = 200;
 	public static final int RESULT_NONE_RECORD = 204;
