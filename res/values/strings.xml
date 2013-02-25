@@ -115,6 +115,7 @@
     <string name="about_app_blog">Blog : http://peashellapps.wordpress.com/</string>
     <string name="about_app_creator">Create by Peashell Apps.</string>
     <string name="about_app_send_email">Choose Email Client</string>
+    <string name="about_app_version">Version : </string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

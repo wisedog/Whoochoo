@@ -60,6 +60,15 @@
         android:layout_marginBottom="10dp"/>
     
     <net.wisedog.android.whooing.widget.WiTextView
+        android:id="@+id/about_app_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:autoLink="web"/>
+    
+    <net.wisedog.android.whooing.widget.WiTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/about_app_creator" 

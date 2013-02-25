@@ -6,7 +6,10 @@ package net.wisedog.android.whooing.dialog;
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.widget.WiTextView;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,7 +70,26 @@ public class AboutDialog extends SherlockDialogFragment {
                 }
             });
         }
+        
+        WiTextView versionText = (WiTextView)v.findViewById(R.id.about_app_version);
+        if(versionText != null){
+            versionText.setText(getActivity().getString(R.string.about_app_version) + getAppVersion());
+        }
         return v;
+    }
+    
+    public String getAppVersion() {
+        String packageName = null;
+        String appVersion = null;
+        try {
+            PackageInfo _package;
+            packageName = getActivity().getPackageName();
+            _package = getActivity().getPackageManager().getPackageInfo(packageName, 0);
+            appVersion = _package.versionName;
+        } catch (NameNotFoundException e1) {
+            appVersion = "Unknown";
+        }
+        return appVersion;
     }
 
 }
