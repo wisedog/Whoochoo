@@ -117,15 +117,21 @@ public class BbsReplyEntity extends LinearLayout {
 			}
 		});
 
-		LinearLayout ll = (LinearLayout)findViewById(R.id.bbs_article_chunk_comment_container);
-		
-		JSONArray commentArray = obj.getJSONArray("rows");
-		int len = commentArray.length();
-		for(int i = 0; i < len; i++){
-			BbsCommentEntity entity = new BbsCommentEntity(mContext);
-			entity.setup(commentArray.getJSONObject(i));
-			ll.addView(entity);
+		if(obj.getInt("additions") > 0){
+		    Bundle b = new Bundle();
+		    try {
+                b.putString("category", objResult.getString("category"));
+                b.putInt("bbs_id", objResult.getInt("bbs_id"));
+                b.putString("comment_id", obj.getString("comment_id"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return;
+            }
+		    ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                    Define.API_GET_BOARD_COMMENT, b);
+            thread.start();
 		}
+		
 	}
 	
 	public void setLoadingStatus(boolean loading){
@@ -141,25 +147,39 @@ public class BbsReplyEntity extends LinearLayout {
 		}
 	}
 	
-	protected Handler mHandler = new Handler(){
+    protected Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-        	if(msg.what == Define.MSG_API_OK){
-        		if(msg.arg1 == Define.API_POST_BOARD_COMMENT){
-        			JSONObject obj = (JSONObject)msg.obj;
-        			setLoadingStatus(false);
-        			LinearLayout ll = (LinearLayout)findViewById(R.id.bbs_article_chunk_comment_container);
-        			BbsCommentEntity entity = new BbsCommentEntity(mContext);
-        			try {
-						entity.setup(obj.getJSONObject("results"));
-						ll.addView(entity, 0);
-					} catch (JSONException e) {
-						e.printStackTrace();
-						//TODO toast
-					}
-        			
-        		}
-        	}
+            if (msg.what == Define.MSG_API_OK) {
+                JSONObject obj = (JSONObject) msg.obj;
+                if (msg.arg1 == Define.API_POST_BOARD_COMMENT) {
+                    setLoadingStatus(false);
+                    LinearLayout ll = (LinearLayout) findViewById(R.id.bbs_article_chunk_comment_container);
+                    BbsCommentEntity entity = new BbsCommentEntity(mContext);
+                    try {
+                        entity.setup(obj.getJSONObject("results"));
+                        ll.addView(entity, 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        // TODO toast
+                    }
+
+                } else if (msg.arg1 == Define.API_GET_BOARD_COMMENT) {
+                    LinearLayout ll = (LinearLayout) findViewById(R.id.bbs_article_chunk_comment_container);
+                    try {
+                        JSONObject objResults = obj.getJSONObject("results");
+                        JSONArray commentArray = objResults.getJSONArray("rows");
+                        int len = commentArray.length();
+                        for (int i = 0; i < len; i++) {
+                            BbsCommentEntity entity = new BbsCommentEntity(mContext);
+                            entity.setup(commentArray.getJSONObject(i));
+                            ll.addView(entity);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         	else if(msg.what == 0){
                 ImageView image = 
                         (ImageView)findViewById(R.id.bbs_article_chunk_img);

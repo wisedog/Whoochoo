@@ -139,7 +139,9 @@ public class BbsArticleFragment extends SherlockFragment {
 							e.printStackTrace();
 						}
                 	}
-                	Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
+                	if(Define.DEBUG){
+                	    Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
+                	}
                 }
             }
             

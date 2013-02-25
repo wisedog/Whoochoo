@@ -19,13 +19,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.6"
+        android:autoLink="web"
         android:text="" />
 
     <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_comment_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.10"
+        android:layout_weight="0.20"
         android:text="" />
 
 </LinearLayout>

@@ -6,7 +6,6 @@ package net.wisedog.android.whooing.dialog;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.activity.TransactionAdd;
 import net.wisedog.android.whooing.db.AccountsEntity;

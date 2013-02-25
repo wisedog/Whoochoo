@@ -1,12 +1,7 @@
 package net.wisedog.android.whooing.auth;
 
-import java.text.DecimalFormat;
-
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
-import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.engine.MainProcessor;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
@@ -20,12 +15,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**

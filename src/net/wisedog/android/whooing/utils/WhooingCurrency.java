@@ -159,7 +159,20 @@ public class WhooingCurrency {
             "TH", "TJ", "TK", "TM", "TN", "TO", "TP", "TR", "TT", "TV", "TW", "TZ", "UA", "UG",
             "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI", "VN", "VU", "WF", "WS", "YE",
             "YT", "YU", "ZA", "ZM", "ZR", "ZW", "ZZ" };
-    public static final String CURRENCY[] = {"EUR","JPY", "CNY","KRW","USD"};
+    public static final String CURRENCY[] = {"", "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS",
+            "AUD", "AWG", "AZN", "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB",
+            "BRL", "BSD", "BTN", "BWP", "BYR", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY", "COP",
+            "CRC", "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR",
+            "FJD", "FKP", "GBP", "GEL", "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL",
+            "HRK", "HTG", "HUF", "IDR", "ILS", "INR", "IQD", "IRR", "ISK", "JMD", "JOD", "JPY",
+            "KES", "KGS", "KHR", "KMF", "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR",
+            "LRD", "LSL", "LTL", "LVL", "LYD", "MAD", "MDL", "MKD", "MMK", "MNT", "MOP", "MUR",
+            "MVR", "MWK", "MXN", "MXV", "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD",
+            "OMR", "PAB", "PEN", "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB",
+            "RWF", "SAR", "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "SSP",
+            "STD", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS",
+            "UAH", "UGX", "USD", "UYI", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XCD",
+            "XOF", "XPF", "YER", "ZAR", "ZMW" };
     public static final String LANGUAGE[] = {"English","Korean", "Dutch"};
     
     private static WhooingCurrency mInstance = new WhooingCurrency();

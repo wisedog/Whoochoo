@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:padding="10dp"
+    android:background="#E5E5E5">
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_about" 
+        android:textSize="24sp"
+        android:textColor="#333333"
+        android:layout_margin="5dp"/>
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_desc" 
+        android:textSize="18sp"
+        android:textColor="#777777"
+        android:layout_marginBottom="10dp"/>
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_contact_whooing" 
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/about_btn_contact_whooing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_contact_whooing_email" 
+        android:layout_marginBottom="10dp"/>
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_contact_developer" 
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/about_btn_contact_developer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_contact_developer_email" />
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_blog" 
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:autoLink="web"
+        android:layout_marginBottom="10dp"/>
+    
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_creator" 
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:autoLink="web"/>
+
+</LinearLayout>

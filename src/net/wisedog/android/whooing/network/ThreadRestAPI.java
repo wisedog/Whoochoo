@@ -67,7 +67,7 @@ public class ThreadRestAPI extends Thread {
 		int boardType = BbsFragmentActivity.BOARD_TYPE_FREE;
 		String type = "";
 		if(mAPIName == Define.API_GET_BOARD || mAPIName == Define.API_GET_BOARD_ARTICLE
-				|| mAPIName == Define.API_POST_BOARD_COMMENT){
+				|| mAPIName == Define.API_POST_BOARD_COMMENT || mAPIName == Define.API_GET_BOARD_COMMENT){
 		    if (mBundle == null) {
                 Log.e(ThreadRestAPI.class.toString(),
                         "Not enough information for API_GET_BOARD or API_GET_BOARD_ARTICLE");
@@ -288,6 +288,14 @@ public class ThreadRestAPI extends Thread {
                     + Define.APP_SECTION;
             GeneralApi entriesLastestItemAPI = new GeneralApi();
             result = entriesLastestItemAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);
+		    break;
+		case Define.API_GET_BOARD_COMMENT:
+		    int bbsId1 = mBundle.getInt("bbs_id");
+		    String commentId = mBundle.getString("comment_id");
+            requestUrl = "https://whooing.com/api/bbs/" + type + "/" + bbsId1 + "/" + commentId + ".json";
+            GeneralApi bbsCommentAPI = new GeneralApi();
+            result = bbsCommentAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 		    break;
 		    

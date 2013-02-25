@@ -2,6 +2,7 @@ package net.wisedog.android.whooing;
 
 import net.wisedog.android.whooing.activity.AccountSetting;
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
+import net.wisedog.android.whooing.activity.Welcome;
 import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.engine.DataRepository;
 import android.app.Activity;
@@ -58,6 +59,8 @@ public class Whooing extends Activity {
                     startActivityForResult(intent, Define.MSG_USER_SETTING_DONE);*/
                     Intent intent = new Intent(mContext, MainFragmentActivity.class);
                     startActivityForResult(intent, Define.MSG_AUTH_TOTAL_DONE);
+                    /*Intent intent = new Intent(mContext, Welcome.class);
+                    startActivityForResult(intent, Define.MSG_AUTH_TOTAL_DONE);*/
                 }           
             };
             handler.sendEmptyMessageDelayed(0, 200);
@@ -70,7 +73,7 @@ public class Whooing extends Activity {
 	}
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {   
         if (resultCode != RESULT_OK) {
             switch (resultCode) {
             case Define.RESPONSE_EXIT:

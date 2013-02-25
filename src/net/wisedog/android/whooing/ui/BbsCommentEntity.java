@@ -1,5 +1,8 @@
 package net.wisedog.android.whooing.ui;
 
+import java.util.Date;
+import java.util.Locale;
+
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.utils.DateUtil;
 
@@ -28,8 +31,12 @@ public class BbsCommentEntity extends LinearLayout {
 		textContent.setText(obj.getString("contents"));
 		
 		TextView textDate = (TextView)findViewById(R.id.bbs_comment_date);
-		String dateString = DateUtil.getDateWithTimestamp(obj.getLong("timestamp") * 1000);
-		textDate.setText(dateString);
+		//String dateString = DateUtil.getDateWithTimestamp(obj.getLong("timestamp") * 1000);
+		Date date = new Date(obj.getLong("timestamp") * 1000);
+		Locale locale = new Locale("en","US");//TODO change for localize
+       java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT, locale);
+       String date1 = df.format(date).toString();
+		textDate.setText(date1);
 		
 		TextView textName = (TextView)findViewById(R.id.bbs_comment_name);
 		textName.setText(objWriter.getString("username"));

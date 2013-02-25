@@ -77,8 +77,11 @@ public class Define {
     public static final int API_GET_BOARD_ARTICLE = 2210;
     public static final int API_POST_BOARD_REPLY = 2211;
     public static final int API_POST_BOARD_COMMENT = 2212;
+    public static final int API_GET_BOARD_COMMENT = 2213;
     public static final int API_GET_USER_INFO = 2300;
     public static final int API_GET_FREQUENT_ITEM = 2310;
+
+    
     
 	public static Typeface ROBOFONT = null;
     

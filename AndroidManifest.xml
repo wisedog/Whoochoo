@@ -51,6 +51,7 @@
         <activity android:name=".activity.PostItFragmentActivity"></activity>
         <activity android:name=".activity.BbsFragmentActivity"></activity>
         <activity android:name=".activity.AccountSetting"></activity>
+        <activity android:name=".activity.Welcome" android:theme="@style/Theme.Sherlock.NoActionBar"></activity>
     </application>
 
 </manifest>

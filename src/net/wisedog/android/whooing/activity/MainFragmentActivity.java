@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.simonvt.menudrawer.MenuDrawer;
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
+import net.wisedog.android.whooing.dialog.AboutDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
@@ -231,6 +234,10 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             intent.putExtra("title", getString(R.string.left_menu_item_history));
             startActivityForResult(intent, 1);
         }
+        else if(item.getTitle().equals("About")){
+            DialogFragment newFragment = AboutDialog.newInstance();
+            newFragment.show(getSupportFragmentManager(), "dialog");
+        }
         else if (item.getItemId() == android.R.id.home) {
             if(mMenuDrawer.isMenuVisible() == true){
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -257,7 +264,8 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             mMenuDrawer.closeMenu();
             return;
         }
-        super.onBackPressed();
+        this.setResult(Define.RESPONSE_EXIT);
+        finish();
     }
 
 
