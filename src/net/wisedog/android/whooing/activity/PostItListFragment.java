@@ -20,7 +20,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -45,32 +44,21 @@ public class PostItListFragment extends SherlockListFragment{
         super.onCreate(savedInstanceState);
         mDataArray = new ArrayList<PostItItem>();
         mAdapter = new PostItAdapter(getActivity(), mDataArray);
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
-        thread.start();
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (((PostItFragmentActivity) getActivity()).getNeedRefresh()) {
-            // Clear All
-            mDataArray.clear();
-            HeaderViewListAdapter a1 = (HeaderViewListAdapter) getListView().getAdapter();
-            PostItAdapter adapter = (PostItAdapter) a1.getWrappedAdapter();
-            adapter.setData(mDataArray);
-            adapter.notifyDataSetChanged();
-            ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
-            thread.start();
-        }
         footerView = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
                 R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);
         setListAdapter(mAdapter);
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
+        thread.start();
     }
 
 	@Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
-        
         PostItItem item = (PostItItem)getListView().getItemAtPosition(position);
         ((PostItFragmentActivity)getActivity()).addArticleFragment(item, false);
     }
@@ -90,13 +78,12 @@ public class PostItListFragment extends SherlockListFragment{
             }
             super.handleMessage(msg);
         }
-        
     };
     
     protected void showPostIt(JSONObject obj) throws JSONException{
         JSONArray array = obj.getJSONArray("results");
         int length = array.length();
-        
+        mDataArray.clear();
         
         for(int i = 0; i < length; i++){
             JSONObject entity = array.getJSONObject(i);
@@ -107,12 +94,22 @@ public class PostItListFragment extends SherlockListFragment{
             PostItItem item = new PostItItem(id, page, everywhere, content);
             mDataArray.add(item);
         }
-        
-        HeaderViewListAdapter a1 = (HeaderViewListAdapter)getListView().getAdapter();
-        PostItAdapter adapter = (PostItAdapter) a1.getWrappedAdapter();
-        adapter.setData(mDataArray);
-        adapter.notifyDataSetChanged();
         getListView().removeFooterView(footerView);
+        mAdapter.notifyDataSetChanged();
+        
 
     }
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		PostItFragmentActivity activity = ((PostItFragmentActivity) getActivity());
+		if(activity.getNeedRefresh()){
+	        getListView().addFooterView(footerView);
+            activity.needToRefresh(false);
+            ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
+            thread.start();
+			
+		}
+		super.onHiddenChanged(hidden);
+	}
 }
