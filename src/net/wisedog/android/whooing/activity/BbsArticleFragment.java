@@ -17,6 +17,9 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.ui.BbsReplyEntity;
 import net.wisedog.android.whooing.utils.DateUtil;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,6 +48,7 @@ public class BbsArticleFragment extends SherlockFragment {
 
     private int mBoardType = -1;
     private BoardItem mItemData = null;
+    private ProgressDialog mProgress = null;
 
     /* (non-Javadoc)
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
@@ -109,8 +114,8 @@ public class BbsArticleFragment extends SherlockFragment {
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
+                JSONObject obj = (JSONObject)msg.obj;
                 if(msg.arg1 == Define.API_GET_BOARD_ARTICLE){
-                    JSONObject obj = (JSONObject)msg.obj;
                     try {
                         showArticle(obj);
                     } catch (JSONException e) {
@@ -118,7 +123,6 @@ public class BbsArticleFragment extends SherlockFragment {
                     }
                 }
                 else if(msg.arg1 == Define.API_POST_BOARD_REPLY){
-                	JSONObject obj = (JSONObject)msg.obj;
                 	setEnableStatus(true);
                 	((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setText("");
                 	
@@ -142,6 +146,26 @@ public class BbsArticleFragment extends SherlockFragment {
                 	if(Define.DEBUG){
                 	    Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
                 	}
+                }
+                else if(msg.arg1 == Define.API_DELETE_BOARD_ARTICLE){
+                    if(Define.DEBUG){
+                        Log.i("wisedog", "BOARD_DELETE : " + obj.toString());
+                    }
+                    int result = 0;
+                    try {
+                        result = obj.getInt("code");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                        //TODO Toast
+                    }
+                    if(result == Define.RESULT_OK){
+                        mProgress.dismiss();
+                        Toast.makeText(getActivity(), "Delete Success", Toast.LENGTH_LONG).show();
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        //TODO back to the backstack, and reload list
+                    }
+                    
                 }
             }
             
@@ -202,6 +226,50 @@ public class BbsArticleFragment extends SherlockFragment {
         TextView textLevel = (TextView)getActivity().findViewById(R.id.bbs_article_text_level);
         if(textLevel != null){
             textLevel.setText("lv. " + objWriter.getInt("level"));
+        }
+        
+        if(Define.USER_ID == objWriter.getInt("user_id")){
+            ImageButton btnDelete = (ImageButton)getActivity().findViewById(R.id.bbs_article_delete);
+            ImageButton btnModify = (ImageButton)getActivity().findViewById(R.id.bbs_article_modify);
+            if(btnDelete != null && btnModify != null){
+                btnDelete.setVisibility(View.VISIBLE);
+                btnModify.setVisibility(View.VISIBLE);
+                btnDelete.setOnClickListener(new OnClickListener() { 
+                    @Override
+                    public void onClick(View v) {
+                        //TODO Show dialog confirm delete
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                        alertDialogBuilder.setTitle("Delete Confirm");
+                        alertDialogBuilder.setMessage("Really delete?")
+                        .setCancelable(true)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mProgress = ProgressDialog.show(getActivity(), "", 
+                                        getString(R.string.text_loading));
+                                Bundle b = new Bundle();
+                                b.putInt("board_type", mBoardType);
+                                b.putInt("bbs_id", mItemData.id);
+                                ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_DELETE_BOARD_ARTICLE, b);
+                                thread.start();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();                                
+                            }
+                        });
+                        
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();                        
+                    }
+                });
+            }
+            //TODO Modify btn set event handler
+            //TODO Implement BbsWriteFragment and set data there
         }
         
         TextView textDate = (TextView)getActivity().findViewById(R.id.bbs_article_text_date);

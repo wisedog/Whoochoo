@@ -155,7 +155,7 @@ public class ThreadHandshake extends Thread {
 	 * */
 	private boolean thirdHandshake(String secondToken, String pin){
 		String token_secret = null;
-		String user_id = null;
+		int user_id = -1;
 		String realToken = null;
 		if(secondToken == null || pin == null)
 			return false;
@@ -167,7 +167,7 @@ public class ThreadHandshake extends Thread {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
 			token_secret = result.getString("token_secret");
 			Log.d("wisedog", "Token secret:"+token_secret);
-			user_id = result.getString("user_id");
+			user_id = result.getInt("user_id");
 			Log.d("wisedog", "USER ID:"+user_id);
 			realToken = result.getString("token");
 			Log.d("wisedog", "Real Token:"+user_id);
@@ -182,7 +182,7 @@ public class ThreadHandshake extends Thread {
 				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(Define.KEY_SHARED_TOKEN_SECRET, token_secret);
-		editor.putString(Define.KEY_SHARED_USER_ID, user_id);
+		editor.putInt(Define.KEY_SHARED_USER_ID, user_id);
 		editor.putString(Define.KEY_SHARED_TOKEN, realToken);
 		editor.commit();
 		

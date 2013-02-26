@@ -2,6 +2,7 @@ package net.wisedog.android.whooing.network;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.activity.BbsFragmentActivity;
+import net.wisedog.android.whooing.api.BbsApi;
 import net.wisedog.android.whooing.api.Board;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
@@ -267,7 +268,7 @@ public class ThreadRestAPI extends Thread {
 			result = postPostIt.postPostIt(Define.APP_SECTION, Define.APP_ID, 
 					Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
 			break;
-		case Define.API_DEL_POSTIT:
+		case Define.API_DELETE_POSTIT:
 		    PostIt delPostIt = new PostIt();
 		    result = delPostIt.delPostIt(Define.APP_SECTION, Define.APP_ID, 
                     Define.REAL_TOKEN, Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
@@ -297,6 +298,16 @@ public class ThreadRestAPI extends Thread {
             GeneralApi bbsCommentAPI = new GeneralApi();
             result = bbsCommentAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
+		    break;
+		case Define.API_DELETE_BOARD_ARTICLE:
+		    BbsApi bbsApi = new BbsApi();
+		    result = bbsApi.delBbsArticle(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+		    /*int bbsId2 = mBundle.getInt("bbs_id");
+		    requestUrl = "https://whooing.com/api/bbs/" + type + "/" + bbsId2 + ".json";
+            GeneralApi bbsDeleteArticleAPI = new GeneralApi();
+            result = bbsDeleteArticleAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET);*/
 		    break;
 		    
 		default:

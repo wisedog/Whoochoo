@@ -34,6 +34,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/about_app_contact_whooing_email" 
+        android:layout_marginBottom="5dp"/>
+    
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:autoLink="web"
+        android:text="@string/about_app_whooing_url"
         android:layout_marginBottom="10dp"/>
 
     <net.wisedog.android.whooing.widget.WiTextView

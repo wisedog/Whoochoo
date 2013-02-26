@@ -33,7 +33,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp" >
 
-                <ImageView
+                <ImageButton
+                    android:id="@+id/bbs_article_delete"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/icon_delete_gray" 
+                    android:background="@null"
+                    android:visibility="gone"/>
+
+                <ImageButton
+                    android:id="@+id/bbs_article_modify"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/bbs_article_delete"
+                    android:src="@drawable/icon_modify_gray" 
+                    android:background="@null"
+                    android:visibility="gone"/>
+					<ImageView
                     android:id="@+id/bbs_article_profile_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"

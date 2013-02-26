@@ -111,7 +111,8 @@
     <string name="about_app_contact_whooing">Contact to Whooing</string>
     <string name="about_app_contact_whooing_email">support@whooing.com</string>
     <string name="about_app_contact_developer">Contact to App developer</string>
-    <string name="about_app_contact_developer_email">dev@wisedog.net</string>
+    <string name="about_app_contact_developer_email">peashellapps@gmail.com</string>
+    <string name="about_app_whooing_url">Website : http://whooing.com/</string>
     <string name="about_app_blog">Blog : http://peashellapps.wordpress.com/</string>
     <string name="about_app_creator">Create by Peashell Apps.</string>
     <string name="about_app_send_email">Choose Email Client</string>

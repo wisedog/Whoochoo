@@ -165,7 +165,7 @@ public class PostItArticleFragment extends SherlockFragment {
                         Bundle b = new Bundle();
                         b.putInt("post_it_id", mItem.id);
                         ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-                                Define.API_DEL_POSTIT, b);
+                                Define.API_DELETE_POSTIT, b);
                         thread.start();
                     }
                     else{
@@ -202,7 +202,7 @@ public class PostItArticleFragment extends SherlockFragment {
 					((PostItFragmentActivity) getActivity())
 							.needToRefresh(true);
 					getActivity().getSupportFragmentManager().popBackStack();
-				} else if (msg.arg1 == Define.API_DEL_POSTIT) {
+				} else if (msg.arg1 == Define.API_DELETE_POSTIT) {
 					Toast.makeText(getActivity(), "The post is deleted",
 							Toast.LENGTH_SHORT).show(); // TODO Localization
 					((PostItFragmentActivity) getActivity())

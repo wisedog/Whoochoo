@@ -9,7 +9,7 @@ public class Define {
 	public static String APP_SECRET = "1c5224ad2961704a6076c0bda127003933828a16";
 	public static String PIN = null;
 	public static String REAL_TOKEN = null;
-	public static String USER_ID = null;
+	public static int USER_ID = -1;
 	public static String TOKEN_SECRET = null;
 	public static String APP_SECTION = null;
 	
@@ -67,17 +67,30 @@ public class Define {
     public static final int API_GET_POST_IT = 2110;
     public static final int API_POST_POSTIT = 2111;
     public static final int API_PUT_POSTIT = 2112;
-    public static final int API_DEL_POSTIT = 2113;
+    public static final int API_DELETE_POSTIT = 2113;
+    
     public static final int API_GET_BOARD = 2190;
     public static final int API_GET_BOARD_BASE = 2200;
     public static final int API_GET_BOARD_FREE = 2200;
     public static final int API_GET_BOARD_MONEY_TALK = 2201;
     public static final int API_GET_BOARD_COUNSELING = 2202;
     public static final int API_GET_BOARD_WHOOING = 2203;
+    
+    //Board Article
     public static final int API_GET_BOARD_ARTICLE = 2210;
-    public static final int API_POST_BOARD_REPLY = 2211;
-    public static final int API_POST_BOARD_COMMENT = 2212;
-    public static final int API_GET_BOARD_COMMENT = 2213;
+    public static final int API_POST_BOARD_ARTICLE = 2211;
+    public static final int API_PUT_BOARD_ARTICLE = 2212;
+    public static final int API_DELETE_BOARD_ARTICLE = 2213;
+    
+    
+    public static final int API_POST_BOARD_REPLY = 2220;
+    
+    //Board Comment
+    public static final int API_GET_BOARD_COMMENT = 2230;
+    public static final int API_POST_BOARD_COMMENT = 2231;
+    public static final int API_PUT_BOARD_COMMENT = 2232;
+    public static final int API_DELETE_BOARD_COMMENT = 2233;
+    
     public static final int API_GET_USER_INFO = 2300;
     public static final int API_GET_FREQUENT_ITEM = 2310;
 

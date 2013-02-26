@@ -113,7 +113,7 @@ public class Whooing extends Activity {
         Define.PIN = "409713";
         Define.TOKEN_SECRET = "8bd064ccc751575cef4c0235a8ac946a2f2924a4";
         Define.APP_SECTION = "s10550";
-        Define.USER_ID = "8955";
+        Define.USER_ID = 8955;
         Define.CURRENCY_CODE = "KRW";
         
         /*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
