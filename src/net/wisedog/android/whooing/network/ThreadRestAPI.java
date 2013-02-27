@@ -303,12 +303,12 @@ public class ThreadRestAPI extends Thread {
 		    BbsApi bbsApi = new BbsApi();
 		    result = bbsApi.delBbsArticle(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
-		    /*int bbsId2 = mBundle.getInt("bbs_id");
-		    requestUrl = "https://whooing.com/api/bbs/" + type + "/" + bbsId2 + ".json";
-            GeneralApi bbsDeleteArticleAPI = new GeneralApi();
-            result = bbsDeleteArticleAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
-                    Define.APP_SECRET, Define.TOKEN_SECRET);*/
 		    break;
+		case Define.API_POST_BOARD_ARTICLE:
+		    BbsApi bbsPostApi = new BbsApi();
+            result = bbsPostApi.postBbsArticle(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+            break;
 		    
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

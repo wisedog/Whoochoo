@@ -41,10 +41,11 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
+ * This fragment is for show bbs list
  * @author Wisedog(me@wisedog.net)
- *
  */
 public class BbsArticleFragment extends SherlockFragment {
+    public static final String BBS_ARTICLE_FRAGMENT_TAG = "bbs_article_tag";
 
     private int mBoardType = -1;
     private BoardItem mItemData = null;
@@ -91,7 +92,7 @@ public class BbsArticleFragment extends SherlockFragment {
 			    	if(text != null){
 			    		String str = text.getText().toString();
 			    		if(str == null || str.equals("")){
-			    			Toast.makeText(getActivity(), "입력좀해", Toast.LENGTH_SHORT).show();
+			    			Toast.makeText(getActivity(), "입력좀해", Toast.LENGTH_SHORT).show(); //TODO Localization
 			    			return;
 			    		}
 			    		Bundle b = new Bundle();
@@ -161,9 +162,9 @@ public class BbsArticleFragment extends SherlockFragment {
                     }
                     if(result == Define.RESULT_OK){
                         mProgress.dismiss();
-                        Toast.makeText(getActivity(), "Delete Success", Toast.LENGTH_LONG).show();
-                        getActivity().getSupportFragmentManager().popBackStack();
-                        //TODO back to the backstack, and reload list
+                        Toast.makeText(getActivity(), getString(R.string.bbs_deleted), Toast.LENGTH_LONG).show();
+                        ((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
+                        getActivity().getSupportFragmentManager().popBackStack();                        
                     }
                     
                 }
@@ -237,17 +238,16 @@ public class BbsArticleFragment extends SherlockFragment {
                 btnDelete.setOnClickListener(new OnClickListener() { 
                     @Override
                     public void onClick(View v) {
-                        //TODO Show dialog confirm delete
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                        alertDialogBuilder.setTitle("Delete Confirm");
-                        alertDialogBuilder.setMessage("Really delete?")
+                        alertDialogBuilder.setTitle(getString(R.string.bbs_delete_alert_title));
+                        alertDialogBuilder.setMessage(getString(R.string.bbs_delete_alert_message))
                         .setCancelable(true)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mProgress = ProgressDialog.show(getActivity(), "", 
-                                        getString(R.string.text_loading));
+                                        getString(R.string.text_deleting));
                                 Bundle b = new Bundle();
                                 b.putInt("board_type", mBoardType);
                                 b.putInt("bbs_id", mItemData.id);

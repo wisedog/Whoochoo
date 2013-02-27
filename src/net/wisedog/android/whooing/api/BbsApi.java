@@ -15,17 +15,17 @@ public class BbsApi extends AbstractAPI{
 
 	public JSONObject postBbsArticle(String appSection, String appID, String token, 
             String appKey, String tokenSecret, Bundle bundle){
-        String entriesURL = "https://whooing.com/api/post_it.json";
-        if(bundle == null){
+	    if(bundle == null){
             return null;
         }
-        String page = bundle.getString("page");
+        String entriesURL = "https://whooing.com/api/bbs/" + getBoardType(bundle.getInt("board_type")) + ".json";
+        
+        String subject = bundle.getString("subject");
         String contents = bundle.getString("contents");
         
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("page", page));
         nameValuePairs.add(new BasicNameValuePair("contents", contents));
-        nameValuePairs.add(new BasicNameValuePair("section_id", appSection));
+        nameValuePairs.add(new BasicNameValuePair("subject", subject));
         
         JSONObject result = callRawApiPost(entriesURL, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
         return result;

@@ -15,6 +15,7 @@ import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -33,7 +33,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
  *
  */
 public class BbsListFragment extends SherlockListFragment implements OnScrollListener {
-    public static final String LIST_FRAGMENT_TAG = "bbs_list_tag";
+    public static final String BBS_LIST_FRAGMENT_TAG = "bbs_list_tag";
     
     protected ArrayList<BoardItem> mDataArray;
     protected View footerView;
@@ -69,7 +69,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
                 Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);
         setListAdapter(mAdapter);
-        getListView().removeFooterView(footerView);
+        //getListView().removeFooterView(footerView);
         getListView().setOnScrollListener(this);
     }
     
@@ -88,7 +88,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
                 if(msg.arg1 == Define.API_GET_BOARD){
                     mPageNum = mPageNum + 1;
                     JSONObject obj = (JSONObject)msg.obj;
-                    //mBbsValue = obj;
                     try {
                         showBoard(obj);
                     } catch (JSONException e) {
@@ -104,6 +103,11 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     protected void showBoard(JSONObject obj) throws JSONException{
         JSONArray array = obj.getJSONArray("results");
         int length = array.length();
+        
+      //Clear data for refresh
+        if(mPageNum == 2 && !mDataArray.isEmpty()){
+            mDataArray.clear();
+        }
         
         for(int i = 0; i < length; i++){
             JSONObject entity = array.getJSONObject(i);
@@ -134,11 +138,10 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
             
             mDataArray.add(item);
         }
-        HeaderViewListAdapter a1 = (HeaderViewListAdapter)getListView().getAdapter();
-        BoardAdapter adapter = (BoardAdapter) a1.getWrappedAdapter();
-        adapter.setData(mDataArray);
-        adapter.notifyDataSetChanged();
+        
         getListView().removeFooterView(footerView);
+        //adapter.setData(mDataArray);
+        mAdapter.notifyDataSetChanged();
         loading = false;
 
     }
@@ -152,25 +155,29 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
 		boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
 		if (loadMore && !loading) {
 			loading = true;
-			getListView().addFooterView(footerView, null, false);
-			Bundle b = new Bundle();
-			b.putInt("board_type", mBoardType);
-			b.putInt("page", mPageNum);
-			b.putInt("limit", 20);
-			JSONObject obj = DataRepository.getInstance().getUserValue();
-			String language = "en";
-			try {
-				language = obj.getString("language");
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			b.putString("language", language);
-			ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-					Define.API_GET_BOARD, b);
-			thread.start();
+			getMore();
 		}
 
 	}
+    
+    public void getMore(){
+        getListView().addFooterView(footerView, null, false);
+        Bundle b = new Bundle();
+        b.putInt("board_type", mBoardType);
+        b.putInt("page", mPageNum);
+        b.putInt("limit", 20);
+        JSONObject obj = DataRepository.getInstance().getUserValue();
+        String language = "en";  //Default, but TODO Localization
+        try {
+            language = obj.getString("language");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        b.putString("language", language);
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                Define.API_GET_BOARD, b);
+        thread.start();
+    }
 
     /* (non-Javadoc)
      * @see android.widget.AbsListView.OnScrollListener#onScrollStateChanged(android.widget.AbsListView, int)
@@ -179,4 +186,24 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     public void onScrollStateChanged(AbsListView arg0, int arg1) {
         ; //Do nothing        
     }
+
+    /* (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onHiddenChanged(boolean)
+     */
+    @SuppressLint("NewApi")
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        if(!hidden){
+            ((BbsFragmentActivity)getActivity()).mItemVisible = true;
+            getSherlockActivity().invalidateOptionsMenu();
+        }
+        BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
+        if(activity.getListNeedRefresh()){
+            activity.setListRefreshFlag(false);
+            mPageNum = 1;
+            getMore();
+        }
+        super.onHiddenChanged(hidden);
+    }
+    
 }

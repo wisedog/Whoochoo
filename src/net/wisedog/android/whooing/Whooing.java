@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +37,9 @@ public class Whooing extends Activity {
         //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
         setContentView(R.layout.main);
         mContext = this;
+        if(checkNetworkConnection() == false){
+            //TODO Alert and Exit
+        }
         
         getLoginInfo();
         
@@ -44,6 +49,7 @@ public class Whooing extends Activity {
             return;
         }
         else{
+            //TODO Show "Logging in ...., Getting Account Info ... "
             DataRepository repository = DataRepository.getInstance();
             repository.refreshUserInfo(this);
             repository.refreshDashboardValue(this);
@@ -124,5 +130,16 @@ public class Whooing extends Activity {
         Define.USER_ID = prefs.getString(Define.KEY_SHARED_USER_ID, null);
         Log.i("wisedog", "user_id: " + Define.USER_ID + " app_section : " + Define.APP_SECTION + " real_token:" + Define.REAL_TOKEN
                 + " pin : " + Define.PIN + " token_secret : " + Define.TOKEN_SECRET);*/
+    }
+    
+    /**
+     * Check now on network or not
+     * 
+     * @return True if now on internet, or false
+     */
+    protected boolean checkNetworkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
 }

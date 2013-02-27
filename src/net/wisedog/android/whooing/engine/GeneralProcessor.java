@@ -42,7 +42,7 @@ public class GeneralProcessor {
      * Insert items with given parameter value
      * @param objResult     JSON format value
      */
-    public boolean fillAccountsTable(JSONObject objResult) throws JSONException {
+    public boolean fillAccountsTable(final JSONObject objResult) throws JSONException {
         if(objResult == null){
             return false;
         }
@@ -50,16 +50,31 @@ public class GeneralProcessor {
         //There are five sections. - assets, liabilites, capital, income, expenses
         
         mContext.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
-        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
-        AccountsEntity info = null;
-        String accountsType[] = new String[]{"assets", "liabilities", "capital", "income", "expenses"};
-        for(int j = 0; j < accountsType.length; j++){
-            JSONArray assetsArray = objResult.getJSONArray(accountsType[j]);
-            for(int i = 0; i < assetsArray.length(); i++){
-                info = new AccountsEntity(accountsType[j], (JSONObject) assetsArray.get(i));
-                dbHelper.addAccountEntity(info);
+        final AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        final String accountsType[] = new String[]{"assets", "liabilities", "capital", "income", "expenses"};
+        new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                for(int j = 0; j < accountsType.length; j++){
+                    JSONArray assetsArray = null;
+                    AccountsEntity info = null;
+                    try {
+                        assetsArray = objResult.getJSONArray(accountsType[j]);
+                        for(int i = 0; i < assetsArray.length(); i++){
+                            info = new AccountsEntity(accountsType[j], (JSONObject) assetsArray.get(i));
+                            dbHelper.addAccountEntity(info);
+                        }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                }
+                
             }
-        }
+            
+        }).start();
         return true;
     }
 

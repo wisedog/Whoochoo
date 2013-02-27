@@ -26,6 +26,9 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	public static final int BOARD_TYPE_WHOOING = 3;
 
 	private int mBoardType = -1;
+	public boolean mItemVisible = true;
+	
+	protected boolean mRefreshListFlag = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 		     BbsListFragment list = new BbsListFragment();
 		     list.setData(mBoardType);
             getSupportFragmentManager().beginTransaction().add(R.id.bbs_fragment_container, 
-                    list,BbsListFragment.LIST_FRAGMENT_TAG).commit();
+                    list,BbsListFragment.BBS_LIST_FRAGMENT_TAG).commit();
 		 }
 	}
 	
@@ -53,27 +56,37 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	 * @param  item    item info what the user selected        
 	 * */
 	public void addArticleFragment(BoardItem item){
-	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.LIST_FRAGMENT_TAG);
+	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
 	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         BbsArticleFragment fragment = new BbsArticleFragment();
         fragment.setData(mBoardType, item);
         ft.hide(fr0);
-        ft.add(R.id.bbs_fragment_container, fragment, "abc");
+        ft.add(R.id.bbs_fragment_container, fragment, BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);
         ft.show(fragment);
         ft.addToBackStack(null);
         ft.commit();
         
 	}
 	
+	public void addWriteFragment(){
+	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        BbsWriteFragment fragment = new BbsWriteFragment();
+        //fragment.setData(mBoardType, item)
+        fragment.setData(BbsWriteFragment.MODE_WRITE_ARTICLE, mBoardType, null, null);
+        ft.hide(fr0);
+        ft.add(R.id.bbs_fragment_container, fragment, BbsWriteFragment.BBS_WRITE_FRAGMENT_TAG);
+        ft.show(fragment);
+        ft.addToBackStack(null);
+        ft.commit();
+	}
+	
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-	    menu.add("write").setIcon(R.drawable.icon_write)
-        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        SubMenu subMenu1 = menu.addSubMenu("Lists");        
-        subMenu1.add("Setting");
-        subMenu1.add("Help");
-        subMenu1.add("About");
+        if (mItemVisible) {
+            menu.add("write").setIcon(R.drawable.icon_write)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -81,12 +94,17 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getTitle().equals("write")) {
-            /*Intent intent = new Intent(this, TransactionAdd.class);
-            intent.putExtra("title", getString(R.string.text_add_transaction));
-            startActivityForResult(intent, 1);*/
-            Toast.makeText(this, "Press Write button", Toast.LENGTH_SHORT).show();
+            addWriteFragment();
         }
 
         return super.onOptionsItemSelected(item);
     }
+	
+	public void setListRefreshFlag(boolean b){
+	    mRefreshListFlag = b;
+	}
+	
+	public boolean getListNeedRefresh(){
+	    return mRefreshListFlag;
+	}
 }
