@@ -154,7 +154,6 @@ public class JSONUtil {
             List<NameValuePair> putValue) throws JSONException {
         HttpClient client = new DefaultHttpClient();
         client.getParams().setParameter("http.protocol.content-charset", HTTP.UTF_8);
-        //HttpPost httpPost = new HttpPost(url);
         HttpPut httpPut = new HttpPut(url);
         if (headerKey != null && headerValue != null) {
             httpPut.addHeader(headerKey, headerValue);

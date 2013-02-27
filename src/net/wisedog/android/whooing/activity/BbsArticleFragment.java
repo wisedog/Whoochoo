@@ -17,6 +17,7 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.ui.BbsReplyEntity;
 import net.wisedog.android.whooing.utils.DateUtil;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -215,7 +216,7 @@ public class BbsArticleFragment extends SherlockFragment {
         	progress.setVisibility(View.GONE);
         }
 
-        TextView textSubject = (TextView)getActivity().findViewById(R.id.bbs_article_subject);
+        final TextView textSubject = (TextView)getActivity().findViewById(R.id.bbs_article_subject);
         if(textSubject != null){
             textSubject.setText(objResult.getString("subject"));
         }
@@ -227,6 +228,17 @@ public class BbsArticleFragment extends SherlockFragment {
         TextView textLevel = (TextView)getActivity().findViewById(R.id.bbs_article_text_level);
         if(textLevel != null){
             textLevel.setText("lv. " + objWriter.getInt("level"));
+        }
+        
+        TextView textDate = (TextView)getActivity().findViewById(R.id.bbs_article_text_date);
+        if(textDate != null){
+            String dateString = DateUtil.getDateWithTimestamp(objResult.getLong("timestamp") * 1000);
+            textDate.setText(dateString);
+        }
+        
+        final TextView textContents = (TextView)getActivity().findViewById(R.id.bbs_article_text_contents);
+        if(textContents != null){
+            textContents.setText(objResult.getString("contents"));
         }
         
         if(Define.USER_ID == objWriter.getInt("user_id")){
@@ -264,24 +276,27 @@ public class BbsArticleFragment extends SherlockFragment {
                         });
                         
                         AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();                        
+                        alertDialog.show();
                     }
                 });
+                
+                btnModify.setOnClickListener(new OnClickListener(){
+					@SuppressLint("NewApi")
+					@Override
+					public void onClick(View v) {
+						String subject = textSubject.getText().toString();
+						String content = textContents.getText().toString();
+						BbsFragmentActivity activity = (BbsFragmentActivity) getActivity();
+						activity.addWriteFragment(BbsWriteFragment.MODE_MODIFY_ARTICLE, subject,
+								content, mItemData.id);
+						activity.mItemVisible = false;
+						activity.invalidateOptionsMenu();
+					}
+                });
             }
-            //TODO Modify btn set event handler
-            //TODO Implement BbsWriteFragment and set data there
         }
         
-        TextView textDate = (TextView)getActivity().findViewById(R.id.bbs_article_text_date);
-        if(textDate != null){
-            String dateString = DateUtil.getDateWithTimestamp(objResult.getLong("timestamp") * 1000);
-            textDate.setText(dateString);
-        }
         
-        TextView textContents = (TextView)getActivity().findViewById(R.id.bbs_article_text_contents);
-        if(textContents != null){
-            textContents.setText(objResult.getString("contents"));
-        }
         
         ImageView profileImage = (ImageView)getActivity().findViewById(R.id.bbs_article_profile_image);
         profileImage.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -316,4 +331,20 @@ public class BbsArticleFragment extends SherlockFragment {
         }
         
     }
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		if(!hidden){
+            ((BbsFragmentActivity)getActivity()).mItemVisible = true;
+            getSherlockActivity().invalidateOptionsMenu();
+        }
+        BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
+        if(activity.mRefreshArticleFlag){
+        	Toast.makeText(getActivity(), "TEST1", Toast.LENGTH_SHORT).show();
+            activity.mRefreshArticleFlag = false;
+            //TODO Refresh
+        }
+		super.onHiddenChanged(hidden);
+	}
 }

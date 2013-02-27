@@ -44,24 +44,15 @@ public class BbsWriteFragment extends SherlockFragment {
     private String mSubject = null;
     private String mContent = null;
     private int mMode = 0;
+    private int mBbsId = 0;
     
     
-    public void setData(int mode, int boardType, String subject, String content){
+    public void setData(int mode, int boardType, String subject, String content, int bbsid){
         mSubject = subject;
         mContent = content;
         mBoardType = boardType;
         mMode = mode;
-    }
-    
-    //TODO hide actionbar button
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-/*        Bundle b = new Bundle();
-        b.putInt("bbs_id", mItemData.id);
-        b.putInt("board_type", mBoardType);
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_GET_BOARD_ARTICLE, b);
-        thread.start();*/
-        super.onCreate(savedInstanceState);
+        mBbsId = bbsid;
     }
 
     /* (non-Javadoc)
@@ -99,18 +90,20 @@ public class BbsWriteFragment extends SherlockFragment {
                     Toast.makeText(getSherlockActivity(), getString(R.string.bbs_write_fill_content), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(mMode == MODE_WRITE_ARTICLE){
-                    if(subject == null || subject.equals("")){
-                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
-                        button.startAnimation(shake);
-                        Toast.makeText(getSherlockActivity(), getString(R.string.bbs_write_fill_subject), Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
-                            Context.INPUT_METHOD_SERVICE);
-                      imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-                    button.setEnabled(false);
-                    Bundle b = new Bundle();
+                
+                Bundle b = new Bundle();
+                
+				// Pre-filtering & common 
+				if (mMode == MODE_WRITE_ARTICLE || mMode == MODE_MODIFY_ARTICLE) {
+					if (subject == null || subject.equals("")) {
+						Animation shake = AnimationUtils.loadAnimation(
+								getActivity(), R.anim.shake);
+						button.startAnimation(shake);
+						Toast.makeText(getSherlockActivity(),
+								getString(R.string.bbs_write_fill_subject),
+								Toast.LENGTH_SHORT).show();
+						return;
+					}
                     b.putString("contents", content);
                     b.putString("subject", subject);
                     b.putInt("board_type", mBoardType);
@@ -118,11 +111,24 @@ public class BbsWriteFragment extends SherlockFragment {
                     if(progress != null){
                         progress.setVisibility(View.VISIBLE);
                     }
+				}
+				
+				//Hide keyboard
+				InputMethodManager imm = (InputMethodManager) getActivity()
+						.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(getActivity().getCurrentFocus()
+						.getWindowToken(), 0);
+				button.setEnabled(false);
+                
+                if(mMode == MODE_WRITE_ARTICLE){                    
                     ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_BOARD_ARTICLE, b);
                     thread.start();
                 }
-                
-                
+                else if(mMode == MODE_MODIFY_ARTICLE){
+                	b.putInt("bbs_id", mBbsId);
+                	ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_BOARD_ARTICLE, b);
+                    thread.start();
+                }
             }
         });
 
@@ -137,6 +143,10 @@ public class BbsWriteFragment extends SherlockFragment {
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
+            	ProgressBar progress = (ProgressBar) getActivity().findViewById(R.id.bbs_write_progress_bar);
+                if(progress != null){
+                    progress.setVisibility(View.INVISIBLE);
+                }
                 if(msg.arg1 == Define.API_POST_BOARD_ARTICLE){
                     JSONObject obj = (JSONObject)msg.obj;
                     if(Define.DEBUG){
@@ -151,14 +161,27 @@ public class BbsWriteFragment extends SherlockFragment {
                         //TODO Toast
                     }
                     if(result == Define.RESULT_OK){
-                        ProgressBar progress = (ProgressBar) getActivity().findViewById(R.id.bbs_write_progress_bar);
-                        if(progress != null){
-                            progress.setVisibility(View.INVISIBLE);
-                        }
                         ((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
                         getActivity().getSupportFragmentManager().popBackStack();
                     }
                     
+                }else if(msg.arg1== Define.API_PUT_BOARD_ARTICLE){
+                	JSONObject obj = (JSONObject)msg.obj;
+                    if(Define.DEBUG){
+                        Log.i("wisedog", "PUT_BOARD_ARTICLE : " + obj.toString());
+                    }
+                    int result = 0;
+                    try {
+                        result = obj.getInt("code");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                        //TODO Toast
+                    }
+                    if(result == Define.RESULT_OK){
+                        ((BbsFragmentActivity)getActivity()).mRefreshArticleFlag = true;
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    }
                 }
             }
             super.handleMessage(msg);

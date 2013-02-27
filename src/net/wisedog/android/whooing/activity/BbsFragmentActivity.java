@@ -29,6 +29,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	public boolean mItemVisible = true;
 	
 	protected boolean mRefreshListFlag = false;
+	public boolean mRefreshArticleFlag = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +69,17 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
         
 	}
 	
-	public void addWriteFragment(){
-	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
+	public void addWriteFragment(int mode, String subject, String contents, int bbs_id){
+	    Fragment fr0 = null;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         BbsWriteFragment fragment = new BbsWriteFragment();
-        //fragment.setData(mBoardType, item)
-        fragment.setData(BbsWriteFragment.MODE_WRITE_ARTICLE, mBoardType, null, null);
+        if(mode == BbsWriteFragment.MODE_MODIFY_ARTICLE || mode == BbsWriteFragment.MODE_MODIFY_REPLY){
+        	fr0 = (Fragment)getSupportFragmentManager().findFragmentByTag(BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);
+        }
+        else{
+        	fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
+        }
+        fragment.setData(mode, mBoardType, subject, contents, bbs_id);
         ft.hide(fr0);
         ft.add(R.id.bbs_fragment_container, fragment, BbsWriteFragment.BBS_WRITE_FRAGMENT_TAG);
         ft.show(fragment);
@@ -94,7 +100,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getTitle().equals("write")) {
-            addWriteFragment();
+            addWriteFragment(BbsWriteFragment.MODE_WRITE_ARTICLE, null, null, 0);
         }
 
         return super.onOptionsItemSelected(item);

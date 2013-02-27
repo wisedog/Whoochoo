@@ -309,6 +309,11 @@ public class ThreadRestAPI extends Thread {
             result = bbsPostApi.postBbsArticle(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
             break;
+		case Define.API_PUT_BOARD_ARTICLE:
+			BbsApi bbsPutApi = new BbsApi();
+			result = bbsPutApi.putBbsArticle(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+			break;
 		    
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

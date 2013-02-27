@@ -66,10 +66,15 @@ public class BbsApi extends AbstractAPI{
     	 if(bundle == null){
              return null;
          }
-         String entriesURL = "https://whooing.com/api/bbs/" + bundle.getInt("bbs_id") + ".json";
+    	 String boardType = getBoardType(bundle.getInt("board_type"));
+         String entriesURL = "https://whooing.com/api/bbs/" + boardType + "/" + bundle.getInt("bbs_id") + ".json";
          List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-         nameValuePairs.add(new BasicNameValuePair("contents", bundle.getString("contents")));
-         nameValuePairs.add(new BasicNameValuePair("section_id", appSection));
+         
+         String subject = bundle.getString("subject");
+         String contents = bundle.getString("contents");
+         
+         nameValuePairs.add(new BasicNameValuePair("contents", contents));
+         nameValuePairs.add(new BasicNameValuePair("subject", subject));
          JSONObject result = callApiPut(entriesURL, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
          return result;
     }
