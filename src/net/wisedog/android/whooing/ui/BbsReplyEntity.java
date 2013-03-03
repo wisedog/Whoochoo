@@ -20,6 +20,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -76,6 +77,39 @@ public class BbsReplyEntity extends LinearLayout {
 		if(textLabel != null){
 			textLabel.setText(String.valueOf(objWriter.getInt("level")));
 		}
+		
+		if(Define.USER_ID == objWriter.getInt("user_id")){
+			ImageButton delImg = (ImageButton)findViewById(R.id.bbs_article_chunk_delete);
+			if(delImg != null){
+				delImg.setVisibility(View.VISIBLE);
+				delImg.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+			}
+			
+			ImageButton modifyImg = (ImageButton)findViewById(R.id.bbs_article_chunk_modify);
+			if(modifyImg != null){
+				modifyImg.setVisibility(View.VISIBLE);
+				modifyImg.setOnClickListener(new OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+				});
+			}
+			
+		}
+		
+		
 		
 		TextView textDate = (TextView)findViewById(R.id.bbs_article_chunk_date);
 		if(textDate != null){
