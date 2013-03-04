@@ -26,7 +26,7 @@ public class AddTransactionTests extends ActivityInstrumentationTestCase2<Transa
     protected void setUp() throws Exception {
         super.setUp();
         mActivity = getActivity();
-        mEditItem = (EditText)mActivity.findViewById(net.wisedog.android.whooing.R.id.add_transaction_edit_item);
+        mEditItem = (EditText)mActivity.findViewById(net.wisedog.android.whooing.R.id.add_transaction_auto_complete);
         mEditAmount = (EditText)mActivity.findViewById(net.wisedog.android.whooing.R.id.add_transaction_edit_amount);
         mTextDate = (TextView)mActivity.findViewById(net.wisedog.android.whooing.R.id.add_transaction_text_date);
         mBtnChangeDate = (Button)mActivity.findViewById(net.wisedog.android.whooing.R.id.add_transaction_change_btn);
