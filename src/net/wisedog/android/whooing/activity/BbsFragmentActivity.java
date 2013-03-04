@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -112,5 +111,10 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	
 	public boolean getListNeedRefresh(){
 	    return mRefreshListFlag;
+	}
+	
+	public void refreshArticleFragment(){
+	    BbsArticleFragment fr0 = (BbsArticleFragment) getSupportFragmentManager().findFragmentByTag(BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);
+	    fr0.refreshArticle(true);
 	}
 }

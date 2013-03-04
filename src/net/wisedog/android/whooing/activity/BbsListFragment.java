@@ -69,7 +69,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
                 Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);
         setListAdapter(mAdapter);
-        //getListView().removeFooterView(footerView);
         getListView().setOnScrollListener(this);
     }
     
@@ -140,7 +139,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         }
         
         getListView().removeFooterView(footerView);
-        //adapter.setData(mDataArray);
         mAdapter.notifyDataSetChanged();
         loading = false;
 

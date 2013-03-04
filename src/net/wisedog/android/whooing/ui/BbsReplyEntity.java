@@ -9,14 +9,20 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.activity.BbsFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.utils.DateUtil;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,14 +36,31 @@ public class BbsReplyEntity extends LinearLayout {
 
 	private Context mContext;
 	/**사용자가 답글의 댓글을 추가했을 때, 여기에 있는 정보를 사용한다.*/
-	private JSONObject mObjParent = null;	
+	private JSONObject mObjParent = null;
+    private int mBbsId;
+    private int mBoardType;	
+    private ProgressDialog mProgress;
 
 	public BbsReplyEntity(Context context) {
 		super(context);
 		mContext = context;
 	}
 	
-	public void setupReply(final JSONObject obj, final JSONObject objResult) throws JSONException{
+	/**
+     * @param activity
+     * @param bbsArticleFragment
+     * @param id
+     * @param mBoardType
+     */
+    public BbsReplyEntity(Context context, Fragment bbsArticleFragment, int bbs_id,
+            int boardType) {
+        super(context);
+        mContext = context;
+        mBbsId = bbs_id;
+        mBoardType = boardType; 
+    }
+
+    public void setupReply(final JSONObject obj, final JSONObject objResult) throws JSONException{
 		inflate(mContext, R.layout.bbs_article_chunk, this);
 		
 		if(obj == null){	//objResult may be null, but it's acceptance
@@ -86,8 +109,40 @@ public class BbsReplyEntity extends LinearLayout {
 
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						
+					    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+		                alertDialogBuilder.setTitle(mContext.getString(R.string.bbs_delete_alert_title));
+		                alertDialogBuilder.setMessage(mContext.getString(R.string.bbs_delete_alert_message))
+		                .setCancelable(true)
+		                .setPositiveButton(mContext.getString(R.string.text_yes), new DialogInterface.OnClickListener() {
+		                    @Override
+		                    public void onClick(DialogInterface dialog, int which) {
+		                        Bundle b = new Bundle();
+		                        b.putInt("board_type", mBoardType);
+		                        b.putInt("bbs_id", mBbsId);
+		                        try {
+		                            b.putString("comment_id", obj.getString("comment_id"));
+		                        } catch (JSONException e) {
+		                            e.printStackTrace();
+		                            return;
+		                            //TODO Toast
+		                        }
+		                        mProgress = ProgressDialog.show(mContext, "", 
+                                        mContext.getString(R.string.text_deleting));
+		                        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+		                                Define.API_DELETE_BOARD_REPLY, b);
+		                       thread.start();
+		                    }
+		                })
+		                .setNegativeButton(mContext.getString(R.string.text_no), new DialogInterface.OnClickListener() {
+		                    
+		                    @Override
+		                    public void onClick(DialogInterface dialog, int which) {
+		                        dialog.cancel();                                
+		                    }
+		                });
+		                
+		                AlertDialog alertDialog = alertDialogBuilder.create();
+		                alertDialog.show();
 					}
 					
 				});
@@ -100,7 +155,7 @@ public class BbsReplyEntity extends LinearLayout {
 
 					@Override
 					public void onClick(View v) {
-						// TODO Auto-generated method stub
+						// TODO Write BBS fragment
 						
 					}
 					
@@ -212,6 +267,15 @@ public class BbsReplyEntity extends LinearLayout {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }
+                else if(msg.arg1 == Define.API_DELETE_BOARD_REPLY){
+                    if(Define.DEBUG){
+                        Log.i("wisedog", "API_DELETE_BOARD_REPLY : " + obj.toString());
+                    }
+                    mProgress.dismiss();
+                    BbsFragmentActivity activity = (BbsFragmentActivity)mContext;
+                    activity.refreshArticleFragment();
+                    activity.setListRefreshFlag(true);
                 }
             }
         	else if(msg.what == 0){

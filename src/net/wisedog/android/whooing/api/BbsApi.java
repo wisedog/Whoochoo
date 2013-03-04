@@ -50,6 +50,28 @@ public class BbsApi extends AbstractAPI{
         JSONObject result = callApiDelete(entriesURL, appID, token, appKey, tokenSecret, appSection);
         return result;
     }
+    
+    /**
+     * @param appSection
+     * @param appID
+     * @param token
+     * @param appKey
+     * @param tokenSecret
+     * @param bundle
+     * @return
+     */
+    public JSONObject delBbsReply(String appSection, String appID, String token, 
+            String appKey, String tokenSecret, Bundle bundle) {
+        if(bundle == null){
+            return null;
+        }
+        String boardType = getBoardType(bundle.getInt("board_type"));
+        String entriesURL = "https://whooing.com/api/bbs/" + boardType + "/" +  bundle.getInt("bbs_id") 
+                + "/" + bundle.getString("comment_id") + ".json";
+        JSONObject result = callApiDelete(entriesURL, appID, token, appKey, tokenSecret, appSection);
+        return result;
+    }
+    
 
     /**
      * @param aPP_SECTION
@@ -60,7 +82,6 @@ public class BbsApi extends AbstractAPI{
      * @param mBundle
      * @return
      */
-    //TODO Should be modify for bbs
     public JSONObject putBbsArticle(String appSection, String appID, String token, 
             String appKey, String tokenSecret, Bundle bundle) {
     	 if(bundle == null){
@@ -79,6 +100,12 @@ public class BbsApi extends AbstractAPI{
          return result;
     }
     
+    
+    
+    /**
+     * @param   type    board type integer value
+     * @return board type string for composition URL
+     * */
     public String getBoardType(int type){
         String boardType = "free";
         if(type == BbsFragmentActivity.BOARD_TYPE_FREE){

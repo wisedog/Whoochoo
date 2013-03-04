@@ -62,6 +62,8 @@
     <string name="text_deleting">Deleting&#8230;</string>
     <string name="text_subject">Subject</string>
     <string name="text_content">Content</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.utils.DateUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +29,7 @@ public class BbsCommentEntity extends LinearLayout {
 		TextView textContent = (TextView)findViewById(R.id.bbs_comment_contents);
 		textContent.setText(obj.getString("contents"));
 		
+		//TODO userid 에 따라서 코멘트 삭제 버튼으로 둔갑, 이벤트핸들러 연결
 		TextView textDate = (TextView)findViewById(R.id.bbs_comment_date);
 		//String dateString = DateUtil.getDateWithTimestamp(obj.getLong("timestamp") * 1000);
 		Date date = new Date(obj.getLong("timestamp") * 1000);

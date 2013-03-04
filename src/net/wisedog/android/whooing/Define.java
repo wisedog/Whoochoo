@@ -84,6 +84,8 @@ public class Define {
     
     
     public static final int API_POST_BOARD_REPLY = 2220;
+    public static final int API_PUT_BOARD_REPLY = 2221;
+    public static final int API_DELETE_BOARD_REPLY = 2222;
     
     //Board Comment
     public static final int API_GET_BOARD_COMMENT = 2230;
