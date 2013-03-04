@@ -289,7 +289,7 @@ public class BbsArticleFragment extends SherlockFragment {
 						String content = textContents.getText().toString();
 						BbsFragmentActivity activity = (BbsFragmentActivity) getActivity();
 						activity.addWriteFragment(BbsWriteFragment.MODE_MODIFY_ARTICLE, subject,
-								content, mItemData.id);
+								content, mItemData.id, null);
 						activity.mItemVisible = false;
 						activity.invalidateOptionsMenu();
 					}

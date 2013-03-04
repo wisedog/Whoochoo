@@ -10,9 +10,11 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.activity.BbsFragmentActivity;
+import net.wisedog.android.whooing.activity.BbsWriteFragment;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.utils.DateUtil;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -96,9 +98,26 @@ public class BbsReplyEntity extends LinearLayout {
 		if(textName != null){
 			textName.setText(objWriter.getString("username"));
 		}
+		
 		TextView textLabel = (TextView)findViewById(R.id.bbs_article_chunk_level);
 		if(textLabel != null){
 			textLabel.setText(String.valueOf(objWriter.getInt("level")));
+		}
+		
+		TextView textDate = (TextView)findViewById(R.id.bbs_article_chunk_date);
+		if(textDate != null){
+			String dateString = DateUtil.getDateWithTimestamp(obj.getLong("timestamp") * 1000);
+			textDate.setText(dateString);
+		}
+		
+		final TextView textContents = (TextView)findViewById(R.id.bbs_article_chunk_contents);
+		if(textContents != null){
+			textContents.setText(obj.getString("contents"));
+		}
+		
+		TextView textComments = (TextView)findViewById(R.id.bbs_article_chunk_comment_num);
+		if(textComments != null){
+			textComments.setText(obj.getInt("additions") + " comments");
 		}
 		
 		if(Define.USER_ID == objWriter.getInt("user_id")){
@@ -153,33 +172,26 @@ public class BbsReplyEntity extends LinearLayout {
 				modifyImg.setVisibility(View.VISIBLE);
 				modifyImg.setOnClickListener(new OnClickListener(){
 
+					@SuppressLint("NewApi")
 					@Override
 					public void onClick(View v) {
-						// TODO Write BBS fragment
+						BbsFragmentActivity activity = (BbsFragmentActivity)mContext;
+						try {
+							activity.addWriteFragment(BbsWriteFragment.MODE_MODIFY_REPLY, null,
+									textContents.getText().toString(), mBbsId, obj.getString("comment_id"));
+						} catch (JSONException e) {
+							e.printStackTrace();
+							return;
+						}
+						activity.mItemVisible = false;
+						activity.invalidateOptionsMenu();
 						
 					}
-					
 				});
 			}
-			
 		}
+
 		
-		
-		
-		TextView textDate = (TextView)findViewById(R.id.bbs_article_chunk_date);
-		if(textDate != null){
-			String dateString = DateUtil.getDateWithTimestamp(obj.getLong("timestamp") * 1000);
-			textDate.setText(dateString);
-		}
-		TextView textContents = (TextView)findViewById(R.id.bbs_article_chunk_contents);
-		if(textContents != null){
-			textContents.setText(obj.getString("contents"));
-		}
-		
-		TextView textComments = (TextView)findViewById(R.id.bbs_article_chunk_comment_num);
-		if(textComments != null){
-			textComments.setText(obj.getInt("additions") + " comments");
-		}
 		
 		Button confirmBtn = (Button) findViewById(R.id.bbs_article_chunk_comment_confirm_btn);
 		confirmBtn.setOnClickListener(new OnClickListener() {

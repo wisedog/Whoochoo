@@ -45,6 +45,7 @@ public class BbsWriteFragment extends SherlockFragment {
     private String mContent = null;
     private int mMode = 0;
     private int mBbsId = 0;
+	private String mCommentId = null;
     
     
     public void setData(int mode, int boardType, String subject, String content, int bbsid){
@@ -53,6 +54,15 @@ public class BbsWriteFragment extends SherlockFragment {
         mBoardType = boardType;
         mMode = mode;
         mBbsId = bbsid;
+    }
+    
+    public void setData(int mode, int boardType, String subject, String content, int bbsid, String commentId){
+        mSubject = subject;
+        mContent = content;
+        mBoardType = boardType;
+        mMode = mode;
+        mBbsId = bbsid;
+        mCommentId = commentId;
     }
 
     /* (non-Javadoc)
@@ -74,6 +84,7 @@ public class BbsWriteFragment extends SherlockFragment {
         }else if(mMode == MODE_MODIFY_REPLY){
             subjectEdit.setVisibility(View.GONE);
             textView.setVisibility(View.GONE);
+            contentEdit.setText(mContent);
             contentEdit.requestFocus();
         }
         
@@ -129,6 +140,18 @@ public class BbsWriteFragment extends SherlockFragment {
                 	ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_BOARD_ARTICLE, b);
                     thread.start();
                 }
+                else if(mMode == MODE_MODIFY_REPLY){
+                	ProgressBar progress = (ProgressBar) getActivity().findViewById(R.id.bbs_write_progress_bar);
+                    if(progress != null){
+                        progress.setVisibility(View.VISIBLE);
+                    }
+                	b.putInt("bbs_id", mBbsId);
+                	b.putInt("board_type", mBoardType);
+                	b.putString("comment_id", mCommentId);
+                	b.putString("contents", content);
+                	ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_BOARD_REPLY, b);
+                    thread.start();
+                }
             }
         });
 
@@ -147,41 +170,48 @@ public class BbsWriteFragment extends SherlockFragment {
                 if(progress != null){
                     progress.setVisibility(View.INVISIBLE);
                 }
+                JSONObject obj = (JSONObject)msg.obj;
+                int result = 0;
+                try {
+                    result = obj.getInt("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                    //TODO Toast
+                }
                 if(msg.arg1 == Define.API_POST_BOARD_ARTICLE){
-                    JSONObject obj = (JSONObject)msg.obj;
+                    
                     if(Define.DEBUG){
                         Log.i("wisedog", "POST_BOARD_ARTICLE : " + obj.toString());
                     }
-                    int result = 0;
-                    try {
-                        result = obj.getInt("code");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return;
-                        //TODO Toast
-                    }
+                    
                     if(result == Define.RESULT_OK){
                         ((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
                         getActivity().getSupportFragmentManager().popBackStack();
                     }
                     
                 }else if(msg.arg1== Define.API_PUT_BOARD_ARTICLE){
-                	JSONObject obj = (JSONObject)msg.obj;
                     if(Define.DEBUG){
                         Log.i("wisedog", "PUT_BOARD_ARTICLE : " + obj.toString());
                     }
-                    int result = 0;
-                    try {
-                        result = obj.getInt("code");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        return;
-                        //TODO Toast
-                    }
+                    
                     if(result == Define.RESULT_OK){
-                        ((BbsFragmentActivity)getActivity()).mRefreshArticleFlag = true;
+                    	BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
+                    	activity.setListRefreshFlag(true);
                         getActivity().getSupportFragmentManager().popBackStack();
+                    	activity.refreshArticleFragment();
                     }
+                }else if(msg.arg1 == Define.API_PUT_BOARD_REPLY){
+                	if(Define.DEBUG){
+                		Log.i("wisedog", "API_PUT_BOARD_REPLY : " + obj.toString());
+                	}
+                	
+                	if(result == Define.RESULT_OK){
+                		BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
+                    	activity.setListRefreshFlag(true);
+                        getActivity().getSupportFragmentManager().popBackStack();
+                    	activity.refreshArticleFragment();
+                	}
                 }
             }
             super.handleMessage(msg);
