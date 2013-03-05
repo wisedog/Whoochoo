@@ -16,12 +16,12 @@
 	        android:gravity="center_vertical"
 	        android:orientation="horizontal" >
 
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 			    android:layout_width="80dip"
 			    android:layout_height="wrap_content"
 			    android:textSize="22sp"
 			    android:text="@string/text_from"/>
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 	            android:id="@+id/transaction_entries_from_date"
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
@@ -44,12 +44,12 @@
 	        android:gravity="center_vertical"
 	        android:orientation="horizontal" >
 
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 			    android:layout_width="80dip"
 			    android:layout_height="wrap_content"
 			    android:textSize="22sp"
 			    android:text="@string/text_to"/>
-	        <TextView
+	        <net.wisedog.android.whooing.widget.WiTextView
 			    android:id="@+id/transaction_entries_to_date"	
 			    android:layout_width="wrap_content"
 			    android:layout_height="wrap_content"
@@ -69,23 +69,27 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
         android:orientation="horizontal">
-	    <TextView 
+	    <net.wisedog.android.whooing.widget.WiTextView 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@string/text_account"
-	        android:layout_marginRight="4dip"></TextView>
+	        android:layout_marginRight="4dip"/>
 	        
-        <EditText
+        <!-- <EditText
             android:id="@+id/transaction_entries_edit_account"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:ems="10" 
             android:layout_marginRight="4dip">
+        </EditText> -->
+        <Spinner
+            android:id="@+id/transaction_entries_spinner_account"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="4dp"
+            />
 
-            <requestFocus />
-        </EditText>
-
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_item" />
@@ -96,16 +100,33 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="4dip"
-            android:ems="10" />
+            android:ems="10" 
+            >
+            <requestFocus />
+        </EditText>
         
     </LinearLayout>
-    <Button
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
             android:id="@+id/transaction_entries_search_btn"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_search" 
-            android:onClick="onSearchClick"/>
+            android:onClick="onSearchClick"
+            android:text="@string/text_search" />
+
+        <ProgressBar
+            android:id="@+id/transaction_entries_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:visibility="invisible"/>
+    </LinearLayout>
+
     <ListView 
         android:id="@+id/transaction_entries_listview"
         android:layout_width="match_parent"

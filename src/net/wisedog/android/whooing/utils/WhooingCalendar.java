@@ -1,6 +1,7 @@
 package net.wisedog.android.whooing.utils;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class WhooingCalendar {
 
@@ -49,6 +50,14 @@ public class WhooingCalendar {
         return "" + year + monthString;
     }
     
+    static public String getTodayLocale(){
+        Locale locale = new Locale("en","US");//TODO change for localize
+        Calendar calendar = Calendar.getInstance(); 
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
+        String date = df.format(calendar.getTime()).toString();
+        return date;
+    }
+    
     static public String getPreMonthYYYYMM(int premonth){
         Calendar rightNow = Calendar.getInstance(); 
         rightNow.add(Calendar.MONTH, -(premonth));
@@ -83,6 +92,15 @@ public class WhooingCalendar {
         return "" + year + monthString + dayString;
     }
     
+    static public String getPreMonthLocale(int premonth){
+        Locale locale = new Locale("en","US");//TODO change for localize
+        Calendar calendar = Calendar.getInstance(); 
+        calendar.add(Calendar.MONTH, -(premonth));
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
+        String date = df.format(calendar.getTime()).toString();
+        return date;
+    }
+    
     static public String getNextMonthYYYYMM(int nextMonth){
         Calendar rightNow = Calendar.getInstance(); 
         rightNow.add(Calendar.MONTH, nextMonth);
@@ -96,5 +114,18 @@ public class WhooingCalendar {
         
         
         return "" + year + monthString;
+    }
+    
+    static public String getLocaleDateString(int year, int month, int day){
+        return getLocaleDateString(year,month,day,java.text.DateFormat.MEDIUM);
+    }
+    
+    static public String getLocaleDateString(int year, int month, int day, int style){
+        Calendar calendar = Calendar.getInstance();// new Calendar(year, month, day);
+        calendar.set(year, month, day);
+        Locale locale = new Locale("en","US");//TODO change for localize
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(style, locale);
+        String date = df.format(calendar.getTime()).toString();
+        return date;
     }
 }

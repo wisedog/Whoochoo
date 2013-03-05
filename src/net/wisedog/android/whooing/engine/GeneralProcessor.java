@@ -3,6 +3,8 @@
  */
 package net.wisedog.android.whooing.engine;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +78,11 @@ public class GeneralProcessor {
             
         }).start();
         return true;
+    }
+    
+    public ArrayList<AccountsEntity> getAllAccount(){
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        return dbHelper.getAllAccountsInfo();
     }
 
     /**

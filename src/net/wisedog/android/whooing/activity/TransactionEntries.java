@@ -14,33 +14,40 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
 import net.wisedog.android.whooing.dataset.TransactionItem;
+import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
 
 /**
  * @author wisedog(me@wisedog.net)
  *  @TODO   Account를 Spinner로 처리하도록 하기
  */
 public class TransactionEntries extends SherlockFragmentActivity implements
-DatePickerDialog.OnDateSetListener{
-	int mFromDate;
-	int mToDate;
-	int mCalendarSelectionResId;
+        DatePickerDialog.OnDateSetListener {
+    int mFromDate;
+    int mToDate;
+    int mCalendarSelectionResId;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -51,8 +58,7 @@ DatePickerDialog.OnDateSetListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.transaction_entries);
         
-        Intent intent = getIntent();
-        this.setTitle(intent.getStringExtra("title"));
+        setTitle(getIntent().getStringExtra("title"));
         
         Bundle bundle = new Bundle();
         String endDateStr = WhooingCalendar.getTodayYYYYMMDD();
@@ -66,11 +72,38 @@ DatePickerDialog.OnDateSetListener{
         TextView startDate = (TextView)findViewById(R.id.transaction_entries_from_date);
         TextView endDate = (TextView)findViewById(R.id.transaction_entries_to_date);
         
-        startDate.setText(WhooingCalendar.getPreMonthYYYYMMDD(1)); 
-        endDate.setText(WhooingCalendar.getTodayYYYYMMDD());
+        startDate.setText(WhooingCalendar.getPreMonthLocale(1)); 
+        endDate.setText(WhooingCalendar.getTodayLocale());
         
-        setSupportProgress(Window.PROGRESS_END);
-        setSupportProgressBarIndeterminateVisibility(true);
+        GeneralProcessor processor = new GeneralProcessor(this);
+        ArrayList<AccountsEntity> array = processor.getAllAccount();
+        ArrayList<String> stringArray = new ArrayList<String>();
+        stringArray.add("");
+        for(int i = 0; i < array.size(); i++){
+            AccountsEntity entity = array.get(i);
+            stringArray.add(entity.title);
+        }
+        String[] notArrayListStrArray = stringArray.toArray(new String[stringArray.size()]);
+
+        Spinner accountSpinner = (Spinner) findViewById(R.id.transaction_entries_spinner_account);
+        ArrayAdapter<String> accountAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.select_dialog_item, notArrayListStrArray) {
+
+            /*
+             * (non-Javadoc)
+             * 
+             * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+             * android.view.ViewGroup)
+             */
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+                return v;
+            }
+
+        };
+        accountSpinner.setAdapter(accountAdapter);
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
         thread.start();
@@ -83,7 +116,10 @@ DatePickerDialog.OnDateSetListener{
                 if(msg.arg1 == Define.API_GET_ENTRIES){
                     JSONObject obj = (JSONObject)msg.obj;
                     try {
-                        //testPrint(obj.getJSONArray("results"));
+                        ProgressBar progress = (ProgressBar)findViewById(R.id.transaction_entries_progress);
+                        if(progress != null){
+                            progress.setVisibility(View.INVISIBLE);
+                        }
                         showTransaction(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -122,7 +158,6 @@ DatePickerDialog.OnDateSetListener{
         ListView lastestTransactionList = (ListView)findViewById(R.id.transaction_entries_listview);
         TransactionAddAdapter adapter = new TransactionAddAdapter(this, dataArray);
         lastestTransactionList.setAdapter(adapter);
-        setSupportProgressBarIndeterminateVisibility(false);
     }
     
     /**
@@ -141,22 +176,10 @@ DatePickerDialog.OnDateSetListener{
 
 	@Override
 	public void onDateSet(DatePicker view, int year, int month, int day) {
-        
-        String dateString = "" + String.valueOf(year);
- 	   if(month >= 10){
- 		   dateString = dateString + String.valueOf(month);
- 	   }else{
- 		   dateString = dateString + "0" + String.valueOf(month);
- 	   }
- 	   if(day >= 10){
- 		   dateString = dateString + String.valueOf(day);
- 	   }else{
- 		   dateString = dateString + "0" + String.valueOf(day);
- 	   }
- 	   TextView textDate = (TextView)findViewById(mCalendarSelectionResId);
- 	   if(textDate != null){
- 		   textDate.setText(dateString);
- 	   }
+	    TextView textDate = (TextView)findViewById(mCalendarSelectionResId);
+	       if(textDate != null){
+	           textDate.setText(WhooingCalendar.getLocaleDateString(year, month, day));
+	       }
  	   
  	   if(mCalendarSelectionResId == R.id.transaction_entries_from_date){
  		   this.mFromDate = year * 10000 + month * 100 + day;
@@ -166,22 +189,36 @@ DatePickerDialog.OnDateSetListener{
 		
 	}
 	
-	/**
-	 * Search button onClick event handler
-	 * @param	v	View of search button
-	 * @see transaction_entries.xml
-	 * */
-	public void onSearchClick(View v){
-		Bundle bundle = new Bundle();
+    /**
+     * Search button onClick event handler
+     * 
+     * @param v
+     *            View of search button
+     * @see transaction_entries.xml
+     * */
+    public void onSearchClick(View v) {
+        Bundle bundle = new Bundle();
         bundle.putString("end_date", String.valueOf(mToDate));
         bundle.putString("start_date", String.valueOf(mFromDate));
         bundle.putInt("limit", 20);
         
-		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
+        String itemText = ((EditText)findViewById(R.id.transaction_entries_edit_item)).getText().toString();
+        if("".equals(itemText) || itemText == null){
+            bundle.putString("item", null);
+        }
+        else{
+            bundle.putString("item", itemText);
+        }
+
+        ProgressBar progress = (ProgressBar)findViewById(R.id.transaction_entries_progress);
+        if(progress != null){
+            progress.setVisibility(View.VISIBLE);
+        }
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
         thread.start();
-        ListView lastestTransactionList = (ListView)findViewById(R.id.transaction_entries_listview);
-        ((TransactionAddAdapter)lastestTransactionList.getAdapter()).clearAdapter();
-	}
+        ListView lastestTransactionList = (ListView) findViewById(R.id.transaction_entries_listview);
+        ((TransactionAddAdapter) lastestTransactionList.getAdapter()).clearAdapter();
+    }
 	
 	static public class DatePickerFragment extends DialogFragment  {
         @Override
