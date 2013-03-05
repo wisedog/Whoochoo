@@ -120,7 +120,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
                 break;
             case 2: //Transaction entries fragment activity
             	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
-				intent.putExtra("title", R.string.left_menu_item_history);
+				intent.putExtra("title", getString(R.string.left_menu_item_history));
 				startActivityForResult(intent, 1);
 				break;
             case 3: //Exp. budget fragment activity

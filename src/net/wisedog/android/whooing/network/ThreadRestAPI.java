@@ -194,6 +194,8 @@ public class ThreadRestAPI extends Thread {
 			endDate = mBundle.getString("end_date");
 			int limit = mBundle.getInt("limit");
 			String itemText = mBundle.getString("item");
+			String accountType = mBundle.getString("account");
+			String accountId = mBundle.getString("account_id");
 			
 			//TODO https://whooing.com/#forum/developer/ko/api_reference/entries
 			//TODO 여기 참조해서 각 parameter에 대해서 처리하기. 아마 max, limit, item밖에 쓰지않을 생각임
@@ -204,6 +206,9 @@ public class ThreadRestAPI extends Thread {
 			
 			if(itemText !=  null){
 			    requestUrl = requestUrl + "&item=" + itemText;
+			}
+			if(accountType != null && accountId != null){
+				requestUrl = requestUrl + "&account=" + accountType + "&account_id=" + accountId;
 			}
 			
 			GeneralApi entriesAPI = new GeneralApi();

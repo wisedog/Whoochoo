@@ -45,9 +45,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  */
 public class TransactionEntries extends SherlockFragmentActivity implements
         DatePickerDialog.OnDateSetListener {
-    int mFromDate;
-    int mToDate;
-    int mCalendarSelectionResId;
+	protected int mFromDate;
+    protected int mToDate;
+    protected int mCalendarSelectionResId;
+    protected ArrayList<AccountsEntity> mAccountsArray;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -59,6 +60,7 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         setContentView(R.layout.transaction_entries);
         
         setTitle(getIntent().getStringExtra("title"));
+        Log.i("wisedog", "title : " + getIntent().getStringExtra("title"));
         
         Bundle bundle = new Bundle();
         String endDateStr = WhooingCalendar.getTodayYYYYMMDD();
@@ -76,11 +78,11 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         endDate.setText(WhooingCalendar.getTodayLocale());
         
         GeneralProcessor processor = new GeneralProcessor(this);
-        ArrayList<AccountsEntity> array = processor.getAllAccount();
+        mAccountsArray = processor.getAllAccount();
         ArrayList<String> stringArray = new ArrayList<String>();
         stringArray.add("");
-        for(int i = 0; i < array.size(); i++){
-            AccountsEntity entity = array.get(i);
+        for(int i = 0; i < mAccountsArray.size(); i++){
+            AccountsEntity entity = mAccountsArray.get(i);
             stringArray.add(entity.title);
         }
         String[] notArrayListStrArray = stringArray.toArray(new String[stringArray.size()]);
@@ -135,6 +137,11 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         
     };
 
+    /**
+     * Show transaction from give data
+     * @param	obj		JSON formatted data
+     * @exception	JSONException
+     * */
     private void showTransaction(JSONObject obj) throws JSONException{
     	ArrayList<TransactionItem> dataArray = new ArrayList<TransactionItem>();
         JSONObject result = obj.getJSONObject("results");
@@ -202,6 +209,7 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         bundle.putString("start_date", String.valueOf(mFromDate));
         bundle.putInt("limit", 20);
         
+        //setting searching item value
         String itemText = ((EditText)findViewById(R.id.transaction_entries_edit_item)).getText().toString();
         if("".equals(itemText) || itemText == null){
             bundle.putString("item", null);
@@ -209,11 +217,27 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         else{
             bundle.putString("item", itemText);
         }
+        
+        //setting searching account
+        Spinner accountSpinner = (Spinner) findViewById(R.id.transaction_entries_spinner_account);
+        if(accountSpinner != null){
+            int idx = accountSpinner.getSelectedItemPosition();
+            if(idx == 0){
+            	bundle.putString("account", null);
+            	bundle.putString("account_id", null);
+            }else{
+            	AccountsEntity entity = mAccountsArray.get(idx - 1);
+            	bundle.putString("account", entity.accountType);
+            	bundle.putString("account_id", entity.account_id);
+            }
+        }
+        
 
         ProgressBar progress = (ProgressBar)findViewById(R.id.transaction_entries_progress);
         if(progress != null){
             progress.setVisibility(View.VISIBLE);
         }
+        
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
         thread.start();
         ListView lastestTransactionList = (ListView) findViewById(R.id.transaction_entries_listview);

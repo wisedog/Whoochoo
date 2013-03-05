@@ -64,6 +64,7 @@
     <string name="text_content">Content</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
+    <string name="text_next">Next</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -130,6 +131,8 @@
     <string name="bbs_write_fill_subject">Please fill subject</string>
     <string name="bbs_write_fill_content">Please fill content</string>
     
+    <!-- Welcome -->
+    <string name="welcome_msg">Welcome,\nThis is Whooing.</string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

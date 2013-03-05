@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout 
+    android:layout_height="match_parent"
+    android:background="#E5E5E5">
+
+    <RelativeLayout
         android:id="@+id/test11"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true">
-    <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="aasdf" />
-    </LinearLayout>
+        android:layout_alignParentLeft="true" >
+
+        <Button
+            android:id="@+id/welcome_button_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/text_next"
+            android:textColor="#333333" />
+
+        <TextView
+            android:id="@+id/welcome_message_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/welcome_img"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_above="@id/test11"
@@ -25,14 +43,14 @@
         android:src="@drawable/welcome_img3" />
 
     <net.wisedog.android.whooing.widget.WiTextView
-        android:id="@+id/textView1"
+        android:id="@+id/welcome_title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="Welcome,\nThis is Whooing."
+        android:text="@string/welcome_msg"
         android:textColor="#333333"
-        android:textSize="40dp" />
+        android:textSize="36sp" />
 
 </RelativeLayout>
 
