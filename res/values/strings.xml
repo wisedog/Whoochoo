@@ -133,6 +133,11 @@
     
     <!-- Welcome -->
     <string name="welcome_msg">Welcome,\nThis is Whooing.</string>
+    <string name="welcome_no_internet">No network connection. Please check your network connectivity.</string>
+    <string name="welcome_no_internet_title">Alert</string>
+    
+    <!-- Auth -->
+    <string name="auth_doing">▶</string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

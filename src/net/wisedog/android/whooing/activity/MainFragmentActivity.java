@@ -264,7 +264,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             mMenuDrawer.closeMenu();
             return;
         }
-        this.setResult(Define.RESPONSE_EXIT);
+        this.setResult(RESULT_CANCELED);
         finish();
     }
 

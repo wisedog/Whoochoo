@@ -35,6 +35,7 @@ public class Define {
 	// Response/Request Key
 	public static final int RESPONSE_EXIT = 10;
 	public static final int REQUEST_AUTH = 50;
+	public static final int REQUEST_NORMAL = 51;
 	
 	//Message
 	public static final int MSG_REQ_AUTH = 100;
@@ -42,6 +43,7 @@ public class Define {
 	public static final int MSG_AUTH_DONE = 102;
 	public static final int MSG_AUTH_TOTAL_DONE = 103;
 	public static final int MSG_USER_SETTING_DONE = 104;
+	public static final int MSG_SETTING_DONE = 105;
 	
 	public static final int RESULT_OK = 200;
 	public static final int RESULT_NONE_RECORD = 204;

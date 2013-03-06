@@ -1,12 +1,13 @@
 package net.wisedog.android.whooing;
 
-import net.wisedog.android.whooing.activity.AccountSetting;
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
-import net.wisedog.android.whooing.activity.Welcome;
 import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.engine.DataRepository;
+import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -14,6 +15,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.Button;
 
 
 /**
@@ -32,23 +35,36 @@ public class Whooing extends Activity {
             }           
         }
         Define.ROBOFONT = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
-        //String locale = getResources().getConfiguration().locale.getDisplayName();
-        //Toast.makeText(this, "Locale :"+ locale, Toast.LENGTH_SHORT).show();
-        //TODO SharedPreference 확인해서 회원가입 UI 띄우기. 아니면 바로 WhooingMain으로 이동
-        setContentView(R.layout.main);
+        setContentView(R.layout.welcome);
         mContext = this;
         if(checkNetworkConnection() == false){
-            //TODO Alert and Exit
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle(getString(R.string.welcome_no_internet_title));
+            alert.setMessage(getString(R.string.welcome_no_internet));
+            alert.setCancelable(false);
+            alert.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.dismiss();
+                    finish();
+                }
+            }).show();
+            return;
         }
         
         getLoginInfo();
         
+        Button nextBtn = (Button)findViewById(R.id.welcome_button_next);
+        WiTextView messageText = (WiTextView)findViewById(R.id.welcome_message_board);
+        //First Login
         if(Define.PIN == null || Define.REAL_TOKEN == null){
-            Intent intent = new Intent(Whooing.this, WhooingAuthMain.class);
-            startActivityForResult(intent, 1);
-            return;
+            messageText.setVisibility(View.GONE);
         }
         else{
+            nextBtn.setVisibility(View.GONE);
+            messageText.setVisibility(View.VISIBLE);
+            messageText.setText("Logging in....");
+            WiTextView titleText = (WiTextView)findViewById(R.id.welcome_title_text);
+            titleText.setText(getString(R.string.app_name));
             //TODO Show "Logging in ...., Getting Account Info ... "
             DataRepository repository = DataRepository.getInstance();
             repository.refreshUserInfo(this);
@@ -63,24 +79,45 @@ public class Whooing extends Activity {
                      * Account Setting 테스트할때 repository.refreshUserInfo(this); 주석처리하고할것
                      * Intent intent = new Intent(mContext, AccountSetting.class);
                     startActivityForResult(intent, Define.MSG_USER_SETTING_DONE);*/
-                    Intent intent = new Intent(mContext, MainFragmentActivity.class);
-                    startActivityForResult(intent, Define.MSG_AUTH_TOTAL_DONE);
+                    Intent intent = new Intent(Whooing.this, MainFragmentActivity.class);
+                    startActivityForResult(intent, Define.REQUEST_NORMAL);
                     /*Intent intent = new Intent(mContext, Welcome.class);
                     startActivityForResult(intent, Define.MSG_AUTH_TOTAL_DONE);*/
                 }           
             };
-            handler.sendEmptyMessageDelayed(0, 200);
+            handler.sendEmptyMessageDelayed(0, 400);
         }
     }
     
     @Override
 	public void onBackPressed() {
-		// block back button event
+        // Allows back button press at login 
+        if(Define.PIN == null || Define.REAL_TOKEN == null){
+            super.onBackPressed();
+        }
+		// else block back button event
 	}
+    
+    public void onClickNextBtn(View v){
+        Intent intent = new Intent(this, WhooingAuthMain.class);
+        startActivityForResult(intent, Define.MSG_AUTH_TOTAL_DONE);
+    }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {   
-        if (resultCode != RESULT_OK) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            if(requestCode == Define.MSG_AUTH_TOTAL_DONE){
+                Intent intent = new Intent(Whooing.this, MainFragmentActivity.class);
+                startActivityForResult(intent, Define.REQUEST_NORMAL);
+            }
+        
+        }else if(resultCode == RESULT_CANCELED){
+            if(requestCode == Define.REQUEST_NORMAL){
+                this.finish();
+                return;
+            }
+        }
+        /*if (resultCode != RESULT_OK) {
             switch (resultCode) {
             case Define.RESPONSE_EXIT:
                 setResult(Define.RESPONSE_EXIT);
@@ -101,7 +138,7 @@ public class Whooing extends Activity {
                 startActivityForResult(intent2, 1);
                 break;
             }
-        }
+        }*/
     }
 	
 	/* (non-Javadoc)

@@ -6,18 +6,23 @@ package net.wisedog.android.whooing.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnUserChangeListener;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,6 +41,7 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setting);
+        setEnableUi(false);
         DataRepository repository = DataRepository.getInstance();
         if(repository.getUserValue() == null){
             mProgress = ProgressDialog.show(this, "", 
@@ -48,7 +54,28 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         }
     }
     
+    protected void setEnableUi(boolean flag){
+        Spinner countrySpinner = (Spinner)findViewById(R.id.account_setting_spinner_country);
+        countrySpinner.setEnabled(flag);
+        Spinner timezoneSpinner = (Spinner)findViewById(R.id.account_setting_spinner_timezone);
+        timezoneSpinner.setEnabled(flag);
+        Spinner langAppSpinner = (Spinner)findViewById(R.id.account_setting_spinner_language_app);
+        langAppSpinner.setEnabled(flag);
+        Spinner currencySpinner = (Spinner)findViewById(R.id.account_setting_spinner_currency);
+        currencySpinner.setEnabled(flag);
+        EditText nicknameEdit = (EditText)findViewById(R.id.account_setting_nickname_edit);
+        nicknameEdit.setEnabled(flag);
+        Button completeBtn = (Button)findViewById(R.id.account_setting_complete);
+        completeBtn.setEnabled(flag);
+        Button checkBtn = (Button)findViewById(R.id.account_setting_check_btn);
+        checkBtn.setEnabled(flag);
+        
+        
+    }
+    
     protected void initUi(JSONObject obj){
+        
+        setEnableUi(true);
         
         //Spinner adapter
         Spinner countrySpinner = (Spinner)findViewById(R.id.account_setting_spinner_country);
@@ -80,18 +107,21 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         }
         
         ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, WhooingCurrency.COUNTRY){
+                android.R.layout.select_dialog_item, WhooingCurrency.COUNTRY) {
 
-                    /* (non-Javadoc)
-                     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-                     */
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View v = super.getView(position, convertView, parent);
-                        ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
-                        return v;
-                    }
-            
+            /*
+             * (non-Javadoc)
+             * 
+             * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+             * android.view.ViewGroup)
+             */
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+                return v;
+            }
+
         };
         countrySpinner.setAdapter(countryAdapter);
         countrySpinner.setSelection(idxCountry);
@@ -105,35 +135,41 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         }
         
         ArrayAdapter<String> timezoneAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, WhooingCurrency.TIMEZONE){
+                android.R.layout.select_dialog_item, WhooingCurrency.TIMEZONE) {
 
-                    /* (non-Javadoc)
-                     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-                     */
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View v = super.getView(position, convertView, parent);
-                        ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
-                        return v;
-                    }
-            
+            /*
+             * (non-Javadoc)
+             * 
+             * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+             * android.view.ViewGroup)
+             */
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+                return v;
+            }
+
         };
         timezoneSpinner.setAdapter(timezoneAdapter);
         timezoneSpinner.setSelection(idxTimeZone);
         
         ArrayAdapter<String> langAppAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, WhooingCurrency.LANGUAGE){
+                android.R.layout.select_dialog_item, WhooingCurrency.LANGUAGE) {
 
-                    /* (non-Javadoc)
-                     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-                     */
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View v = super.getView(position, convertView, parent);
-                        ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
-                        return v;
-                    }
-            
+            /*
+             * (non-Javadoc)
+             * 
+             * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+             * android.view.ViewGroup)
+             */
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+                return v;
+            }
+
         };
         langAppSpinner.setAdapter(langAppAdapter);
         
@@ -145,18 +181,21 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
             }
         }
         ArrayAdapter<String> currencyAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, WhooingCurrency.CURRENCY){
+                android.R.layout.select_dialog_item, WhooingCurrency.CURRENCY) {
 
-                    /* (non-Javadoc)
-                     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-                     */
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View v = super.getView(position, convertView, parent);
-                        ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
-                        return v;
-                    }
-            
+            /*
+             * (non-Javadoc)
+             * 
+             * @see android.widget.ArrayAdapter#getView(int, android.view.View,
+             * android.view.ViewGroup)
+             */
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.rgb(0x33, 0x33, 0x33));
+                return v;
+            }
+
         };
         currencySpinner.setAdapter(currencyAdapter);
         currencySpinner.setSelection(idxCurrency);
@@ -184,6 +223,32 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         DataRepository repository = DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.USER_MODE);
         super.onDestroy();
+    }
+    
+    public void onClickComplete(View v){
+        setResult(RESULT_OK);
+        //TODO SharedPreference 에 해당 정보 넣기
+        finish();
+    }
+    
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(getString(R.string.exit));
+        alert.setMessage(getString(R.string.is_exit));
+        alert.setCancelable(true);
+        alert.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.dismiss();
+                setResult(Define.RESPONSE_EXIT);
+                finish();
+            }
+        });
+        alert.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        }).show();
     }
     
     

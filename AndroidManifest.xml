@@ -4,7 +4,7 @@
     android:versionCode="80"
     android:versionName="0.8" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="14"/>
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
@@ -14,7 +14,7 @@
         >
         <activity
             android:name=".Whooing"
-            android:label="@string/app_name" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" 
+            android:label="@string/app_name" android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" 
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,13 +39,21 @@
             android:name=".activity.TransactionEntries"
             android:theme="@android:style/Theme.Light.NoTitleBar" >
         </activity>
-        <activity android:name="net.wisedog.android.whooing.activity.MainFragmentActivity" android:theme="@style/Theme.VPI"></activity>
-        <activity android:name="net.wisedog.android.whooing.activity.ExpBudgetFragmentActivity"></activity>
-        <activity android:name=".activity.BillFragmentActivity"></activity>
-        <activity android:name=".activity.PostItFragmentActivity"></activity>
-        <activity android:name=".activity.BbsFragmentActivity"></activity>
-        <activity android:name=".activity.AccountSetting"></activity>
-        <activity android:name=".activity.Welcome" android:theme="@style/Theme.Sherlock.NoActionBar"></activity>
+        <activity
+            android:name=".activity.MainFragmentActivity"
+            android:theme="@style/Theme.VPI" >
+        </activity>
+        <activity android:name=".activity.ExpBudgetFragmentActivity" >
+        </activity>
+        <activity android:name=".activity.BillFragmentActivity" >
+        </activity>
+        <activity android:name=".activity.PostItFragmentActivity" >
+        </activity>
+        <activity android:name=".activity.BbsFragmentActivity" >
+        </activity>
+        <activity android:name=".activity.AccountSetting" >
+        </activity>
+
     </application>
 
 </manifest>

@@ -20,7 +20,7 @@
             android:text="@string/text_next"
             android:textColor="#333333" />
 
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/welcome_message_board"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             android:layout_centerVertical="true"
             android:text=""
             android:textColor="#333333"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -50,7 +50,8 @@
         android:layout_alignParentTop="true"
         android:text="@string/welcome_msg"
         android:textColor="#333333"
-        android:textSize="36sp" />
+        android:textSize="36sp" 
+        android:onClick="onClickNextBtn"/>
 
 </RelativeLayout>
 

@@ -2,7 +2,119 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:orientation="vertical" 
+    android:background="#E5E5E5"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Log in"
+        android:textColor="#333333"
+        android:textSize="28dp" />
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="로그인은 3단계로 진행됩니다. 맨 처음에 단 1번만 수행됩니다. "
+        android:textColor="#777777"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:layout_marginBottom="10dp">
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/auth_doing_first_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_doing" 
+            android:textColor="#333333"
+            android:textSize="20sp"/>
+        
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/auth_text_first_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1.인증을 위해 서버와 통신 중" 
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <ProgressBar
+            android:id="@+id/auth_progress_first"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp" >
+        
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/auth_doing_second_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_doing" 
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/auth_text_second_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. 계정 로그인" 
+            android:textColor="#999999"
+            android:textSize="20sp"/>
+
+        <ProgressBar
+            android:id="@+id/auth_progress_second"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+        
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/auth_doing_third_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_doing" 
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/auth_text_third_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. 사용자 환경 설정" 
+            android:textColor="#999999"
+            android:textSize="20sp"/>
+
+        <ProgressBar
+            android:id="@+id/auth_progress_third"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:visibility="invisible"/>
+
+    </LinearLayout>
 
 </LinearLayout>

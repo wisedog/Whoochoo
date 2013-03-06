@@ -2,8 +2,10 @@ package net.wisedog.android.whooing.auth;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.activity.AccountSetting;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.widget.WiTextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,14 +17,18 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 /**
- * 
+ * Authorization activity
+ * @author Wisedog(me@wisedog.net)
  * */
 public class WhooingAuthMain extends Activity {
 	private ProgressDialog dialog;
@@ -42,20 +48,64 @@ public class WhooingAuthMain extends Activity {
     	}
 	}
     
+    protected void updateProgress(int index){
+        WiTextView indicator0 = (WiTextView)findViewById(R.id.auth_doing_first_step);
+        WiTextView indicator1 = (WiTextView)findViewById(R.id.auth_doing_second_step);
+        WiTextView indicator2 = (WiTextView)findViewById(R.id.auth_doing_third_step);
+        
+        WiTextView text0 = (WiTextView)findViewById(R.id.auth_text_first_step);
+        WiTextView text1 = (WiTextView)findViewById(R.id.auth_text_second_step);
+        WiTextView text2 = (WiTextView)findViewById(R.id.auth_text_third_step);
+        
+        ProgressBar progress0 = (ProgressBar)findViewById(R.id.auth_progress_first);
+        ProgressBar progress1 = (ProgressBar)findViewById(R.id.auth_progress_second);
+        ProgressBar progress2 = (ProgressBar)findViewById(R.id.auth_progress_third);
+        
+        if(index == 1){
+            indicator0.setVisibility(View.GONE);
+            indicator1.setVisibility(View.VISIBLE);
+            progress0.setVisibility(View.INVISIBLE);
+            progress1.setVisibility(View.VISIBLE);
+            text0.setTextColor(0x777777);
+            text0.setTypeface(Define.ROBOFONT, Typeface.NORMAL);
+            text1.setTextColor(0x333333);
+            text1.setTypeface(Define.ROBOFONT, Typeface.BOLD);
+            
+        }else if(index == 2){
+            indicator1.setVisibility(View.GONE);
+            indicator2.setVisibility(View.VISIBLE);
+            progress1.setVisibility(View.INVISIBLE);
+            progress2.setVisibility(View.VISIBLE);
+            text1.setTextColor(0x777777);
+            text1.setTypeface(Define.ROBOFONT, Typeface.NORMAL);
+            text2.setTextColor(0x333333);
+            text2.setTypeface(Define.ROBOFONT, Typeface.BOLD);
+        }
+    }
+    
     Handler mHandler = new Handler(){
 		@Override
-		public void handleMessage(Message msg) {
+		public void handleMessage(final Message msg) {
 			if(msg.what == Define.MSG_FAIL){
 				dialog.dismiss();
 				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
 			}
 			else if(msg.what == Define.MSG_REQ_AUTH){
-				Intent intent = new Intent(mActivity, WhooingAuthWeb.class);
-				intent.putExtra("first_token", (String)msg.obj);
+			    updateProgress(1);
+			    postDelayed(new Runnable(){
+
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(mActivity, WhooingAuthWeb.class);
+                        intent.putExtra("first_token", (String)msg.obj);
+                        
+                        startActivityForResult(intent, Define.REQUEST_AUTH);
+                        
+                    }}, 500);
 				
-				startActivityForResult(intent, Define.REQUEST_AUTH);
 			}
 			else if(msg.what == Define.MSG_AUTH_DONE){
+			    updateProgress(2);
 				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_GET_SECTIONS);
 				thread.start();
 			}
@@ -77,8 +127,10 @@ public class WhooingAuthMain extends Activity {
 							dialog.dismiss();
 							Toast.makeText(mActivity, getString(R.string.msg_auth_success),
 									Toast.LENGTH_LONG).show();
-							setResult(Define.MSG_AUTH_TOTAL_DONE);
-							finish();
+							Intent intent = new Intent(WhooingAuthMain.this, AccountSetting.class);
+							startActivityForResult(intent, Define.MSG_SETTING_DONE);
+							//setResult(Define.MSG_AUTH_TOTAL_DONE);
+							//finish();    //TODO USER Setting here
 						}
 						else{
 							throw new JSONException("Error in getting section id");
@@ -136,9 +188,12 @@ public class WhooingAuthMain extends Activity {
 				
 				ThreadHandshake thread = new ThreadHandshake(mHandler, this, true, secondtoken);
 	    		thread.start();
-			}			
+			}
+			else if(requestCode == Define.MSG_SETTING_DONE){
+			    
+			}
 		}
-		else if(requestCode == RESULT_CANCELED){
+		else if(resultCode == RESULT_CANCELED){
 			if(requestCode == Define.REQUEST_AUTH){
 				dialog.dismiss();
 				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
