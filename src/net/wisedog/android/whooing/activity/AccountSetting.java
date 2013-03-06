@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -226,8 +227,47 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
     }
     
     public void onClickComplete(View v){
+        SharedPreferences prefs = this.getSharedPreferences(Define.SHARED_PREFERENCE,
+				Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		
+		Spinner countrySpinner = (Spinner)findViewById(R.id.account_setting_spinner_country);
+		int idx = countrySpinner.getSelectedItemPosition();
+		if(idx <= 0){
+			//TODO Error
+		}else if(idx > 0){
+			editor.putString(Define.KEY_SHARED_COUNTRY_CODE, WhooingCurrency.COUNTRY_CODE[idx]);
+			editor.commit();
+			Define.COUNTRY_CODE = WhooingCurrency.COUNTRY_CODE[idx];
+		}
+		
+		Spinner timezoneSpinner = (Spinner)findViewById(R.id.account_setting_spinner_timezone);
+		idx = timezoneSpinner.getSelectedItemPosition();
+		if(idx <= 0){
+			//TODO Error
+		}else if(idx > 0){
+			editor.putString(Define.KEY_SHARED_TIMEZONE, WhooingCurrency.TIMEZONE[idx]);
+			editor.commit();
+			Define.TIMEZONE = WhooingCurrency.TIMEZONE[idx];
+		}
+        Spinner langAppSpinner = (Spinner)findViewById(R.id.account_setting_spinner_language_app);
+        idx = langAppSpinner.getSelectedItemPosition();
+        if(idx >= 0){
+			editor.putString(Define.KEY_SHARED_LANGUAGE_APP, WhooingCurrency.LANGUAGE[idx]);
+			editor.commit();
+			Define.LANGUAGE_APP = WhooingCurrency.LANGUAGE[idx];
+		}
+        Spinner currencySpinner = (Spinner)findViewById(R.id.account_setting_spinner_currency);
+        idx = currencySpinner.getSelectedItemPosition();
+		if(idx <= 0){
+			//TODO Error
+		}else if(idx > 0){
+			editor.putString(Define.KEY_SHARED_CURRENCY_CODE, WhooingCurrency.CURRENCY[idx]);
+			editor.commit();
+			Define.CURRENCY_CODE = WhooingCurrency.CURRENCY[idx];
+		}
+		
         setResult(RESULT_OK);
-        //TODO SharedPreference 에 해당 정보 넣기
         finish();
     }
     

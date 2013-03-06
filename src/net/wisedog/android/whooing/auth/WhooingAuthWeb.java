@@ -1,8 +1,6 @@
 package net.wisedog.android.whooing.auth;
 
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.R.id;
-import net.wisedog.android.whooing.R.layout;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;

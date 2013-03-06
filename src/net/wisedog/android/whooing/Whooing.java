@@ -51,7 +51,7 @@ public class Whooing extends Activity {
             return;
         }
         
-        getLoginInfo();
+        //getLoginInfo();
         
         Button nextBtn = (Button)findViewById(R.id.welcome_button_next);
         WiTextView messageText = (WiTextView)findViewById(R.id.welcome_message_board);

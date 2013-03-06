@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,20 +30,15 @@ import android.widget.Toast;
  * @author Wisedog(me@wisedog.net)
  * */
 public class WhooingAuthMain extends Activity {
-	private ProgressDialog dialog;
-	private Activity mActivity;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.whooing_auth_main);
-		mActivity = this;
 
     	if(Define.PIN == null || Define.REAL_TOKEN == null){
     		ThreadHandshake thread = new ThreadHandshake(mHandler, this, false);
     		thread.start();
-    		dialog = ProgressDialog.show(this, "", getString(R.string.authorizing), true);
-    		dialog.setCancelable(true);
     	}
 	}
     
@@ -66,39 +60,45 @@ public class WhooingAuthMain extends Activity {
             indicator1.setVisibility(View.VISIBLE);
             progress0.setVisibility(View.INVISIBLE);
             progress1.setVisibility(View.VISIBLE);
-            text0.setTextColor(0x777777);
-            text0.setTypeface(Define.ROBOFONT, Typeface.NORMAL);
-            text1.setTextColor(0x333333);
-            text1.setTypeface(Define.ROBOFONT, Typeface.BOLD);
+            text0.setTextColor(0xff888888);
+            text0.setTypeface(null, Typeface.NORMAL);
+            text1.setTextColor(0xff333333);
+            text1.setTypeface(null, Typeface.BOLD);
             
         }else if(index == 2){
             indicator1.setVisibility(View.GONE);
             indicator2.setVisibility(View.VISIBLE);
             progress1.setVisibility(View.INVISIBLE);
             progress2.setVisibility(View.VISIBLE);
-            text1.setTextColor(0x777777);
-            text1.setTypeface(Define.ROBOFONT, Typeface.NORMAL);
-            text2.setTextColor(0x333333);
-            text2.setTypeface(Define.ROBOFONT, Typeface.BOLD);
+            text1.setTextColor(0xff888888);
+            text1.setTypeface(null, Typeface.NORMAL);
+            text2.setTextColor(0xff333333);
+            text2.setTypeface(null, Typeface.BOLD);
         }
     }
     
     Handler mHandler = new Handler(){
 		@Override
-		public void handleMessage(final Message msg) {
+		public void handleMessage(Message msg) {
 			if(msg.what == Define.MSG_FAIL){
-				dialog.dismiss();
-				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
+				//dialog.dismiss();
+				Toast.makeText(WhooingAuthMain.this, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
 			}
 			else if(msg.what == Define.MSG_REQ_AUTH){
-			    updateProgress(1);
+				WhooingAuthMain.this.runOnUiThread(new Runnable(){
+					@Override
+					public void run() {
+						updateProgress(1);
+					}
+				});
+			    
+			    final String token = (String)msg.obj;
 			    postDelayed(new Runnable(){
 
                     @Override
                     public void run() {
-                        Intent intent = new Intent(mActivity, WhooingAuthWeb.class);
-                        intent.putExtra("first_token", (String)msg.obj);
-                        
+                        Intent intent = new Intent(WhooingAuthMain.this, WhooingAuthWeb.class);
+                        intent.putExtra("first_token", token);
                         startActivityForResult(intent, Define.REQUEST_AUTH);
                         
                     }}, 500);
@@ -106,7 +106,7 @@ public class WhooingAuthMain extends Activity {
 			}
 			else if(msg.what == Define.MSG_AUTH_DONE){
 			    updateProgress(2);
-				ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_GET_SECTIONS);
+				ThreadRestAPI thread = new ThreadRestAPI(mHandler, WhooingAuthMain.this, Define.API_GET_SECTIONS);
 				thread.start();
 			}
 			else if(msg.what == Define.MSG_API_OK){
@@ -119,18 +119,15 @@ public class WhooingAuthMain extends Activity {
 						if(section != null){
 							Define.APP_SECTION = section;
 							Log.d("wisedog", "APP SECTION:"+ Define.APP_SECTION);
-							SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
+							SharedPreferences prefs = WhooingAuthMain.this.getSharedPreferences(Define.SHARED_PREFERENCE,
 									Activity.MODE_PRIVATE);
 							SharedPreferences.Editor editor = prefs.edit();
 							editor.putString(Define.KEY_SHARED_SECTION_ID, section);
 							editor.commit();
-							dialog.dismiss();
-							Toast.makeText(mActivity, getString(R.string.msg_auth_success),
-									Toast.LENGTH_LONG).show();
+							/*Toast.makeText(mActivity, getString(R.string.msg_auth_success),
+									Toast.LENGTH_LONG).show();*/
 							Intent intent = new Intent(WhooingAuthMain.this, AccountSetting.class);
 							startActivityForResult(intent, Define.MSG_SETTING_DONE);
-							//setResult(Define.MSG_AUTH_TOTAL_DONE);
-							//finish();    //TODO USER Setting here
 						}
 						else{
 							throw new JSONException("Error in getting section id");
@@ -153,7 +150,7 @@ public class WhooingAuthMain extends Activity {
 		alert.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				dialog.dismiss();
-				setResult(Define.RESPONSE_EXIT);
+				setResult(RESULT_CANCELED);
 				finish();
 			}
 		});
@@ -195,17 +192,13 @@ public class WhooingAuthMain extends Activity {
 		}
 		else if(resultCode == RESULT_CANCELED){
 			if(requestCode == Define.REQUEST_AUTH){
-				dialog.dismiss();
-				Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
+				Toast.makeText(this, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	public void setErrorHandler(String errorMsg){
-	    if(dialog != null){
-	        dialog.dismiss();
-	    }
 	    Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
 	}
 }
