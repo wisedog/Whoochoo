@@ -80,7 +80,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
         if(repository.getMtValue() != null){
             showMountainValue(repository.getMtValue());
-          //TODO 임시로... Splash 클래스를 바꾸면 이것도 사라져야한다. 
             repository.refreshRestApi(getSherlockActivity());
         }
         if(repository.getExpBudgetValue() != null){

@@ -187,12 +187,17 @@ public class WhooingAuthMain extends Activity {
 	    		thread.start();
 			}
 			else if(requestCode == Define.MSG_SETTING_DONE){
-			    
+			    setResult(RESULT_OK);
+			    finish();
 			}
 		}
 		else if(resultCode == RESULT_CANCELED){
 			if(requestCode == Define.REQUEST_AUTH){
 				Toast.makeText(this, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
+			}
+			else if(requestCode == Define.MSG_SETTING_DONE){
+			    setResult(RESULT_CANCELED);
+			    finish();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);

@@ -226,6 +226,11 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         super.onDestroy();
     }
     
+    /**
+     * Event handler for complete button
+     * @param   v   view to press
+     * 
+     * */
     public void onClickComplete(View v){
         SharedPreferences prefs = this.getSharedPreferences(Define.SHARED_PREFERENCE,
 				Activity.MODE_PRIVATE);
@@ -280,7 +285,7 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         alert.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.dismiss();
-                setResult(Define.RESPONSE_EXIT);
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });

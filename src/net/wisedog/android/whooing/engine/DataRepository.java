@@ -31,6 +31,9 @@ public class DataRepository{
     static public final int MOUNTAIN_MODE = 2;
     static public final int EXP_BUDGET_MODE = 3;
     static public final int USER_MODE = 4;
+    static public final int LATEST_TRANSACTION = 5;
+    public static final int ACCOUNT_MODE = 6;
+    public static final int DASHBOARD_MODE = 7;
     
     /**자산부채 - bs*/
     private JSONObject mBsValue = null;
@@ -48,11 +51,14 @@ public class DataRepository{
     private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();
     private ArrayList<OnExpBudgetChangeListener> mExpBudgetObservers = new ArrayList<OnExpBudgetChangeListener>();
     private ArrayList<OnUserChangeListener> mUserObservers = new ArrayList<OnUserChangeListener>();
+    private onLoadingMessage mLoadingMsgListener = null;
 	private Context mContext;
 	
 	private int mRestApiNum = 0;
+	/** 스플래쉬 첫 화면에서 메시지를 나타낼때 사용. Dashboard값을 불러올때 Mountain, Budget 값을 불러오는데  
+	 * 2개다 불러왔을때 메시지를 전달해야해서 이렇게 사용*/
+	private int mMsgDashboardCount = 0;
     
-//    private ArrayList<DataChangeListener> mDataObservers = new ArrayList<DataChangeListener>();
     // 대쉬보드 - Asset/Doubt: bs,pl / Monthly Budget : pl/ Credit Card : bs 
     
     public interface DataChangeListener{
@@ -72,6 +78,10 @@ public class DataRepository{
     }
     public static interface OnUserChangeListener extends DataChangeListener{
         public void onUserUpdate(JSONObject obj);
+    }
+    
+    public static interface onLoadingMessage{
+        public void onMessage(int message);
     }
     
     //using singleton
@@ -213,23 +223,42 @@ public class DataRepository{
                     for (OnMountainChangeListener observer : mMtObservers) {
                         observer.onMountainUpdate(obj);
                     }
+                    if(mMsgDashboardCount == 0){
+                        mMsgDashboardCount++;
+                    }else{
+                        mMsgDashboardCount = 0;
+                        if(mLoadingMsgListener != null){
+                            mLoadingMsgListener.onMessage(DASHBOARD_MODE);
+                        }
+                    }
                 }
                 else if(msg.arg1 == Define.API_GET_BUDGET){
                     mExpBudgetValue = obj;
                     for (OnExpBudgetChangeListener observer : mExpBudgetObservers) {
                         observer.onExpBudgetUpdate(obj);
                     }
-                }
-                else if(msg.arg1 == Define.API_GET_ACCOUNTS){
-                	if(mContext != null){
-                		GeneralProcessor general = new GeneralProcessor(mContext);
-                		try {
-                			JSONObject objResult = obj.getJSONObject("results");
-							general.fillAccountsTable(objResult);
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-                		}
+                    if(mMsgDashboardCount == 0){
+                        mMsgDashboardCount++;
+                    }else{
+                        mMsgDashboardCount = 0;
+                        if(mLoadingMsgListener != null){
+                            mLoadingMsgListener.onMessage(DASHBOARD_MODE);
+                        }
+                    }
+                } else if (msg.arg1 == Define.API_GET_ACCOUNTS) {
+                    if (mContext != null) {
+                        GeneralProcessor general = new GeneralProcessor(mContext);
+                        try {
+                            JSONObject objResult = obj.getJSONObject("results");
+                            general.fillAccountsTable(objResult);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            return;
+                        }
+                    }
+                    if (mLoadingMsgListener != null) {
+                        mLoadingMsgListener.onMessage(ACCOUNT_MODE);
+                    }
                 }
                 else if(msg.arg1 == Define.API_GET_USER_INFO){
                 	if(mContext != null){
@@ -240,10 +269,14 @@ public class DataRepository{
 							//TODO preference update
 						} catch (JSONException e) {
 							e.printStackTrace();
+							return;
 						}
                 		
                         for (OnUserChangeListener observer : mUserObservers) {
                             observer.onUserUpdate(obj);
+                        }
+                        if(mLoadingMsgListener != null){
+                            mLoadingMsgListener.onMessage(USER_MODE);
                         }
                 	}
                 }
@@ -252,10 +285,9 @@ public class DataRepository{
                     if(Define.DEBUG){
                     	Log.i("wisedog", "lastest items : " + obj.toString());
                     }
-                }
-                else if(msg.arg1 == Define.API_GET_FREQUENT_ITEM){
-                    mLastestItem = obj;
-                    Log.i("wisedog", "Frequent Item " + obj.toString());
+                    if(mLoadingMsgListener != null){
+                        mLoadingMsgListener.onMessage(LATEST_TRANSACTION);
+                    }
                 }
             }
         }
@@ -369,5 +401,9 @@ public class DataRepository{
     
     public JSONObject getLastestItems(){
         return mLastestItem;
+    }
+    
+    public void setLoadingMsgListener(onLoadingMessage listener){
+        mLoadingMsgListener = listener;
     }
 }
