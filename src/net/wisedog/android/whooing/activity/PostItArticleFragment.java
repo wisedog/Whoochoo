@@ -197,14 +197,14 @@ public class PostItArticleFragment extends SherlockFragment {
 					getActivity().getSupportFragmentManager().popBackStack();
 
 				} else if (msg.arg1 == Define.API_PUT_POSTIT) {
-					Toast.makeText(getActivity(), "The post is modified",
-							Toast.LENGTH_SHORT).show(); // TODO Localization
+					Toast.makeText(getActivity(), getString(R.string.bbs_article_post_modified),
+							Toast.LENGTH_SHORT).show();
 					((PostItFragmentActivity) getActivity())
 							.needToRefresh(true);
 					getActivity().getSupportFragmentManager().popBackStack();
 				} else if (msg.arg1 == Define.API_DELETE_POSTIT) {
-					Toast.makeText(getActivity(), "The post is deleted",
-							Toast.LENGTH_SHORT).show(); // TODO Localization
+					Toast.makeText(getActivity(), getString(R.string.bbs_article_post_deleted),
+							Toast.LENGTH_SHORT).show();
 					((PostItFragmentActivity) getActivity())
 							.needToRefresh(true);
 					getActivity().getSupportFragmentManager().popBackStack();

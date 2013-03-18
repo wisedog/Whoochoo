@@ -3,6 +3,8 @@ package net.wisedog.android.whooing.utils;
 import java.util.Calendar;
 import java.util.Locale;
 
+import net.wisedog.android.whooing.Define;
+
 public class WhooingCalendar {
 
 	static public String getTodayYYYYMMDD(){
@@ -51,7 +53,7 @@ public class WhooingCalendar {
     }
     
     static public String getTodayLocale(){
-        Locale locale = new Locale("en","US");//TODO change for localize
+        Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         Calendar calendar = Calendar.getInstance(); 
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
         String date = df.format(calendar.getTime()).toString();
@@ -93,7 +95,7 @@ public class WhooingCalendar {
     }
     
     static public String getPreMonthLocale(int premonth){
-        Locale locale = new Locale("en","US");//TODO change for localize
+        Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         Calendar calendar = Calendar.getInstance(); 
         calendar.add(Calendar.MONTH, -(premonth));
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
@@ -121,9 +123,9 @@ public class WhooingCalendar {
     }
     
     static public String getLocaleDateString(int year, int month, int day, int style){
-        Calendar calendar = Calendar.getInstance();// new Calendar(year, month, day);
+        Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        Locale locale = new Locale("en","US");//TODO change for localize
+        Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(style, locale);
         String date = df.format(calendar.getTime()).toString();
         return date;

@@ -156,7 +156,7 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
         timezoneSpinner.setSelection(idxTimeZone);
         
         ArrayAdapter<String> langAppAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.select_dialog_item, WhooingCurrency.LANGUAGE) {
+                android.R.layout.select_dialog_item, WhooingCurrency.LOCALE_LANGUAGE_NAME) {
 
             /*
              * (non-Javadoc)
@@ -257,10 +257,12 @@ public class AccountSetting extends Activity implements OnUserChangeListener{
 		}
         Spinner langAppSpinner = (Spinner)findViewById(R.id.account_setting_spinner_language_app);
         idx = langAppSpinner.getSelectedItemPosition();
-        if(idx >= 0){
-			editor.putString(Define.KEY_SHARED_LANGUAGE_APP, WhooingCurrency.LANGUAGE[idx]);
+        if(idx <= 0){
+			//TODO Error
+        }else if(idx > 0){
+			editor.putString(Define.KEY_SHARED_LOCALE_LANGUAGE, WhooingCurrency.LOCALE_LANGUAGE_CODE[idx]);
 			editor.commit();
-			Define.LANGUAGE_APP = WhooingCurrency.LANGUAGE[idx];
+			Define.LOCALE_LANGUAGE = WhooingCurrency.LOCALE_LANGUAGE_CODE[idx];
 		}
         Spinner currencySpinner = (Spinner)findViewById(R.id.account_setting_spinner_currency);
         idx = currencySpinner.getSelectedItemPosition();

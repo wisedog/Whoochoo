@@ -163,6 +163,7 @@ public class Whooing extends Activity implements onLoadingMessage{
             Define.USER_ID = 8955;
             Define.CURRENCY_CODE = "KRW";
             Define.COUNTRY_CODE="KR";
+            Define.LOCALE_LANGUAGE = "ko";
         }
         
         /*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);

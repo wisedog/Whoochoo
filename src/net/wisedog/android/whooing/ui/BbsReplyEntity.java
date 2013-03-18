@@ -41,6 +41,7 @@ public class BbsReplyEntity extends LinearLayout {
 	private JSONObject mObjParent = null;
     private int mBbsId;
     private int mBoardType;	
+    private String mCommentId;	//This is reply ID. Reply = Comment in this application
     private ProgressDialog mProgress;
 
 	public BbsReplyEntity(Context context) {
@@ -71,6 +72,8 @@ public class BbsReplyEntity extends LinearLayout {
 		if(objResult != null){
 			mObjParent = objResult;
 		}
+		
+		mCommentId = obj.getString("comment_id");
 		
 		JSONObject objWriter = obj.getJSONObject("writer");
 		ImageView profileImage = (ImageView)findViewById(R.id.bbs_article_chunk_img);
@@ -140,6 +143,7 @@ public class BbsReplyEntity extends LinearLayout {
 		                        b.putInt("bbs_id", mBbsId);
 		                        try {
 		                            b.putString("comment_id", obj.getString("comment_id"));
+		                            
 		                        } catch (JSONException e) {
 		                            e.printStackTrace();
 		                            return;
@@ -256,13 +260,17 @@ public class BbsReplyEntity extends LinearLayout {
                 if (msg.arg1 == Define.API_POST_BOARD_COMMENT) {
                     setLoadingStatus(false);
                     LinearLayout ll = (LinearLayout) findViewById(R.id.bbs_article_chunk_comment_container);
-                    BbsCommentEntity entity = new BbsCommentEntity(mContext);
+                    BbsCommentEntity entity = new BbsCommentEntity(mContext, mBoardType, mBbsId, mCommentId);
                     try {
                         entity.setup(obj.getJSONObject("results"));
                         ll.addView(entity, 0);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         // TODO toast
+                    }
+                    EditText editText = (EditText)findViewById(R.id.bbs_article_chunk_comment_edittext);
+                    if(editText != null){
+                    	editText.setText("");
                     }
 
                 } else if (msg.arg1 == Define.API_GET_BOARD_COMMENT) {
@@ -272,7 +280,7 @@ public class BbsReplyEntity extends LinearLayout {
                         JSONArray commentArray = objResults.getJSONArray("rows");
                         int len = commentArray.length();
                         for (int i = 0; i < len; i++) {
-                            BbsCommentEntity entity = new BbsCommentEntity(mContext);
+                            BbsCommentEntity entity = new BbsCommentEntity(mContext, mBoardType, mBbsId, mCommentId);
                             entity.setup(commentArray.getJSONObject(i));
                             ll.addView(entity);
                         }

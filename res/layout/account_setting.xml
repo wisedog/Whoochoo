@@ -70,7 +70,7 @@
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_setting_language_for_app"
+            android:text="@string/account_setting_locale_language"
             android:textColor="#AAAAAA"
             android:textSize="18sp" />
 
@@ -97,7 +97,7 @@
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_setting_language_for_whooing"
+            android:text="@string/account_setting_timezone"
             android:textColor="#AAAAAA"
             android:textSize="18sp" />
 

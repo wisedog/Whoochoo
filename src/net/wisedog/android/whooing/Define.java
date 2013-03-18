@@ -15,8 +15,8 @@ public class Define {
 	
 	public static String CURRENCY_CODE = null;
 	public static String COUNTRY_CODE = null;;
-	public static String LANGUAGE_APP = null;
 	public static String TIMEZONE = null;
+	public static String LOCALE_LANGUAGE = null;
 	
 	// General Key and Shared Preference Key
 	public static String SHARED_PREFERENCE = "SHARED_AUTH";
@@ -29,8 +29,8 @@ public class Define {
 	
 	public static String KEY_SHARED_CURRENCY_CODE = "SHARED_CURRENCY_CODE";
 	public static String KEY_SHARED_COUNTRY_CODE = "SHARED_COUNTRY_CODE";
-	public static String KEY_SHARED_LANGUAGE_APP = "SHARED_LANGUAGE_APP";
 	public static String KEY_SHARED_TIMEZONE = "SHARED_TIMEZONE";
+	public static String KEY_SHARED_LOCALE_LANGUAGE = "SHARED_LOCALE_LANG";
 	
 	// Response/Request Key
 	public static final int RESPONSE_EXIT = 10;
@@ -108,5 +108,6 @@ public class Define {
     //set this flag true
     public static boolean NEED_TO_REFRESH = false;
     
+    public static boolean SHOW_NO_API_INFORM = false;
 
 }

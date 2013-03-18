@@ -8,11 +8,15 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
 import net.wisedog.android.whooing.dialog.AboutDialog;
+import net.wisedog.android.whooing.engine.DataRepository;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -184,7 +188,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             }
         }
     };
-    
 
     public void onClickBudgetMore(View v){
         Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
@@ -200,11 +203,30 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    mRestApiText = new TextView(this);
 	    mRestApiText.setId(API_MENUITEM_ID);
-	    mRestApiText.setText("-");
+	    DataRepository repository = DataRepository.getInstance();
+	    mRestApiText.setText("Api\r\n "+ repository.getRestApi());
 	    mRestApiText.setClickable(true);
 	    mRestApiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 	    mRestApiText.setTextColor(Color.WHITE);
 	    menu.add("Api").setActionView(mRestApiText).setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+	    
+	    if(repository.getRestApi() == 0 && Define.SHOW_NO_API_INFORM == false){
+	    	Define.SHOW_NO_API_INFORM = true;
+	    	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle(getString(R.string.global_no_api_inform_title));
+            alertDialogBuilder.setMessage(getString(R.string.global_no_api_inform))
+            .setCancelable(true)
+            .setPositiveButton(getString(R.string.text_okay), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                	dialog.dismiss();
+
+                }
+            });
+            
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+	    }
 	    
 		menu.add("Plus").setIcon(R.drawable.menu_plus_button_white)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -246,9 +268,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                 mMenuDrawer.openMenu();
             }
-            
         }
-
         return super.onOptionsItemSelected(item);
     }
     

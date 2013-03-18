@@ -54,7 +54,7 @@ public class DataRepository{
     private onLoadingMessage mLoadingMsgListener = null;
 	private Context mContext;
 	
-	private int mRestApiNum = 0;
+	private int mRestApiNum = -1;
 	/** 스플래쉬 첫 화면에서 메시지를 나타낼때 사용. Dashboard값을 불러올때 Mountain, Budget 값을 불러오는데  
 	 * 2개다 불러왔을때 메시지를 전달해야해서 이렇게 사용*/
 	private int mMsgDashboardCount = 0;
@@ -110,6 +110,7 @@ public class DataRepository{
 	public void refreshDashboardValue(Context context) {
 	    mContext = context;
 		init();
+		
 		Bundle bundle = new Bundle();
 		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
 		bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
@@ -195,13 +196,21 @@ public class DataRepository{
                 JSONObject obj = (JSONObject)msg.obj;
                 if(obj != null){
                     int returnCode = 200;
-                    try{                        
+                    try{
                         mRestApiNum = obj.getInt("rest_of_api");
                         setRestApi(mContext, mRestApiNum);
                         returnCode = obj.getInt("code");
                     }catch(JSONException e){
                         setRestApi(mContext, 0);
                     }
+                    mRestApiNum = 0;
+/*                    if(mRestApiNum == 0){
+                    	return;
+                    }*/
+                    
+                    /*if(returnCode == Define.RESULT_INSUFFIENT_API && mRestApiNum == 0){
+                    	return;
+                    }*/
                     if(setCodeHandling(returnCode) == false){
                         return;
                     }
@@ -282,9 +291,6 @@ public class DataRepository{
                 }
                 else if(msg.arg1 == Define.API_GET_ENTRIES_LATEST_ITEMS){
                     mLastestItem = obj;
-                    if(Define.DEBUG){
-                    	Log.i("wisedog", "lastest items : " + obj.toString());
-                    }
                     if(mLoadingMsgListener != null){
                         mLoadingMsgListener.onMessage(LATEST_TRANSACTION);
                     }
@@ -308,6 +314,11 @@ public class DataRepository{
     
     public void refreshRestApi(Context context){
         setRestApi(context, mRestApiNum);
+    }
+    
+    /** @return	return Rest of API num*/
+    public int getRestApi(){
+    	return mRestApiNum;
     }
     
     /**

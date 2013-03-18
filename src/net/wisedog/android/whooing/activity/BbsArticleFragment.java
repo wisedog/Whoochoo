@@ -94,7 +94,8 @@ public class BbsArticleFragment extends SherlockFragment {
 			    	if(text != null){
 			    		String str = text.getText().toString();
 			    		if(str == null || str.equals("")){
-			    			Toast.makeText(getActivity(), "입력좀해", Toast.LENGTH_SHORT).show(); //TODO Localization
+			    			Toast.makeText(getActivity(), getString(R.string.bbs_article_inform_fill_contents)
+			    					, Toast.LENGTH_SHORT).show();
 			    			return;
 			    		}
 			    		Bundle b = new Bundle();

@@ -118,6 +118,18 @@ public class BbsApi extends AbstractAPI{
         return result;
 	}
     
+    public JSONObject delBbsComment(String appSection, String appID, String token, 
+            String appKey, String tokenSecret, Bundle bundle) {
+        if(bundle == null){
+            return null;
+        }
+        String boardType = getBoardType(bundle.getInt("board_type"));
+        String entriesURL = "https://whooing.com/api/bbs/" + boardType + "/" +  bundle.getInt("bbs_id") 
+                + "/" + bundle.getString("comment_id") + "/" + bundle.getInt("addition_id") + ".json";
+        JSONObject result = callApiDelete(entriesURL, appID, token, appKey, tokenSecret, appSection);
+        return result;
+    }
+    
     
     /**
      * @param   type    board type integer value
