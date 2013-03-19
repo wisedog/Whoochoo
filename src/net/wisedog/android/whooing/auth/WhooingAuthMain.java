@@ -106,7 +106,7 @@ public class WhooingAuthMain extends Activity {
 			}
 			else if(msg.what == Define.MSG_AUTH_DONE){
 			    updateProgress(2);
-				ThreadRestAPI thread = new ThreadRestAPI(mHandler, WhooingAuthMain.this, Define.API_GET_SECTIONS);
+				ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_SECTIONS);
 				thread.start();
 			}
 			else if(msg.what == Define.MSG_API_OK){

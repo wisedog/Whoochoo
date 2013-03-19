@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,14 @@ public class DataRepository{
     static public final int LATEST_TRANSACTION = 5;
     public static final int ACCOUNT_MODE = 6;
     public static final int DASHBOARD_MODE = 7;
+    
+    static protected final String KEY_PREF = "key_pref";
+    static public final String KEY_BS_VALUE = "key_bs";
+    static public final String KEY_PL_VALUE = "key_pl";
+    static public final String KEY_MT_VALUE = "key_mt";
+    static public final String KEY_EXP_BUDGET_VALUE = "key_exp_budget";
+    static public final String KEY_USER_VALUE = "key_user";
+    static public final String KEY_LASTEST_ITEM = "key_latest";
     
     /**자산부채 - bs*/
     private JSONObject mBsValue = null;
@@ -58,6 +67,8 @@ public class DataRepository{
 	/** 스플래쉬 첫 화면에서 메시지를 나타낼때 사용. Dashboard값을 불러올때 Mountain, Budget 값을 불러오는데  
 	 * 2개다 불러왔을때 메시지를 전달해야해서 이렇게 사용*/
 	private int mMsgDashboardCount = 0;
+	
+	private boolean isDashboardLoading = false;
     
     // 대쉬보드 - Asset/Doubt: bs,pl / Monthly Budget : pl/ Credit Card : bs 
     
@@ -85,13 +96,18 @@ public class DataRepository{
     }
     
     //using singleton
-    private static DataRepository dataRepository = new DataRepository();
+    private static DataRepository dataRepository = null;
     
     public static synchronized DataRepository getInstance(){
+    	if(dataRepository == null){
+    		Log.d("wisedog", "DataRepository is just created");
+    		//some init here
+    		dataRepository = new DataRepository();
+    	}
         return dataRepository;
     }
-    
-    /**
+
+	/**
      * Init here
      *
      * */
@@ -110,7 +126,10 @@ public class DataRepository{
 	public void refreshDashboardValue(Context context) {
 	    mContext = context;
 		init();
-		
+		if(isDashboardLoading){
+			return;
+		}
+		isDashboardLoading = true;
 		Bundle bundle = new Bundle();
 		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
 		bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
@@ -126,8 +145,8 @@ public class DataRepository{
 				Define.API_GET_BUDGET, bundleBudget);
 		thread1.start();
 	}
-    
-    /**
+	
+	/**
      * Refresh Balance infomation from server
      * */
     public void refreshBsValue(Context context){
@@ -217,39 +236,61 @@ public class DataRepository{
                 }
                 
                 if (msg.arg1 == Define.API_GET_BALANCE) {
-                    mBsValue = obj;
+                	try {
+						mBsValue = new JSONObject(obj.toString());
+					} catch (JSONException e) {
+						e.printStackTrace();
+						mBsValue = null;
+					}
                     for (OnBsChangeListener observer : mBsObservers) {
-                        observer.onBsUpdate(obj);
+                        observer.onBsUpdate(mBsValue);
                     }
                 }else if(msg.arg1 == Define.API_GET_PL){
-                    mPlValue = obj;
+                	try {
+                		mPlValue = new JSONObject(obj.toString());
+					} catch (JSONException e) {
+						e.printStackTrace();
+						mPlValue = null;
+					}
                     for (OnPlChangeListener observer : mPlObservers) {
-                        observer.onPlUpdate(obj);
+                        observer.onPlUpdate(mPlValue);
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_MOUNTAIN){
-                    mMtValue = obj;
+                    try {
+                    	mMtValue = new JSONObject(obj.toString());
+					} catch (JSONException e) {
+						e.printStackTrace();
+						mMtValue = null;
+					}
                     for (OnMountainChangeListener observer : mMtObservers) {
-                        observer.onMountainUpdate(obj);
+                        observer.onMountainUpdate(mMtValue);
                     }
                     if(mMsgDashboardCount == 0){
                         mMsgDashboardCount++;
                     }else{
                         mMsgDashboardCount = 0;
+                        isDashboardLoading = false;
                         if(mLoadingMsgListener != null){
                             mLoadingMsgListener.onMessage(DASHBOARD_MODE);
                         }
                     }
                 }
                 else if(msg.arg1 == Define.API_GET_BUDGET){
-                    mExpBudgetValue = obj;
+                    try {
+                    	mExpBudgetValue = new JSONObject(obj.toString());
+					} catch (JSONException e) {
+						e.printStackTrace();
+						mExpBudgetValue = null;
+					}
                     for (OnExpBudgetChangeListener observer : mExpBudgetObservers) {
-                        observer.onExpBudgetUpdate(obj);
+                        observer.onExpBudgetUpdate(mExpBudgetValue);
                     }
                     if(mMsgDashboardCount == 0){
                         mMsgDashboardCount++;
                     }else{
                         mMsgDashboardCount = 0;
+                        isDashboardLoading = false;
                         if(mLoadingMsgListener != null){
                             mLoadingMsgListener.onMessage(DASHBOARD_MODE);
                         }
@@ -388,6 +429,12 @@ public class DataRepository{
      * @return  Return saved mountain value
      * */
     public JSONObject getMtValue(){
+    	if(mMtValue == null){
+    		Log.i("wisedog", "getMtValue is Null");	
+    	}else{
+    		Log.i("wisedog", "getMtValue - " + mMtValue.toString());
+    	}
+    	
         return mMtValue;
     }
     
@@ -395,6 +442,11 @@ public class DataRepository{
      * @return  Return saved budget value
      * */
     public JSONObject getExpBudgetValue(){
+    	if(mExpBudgetValue == null){
+    		Log.i("wisedog", "getExpBudgetValue is Null");	
+    	}else{
+    		Log.i("wisedog", "getExpBudgetValue - " + mExpBudgetValue.toString());
+    	}
         return mExpBudgetValue;
     }
     

@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.widget.WiTextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -84,7 +85,8 @@ public class AccountChooserDialog extends SherlockDialogFragment {
     /**
      * UI setup
      * */
-    private void setupUi(View v){
+    @SuppressLint("CutPasteId")
+	private void setupUi(View v){
         ArrayList<AccountsEntity> list = getArguments().getParcelableArrayList("accounts_list");
         String mode = getArguments().getString("mode");
         WiTextView textViewAssets = (WiTextView) v.findViewById(R.id.accounts_selection_title_assets);
@@ -149,6 +151,8 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             textView.setClickable(true);
             textView.setTag(entity);
             textView.setTextColor(Color.GRAY);
+            textView.setEllipsize(null);
+            textView.setMaxLines(1);
             
             //For touch selection effect
             textView.setOnTouchListener(new View.OnTouchListener() {
@@ -171,11 +175,11 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             });
             
             //Setup UI for textView
-            textView.measure(0, 0);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(20, 0, 0, 15);
             textView.setLayoutParams(layoutParams);
+            textView.measure(0, 0);
             
             @SuppressWarnings("unchecked")
             ArrayList<Integer> tmp1 = (ArrayList<Integer>) map.get(entity.accountType);
@@ -183,11 +187,11 @@ public class AccountChooserDialog extends SherlockDialogFragment {
             LinearLayout ll = (LinearLayout) v.findViewById(layoutId);
             ll.measure(0, 0);
             
-            if(ll.getMeasuredWidth() + textView.getMeasuredWidth() + 20 < maxWidth){    
+            if(ll.getMeasuredWidth() + textView.getMeasuredWidth() + 40 < maxWidth){    
                 ll.addView(textView);
             }else{
                 //Create new LinearLayout(Horizontal) and add the textview to new layout 
-                //and add new layout to the parent layout, 
+                //and add new layout to the parent layout,
                 LinearLayout layout = null;
                 if (entity.accountType.compareTo("assets") == 0) {
                     layout = (LinearLayout) v.findViewById(R.id.accounts_selection_assets);

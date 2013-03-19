@@ -32,6 +32,9 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 /**
  * 첫 페이지(대쉬보드)Fragment
  * @author Wisedog(me@wisedog.net)
@@ -50,12 +53,25 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     private Activity mActivity;
     private ProgressDialog dialog;
+	private AdView adView;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.i("wisedog", "Dashboard - onCreateView");
 		View view = inflater.inflate(R.layout.whooing_main, null);
 		
+		// adView 만들기
+	    adView = new AdView(getSherlockActivity(), AdSize.BANNER, "a15147cd53daa26");
+	    LinearLayout layout = (LinearLayout)view.findViewById(R.id.dashboard_ads);
+
+	    // 찾은 LinearLayout에 adView를 추가
+	    layout.addView(adView);
+
+	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
+	    AdRequest adRequest = new AdRequest();
+	    adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");	//FIXME	Remove in release mode
+	    adView.loadAd(adRequest);
 		return view;
 	}
 	
@@ -64,7 +80,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 		super.onCreate(savedInstanceState);
 	}
 
-    /* (non-Javadoc)
+	/* (non-Javadoc)
      * @see com.actionbarsherlock.app.SherlockFragment#onAttach(android.app.Activity)
      */
     @Override
@@ -75,35 +91,50 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     @Override
     public void onResume() {
+    	Log.i("wisedog", "Dashboard - onResume");
         DataRepository repository = DataRepository.getInstance();
-        repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
-        repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
-        if(repository.getMtValue() != null){
-            showMountainValue(repository.getMtValue());
+        if(repository.getMtValue() == null || repository.getExpBudgetValue() == null){
+        	repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+            repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
+        	repository.refreshDashboardValue(getSherlockActivity());
+        }else{
+        	if(repository.getMtValue() != null){
+                showMountainValue(repository.getMtValue());
+            }
+            if(repository.getExpBudgetValue() != null){
+                showBudgetValue(repository.getExpBudgetValue());
+            }
         }
-        if(repository.getExpBudgetValue() != null){
-            showBudgetValue(repository.getExpBudgetValue());
-        }
+        
         repository.refreshRestApi(getSherlockActivity());
         super.onResume();
     }
-    
 
-    /* (non-Javadoc)
+    @Override
+	public void onPause() {
+    	DataRepository repository = DataRepository.getInstance();
+        repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
+        repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
+		super.onPause();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+	}
+
+	/* (non-Javadoc)
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
     public void onDestroyView() {
-        DataRepository repository = DataRepository.getInstance();
-        repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
-        repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
-        
+        adView.destroy();
         super.onDestroyView();
-    }
-
-    public void refreshAll() {
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_GET_MAIN);
-        thread.start();
     }
     
     Handler mHandler = new Handler(){
@@ -120,7 +151,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                 startActivityForResult(intent, Define.REQUEST_AUTH);
             }
             else if(msg.what == Define.MSG_AUTH_DONE){
-                ThreadRestAPI thread = new ThreadRestAPI(mHandler, mActivity, Define.API_GET_SECTIONS);
+                ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_SECTIONS);
                 thread.start();
             }
             else if(msg.what == Define.MSG_API_OK){
@@ -182,6 +213,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * */
     private void showMountainValue(JSONObject obj){
         WiTextView currentBalance = (WiTextView)getActivity().findViewById(R.id.balance_num);
+        if(currentBalance == null){
+        	return;
+        }
         WiTextView doubtValue = (WiTextView)getActivity().findViewById(R.id.doubt_num);
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
         if(currentBalance == null || doubtValue == null){
@@ -191,6 +225,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         doubtValue.setTypeface(typeface);
         JSONObject objResult = null;
         try{
+        	Log.i("wisedog", "Dashboard - showMountainValue - " + obj.toString());
             objResult = obj.getJSONObject("results");
         }
         catch(JSONException e){
@@ -341,6 +376,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      */
     public void onMountainUpdate(JSONObject obj) {
         //여기서 Dashboard의 Asset, Doubt, 전월대비 설정한다. 
+    	Log.i("wisedog", "Dashboard - onMountainUpdate");
         showMountainValue(obj);
     }
 
@@ -348,6 +384,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @see net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener#onBudgetUpdate(org.json.JSONObject)
      */
     public void onExpBudgetUpdate(JSONObject obj) {
+    	Log.i("wisedog", "Dashboard - onExpBudgetUpdate");
        showBudgetValue(obj);
     }
     

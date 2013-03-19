@@ -13,7 +13,6 @@ import net.wisedog.android.whooing.utils.WhooingCalendar;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,37 +25,52 @@ import android.util.Log;
  * */
 public class ThreadRestAPI extends Thread {
 	private Handler mHandler;
-	private Activity mActivity;
 	private int mAPIName;
 	private Bundle mBundle;
 	
-	public ThreadRestAPI(Handler mHandler, Activity activity, int apiName) {
-		super();
-		this.mHandler = mHandler;
-		this.mActivity = activity;
-		this.mAPIName = apiName;
-	}
-	
-	public ThreadRestAPI(Handler mHandler, Activity activity, int apiName, Bundle bundle) {
-        super();
-        this.mHandler = mHandler;
-        this.mActivity = activity;
-        this.mAPIName = apiName;
-        this.mBundle = bundle;
-    }
-	
 	public ThreadRestAPI(Handler mHandler, int apiName) {
         super();
+        checkLoginInfo();
         this.mHandler = mHandler;
         this.mAPIName = apiName;
     }
 	
 	public ThreadRestAPI(Handler mHandler, int apiName, Bundle bundle) {
         super();
+        checkLoginInfo();
         this.mHandler = mHandler;
         this.mAPIName = apiName;
         this.mBundle = bundle;
     }
+
+	private void checkLoginInfo() {
+		if(Define.DEBUG){
+            Define.REAL_TOKEN = "9772ff8e2f751ddf1c5cf74b0d9b328f392a4b71";
+            Define.PIN = "339599";
+            Define.TOKEN_SECRET = "7776e79057bc222254da0b108555afd86e3b7d3c";
+            Define.APP_SECTION = "s10550";
+            Define.USER_ID = 8955;
+            Define.CURRENCY_CODE = "KRW";
+            Define.COUNTRY_CODE="KR";
+            Define.LOCALE_LANGUAGE = "ko";
+        }
+        
+        /*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
+        Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
+        Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
+        Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
+        Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
+        Define.USER_ID = prefs.getInt(Define.KEY_SHARED_USER_ID, 0);
+        Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, null);
+        Define.COUNTRY_CODE = prefs.getString(Define.KEY_SHARED_COUNTRY_CODE, null);
+        Define.LANGUAGE_APP = prefs.getString(Define.KEY_SHARED_LANGUAGE_APP, null);
+        Define.TIMEZONE = prefs.getString(Define.KEY_SHARED_TIMEZONE, null);
+        Log.i("wisedog", "user_id: " + Define.USER_ID + " app_section : " + Define.APP_SECTION + " real_token:" + Define.REAL_TOKEN
+                + " pin : " + Define.PIN + " token_secret : " + Define.TOKEN_SECRET);
+        Log.i("wisedog", "country: " + Define.COUNTRY_CODE + " currency: " + Define.CURRENCY_CODE 
+                + " LanguageApp : " + Define.LANGUAGE_APP + " Timezone: " + Define.TIMEZONE );*/
+		
+	}
 
 	@Override
 	public void run() {
@@ -111,6 +125,8 @@ public class ThreadRestAPI extends Thread {
             String account = mBundle.getString("account");
             String requestURL = "https://whooing.com/api/budget/" + account + ".json_array?section_id=" + 
                     Define.APP_SECTION + "&start_date=" + startDate + "&end_date=" + endDate;
+            Log.i("wisedog", "app_id" + Define.APP_ID + " real_token : " + Define.REAL_TOKEN 
+            		+ " app_secret : " + Define.APP_SECRET + " token_secret : " + Define.TOKEN_SECRET);
             result = budget.getInfo(requestURL, Define.APP_ID, Define.REAL_TOKEN, Define.APP_SECRET,
                     Define.TOKEN_SECRET);
             break;

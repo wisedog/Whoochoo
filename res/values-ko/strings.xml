@@ -56,4 +56,12 @@
     <!-- Exp. Budget -->
     <string name="exp_budget_budget_exp">지출/예산</string>
     
+    <!-- Auth -->
+    <string name="auth_doing">▶</string>
+    
+    <!-- Global  -->
+    <string name="global_no_api_inform">죄송합니다. 남은 API가 없습니다. 하지만 보고서를 열람하는 것 외에는 어떠한 일이든 할 수 있습니다. 주어진  API는 GMT 0:00에 다시 채워집니다. 써드 파티 앱인 이 앱은 Whooing의 API정책에 따릅니다.</string>
+    <string name="global_no_api_inform_title">API 부족</string>
+        <string name="global_go_setting_whooing">복잡한 이슈로 설정 메뉴는 이 버전에서 지원하지 않습니다. 다음버전에 지원하도록 하겠습니다.</string>
+    
 </resources>

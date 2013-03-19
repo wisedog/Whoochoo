@@ -9,6 +9,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
 import net.wisedog.android.whooing.dialog.AboutDialog;
 import net.wisedog.android.whooing.engine.DataRepository;
+import net.wisedog.android.whooing.utils.WhooingAlert;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -212,20 +213,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	    
 	    if(repository.getRestApi() == 0 && Define.SHOW_NO_API_INFORM == false){
 	    	Define.SHOW_NO_API_INFORM = true;
-	    	AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle(getString(R.string.global_no_api_inform_title));
-            alertDialogBuilder.setMessage(getString(R.string.global_no_api_inform))
-            .setCancelable(true)
-            .setPositiveButton(getString(R.string.text_okay), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                	dialog.dismiss();
-
-                }
-            });
-            
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+	    	WhooingAlert.showNotEnoughApi(this);
 	    }
 	    
 		menu.add("Plus").setIcon(R.drawable.menu_plus_button_white)
@@ -233,7 +221,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
 		SubMenu subMenu1 = menu.addSubMenu("Lists");		
 		subMenu1.add("Setting");
-		subMenu1.add("Help");
+		//subMenu1.add("Help");
 		subMenu1.add("About");
 		
 
@@ -251,10 +239,8 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             intent.putExtra("title", getString(R.string.text_add_transaction));
             startActivityForResult(intent, 1);
         }
-        else if(item.getTitle().equals("Help")){
-            Intent intent = new Intent(this, TransactionEntries.class);
-            intent.putExtra("title", getString(R.string.left_menu_item_history));
-            startActivityForResult(intent, 1);
+        else if(item.getTitle().equals("Setting")){
+        	WhooingAlert.showGoWhooing(this, getString(R.string.global_go_setting_whooing));
         }
         else if(item.getTitle().equals("About")){
             DialogFragment newFragment = AboutDialog.newInstance();

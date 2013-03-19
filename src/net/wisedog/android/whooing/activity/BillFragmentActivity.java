@@ -14,6 +14,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.ui.BillMonthlyEntity;
+import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -75,6 +76,12 @@ DatePickerDialog.OnDateSetListener{
                 if(msg.arg1 == Define.API_GET_BILL){
                     JSONObject obj = (JSONObject)msg.obj;
                     try {
+                    	int returnCode = obj.getInt("code");
+                    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+                    		Define.SHOW_NO_API_INFORM = true;
+                    		WhooingAlert.showNotEnoughApi(BillFragmentActivity.this);
+                    		return;
+                    	}
                         showBill(obj);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -86,30 +93,6 @@ DatePickerDialog.OnDateSetListener{
         
     };
 
-    /*
-     * "results":{"rows_type":"month",
-     * "aggregate":{"total":200000,
-     * "accounts":[
-     * {"end_use_date":20130228,"money":200000,"pay_date":25,
-     * "account_id":"x21","start_use_date":20130101},
-     * {"end_use_date":20130228,"money":0,"pay_date":28,
-     * "account_id":"x76","start_use_date":20130101}]},
-     * 
-     * "rows":[
-     * {"total":200000,"date":201302,
-     * "accounts":[
-     * {"end_use_date":20130131,"money":200000,"pay_date":25,
-     * "account_id":"x21","start_use_date":20130101},
-     * {"end_use_date":20130131,"money":0,"pay_date":28,"account_id":"x76",
-     * "start_use_date":20130101}
-     * ]},
-     * {"total":0,"date":201303,
-     * "accounts":[{"end_use_date":20130228,"money":0,
-     * "pay_date":25,"account_id":"x21","start_use_date":20130201},
-     * {"end_use_date":20130228,"money":0,"pay_date":28,"account_id":"x76",
-     * "start_use_date":20130201}]}]}
-     * 
-     * */
     private void showBill(JSONObject obj) throws JSONException{
     	LinearLayout baseLayout = (LinearLayout)findViewById(R.id.bill_main_layout);
     	if(baseLayout == null){

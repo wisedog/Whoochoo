@@ -64,6 +64,7 @@
     <string name="text_no">No</string>
     <string name="text_next">Next</string>
     <string name="text_okay">Okay</string>
+    <string name="text_inform">Inform</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -146,9 +147,11 @@
     <!-- Auth -->
     <string name="auth_doing">▶</string>
     
-    <!-- Global  -->
+    <!-- Global Alert -->
     <string name="global_no_api_inform">Sorry. There are no remaining APIs, but you can everything without reporting. The given APIs are filled again at GMT 0:00. This app, the 3rd party application, just follows Whooing\'s policy.</string>
     <string name="global_no_api_inform_title">Not enough APIs</string>
+    <string name="global_go_setting_whooing">Since There are complicated issues, Setting menu is not available in this version. I will support it in next version.</string>
+    <string name="alert_go_setting_whooing_btn">Go to Whooing</string>
         
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

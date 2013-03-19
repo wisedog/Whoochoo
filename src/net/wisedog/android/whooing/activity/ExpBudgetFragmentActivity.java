@@ -4,12 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
 import net.wisedog.android.whooing.ui.TableRowExpBudgetItem;
+import net.wisedog.android.whooing.utils.WhooingAlert;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -48,23 +50,6 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
 		super.onResume();
 	}
 
-    /*
-     * {"error_parameters":[],"message":"","code":200,
-     * "results":{"rows_type":"month",
-     * "aggregate":{"total_steady":
-     * {"money":0,"remains":0,"budget":0},
-     * "total":{"money":0,"remains":0,"budget":0},
-     * "total_floating":{"money":0,"remains":0,"budget":0},
-     * "accounts":[{"account_id":"x50","money":0,"remains":0,"budget":0},{"account_id":"x51","money":0,"remains":0,"budget":0},{"account_id":"x52","money":0,"remains":0,"budget":0},{"account_id":"x53","money":0,"remains":0,"budget":0},{"account_id":"x54","money":0,"remains":0,"budget":0},{"account_id":"x55","money":0,"remains":0,"budget":0},{"account_id":"x56","money":0,"remains":0,"budget":0},{"account_id":"x57","money":0,"remains":0,"budget":0},{"account_id":"x58","money":0,"remains":0,"budget":0},{"account_id":"x59","money":0,"remains":0,"budget":0},{"account_id":"x60","money":0,"remains":0,"budget":0},{"account_id":"x77","money":0,"remains":0,"budget":0},{"account_id":"x78","money":0,"remains":0,"budget":0}],
-     * "misc":{"today":{"money":0,"remains":0,"budget":0},"possibility":100,"weekly_remains":243054,"standard":255376,"daily_remains":34722}},"max":0,
-     * "rows":[
-     * {"total_steady":{"money":0,"remains":0,"budget":0},
-     * "total":{"money":0,"remains":416667,"budget":416667},
-     * "total_floating":{"money":0,"remains":0,"budget":0},
-     * "accounts":[{"account_id":"x50","money":0,"remains":0,"budget":0},{"account_id":"x51","money":0,"remains":0,"budget":0},{"account_id":"x52","money":0,"remains":0,"budget":0},{"account_id":"x53","money":0,"remains":0,"budget":0},{"account_id":"x54","money":0,"remains":0,"budget":0},{"account_id":"x55","money":0,"remains":0,"budget":0},{"account_id":"x56","money":0,"remains":0,"budget":0},{"account_id":"x57","money":0,"remains":0,"budget":0},{"account_id":"x58","money":0,"remains":0,"budget":0},{"account_id":"x59","money":0,"remains":0,"budget":0},{"account_id":"x60","money":0,"remains":0,"budget":0},{"account_id":"x77","money":0,"remains":0,"budget":0},{"account_id":"x78","money":0,"remains":0,"budget":0}],"date":201301,"misc":{"today":{"money":0,"remains":34722,"budget":34722},
-     * "possibility":100,"weekly_remains":243054,"standard":255376,"daily_remains":34722}}]},"rest_of_api":4988}
-     * 
-     * */
     private void showExpBudget(JSONObject obj){
         
         TableLayout tl = (TableLayout) findViewById(R.id.exp_budget_table);
@@ -72,12 +57,6 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         
         final int secondColumnWidth = (int) (metrics.widthPixels * 0.7);
-        /*Resources r = getResources();
-        
-        final int valueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 95,
-                r.getDisplayMetrics());
-        final int viewHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14,
-                r.getDisplayMetrics());*/
         
         try {
             JSONObject objResult = obj.getJSONObject("results");
@@ -157,6 +136,17 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
      */
     @Override
     public void onExpBudgetUpdate(JSONObject obj) {
+    	int returnCode = Define.RESULT_OK;
+		try {
+			returnCode = obj.getInt("code");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return;
+		}
+    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+    		Define.SHOW_NO_API_INFORM = true;
+    		WhooingAlert.showNotEnoughApi(this);
+    	}
         showExpBudget(obj);
         
     }
