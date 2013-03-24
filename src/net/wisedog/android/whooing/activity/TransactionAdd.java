@@ -412,11 +412,15 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             	textView.setText("");
             	((EditText)findViewById(R.id.add_transaction_edit_amount)).setText("");
             	textView.requestFocus();
+            	
+            	//Clear cached data - mt, pl, bs ... 
+            	DataRepository repository = DataRepository.getInstance();
+            	repository.clearCachedData();
 				super.onPostExecute(result);
 			}
 
         };
-     // 작업 시작
+        //Start task
         mTask.execute();
     }
     

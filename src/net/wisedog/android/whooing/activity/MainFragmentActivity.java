@@ -219,9 +219,9 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 		menu.add("Plus").setIcon(R.drawable.menu_plus_button_white)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		SubMenu subMenu1 = menu.addSubMenu("Lists");		
-		subMenu1.add("Setting");
-		//subMenu1.add("Help");
+		SubMenu subMenu1 = menu.addSubMenu("Lists");
+		subMenu1.add("Accounts Setting");
+		subMenu1.add("User Setting");
 		subMenu1.add("About");
 		
 
@@ -239,8 +239,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             intent.putExtra("title", getString(R.string.text_add_transaction));
             startActivityForResult(intent, 1);
         }
-        else if(item.getTitle().equals("Setting")){
+        else if(item.getTitle().equals("Accounts Setting")){
         	WhooingAlert.showGoWhooing(this, getString(R.string.global_go_setting_whooing));
+        }
+        else if(item.getTitle().equals("User Setting")){
+        	
         }
         else if(item.getTitle().equals("About")){
             DialogFragment newFragment = AboutDialog.newInstance();

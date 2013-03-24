@@ -19,6 +19,7 @@
             android:textColor="#333333"
             android:textSize="20sp"
             android:textStyle="bold" />
+        
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,6 +107,13 @@
                 android:textSize="16sp" 
                 android:textIsSelectable="true"/>
         </LinearLayout>
+        
+        <LinearLayout
+            android:id="@+id/bbs_article_ads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"></LinearLayout>
+        
         <LinearLayout 
             android:id="@+id/bbs_article_post_reply_container"
             android:layout_width="match_parent"

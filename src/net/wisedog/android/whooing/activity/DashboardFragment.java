@@ -58,11 +58,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		Log.i("wisedog", "Dashboard - onCreateView");
 		View view = inflater.inflate(R.layout.whooing_main, null);
 		
 		// adView 만들기
-	    adView = new AdView(getSherlockActivity(), AdSize.BANNER, "a15147cd53daa26");
+	    adView = new AdView(getSherlockActivity(), AdSize.SMART_BANNER, "a15147cd53daa26");
 	    LinearLayout layout = (LinearLayout)view.findViewById(R.id.dashboard_ads);
 
 	    // 찾은 LinearLayout에 adView를 추가
@@ -70,7 +69,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
 	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
 	    AdRequest adRequest = new AdRequest();
-	    adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");	//FIXME	Remove in release mode
+	    if(Define.DEBUG){
+	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
+	    }
 	    adView.loadAd(adRequest);
 		return view;
 	}
@@ -91,7 +92,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     @Override
     public void onResume() {
-    	Log.i("wisedog", "Dashboard - onResume");
         DataRepository repository = DataRepository.getInstance();
         if(repository.getMtValue() == null || repository.getExpBudgetValue() == null){
         	repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
@@ -212,12 +212,12 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param	obj		Data formatted in JSON
      * */
     private void showMountainValue(JSONObject obj){
-        WiTextView currentBalance = (WiTextView)getActivity().findViewById(R.id.balance_num);
+        WiTextView currentBalance = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
         if(currentBalance == null){
         	return;
         }
-        WiTextView doubtValue = (WiTextView)getActivity().findViewById(R.id.doubt_num);
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Light.ttf");
+        WiTextView doubtValue = (WiTextView)getSherlockActivity().findViewById(R.id.doubt_num);
+        Typeface typeface = Typeface.createFromAsset(getSherlockActivity().getAssets(), "fonts/Roboto-Light.ttf");
         if(currentBalance == null || doubtValue == null){
         	return;
         }
@@ -225,7 +225,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         doubtValue.setTypeface(typeface);
         JSONObject objResult = null;
         try{
-        	Log.i("wisedog", "Dashboard - showMountainValue - " + obj.toString());
+        	if(Define.DEBUG){
+        		Log.i("wisedog", "Dashboard - showMountainValue - " + obj.toString());
+        	}
             objResult = obj.getJSONObject("results");
         }
         catch(JSONException e){
@@ -376,7 +378,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      */
     public void onMountainUpdate(JSONObject obj) {
         //여기서 Dashboard의 Asset, Doubt, 전월대비 설정한다. 
-    	Log.i("wisedog", "Dashboard - onMountainUpdate");
         showMountainValue(obj);
     }
 
@@ -384,7 +385,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @see net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener#onBudgetUpdate(org.json.JSONObject)
      */
     public void onExpBudgetUpdate(JSONObject obj) {
-    	Log.i("wisedog", "Dashboard - onExpBudgetUpdate");
        showBudgetValue(obj);
     }
     

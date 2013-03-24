@@ -28,10 +28,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
- * Account setting class. User can set country, currency, language, nickname
+ * UserInfo setting class. User can set country, currency, language, nickname
  * @author Wisedog(me@wisedog.net)
  */
-public class AccountSetting extends Activity implements OnUserChangeListener{
+public class UserInfoSetting extends Activity implements OnUserChangeListener{
 
     private ProgressDialog mProgress;
 

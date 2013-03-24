@@ -16,16 +16,55 @@
     <string name="accounts_capital">자본</string>
     <string name="accounts_income">수입</string>
     <string name="accounts_expenses">지출</string>
+    
+    <!-- Common Text -->
+    <string name="total_assets">총 자산</string>
+    <string name="total_liabilities">총 부채</string>
+    <string name="total_capital">총 자본</string>
+    <string name="total_expenses">총 지출</string>
+    <string name="total_income">총 수입</string>
+    <string name="text_item">항목</string>
+    <string name="text_account">계정</string>
+    <string name="text_amount">금액</string>
+    <string name="text_left">Left</string>
+    <string name="text_right">Right</string>
+    <string name="text_date">날짜</string>
+    <string name="text_change">변경</string>
+    <string name="text_search">찾기</string>
+    <string name="text_add_transaction">거래 입력</string>
+    <string name="text_expenses">지출</string>
     <string name="text_income">수입</string>
-    <string name="text_etc">Etc</string>
+    <string name="text_etc">기타</string>
     <string name="text_budget">예산</string>
     <string name="text_remains">잔액</string>
     <string name="text_loading">로딩중</string>
     <string name="text_doubt">부채</string>
-    <string name="text_expenses_budget">지출예산</string>
+    <string name="text_expenses_budget">지출 예산</string>
+    <string name="text_bill">신용카드</string>
+    <string name="text_total_amount">총 금액</string>
+    <string name="text_post_it">포스트잇!</string>
+    <string name="text_free_board">자유게시판</string>
+    <string name="text_free_finance">알뜰살뜰</string>
+    <string name="text_free_counseling">고민상담</string>
+    <string name="text_free_support">고객지원</string>
     <string name="text_write_reply">답글쓰기</string>
     <string name="text_confirm">확인</string>
     <string name="text_me">나</string>
+    <string name="text_modify">수정</string>
+    <string name="text_delete">삭제</string>
+    <string name="text_complete">완료</string>
+    <string name="text_currency">통화</string>
+    <string name="text_country">국가</string>
+    <string name="text_check">Check</string>
+    <string name="text_about">정보</string>
+    <string name="text_deleting">삭제중&#8230;</string>
+    <string name="text_subject">제목</string>
+    <string name="text_content">내용</string>
+    <string name="text_yes">예</string>
+    <string name="text_no">아니오</string>
+    <string name="text_next">다음</string>
+    <string name="text_okay">확인</string>
+    <string name="text_inform">알림</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">정보 더보기&#8230;</string>
@@ -56,12 +95,61 @@
     <!-- Exp. Budget -->
     <string name="exp_budget_budget_exp">지출/예산</string>
     
+    
+    <!-- Bill -->
+    <string name="bill_amount_due">결재일</string>
+    
+    <!-- Postit -->
+    <string name="post_it_question_delete">정말?</string>
+    
+    <!-- Transaction Add -->
+    <string name="add_transaction_add_complete">추가 완료</string>
+    
+    <!-- User Account -->
+    <string name="account_setting_timezone">시간대</string>
+    <string name="account_setting_locale_language">언어(날짜 형식 관련)</string>
+    <string name="account_setting_username_hint">별명을 적어주세요</string>
+    <string name="account_setting_username_optional">사용자 이름(선택)</string>
+    <string name="account_setting_progress">사용자 정보 로딩중</string>
+    
+    <!-- About dialog  -->
+    <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without user id, language, currency.</string>
+    <string name="about_app_contact_whooing">Contact to Whooing</string>
+    <string name="about_app_contact_whooing_email">support@whooing.com</string>
+    <string name="about_app_contact_developer">Contact to App developer</string>
+    <string name="about_app_contact_developer_email">peashellapps@gmail.com</string>
+    <string name="about_app_whooing_url">Website : http://whooing.com</string>
+    <string name="about_app_blog">Blog : http://peashellapps.wordpress.com</string>
+    <string name="about_app_creator">Created by Peashell Apps.</string>
+    <string name="about_app_send_email">Choose Email Client</string>
+    <string name="about_app_version">Version : </string>
+    
+    <!-- BBS -->
+    <string name="bbs_deleted">해당 글이 삭제되었습니다.</string>
+    <string name="bbs_delete_alert_message">정말로 삭제하시겠습니까?</string>
+    <string name="bbs_delete_alert_title">삭제 확인</string>
+    <string name="bbs_write_fill_subject">제목을 적어주세요</string>
+    <string name="bbs_write_fill_content">내용을 적어주세요</string>
+    <string name="bbs_article_post_modified">해당 글이 수정되었습니다.</string>
+    <string name="bbs_article_post_deleted">해당 글이 삭제되었습니다 .</string>
+    <string name="bbs_article_inform_fill_contents">내용을 적어주세요.</string>
+    
+    <!-- Welcome -->
+    <string name="welcome_msg">Welcome,\nThis is Whooing.</string>
+    <string name="welcome_no_internet">No network connection. Please check your network connectivity.</string>
+    <string name="welcome_no_internet_title">Alert</string>
+    <string name="welcome_loading_get_user_info">Getting User Info&#8230;</string>
+    <string name="welcome_loading_get_transaction">Getting Transactions&#8230;</string>
+    <string name="welcome_loading_get_account_info">Getting Account Info&#8230;</string>
+    <string name="welcome_loading_get_data">Getting Data&#8230;</string>
+    <string name="welcome_logging_in">Logging in&#8230;</string>
+    
     <!-- Auth -->
     <string name="auth_doing">▶</string>
     
     <!-- Global  -->
     <string name="global_no_api_inform">죄송합니다. 남은 API가 없습니다. 하지만 보고서를 열람하는 것 외에는 어떠한 일이든 할 수 있습니다. 주어진  API는 GMT 0:00에 다시 채워집니다. 써드 파티 앱인 이 앱은 Whooing의 API정책에 따릅니다.</string>
     <string name="global_no_api_inform_title">API 부족</string>
-        <string name="global_go_setting_whooing">복잡한 이슈로 설정 메뉴는 이 버전에서 지원하지 않습니다. 다음버전에 지원하도록 하겠습니다.</string>
+    <string name="global_go_setting_whooing">복잡한 이슈로 설정 메뉴는 이 버전에서 지원하지 않습니다. 다음버전에 지원하도록 하겠습니다.</string>
     
 </resources>

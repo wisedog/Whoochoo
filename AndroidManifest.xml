@@ -11,7 +11,7 @@
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" 
-        >
+        android:hardwareAccelerated="true" android:allowClearUserData="false">
         <activity
             android:name=".Whooing"
             android:label="@string/app_name" android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" 
@@ -24,11 +24,11 @@
         </activity>
         <activity
             android:name="net.wisedog.android.whooing.auth.WhooingAuthMain"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".auth.WhooingAuthWeb"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar" android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.TransactionAdd"
@@ -37,25 +37,37 @@
         </activity>
         <activity
             android:name=".activity.TransactionEntries"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.MainFragmentActivity"
-            android:theme="@style/Theme.VPI" >
+            android:theme="@style/Theme.VPI" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.ExpBudgetFragmentActivity" >
+        <activity android:name=".activity.ExpBudgetFragmentActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.BillFragmentActivity" >
+        <activity 
+            android:name=".activity.BillFragmentActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.PostItFragmentActivity" >
+        <activity 
+            android:name=".activity.PostItFragmentActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.BbsFragmentActivity" >
+        <activity 
+            android:name=".activity.BbsFragmentActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.AccountSetting" >
+        <activity 
+            android:name=".activity.UserInfoSetting" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <activity android:name=".activity.AccountsSetting" android:screenOrientation="portrait"></activity>
 </application>
 
 </manifest>

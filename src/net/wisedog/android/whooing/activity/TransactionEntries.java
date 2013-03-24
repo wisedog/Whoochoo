@@ -20,7 +20,6 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,12 +31,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 
 /**
  * @author wisedog(me@wisedog.net)
@@ -49,6 +52,7 @@ public class TransactionEntries extends SherlockFragmentActivity implements
     protected int mToDate;
     protected int mCalendarSelectionResId;
     protected ArrayList<AccountsEntity> mAccountsArray;
+	private AdView adView;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -109,6 +113,20 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
         thread.start();
+        
+        // adView 만들기
+	    adView = new AdView(this, AdSize.SMART_BANNER, "a15147cd53daa26");
+	    LinearLayout layout = (LinearLayout)findViewById(R.id.bill_ads);
+
+	    // 찾은 LinearLayout에 adView를 추가
+	    layout.addView(adView);
+
+	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
+	    AdRequest adRequest = new AdRequest();
+	    if(Define.DEBUG){
+	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
+	    }
+	    adView.loadAd(adRequest);
     }
     
     protected Handler mHandler = new Handler(){

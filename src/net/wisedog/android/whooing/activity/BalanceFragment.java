@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -30,6 +31,9 @@ import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -44,6 +48,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     }
 
     private Activity mActivity;
+	private AdView adView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +58,20 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.balance_fragment, null);
-        return view;
+        // adView 만들기
+	    adView = new AdView(getSherlockActivity(), AdSize.SMART_BANNER, "a15147cd53daa26");
+	    LinearLayout layout = (LinearLayout)view.findViewById(R.id.balance_ads);
+
+	    // 찾은 LinearLayout에 adView를 추가
+	    layout.addView(adView);
+
+	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
+	    AdRequest adRequest = new AdRequest();
+	    if(Define.DEBUG){
+	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
+	    }
+	    adView.loadAd(adRequest);
+		return view;
     }
     
     

@@ -7,89 +7,68 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dip">
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:orientation="horizontal" >
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/transaction_entries_from_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
 
-	        <net.wisedog.android.whooing.widget.WiTextView
-			    android:layout_width="80dip"
-			    android:layout_height="wrap_content"
-			    android:textSize="22sp"
-			    android:text="@string/text_from"/>
-	        <net.wisedog.android.whooing.widget.WiTextView
-	            android:id="@+id/transaction_entries_from_date"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:textSize="22sp"/>
+        <ImageButton
+            android:id="@+id/transaction_entries_imgbtn_calendar_from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:onClick="onCalendarClick"
+            android:src="@drawable/btn_calendar" />
 
-	        <ImageButton
-	            android:id="@+id/transaction_entries_imgbtn_calendar_from"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/btn_calendar" 
-	            android:layout_marginLeft="5dip"
-	            android:onClick="onCalendarClick"/>
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="~"
+            android:textSize="20sp" />
 
-	    </LinearLayout>
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/transaction_entries_to_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
 
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="5dip"
-	        android:gravity="center_vertical"
-	        android:orientation="horizontal" >
-
-	        <net.wisedog.android.whooing.widget.WiTextView
-			    android:layout_width="80dip"
-			    android:layout_height="wrap_content"
-			    android:textSize="22sp"
-			    android:text="@string/text_to"/>
-	        <net.wisedog.android.whooing.widget.WiTextView
-			    android:id="@+id/transaction_entries_to_date"	
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:textSize="22sp"/>
-	        <ImageButton
-	            android:id="@+id/transaction_entries_imgbtn_calendar_to"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/btn_calendar" 
-	            android:layout_marginLeft="5dip"
-	            android:onClick="onCalendarClick"/>
-	    </LinearLayout>
+        <ImageButton
+            android:id="@+id/transaction_entries_imgbtn_calendar_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dip"
+            android:onClick="onCalendarClick"
+            android:src="@drawable/btn_calendar" />
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
-        android:orientation="horizontal">
-	    <net.wisedog.android.whooing.widget.WiTextView 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/text_account"
-	        android:layout_marginRight="4dip"/>
-	        
-        <!-- <EditText
-            android:id="@+id/transaction_entries_edit_account"
-            android:layout_width="100dp"
+        android:orientation="horizontal" >
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10" 
-            android:layout_marginRight="4dip">
-        </EditText> -->
+            android:layout_marginRight="4dip"
+            android:text="@string/text_account" />
 
         <Spinner
             android:id="@+id/transaction_entries_spinner_account"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="4dp" />
-
+	    </LinearLayout>
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dip"
+        android:orientation="horizontal">
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,6 +85,13 @@
             <requestFocus />
         </EditText>
         
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/transaction_entries_ads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
     </LinearLayout>
 
     <RelativeLayout

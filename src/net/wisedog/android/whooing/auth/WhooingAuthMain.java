@@ -2,7 +2,7 @@ package net.wisedog.android.whooing.auth;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.activity.AccountSetting;
+import net.wisedog.android.whooing.activity.UserInfoSetting;
 import net.wisedog.android.whooing.network.ThreadHandshake;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.widget.WiTextView;
@@ -126,7 +126,7 @@ public class WhooingAuthMain extends Activity {
 							editor.commit();
 							/*Toast.makeText(mActivity, getString(R.string.msg_auth_success),
 									Toast.LENGTH_LONG).show();*/
-							Intent intent = new Intent(WhooingAuthMain.this, AccountSetting.class);
+							Intent intent = new Intent(WhooingAuthMain.this, UserInfoSetting.class);
 							startActivityForResult(intent, Define.MSG_SETTING_DONE);
 						}
 						else{
