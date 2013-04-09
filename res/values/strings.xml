@@ -150,6 +150,9 @@
     <string name="global_no_api_inform_title">Not enough APIs</string>
     <string name="global_go_setting_whooing">Since There are complicated issues, Setting menu is not available in this version. I will support it in next version.</string>
     <string name="alert_go_setting_whooing_btn">Go to Whooing</string>
+    
+    <!-- Account Setting -->
+    <string name="account_setting_add">+ Add</string>
         
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

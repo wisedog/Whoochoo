@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E5E5E5"
+    android:padding="10dp" >
+
+    <Button
+        android:id="@+id/user_setting_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/text_complete" 
+        android:onClick="onClickComplete"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setting_username_optional"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/user_setting_nickname_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/account_setting_username_hint" >
+            </EditText>
+
+            <Button
+                android:id="@+id/user_setting_check_btn"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_check" />
+
+            <ProgressBar
+                android:id="@+id/user_setting_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
+        </LinearLayout>
+        
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_currency"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/user_setting_spinner_currency"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+        
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setting_locale_language"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/user_setting_spinner_language_app"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_country"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" 
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/user_setting_spinner_country"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/account_setting_timezone"
+            android:textColor="#AAAAAA"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/user_setting_spinner_timezone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp" />
+    </LinearLayout>
+</RelativeLayout>

@@ -41,7 +41,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.account_setting);
+        setContentView(R.layout.user_setting);
         setEnableUi(false);
         DataRepository repository = DataRepository.getInstance();
         if(repository.getUserValue() == null){
@@ -56,19 +56,19 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
     }
     
     protected void setEnableUi(boolean flag){
-        Spinner countrySpinner = (Spinner)findViewById(R.id.account_setting_spinner_country);
+        Spinner countrySpinner = (Spinner)findViewById(R.id.user_setting_spinner_country);
         countrySpinner.setEnabled(flag);
-        Spinner timezoneSpinner = (Spinner)findViewById(R.id.account_setting_spinner_timezone);
+        Spinner timezoneSpinner = (Spinner)findViewById(R.id.user_setting_spinner_timezone);
         timezoneSpinner.setEnabled(flag);
-        Spinner langAppSpinner = (Spinner)findViewById(R.id.account_setting_spinner_language_app);
+        Spinner langAppSpinner = (Spinner)findViewById(R.id.user_setting_spinner_language_app);
         langAppSpinner.setEnabled(flag);
-        Spinner currencySpinner = (Spinner)findViewById(R.id.account_setting_spinner_currency);
+        Spinner currencySpinner = (Spinner)findViewById(R.id.user_setting_spinner_currency);
         currencySpinner.setEnabled(flag);
-        EditText nicknameEdit = (EditText)findViewById(R.id.account_setting_nickname_edit);
+        EditText nicknameEdit = (EditText)findViewById(R.id.user_setting_nickname_edit);
         nicknameEdit.setEnabled(flag);
-        Button completeBtn = (Button)findViewById(R.id.account_setting_complete);
+        Button completeBtn = (Button)findViewById(R.id.user_setting_complete);
         completeBtn.setEnabled(flag);
-        Button checkBtn = (Button)findViewById(R.id.account_setting_check_btn);
+        Button checkBtn = (Button)findViewById(R.id.user_setting_check_btn);
         checkBtn.setEnabled(flag);
         
         
@@ -79,10 +79,10 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         setEnableUi(true);
         
         //Spinner adapter
-        Spinner countrySpinner = (Spinner)findViewById(R.id.account_setting_spinner_country);
-        Spinner timezoneSpinner = (Spinner)findViewById(R.id.account_setting_spinner_timezone);
-        Spinner langAppSpinner = (Spinner)findViewById(R.id.account_setting_spinner_language_app);
-        Spinner currencySpinner = (Spinner)findViewById(R.id.account_setting_spinner_currency);
+        Spinner countrySpinner = (Spinner)findViewById(R.id.user_setting_spinner_country);
+        Spinner timezoneSpinner = (Spinner)findViewById(R.id.user_setting_spinner_timezone);
+        Spinner langAppSpinner = (Spinner)findViewById(R.id.user_setting_spinner_language_app);
+        Spinner currencySpinner = (Spinner)findViewById(R.id.user_setting_spinner_currency);
         
         String country = null;
         String currency = null;
@@ -236,7 +236,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
 		
-		Spinner countrySpinner = (Spinner)findViewById(R.id.account_setting_spinner_country);
+		Spinner countrySpinner = (Spinner)findViewById(R.id.user_setting_spinner_country);
 		int idx = countrySpinner.getSelectedItemPosition();
 		if(idx <= 0){
 			//TODO Error
@@ -246,7 +246,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 			Define.COUNTRY_CODE = WhooingCurrency.COUNTRY_CODE[idx];
 		}
 		
-		Spinner timezoneSpinner = (Spinner)findViewById(R.id.account_setting_spinner_timezone);
+		Spinner timezoneSpinner = (Spinner)findViewById(R.id.user_setting_spinner_timezone);
 		idx = timezoneSpinner.getSelectedItemPosition();
 		if(idx <= 0){
 			//TODO Error
@@ -255,7 +255,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 			editor.commit();
 			Define.TIMEZONE = WhooingCurrency.TIMEZONE[idx];
 		}
-        Spinner langAppSpinner = (Spinner)findViewById(R.id.account_setting_spinner_language_app);
+        Spinner langAppSpinner = (Spinner)findViewById(R.id.user_setting_spinner_language_app);
         idx = langAppSpinner.getSelectedItemPosition();
         if(idx <= 0){
 			//TODO Error
@@ -264,7 +264,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 			editor.commit();
 			Define.LOCALE_LANGUAGE = WhooingCurrency.LOCALE_LANGUAGE_CODE[idx];
 		}
-        Spinner currencySpinner = (Spinner)findViewById(R.id.account_setting_spinner_currency);
+        Spinner currencySpinner = (Spinner)findViewById(R.id.user_setting_spinner_currency);
         idx = currencySpinner.getSelectedItemPosition();
 		if(idx <= 0){
 			//TODO Error
