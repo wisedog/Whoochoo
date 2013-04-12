@@ -240,10 +240,20 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             startActivityForResult(intent, 1);
         }
         else if(item.getTitle().equals("Accounts Setting")){
-        	WhooingAlert.showGoWhooing(this, getString(R.string.global_go_setting_whooing));
+        	Intent intent = new Intent(this, AccountsSetting.class);
+        	startActivityForResult(intent, 1);
+        	//WhooingAlert.showGoWhooing(this, getString(R.string.global_go_setting_whooing));
         }
         else if(item.getTitle().equals("User Setting")){
-        	
+        	Intent intent = new Intent(this, UserInfoSetting.class);
+        	startActivityForResult(intent, 1);
+        }
+        else if(item.getTitle().equals("Logout")){
+        	Define.REAL_TOKEN = null;
+        	Define.TOKEN_SECRET = null;
+        	Define.PIN = null;
+        	setResult(RESULT_OK);
+        	finish();
         }
         else if(item.getTitle().equals("About")){
             DialogFragment newFragment = AboutDialog.newInstance();

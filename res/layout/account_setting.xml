@@ -3,72 +3,105 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-	<LinearLayout 
+
+	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical" >
+	    
+	    <!-- Asset -->
+
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="capital" 
-	        />
+	        android:text="@string/accounts_assets" />
 
 	    <TableLayout
 	        android:id="@+id/account_setting_table_asset"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
+	        android:layout_height="wrap_content" 
+	        android:background="#555555">
 
 	    </TableLayout>
 	    <Button
-	            android:id="@+id/account_setting_asset_btn"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/account_setting_add" />
+	        android:id="@+id/account_setting_asset_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/account_setting_add" />
 	    
+	    <!-- Liabilities -->
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/accounts_liabilities" />
 	    <TableLayout
 	        android:id="@+id/account_setting_table_liabilities"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
-
 	    </TableLayout>
-	    <Button
-	            android:id="@+id/account_setting_liabilities_btn"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/account_setting_add" />
 	    
+	    <Button
+	        android:id="@+id/account_setting_liabilities_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/account_setting_add" />
+	    
+	    <!-- Capital -->
+
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/accounts_capital" />
+
 	    <TableLayout
 	        android:id="@+id/account_setting_table_capital"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
-
 	    </TableLayout>
+
 	    <Button
-	            android:id="@+id/account_setting_capital_btn"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/account_setting_add" />	    
-	<TableLayout
+	        android:id="@+id/account_setting_capital_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/account_setting_add" />
+
+	    <!-- Expenses -->
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/accounts_expenses" />
+	    
+	    <TableLayout
 	        android:id="@+id/account_setting_table_expenses"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
-
 	    </TableLayout>
-    <Button
-            android:id="@+id/account_setting_expenses_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/account_setting_add" />
-	<TableLayout
+	    
+	    <Button
+	        android:id="@+id/account_setting_expenses_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/account_setting_add" />
+	    
+	    <!-- Income -->
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/accounts_income" />
+	    
+	    <TableLayout
 	        android:id="@+id/account_setting_table_income"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content" >
+	    </TableLayout>
 
-    </TableLayout>
-    <Button
-            android:id="@+id/account_setting_income_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/account_setting_add" />
+	    <Button
+	        android:id="@+id/account_setting_income_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/account_setting_add" />
+
+	    
 	</LinearLayout>
+
 </ScrollView>

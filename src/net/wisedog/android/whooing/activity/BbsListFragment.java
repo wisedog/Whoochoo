@@ -165,7 +165,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         b.putInt("page", mPageNum);
         b.putInt("limit", 20);
         JSONObject obj = DataRepository.getInstance().getUserValue();
-        String language = "en";  //Default, but TODO Localization
+        String language = Define.LOCALE_LANGUAGE;
         try {
             language = obj.getString("language");
         } catch (JSONException e) {

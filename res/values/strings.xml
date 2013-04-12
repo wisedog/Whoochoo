@@ -105,7 +105,7 @@
     
     <!-- User Account -->
     <string name="account_setting_timezone">Timezone</string>
-    <string name="account_setting_locale_language">Language(for Date formatting)</string>
+    <string name="account_setting_locale_language">Language(for Date formatting, Board)</string>
     <string name="account_setting_username_hint">Nick name here</string>
     <string name="account_setting_username_optional">User Name(Optional)</string>
     <string name="account_setting_progress">Loading User Information</string>

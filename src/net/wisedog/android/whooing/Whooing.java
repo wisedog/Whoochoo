@@ -127,9 +127,14 @@ public class Whooing extends Activity implements onLoadingMessage{
                 DataRepository repository = DataRepository.getInstance();
                 repository.setLoadingMsgListener(this);
                 repository.refreshUserInfo(this);
-                /*repository.refreshDashboardValue(this);*/
                 repository.refreshAccount(this);
                 repository.refreshLastestItems(this);
+            }
+            else if(requestCode == Define.REQUEST_NORMAL){
+            	Button nextBtn = (Button)findViewById(R.id.welcome_button_next);
+            	nextBtn.setVisibility(View.VISIBLE);
+            	WiTextView titleText = (WiTextView)findViewById(R.id.welcome_title_text);
+                titleText.setText(getString(R.string.welcome_msg));
             }
         
         }else if(resultCode == RESULT_CANCELED){
