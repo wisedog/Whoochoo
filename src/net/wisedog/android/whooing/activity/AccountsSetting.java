@@ -7,6 +7,9 @@ import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
@@ -25,7 +28,7 @@ public class AccountsSetting extends SherlockFragmentActivity {
 		setContentView(R.layout.account_setting);
 		GeneralProcessor general = new GeneralProcessor(this);
         ArrayList<AccountsEntity> list = general.getAllAccount();
-        TableLayout tl = (TableLayout)findViewById(R.id.account_setting_table_asset);
+        
         
         for(int i = 0; i < list.size(); i++)    {
             TableRow tr = new TableRow(this);
@@ -33,19 +36,55 @@ public class AccountsSetting extends SherlockFragmentActivity {
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
             AccountsEntity entity = list.get(i);
+            TableLayout tl = null;
+            if(entity.accountType.equals("assets")){
+                tl = (TableLayout)findViewById(R.id.account_setting_table_asset);
+            }
+            else if(entity.accountType.equals("expenses")){
+                tl = (TableLayout)findViewById(R.id.account_setting_table_expenses);
+            }
+            else if(entity.accountType.equals("capital")){
+                tl = (TableLayout)findViewById(R.id.account_setting_table_capital);
+            }
+            else if(entity.accountType.equals("income")){
+                tl = (TableLayout)findViewById(R.id.account_setting_table_income);
+            }
+            else if(entity.accountType.equals("liabilities")){
+                tl = (TableLayout)findViewById(R.id.account_setting_table_liabilities);
+            }
             AccountRowItem layout = new AccountRowItem(this);
             layout.setupListItem(entity);
             tr.addView(layout, new LayoutParams(0 , LayoutParams.WRAP_CONTENT, 1.0f));
-            tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
-                  LayoutParams.WRAP_CONTENT));
+            if(tl != null){
+                tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+                        LayoutParams.WRAP_CONTENT));
+            }            
         }
-        tl.requestLayout();
+        
+        //TODO add event handler to delete, modified button        
+		
 	}
 
 	@Override
 	protected void onResume() {
-		//TODO inflates data views from database
+	    
 		
 		super.onResume();
+	}
+	
+	protected void onSetupUi(){
+	    int[] btnIds = new int[]{R.id.account_setting_asset_btn, R.id.account_setting_capital_btn, R.id.account_setting_expenses_btn, 
+	            R.id.account_setting_income_btn, R.id.account_setting_liabilities_btn};
+	    String[] accountsType = new String[]{"assets", "capital", "expenses", "income", "liabilities"};
+	    for(int i = 0; i < 5; i++){
+	        Button btn = (Button)findViewById(btnIds[i]);
+	        final String type = accountsType[i];
+	        btn.setOnClickListener(new OnClickListener() {
+                
+                public void onClick(View v) {
+                    //TODO call dialog with passing "type" data                    
+                }
+            });
+	    }
 	}
 }

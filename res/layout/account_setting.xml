@@ -2,7 +2,8 @@
 <ScrollView 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#E5E5E5">
 
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -14,7 +15,10 @@
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_assets" />
+	        android:text="@string/accounts_assets" 
+	        android:textSize="20sp"
+	        android:textColor="#333333"
+	        android:textStyle="bold"/>
 
 	    <TableLayout
 	        android:id="@+id/account_setting_table_asset"
@@ -27,13 +31,17 @@
 	        android:id="@+id/account_setting_asset_btn"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/account_setting_add" />
+	        android:layout_marginBottom="10dp"
+	        android:text="@string/account_setting_add_assets" />
 	    
 	    <!-- Liabilities -->
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_liabilities" />
+	        android:text="@string/accounts_liabilities" 
+	        android:textSize="20sp"
+	        android:textColor="#333333"
+	        android:textStyle="bold"/>
 	    <TableLayout
 	        android:id="@+id/account_setting_table_liabilities"
 	        android:layout_width="match_parent"
@@ -44,14 +52,19 @@
 	        android:id="@+id/account_setting_liabilities_btn"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/account_setting_add" />
+	        android:layout_marginBottom="10dp"
+	        android:text="@string/account_setting_add_liabilities" />
 	    
 	    <!-- Capital -->
 
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_capital" />
+	        android:text="@string/accounts_capital" 
+	        android:textSize="20sp"
+	        android:textColor="#333333"
+	        android:textStyle="bold"
+	        />
 
 	    <TableLayout
 	        android:id="@+id/account_setting_table_capital"
@@ -63,13 +76,17 @@
 	        android:id="@+id/account_setting_capital_btn"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/account_setting_add" />
+	        android:layout_marginBottom="10dp"
+	        android:text="@string/account_setting_add_capital" />
 
 	    <!-- Expenses -->
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_expenses" />
+	        android:text="@string/accounts_expenses" 
+	        android:textSize="20sp"
+	        android:textColor="#333333"
+	        android:textStyle="bold"/>
 	    
 	    <TableLayout
 	        android:id="@+id/account_setting_table_expenses"
@@ -81,13 +98,17 @@
 	        android:id="@+id/account_setting_expenses_btn"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/account_setting_add" />
+	        android:layout_marginBottom="10dp"
+	        android:text="@string/account_setting_add_expenses" />
 	    
 	    <!-- Income -->
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_income" />
+	        android:text="@string/accounts_income" 
+	        android:textSize="20sp"
+	        android:textColor="#333333"
+	        android:textStyle="bold"/>
 	    
 	    <TableLayout
 	        android:id="@+id/account_setting_table_income"
@@ -99,7 +120,8 @@
 	        android:id="@+id/account_setting_income_btn"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/account_setting_add" />
+	        android:layout_marginBottom="10dp"
+	        android:text="@string/account_setting_add_income" />
 
 	    
 	</LinearLayout>

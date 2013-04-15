@@ -152,7 +152,11 @@
     <string name="alert_go_setting_whooing_btn">Go to Whooing</string>
     
     <!-- Account Setting -->
-    <string name="account_setting_add">+ Add</string>
+    <string name="account_setting_add_assets">+ Add Assets Account</string>
+    <string name="account_setting_add_liabilities">+ Add Liabilities Account</string>
+    <string name="account_setting_add_capital">+ Add Capital Account</string>
+    <string name="account_setting_add_expenses">+ Add Expenses Account</string>
+    <string name="account_setting_add_income">+ Add Income Account</string>
         
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
