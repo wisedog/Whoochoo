@@ -4,15 +4,19 @@ import java.util.ArrayList;
 
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.dialog.AccountSettingDialog;
+import net.wisedog.android.whooing.dialog.AccountSettingDialog.AccountSettingListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -20,7 +24,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * Setting user accounts(for banking account - like budget, expenses)
  * @author	Wisedog(me@wisedog.net)
  * */
-public class AccountsSetting extends SherlockFragmentActivity {
+public class AccountsSetting extends SherlockFragmentActivity implements AccountSettingListener{
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -35,7 +39,7 @@ public class AccountsSetting extends SherlockFragmentActivity {
             tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
-            AccountsEntity entity = list.get(i);
+            final AccountsEntity entity = list.get(i);
             TableLayout tl = null;
             if(entity.accountType.equals("assets")){
                 tl = (TableLayout)findViewById(R.id.account_setting_table_asset);
@@ -53,7 +57,24 @@ public class AccountsSetting extends SherlockFragmentActivity {
                 tl = (TableLayout)findViewById(R.id.account_setting_table_liabilities);
             }
             AccountRowItem layout = new AccountRowItem(this);
-            layout.setupListItem(entity);
+            layout.setupListItem(entity); 
+            layout.findViewById(R.id.account_setting_item_icon_modify).setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    DialogFragment newFragment = AccountSettingDialog.newInstance(entity);
+                    newFragment.show(getSupportFragmentManager(), "dialog");    
+                    
+                }
+            });
+            layout.findViewById(R.id.account_setting_item_icon_del).setOnClickListener(new OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    //TODO Alert .... 
+                    
+                }
+            });
             tr.addView(layout, new LayoutParams(0 , LayoutParams.WRAP_CONTENT, 1.0f));
             if(tl != null){
                 tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
@@ -61,8 +82,7 @@ public class AccountsSetting extends SherlockFragmentActivity {
             }            
         }
         
-        //TODO add event handler to delete, modified button        
-		
+        onSetupUi();
 	}
 
 	@Override
@@ -82,9 +102,16 @@ public class AccountsSetting extends SherlockFragmentActivity {
 	        btn.setOnClickListener(new OnClickListener() {
                 
                 public void onClick(View v) {
-                    //TODO call dialog with passing "type" data                    
+                    DialogFragment newFragment = AccountSettingDialog.newInstance(type);
+                    newFragment.show(getSupportFragmentManager(), "dialog");    
                 }
             });
 	    }
 	}
+
+    @Override
+    public void onFinishingSetting(AccountsEntity entity) {
+        Toast.makeText(this, "finish", Toast.LENGTH_SHORT).show();
+        
+    }
 }
