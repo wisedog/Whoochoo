@@ -63,6 +63,7 @@
     <string name="text_next">Next</string>
     <string name="text_okay">Okay</string>
     <string name="text_inform">Inform</string>
+    <string name="text_memo">Memo</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>

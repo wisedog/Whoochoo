@@ -68,6 +68,7 @@
             android:name="com.google.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
         <activity android:name=".activity.AccountsSetting" android:screenOrientation="portrait"></activity>
+        <activity android:name=".activity.AccountsModify"></activity>
 </application>
 
 </manifest>

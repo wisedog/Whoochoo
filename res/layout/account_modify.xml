@@ -2,77 +2,155 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#E5E5E5"
+    android:padding="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
-        <TextView
-            android:id="@+id/textView1"
+        <net.wisedog.android.whooing.widget.WiTextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="항목명" />
+            android:textSize="18sp"
+            android:text="항목명" 
+            />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/account_modify_account_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:ems="10" >
+            android:ems="10"
+            android:inputType="text" >
 
             <requestFocus />
         </EditText>
 
     </LinearLayout>
-    <TextView
-            android:id="@+id/textView2"
+    <net.wisedog.android.whooing.widget.WiTextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="18sp"
             android:text="사용시작일" />
- 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="사용종료일" />
-    <Spinner
-        android:id="@+id/spinner3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="종류" />
-
-    <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-     <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <Button
-            android:id="@+id/button1"
+        <TextView
+            android:id="@+id/account_modify_text_open_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="cancel" />
+            android:text="" />
+
+        <net.wisedog.android.whooing.widget.WiButton
+            android:id="@+id/account_modify_btn_change_date"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_change" />
+
+    </LinearLayout>
+
+    <net.wisedog.android.whooing.widget.WiTextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="사용종료일" />
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <net.wisedog.android.whooing.widget.WiTextView 
+            android:id="@+id/account_modify_text_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
 
         <Button
-            android:id="@+id/button2"
+	        android:id="@+id/account_modify_btn_close"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="5dp"
+	        android:text="사용종료" />
+        
+    </LinearLayout>
+    
+
+    <net.wisedog.android.whooing.widget.WiTextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="종류" 
+            android:layout_marginBottom="5dp"/>
+
+    <Spinner
+        android:id="@+id/account_modify_spinner_kind"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="5dp"/>
+    <RelativeLayout
+        android:id="@+id/account_modify_card_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <net.wisedog.android.whooing.widget.WiButton
+            android:id="@+id/account_modify_btn_card"
+            style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ok" />
+            android:layout_alignParentRight="true"
+            android:text="@string/text_modify" 
+            android:onClick="onClickBtnCard"/>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/acount_modify_text_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_alignBaseline="@+id/account_modify_btn_card"
+            android:layout_toLeftOf="@+id/account_modify_btn_card"
+            />
+
+    </RelativeLayout>
+
+     
+    <net.wisedog.android.whooing.widget.WiTextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/text_memo" 
+            android:layout_marginBottom="5dp"/>
+    <EditText
+            android:id="@+id/account_modify_edittext_memo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:ems="10" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" 
+        android:layout_marginBottom="5dp">
+
+        <Button
+            android:id="@+id/account_modify_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/account_modify_btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_confirm" />
 
     </LinearLayout> 
 

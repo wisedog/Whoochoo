@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
-import net.wisedog.android.whooing.dialog.AccountSettingDialog;
-import net.wisedog.android.whooing.dialog.AccountSettingDialog.AccountSettingListener;
+
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -24,7 +23,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * Setting user accounts(for banking account - like budget, expenses)
  * @author	Wisedog(me@wisedog.net)
  * */
-public class AccountsSetting extends SherlockFragmentActivity implements AccountSettingListener{
+public class AccountsSetting extends SherlockFragmentActivity{
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -62,8 +61,11 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
                 
                 @Override
                 public void onClick(View v) {
-                    DialogFragment newFragment = AccountSettingDialog.newInstance(entity);
-                    newFragment.show(getSupportFragmentManager(), "dialog");    
+                    Intent intent = new Intent(AccountsSetting.this, AccountsModify.class);
+                    intent.putExtra("account_entity", entity);
+                    startActivityForResult(intent, 1);
+                    //DialogFragment newFragment = AccountSettingDialog.newInstance(entity);
+                    //newFragment.show(getSupportFragmentManager(), "dialog");    
                     
                 }
             });
@@ -71,7 +73,7 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
                 
                 @Override
                 public void onClick(View v) {
-                    //TODO Alert .... 
+                    //TODO Alert Dialog
                     
                 }
             });
@@ -102,16 +104,12 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
 	        btn.setOnClickListener(new OnClickListener() {
                 
                 public void onClick(View v) {
-                    DialogFragment newFragment = AccountSettingDialog.newInstance(type);
-                    newFragment.show(getSupportFragmentManager(), "dialog");    
+                    Intent intent = new Intent(AccountsSetting.this, AccountsModify.class);
+                    intent.putExtra("account_type", type);
+                    startActivityForResult(intent, 1);
                 }
             });
 	    }
 	}
 
-    @Override
-    public void onFinishingSetting(AccountsEntity entity) {
-        Toast.makeText(this, "finish", Toast.LENGTH_SHORT).show();
-        
-    }
 }

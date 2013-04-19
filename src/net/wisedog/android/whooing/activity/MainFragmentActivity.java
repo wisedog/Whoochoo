@@ -246,6 +246,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         }
         else if(item.getTitle().equals("User Setting")){
         	Intent intent = new Intent(this, UserInfoSetting.class);
+        	intent.putExtra("from_menu", true);
         	startActivityForResult(intent, 1);
         }
         else if(item.getTitle().equals("Logout")){

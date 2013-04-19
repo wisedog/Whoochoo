@@ -94,7 +94,6 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
             currency = objResult.getString("currency");
             username = objResult.getString("username");
             timezone = objResult.getString("timezone");
-            Log.i("wisedog", "USER INFO :" + objResult.toString());
             
         } catch (JSONException e) {
             e.printStackTrace();            
@@ -280,6 +279,10 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
     
     @Override
     public void onBackPressed() {
+        if(getIntent().getBooleanExtra("from_menu", false)){
+            setResult(RESULT_CANCELED);
+            finish();
+        }
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(getString(R.string.exit));
         alert.setMessage(getString(R.string.is_exit));
