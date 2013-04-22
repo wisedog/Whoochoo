@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#E5E5E5"
+    android:padding="5dp">
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="사용기간" />
+
+    <Spinner
+        android:id="@+id/account_setting_card_spinner_period"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="결제일" />
+
+    <Spinner
+        android:id="@+id/account_setting_card_spinner_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="대금결제 항목" />
+
+    <Spinner
+        android:id="@+id/account_setting_card_spinner_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <net.wisedog.android.whooing.widget.WiButton
+            android:id="@+id/account_setting_card_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_confirm" 
+            android:onClick="onClickConfirmCreditCard"/>
+
+        <net.wisedog.android.whooing.widget.WiButton
+            android:id="@+id/account_setting_card_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" 
+            android:onClick="onClickCancelCreditCard"/>
+    </LinearLayout>
+</LinearLayout>

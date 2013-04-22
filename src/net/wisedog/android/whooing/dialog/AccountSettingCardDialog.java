@@ -3,13 +3,16 @@ package net.wisedog.android.whooing.dialog;
 import java.util.ArrayList;
 
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.activity.AccountsModify;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.widget.WiButton;
 
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -24,7 +27,7 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
     private ArrayList<String> mIdList = new ArrayList<String>();
     
     public interface AccountCardSettingListener {
-        void onFinishingSetting(AccountsEntity entity);
+        void onFinishingSetting(String useDate, int payDate, String accountId);
     }
     
     static public AccountSettingCardDialog newInstance(ArrayList<AccountsEntity> list){
@@ -53,12 +56,12 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
         mAccountsTitleList = new ArrayList<String>();
         for(int i = 0; i < list.size(); i++){
             AccountsEntity entity = list.get(i);
-            if(entity != null && entity.accountType.compareTo("liabilities") == 0){
+            if(entity != null && entity.accountType.compareTo("assets") == 0){
                 mAccountsTitleList.add(entity.title);
                 mIdList.add(entity.account_id);
             }
         }
-        Spinner accountsSpinner = (Spinner) v
+        final Spinner accountsSpinner = (Spinner) v
                 .findViewById(R.id.account_setting_card_spinner_accounts);
         ArrayAdapter<String> accountsAdapter = new ArrayAdapter<String>(
                 getSherlockActivity(), android.R.layout.select_dialog_item, mAccountsTitleList) {
@@ -72,7 +75,7 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
         accountsSpinner.setAdapter(accountsAdapter);
         accountsSpinner.setSelection(0);
 
-        Spinner dateSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_date);
+        final Spinner payDateSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_date);
         ArrayAdapter<Integer> dateAdapter = new ArrayAdapter<Integer>(
                 getSherlockActivity(), android.R.layout.select_dialog_item, DATE_NUMBER) {
             @Override
@@ -82,14 +85,14 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
                 return v;
             }
         };
-        dateSpinner.setAdapter(dateAdapter);
-        dateSpinner.setSelection(0);
+        payDateSpinner.setAdapter(dateAdapter);
+        payDateSpinner.setSelection(0);
         
-        Spinner periodSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_period);
+        final Spinner periodSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_period);
         Resources res = getResources();
         String[] startDate = res.getStringArray(R.array.card_start_date_array);
-        ArrayAdapter<String> periodAdapter = new ArrayAdapter<String>(getSherlockActivity(),
-             R.array.card_start_date_array, startDate){
+        ArrayAdapter<String> periodAdapter = new ArrayAdapter<String>(getSherlockActivity(), 
+                android.R.layout.select_dialog_item, startDate){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
@@ -100,7 +103,102 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
              
         periodSpinner.setAdapter(periodAdapter);
         periodSpinner.setSelection(31);
+        
+        WiButton cancelBtn = (WiButton)v.findViewById(R.id.account_setting_card_cancel);
+        cancelBtn.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        
+        WiButton confirmBtn = (WiButton)v.findViewById(R.id.account_setting_card_confirm);
+        confirmBtn.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                String useDate = null;
+                int payDate = -1;
+                String accountId = null;
+                if(accountsSpinner != null){
+                    int pos = accountsSpinner.getSelectedItemPosition();
+                    if(pos != Spinner.INVALID_POSITION){
+                        accountId = mIdList.get(pos);
+                    }
+                }
+                
+                if(payDateSpinner != null){
+                    int pos = payDateSpinner.getSelectedItemPosition();
+                    if(pos != Spinner.INVALID_POSITION){
+                        payDate = DATE_NUMBER[pos];
+                    }
+                }
+                
+                if(periodSpinner != null){
+                    int pos = periodSpinner.getSelectedItemPosition();
+                    if(pos != Spinner.INVALID_POSITION){
+                        if(pos >= 0 && pos <= 30){
+                            useDate = "pp" + (pos + 1);
+                        }
+                        else{
+                            useDate = "p" + (pos - 30);
+                        }
+                    }
+                }
+                if(useDate != null && payDate != -1 && accountId != null){
+                    AccountsModify activity = (AccountsModify) getActivity();
+                    activity.onFinishingSetting(useDate, payDate, accountId);            
+                }
+                dismiss();
+                
+            }
+        });
+        
         return v;
     }
-
+    
+    
+    public void onClickConfirmCreditCard(View v){
+        String useDate = null;
+        int payDate = -1;
+        String accountId = null;
+        Spinner accountsSpinner = (Spinner) getActivity().findViewById(R.id.account_setting_card_spinner_accounts);
+        if(accountsSpinner != null){
+            int pos = accountsSpinner.getSelectedItemPosition();
+            if(pos != Spinner.INVALID_POSITION){
+                accountId = mIdList.get(pos);
+            }
+        }
+        
+        Spinner payDateSpinner = (Spinner) getActivity().findViewById(R.id.account_setting_card_spinner_date);
+        if(payDateSpinner != null){
+            int pos = payDateSpinner.getSelectedItemPosition();
+            if(pos != Spinner.INVALID_POSITION){
+                payDate = DATE_NUMBER[pos];
+            }
+        }
+        
+        Spinner periodSpinner = (Spinner) getActivity().findViewById(R.id.account_setting_card_spinner_period);
+        if(periodSpinner != null){
+            int pos = periodSpinner.getSelectedItemPosition();
+            if(pos != Spinner.INVALID_POSITION){
+                if(pos >= 0 && pos <= 30){
+                    useDate += "pp" + (pos + 1);
+                }
+                else{
+                    useDate += "p" + (pos - 30);
+                }
+            }
+        }
+        if(useDate != null && payDate != -1 && accountId != null){
+            AccountsModify activity = (AccountsModify) getActivity();
+            activity.onFinishingSetting(useDate, payDate, accountId);            
+        }
+        this.dismiss();
+    }
+    
+    public void onClickCancelCreditCard(View v){
+        this.dismiss();
+    }
 }
