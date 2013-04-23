@@ -118,6 +118,13 @@ public class WhooingCalendar {
         return "" + year + monthString;
     }
     
+    static public String getLocaleDateInt(int date){
+        int year = date / 10000;
+        int month = (date % 10000) / 100;
+        int day = month % 100;
+        return getLocaleDateString(year,month,day,java.text.DateFormat.MEDIUM);        
+    }
+    
     static public String getLocaleDateString(int year, int month, int day){
         return getLocaleDateString(year,month,day,java.text.DateFormat.MEDIUM);
     }
@@ -130,4 +137,5 @@ public class WhooingCalendar {
         String date = df.format(calendar.getTime()).toString();
         return date;
     }
+    
 }

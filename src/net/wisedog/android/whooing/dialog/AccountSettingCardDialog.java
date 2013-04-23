@@ -184,10 +184,10 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
             int pos = periodSpinner.getSelectedItemPosition();
             if(pos != Spinner.INVALID_POSITION){
                 if(pos >= 0 && pos <= 30){
-                    useDate += "pp" + (pos + 1);
+                    useDate = "pp" + (pos + 1);
                 }
                 else{
-                    useDate += "p" + (pos - 30);
+                    useDate = "p" + (pos - 30);
                 }
             }
         }

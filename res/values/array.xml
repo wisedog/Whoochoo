@@ -70,4 +70,16 @@
         <item>전월30</item>
         <item>전월31</item>
     </string-array>
+    
+    <!-- Do not change order -->
+    <string-array name="account_category_array">
+        <item>일반</item>
+        <item>거래처관리항목</item>
+        <item>유동비용</item>
+        <item>고정비용</item>
+        <item>신용카드</item>
+        <item>직불(체크)카드</item>
+        <item>유동수익</item>
+        <item>고정수익</item>        
+    </string-array>
 </resources>
