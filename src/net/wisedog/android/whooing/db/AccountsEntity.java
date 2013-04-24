@@ -94,6 +94,68 @@ public class AccountsEntity implements Parcelable{
         }
         
     }
+    
+    public boolean compareEntity(AccountsEntity entity){
+        if(entity == null){
+            return false;
+        }
+        if(accountType.compareTo(entity.accountType) != 0){
+            return false;
+        }
+        if(account_id.compareTo(entity.account_id) != 0){
+            return false;
+        }
+        if(type.compareTo(entity.type) != 0){
+            return false;
+        }
+        if(title.compareTo(entity.title) != 0){
+            return false;
+        }
+        if(open_date != entity.open_date){
+            return false;
+        }
+        if(close_date != entity.close_date){
+            return false;
+        }
+        if(category.compareTo(entity.category) != 0){
+            return false;
+        }
+        if(opt_pay_date != entity.opt_pay_date){
+            return false;
+        }
+        
+        //Belows are optional, so the values may be null
+        if(memo != null){
+            if(entity.memo != null){
+                if(memo.compareTo(entity.memo) != 0){
+                    return false;
+                }                
+            }else{
+                ; // those are null also.
+            }
+        }
+        if(opt_pay_account_id != null){
+            if(entity.opt_pay_account_id != null){
+                if(opt_pay_account_id.compareTo(entity.opt_pay_account_id) != 0){
+                    return false;
+                }                
+            }
+            else{
+                ;   //those are null also.
+            }
+        }
+        if(opt_use_date != null){
+            if(entity.opt_use_date != null){
+                if(opt_use_date.compareTo(entity.opt_use_date) != 0){
+                    return false;
+                }
+                else{
+                    ;//those are null also
+                }
+            }
+        }       
+        return false;
+    }
 
     /* (non-Javadoc)
      * @see android.os.Parcelable#describeContents()

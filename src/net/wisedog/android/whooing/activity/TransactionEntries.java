@@ -4,6 +4,7 @@
 package net.wisedog.android.whooing.activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,11 +15,11 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
 import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsEntity;
-import net.wisedog.android.whooing.dialog.DatePickerFragment;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -259,7 +260,7 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         ((TransactionAddAdapter) lastestTransactionList.getAdapter()).clearAdapter();
     }
 	
-	/*static public class DatePickerFragment extends DialogFragment  {
+	static public class DatePickerFragment extends DialogFragment  {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
@@ -273,5 +274,5 @@ public class TransactionEntries extends SherlockFragmentActivity implements
             		(TransactionEntries)getActivity(), year, month, day);
         }
 
-	}*/
+	}
 }

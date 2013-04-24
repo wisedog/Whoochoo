@@ -1,16 +1,17 @@
 package net.wisedog.android.whooing.activity;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountSettingCardDialog;
-import net.wisedog.android.whooing.dialog.DatePickerFragment;
 import net.wisedog.android.whooing.dialog.AccountSettingCardDialog.AccountCardSettingListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -42,7 +43,6 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         Intent intent = getIntent();
         String accountType = intent.getStringExtra("account_type");
         AccountsEntity entity = intent.getParcelableExtra("account_entity");
-        
         
         if(accountType != null){
             setupUi(accountType);
@@ -222,19 +222,43 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         String name = text.getText().toString();
         EditText memoText = (EditText)findViewById(R.id.account_modify_edittext_memo);
         String memo = memoText.getText().toString();
-        if(beforeEntity == null){   //newly added
-            AccountsEntity entity = new AccountsEntity();
-            entity.title = name;
-            entity.memo = memo;
-            entity.type = "account";
-            entity.accountType = intent.getStringExtra("account_type");
-            entity.category = getCurrentCategoryString();
-            entity.open_date = selectDay;
-        }else{  //modify
+        
+        AccountsEntity entity = new AccountsEntity();
+        entity.title = name;
+        entity.memo = memo;
+        entity.type = "account";
+        entity.accountType = intent.getStringExtra("account_type");
+        entity.category = getCurrentCategoryString();
+        entity.open_date = selectDay;
+        String msg = name + " , " + memo + " , " + entity.type + ", " + entity.accountType + " , " + entity.category + " , " + entity.open_date;
+        if(entity.accountType.compareTo("liabilities") == 0){
+            if(entity.category.compareTo("creditcard") == 0){
+                entity.opt_pay_account_id = accountId;
+                entity.opt_pay_date = payDate;
+                entity.opt_use_date = useDate;
+                msg += " , " + accountId + ", " + payDate + " , " + useDate;
+            }
+            else if(entity.category.compareTo("checkcard") == 0){
+                entity.opt_pay_account_id = accountId;
+                msg += " , " + accountId + ", " + payDate + " , " + useDate;
+            }
+        }                
+        
+        if(beforeEntity == null){   //newly added          
             
+          //TODO RPC-Call
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        }else{  //modify
+            if(beforeEntity.compareEntity(entity)){ //Same
+                //TODO Same message
+            }
+            else{   //Different
+                
+              //TODO RPC-Call
+            }
         }
         
-        //TODO RPC-Call
+        
         setResult(RESULT_OK);
         this.finish();
     }
@@ -286,6 +310,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         }
         return cate;
     }
+    
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -293,5 +318,21 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         String today = WhooingCalendar.getLocaleDateString(year, month, day);
         dateText.setText(today);
         selectDay = year * 10000 + month * 100 + day;
+    }
+    
+    static public class DatePickerFragment extends DialogFragment  {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the current date as the default date in the picker
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            // Create a new instance of DatePickerDialog and return it
+            return new DatePickerDialog(getActivity(), 
+                    (AccountsModify)getActivity(), year, month, day);
+        }
+
     }
 }

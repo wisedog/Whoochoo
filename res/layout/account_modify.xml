@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
+        <net.wisedog.android.whooing.widget.WiTextView 
             android:id="@+id/account_modify_text_open_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,14 +151,14 @@
         android:layout_height="wrap_content" 
         android:layout_marginBottom="5dp">
 
-        <Button
+        <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel" 
             android:onClick="onCancel"/>
 
-        <Button
+        <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
