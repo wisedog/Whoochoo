@@ -7,6 +7,8 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountSettingCardDialog;
 import net.wisedog.android.whooing.dialog.AccountSettingCardDialog.AccountCardSettingListener;
+import net.wisedog.android.whooing.dialog.AccountSettingCheckcardDialog;
+import net.wisedog.android.whooing.dialog.AccountSettingCheckcardDialog.AccountCheckCardSettingListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiTextView;
@@ -30,7 +32,8 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class AccountsModify extends SherlockFragmentActivity implements OnItemSelectedListener, AccountCardSettingListener, DatePickerDialog.OnDateSetListener {
+public class AccountsModify extends SherlockFragmentActivity implements OnItemSelectedListener, 
+        AccountCardSettingListener, DatePickerDialog.OnDateSetListener, AccountCheckCardSettingListener {
     private String useDate = "p25";
     private String accountId = null;
     private int payDate = 25;    
@@ -103,14 +106,13 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             findViewById(R.id.account_modify_btn_checkcard).setVisibility(View.VISIBLE);
             findViewById(R.id.account_modify_btn_card).setVisibility(View.GONE);
             GeneralProcessor processor = new GeneralProcessor(this);
+            WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
             if(entity == null){
-                WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
                 textView.setText("대금결제 항목:지정해주세요");
                 
             }else{
                 AccountsEntity findEntity = processor.findAccountById(entity.account_id);
                 if(findEntity != null){
-                    WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
                     textView.setText("대금결제 항목: " + findEntity.title);
                 }                
             }
@@ -163,9 +165,10 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     }
     
     public void onClickBtnCheckCard(View v){
-        
-        /*DialogFragment newFragment = AccountSettingCardDialog.newInstance(list);
-        newFragment.show(getSupportFragmentManager(), "dialog");   */ 
+        GeneralProcessor general = new GeneralProcessor(this);
+        ArrayList<AccountsEntity> list = general.getAllAccount();
+        DialogFragment newFragment = AccountSettingCheckcardDialog.newInstance(list);
+        newFragment.show(getSupportFragmentManager(), "dialog");   
     }
     
     public void onClickBtnCard(View v){
@@ -334,5 +337,19 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
                     (AccountsModify)getActivity(), year, month, day);
         }
 
+    }
+
+    @Override
+    public void onFinishingChoosing(String account_id) {
+        this.accountId = account_id;
+        
+        GeneralProcessor general = new GeneralProcessor(this);
+        AccountsEntity entity = general.findAccountById(account_id);
+        
+        if(entity != null){
+            Toast.makeText(this, "account id : " + account_id + " title : " + entity.title, Toast.LENGTH_SHORT).show();
+            WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
+            textView.setText("대금결제 항목 : "+entity.title);
+        }
     }
 }

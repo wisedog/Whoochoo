@@ -28,8 +28,20 @@ public class AccountsSetting extends SherlockFragmentActivity{
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
-		setContentView(R.layout.account_setting);
-		GeneralProcessor general = new GeneralProcessor(this);
+		setContentView(R.layout.account_setting);		
+		inflateAccountLayout();
+        onSetupUi();
+	}
+
+	@Override
+	protected void onResume() {
+	    
+		
+		super.onResume();
+	}
+	
+	protected void inflateAccountLayout(){
+	    GeneralProcessor general = new GeneralProcessor(this);
         ArrayList<AccountsEntity> list = general.getAllAccount();
         
         
@@ -63,10 +75,7 @@ public class AccountsSetting extends SherlockFragmentActivity{
                 public void onClick(View v) {
                     Intent intent = new Intent(AccountsSetting.this, AccountsModify.class);
                     intent.putExtra("account_entity", entity);
-                    startActivityForResult(intent, 1);
-                    //DialogFragment newFragment = AccountSettingDialog.newInstance(entity);
-                    //newFragment.show(getSupportFragmentManager(), "dialog");    
-                    
+                    startActivityForResult(intent, 1);                    
                 }
             });
             layout.findViewById(R.id.account_setting_item_icon_del).setOnClickListener(new OnClickListener() {
@@ -83,15 +92,6 @@ public class AccountsSetting extends SherlockFragmentActivity{
                         LayoutParams.WRAP_CONTENT));
             }            
         }
-        
-        onSetupUi();
-	}
-
-	@Override
-	protected void onResume() {
-	    
-		
-		super.onResume();
 	}
 	
 	protected void onSetupUi(){
@@ -111,5 +111,18 @@ public class AccountsSetting extends SherlockFragmentActivity{
             });
 	    }
 	}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            //TODO Refresh 
+        }
+        else{
+            ; // Nothing happen!
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+	
+	
 
 }
