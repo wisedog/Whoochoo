@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/icon_delete" />
+        android:src="@drawable/icon_delete" 
+        android:contentDescription="@string/desc_imgbtn_delete"/>
 
     <ImageButton
         android:id="@+id/account_setting_item_icon_modify"
@@ -30,6 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/account_setting_item_icon_del"
-        android:src="@drawable/icon_modify" />
+        android:src="@drawable/icon_modify" 
+        android:contentDescription="@string/desc_imgbtn_modify"/>
 
 </RelativeLayout>

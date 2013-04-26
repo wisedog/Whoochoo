@@ -7,79 +7,79 @@
         <item>Profit/Loss</item>
     </string-array>
     <string-array name="card_start_date_array">
-        <item>전전월1</item>
-        <item>전전월2</item>
-        <item>전전월3</item>
-        <item>전전월4</item>
-        <item>전전월5</item>
-        <item>전전월6</item>
-        <item>전전월7</item>
-        <item>전전월8</item>
-        <item>전전월9</item>
-        <item>전전월10</item>
-        <item>전전월11</item>
-        <item>전전월12</item>
-        <item>전전월13</item>
-        <item>전전월14</item>
-        <item>전전월15</item>
-        <item>전전월16</item>
-        <item>전전월17</item>
-        <item>전전월18</item>
-        <item>전전월19</item>
-        <item>전전월20</item>
-        <item>전전월21</item>
-        <item>전전월22</item>
-        <item>전전월23</item>
-        <item>전전월24</item>
-        <item>전전월25</item>
-        <item>전전월26</item>
-        <item>전전월27</item>
-        <item>전전월28</item>
-        <item>전전월29</item>
-        <item>전전월30</item>
-        <item>전전월31</item>
-        <item>전월1</item>
-        <item>전월2</item>
-        <item>전월3</item>
-        <item>전월4</item>
-        <item>전월5</item>
-        <item>전월6</item>
-        <item>전월7</item>
-        <item>전월8</item>
-        <item>전월9</item>
-        <item>전월10</item>
-        <item>전월11</item>
-        <item>전월12</item>
-        <item>전월13</item>
-        <item>전월14</item>
-        <item>전월15</item>
-        <item>전월16</item>
-        <item>전월17</item>
-        <item>전월18</item>
-        <item>전월19</item>
-        <item>전월20</item>
-        <item>전월21</item>
-        <item>전월22</item>
-        <item>전월23</item>
-        <item>전월24</item>
-        <item>전월25</item>
-        <item>전월26</item>
-        <item>전월27</item>
-        <item>전월28</item>
-        <item>전월29</item>
-        <item>전월30</item>
-        <item>전월31</item>
+        <item>Month before last1</item>
+        <item>Month before last2</item>
+        <item>Month before last3</item>
+        <item>Month before last4</item>
+        <item>Month before last5</item>
+        <item>Month before last6</item>
+        <item>Month before last7</item>
+        <item>Month before last8</item>
+        <item>Month before last9</item>
+        <item>Month before last10</item>
+        <item>Month before last11</item>
+        <item>Month before last12</item>
+        <item>Month before last13</item>
+        <item>Month before last14</item>
+        <item>Month before last15</item>
+        <item>Month before last16</item>
+        <item>Month before last17</item>
+        <item>Month before last18</item>
+        <item>Month before last19</item>
+        <item>Month before last20</item>
+        <item>Month before last21</item>
+        <item>Month before last22</item>
+        <item>Month before last23</item>
+        <item>Month before last24</item>
+        <item>Month before last25</item>
+        <item>Month before last26</item>
+        <item>Month before last27</item>
+        <item>Month before last28</item>
+        <item>Month before last29</item>
+        <item>Month before last30</item>
+        <item>Month before last31</item>
+        <item>Previous month1</item>
+        <item>Previous month2</item>
+        <item>Previous month3</item>
+        <item>Previous month4</item>
+        <item>Previous month5</item>
+        <item>Previous month6</item>
+        <item>Previous month7</item>
+        <item>Previous month8</item>
+        <item>Previous month9</item>
+        <item>Previous month10</item>
+        <item>Previous month11</item>
+        <item>Previous month12</item>
+        <item>Previous month13</item>
+        <item>Previous month14</item>
+        <item>Previous month15</item>
+        <item>Previous month16</item>
+        <item>Previous month17</item>
+        <item>Previous month18</item>
+        <item>Previous month19</item>
+        <item>Previous month20</item>
+        <item>Previous month21</item>
+        <item>Previous month22</item>
+        <item>Previous month23</item>
+        <item>Previous month24</item>
+        <item>Previous month25</item>
+        <item>Previous month26</item>
+        <item>Previous month27</item>
+        <item>Previous month28</item>
+        <item>Previous month29</item>
+        <item>Previous month30</item>
+        <item>Previous month31</item>
     </string-array>
     
     <!-- Do not change order -->
     <string-array name="account_category_array">
-        <item>일반</item>
-        <item>거래처관리항목</item>
-        <item>유동비용</item>
-        <item>고정비용</item>
-        <item>신용카드</item>
-        <item>직불(체크)카드</item>
-        <item>유동수익</item>
-        <item>고정수익</item>        
+        <item>Normal</item>
+        <item>Client-enabled Account</item>
+        <item>Flexible Expenses</item>
+        <item>Fixed Expenses</item>
+        <item>Credit Card</item>
+        <item>Debit(Check) Card</item>
+        <item>Flexible Income</item>
+        <item>Fixed Income</item>        
     </string-array>
 </resources>

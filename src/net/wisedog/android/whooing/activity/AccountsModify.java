@@ -89,16 +89,30 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             findViewById(R.id.account_modify_btn_checkcard).setVisibility(View.GONE);
             WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
 
-            if(entity == null){
-                String msg = "사용기간 : 전월 25 ~ 한 달, 결제일 : 25";
-                textView.setText(msg);
+            if(entity == null){ //Newly Added
+                String msg = getString(R.string.account_setting_modify_billing_period) + " : " + 
+                                    getString(R.string.account_setting_previous_month) + " 25 ~ " + getString(R.string.account_setting_one_month) +
+                                    ", "+ getString(R.string.account_setting_modify_pay_date) + " : 25";
+                textView.setText(msg);                
             }else{
-                String msg = "사용기간 : 전월 " + entity.opt_use_date + "~ 한 달, 결제일 : " + entity.opt_pay_date;
+                String useDate = "";
+                if(entity.getUseDateInt() > 0){
+                    useDate = getString(R.string.account_setting_previous_month) + entity.getUseDateInt();
+                }else{
+                    useDate = getString(R.string.account_setting_month_before_last) + Math.abs(entity.getUseDateInt());
+                }
+                
+                String msg =  getString(R.string.account_setting_modify_billing_period) + " : " +useDate + "~ " + 
+                                getString(R.string.account_setting_one_month) + ", " + 
+                                getString(R.string.account_setting_modify_pay_date)+ " : " + entity.opt_pay_date;
                 textView.setText(msg);
                 Spinner spinner = (Spinner)findViewById(R.id.account_modify_spinner_kind);
                 if(spinner != null){
                     spinner.setSelection(1);    //Creditcard
-                }                
+                }
+                this.accountId = entity.opt_pay_account_id;
+                this.useDate = entity.opt_use_date;
+                this.payDate = entity.opt_pay_date;
             }            
         }
         else if(category.compareTo("checkcard") == 0){
@@ -108,12 +122,12 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             GeneralProcessor processor = new GeneralProcessor(this);
             WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
             if(entity == null){
-                textView.setText("대금결제 항목:지정해주세요");
+                textView.setText(getString(R.string.account_setting_modify_payment_account) + " : " + getString(R.string.account_setting_select));
                 
             }else{
                 AccountsEntity findEntity = processor.findAccountById(entity.account_id);
                 if(findEntity != null){
-                    textView.setText("대금결제 항목: " + findEntity.title);
+                    textView.setText(getString(R.string.account_setting_modify_payment_account) + findEntity.title);
                 }                
             }
         }
@@ -174,7 +188,9 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     public void onClickBtnCard(View v){
         GeneralProcessor general = new GeneralProcessor(this);
         ArrayList<AccountsEntity> list = general.getAllAccount();
-        DialogFragment newFragment = AccountSettingCardDialog.newInstance(list);
+        Intent intent = getIntent();
+        AccountsEntity entity = intent.getParcelableExtra("account_entity");
+        DialogFragment newFragment = AccountSettingCardDialog.newInstance(entity, list);
         newFragment.show(getSupportFragmentManager(), "dialog");    
     }
 
@@ -243,9 +259,11 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             }
             else if(entity.category.compareTo("checkcard") == 0){
                 entity.opt_pay_account_id = accountId;
+                entity.opt_pay_date = 0;
+                entity.opt_use_date = null;
                 msg += " , " + accountId + ", " + payDate + " , " + useDate;
             }
-        }                
+        }
         
         if(beforeEntity == null){   //newly added          
             
@@ -349,7 +367,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         if(entity != null){
             Toast.makeText(this, "account id : " + account_id + " title : " + entity.title, Toast.LENGTH_SHORT).show();
             WiTextView textView = (WiTextView)findViewById(R.id.acount_modify_text_card);
-            textView.setText("대금결제 항목 : "+entity.title);
+            textView.setText(getString(R.string.account_setting_modify_payment_account) + entity.title);
         }
     }
 }

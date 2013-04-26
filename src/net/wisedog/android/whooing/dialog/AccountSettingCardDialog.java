@@ -30,12 +30,13 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
         void onFinishingSetting(String useDate, int payDate, String accountId);
     }
     
-    static public AccountSettingCardDialog newInstance(ArrayList<AccountsEntity> list){
+    static public AccountSettingCardDialog newInstance(AccountsEntity entity, ArrayList<AccountsEntity> list){
         AccountSettingCardDialog f = new AccountSettingCardDialog();
 
         // Setting bundle
         Bundle args = new Bundle();
         args.putParcelableArrayList("account_list", list);    
+        args.putParcelable("account_entity", entity);
         f.setArguments(args);
         return f;
     } 
@@ -51,14 +52,21 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
             Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.account_setting_card, container, true);
         
-        
+        //Setting account select spinner
         ArrayList<AccountsEntity> list = getArguments().getParcelableArrayList("account_list");
+        AccountsEntity modifyEntity = getArguments().getParcelable("account_entity");
         mAccountsTitleList = new ArrayList<String>();
+        int accountPos = -1;
+        
         for(int i = 0; i < list.size(); i++){
             AccountsEntity entity = list.get(i);
             if(entity != null && entity.accountType.compareTo("assets") == 0){
                 mAccountsTitleList.add(entity.title);
                 mIdList.add(entity.account_id);
+                //To modified card account, set account value from modified account id 
+                if(modifyEntity != null && entity.account_id.compareTo(modifyEntity.account_id) == 0){
+                    accountPos = i;
+                }
             }
         }
         final Spinner accountsSpinner = (Spinner) v
@@ -73,7 +81,11 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
             }
         };
         accountsSpinner.setAdapter(accountsAdapter);
-        accountsSpinner.setSelection(0);
+        if(accountPos != -1){
+            accountsSpinner.setSelection(accountPos);
+        }else{
+            accountsSpinner.setSelection(0);
+        }        
 
         final Spinner payDateSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_date);
         ArrayAdapter<Integer> dateAdapter = new ArrayAdapter<Integer>(
@@ -86,7 +98,13 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
             }
         };
         payDateSpinner.setAdapter(dateAdapter);
-        payDateSpinner.setSelection(0);
+        
+        if(modifyEntity != null){   //Modify case
+            payDateSpinner.setSelection(modifyEntity.opt_pay_date - 1);
+        }else{
+            payDateSpinner.setSelection(0);
+        }
+        
         
         final Spinner periodSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_period);
         Resources res = getResources();
@@ -100,9 +118,19 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
                 return v;
             }
         };
-             
-        periodSpinner.setAdapter(periodAdapter);
-        periodSpinner.setSelection(31);
+        
+        periodSpinner.setAdapter(periodAdapter);        
+        if(modifyEntity != null){   //Modify case
+            int useDate = modifyEntity.getUseDateInt();
+            if(useDate > 0){
+                periodSpinner.setSelection(useDate + 30);
+            }else{
+                periodSpinner.setSelection(Math.abs(useDate));
+            }            
+        }
+        else{
+            periodSpinner.setSelection(31); //Set pre-month 1st day
+        }
         
         WiButton cancelBtn = (WiButton)v.findViewById(R.id.account_setting_card_cancel);
         cancelBtn.setOnClickListener(new OnClickListener() {

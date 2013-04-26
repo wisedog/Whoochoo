@@ -64,6 +64,8 @@
     <string name="text_okay">Okay</string>
     <string name="text_inform">Inform</string>
     <string name="text_memo">Memo</string>
+    <string name="text_category">Category</string>
+    <string name="text_deactivate">Deactivate</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -158,6 +160,17 @@
     <string name="account_setting_add_capital">+ Add Capital Account</string>
     <string name="account_setting_add_expenses">+ Add Expenses Account</string>
     <string name="account_setting_add_income">+ Add Income Account</string>
+    <string name="account_setting_modify_activate_date">Activation Date</string>
+    <string name="account_setting_modify_account_title">Account title</string>
+    <string name="account_setting_modify_deactivate_date">Deactivation Date</string>
+    <string name="account_setting_modify_billing_period">Billing Period</string>
+    <string name="account_setting_modify_pay_date">Pay. Date</string>
+    <string name="account_setting_modify_payment_account">Payment Account</string>
+    <string name="account_setting_one_month">one month</string>
+    <string name="account_setting_select">Select</string>
+    <string name="account_setting_month_before_last">Month before last</string>
+    <string name="account_setting_previous_month">Previous month</string>
+    
         
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

@@ -165,6 +165,40 @@ public class AccountsEntity implements Parcelable{
         return 0;
     }
     
+    /**
+     * @return  Integer value of opt_use_date. If opt_use_date is "pp~", return minus value. Otherwise return plus value.
+     * */
+    public int getUseDateInt(){
+        int result = 0;
+        try{
+            result = Integer.parseInt(opt_use_date.replaceAll("[\\D]", ""));
+        }
+        catch(NumberFormatException e){
+            result = 0;
+            e.printStackTrace();
+        }
+        if(opt_use_date.contains("pp")){
+            result = -(result);
+        }
+        return result;
+    }
+    
+    /**
+     * set use date by integer date 
+     * @param   date    if integer value is less than 0, it pre-pre month. or it is pre-month.
+     * */
+    public void setUseDate(int date){
+        if(date == 0)
+            return;
+        String pDate;
+        if(date> 0){
+            pDate = "p";
+        }else{
+            pDate = "pp";
+        }
+        this.opt_use_date = pDate + date;        
+    }
+    
 
     @SuppressWarnings("rawtypes")
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -175,7 +209,5 @@ public class AccountsEntity implements Parcelable{
            public AccountsEntity[] newArray(int size) {
                 return new AccountsEntity[size];
            }
-       };
-
-   
+       };   
 }

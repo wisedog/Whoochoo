@@ -6,4 +6,80 @@
         <item>자산부채</item>
         <item>비용수익</item>
     </string-array>
+    <string-array name="card_start_date_array">
+        <item>전전월1</item>
+        <item>전전월2</item>
+        <item>전전월3</item>
+        <item>전전월4</item>
+        <item>전전월5</item>
+        <item>전전월6</item>
+        <item>전전월7</item>
+        <item>전전월8</item>
+        <item>전전월9</item>
+        <item>전전월10</item>
+        <item>전전월11</item>
+        <item>전전월12</item>
+        <item>전전월13</item>
+        <item>전전월14</item>
+        <item>전전월15</item>
+        <item>전전월16</item>
+        <item>전전월17</item>
+        <item>전전월18</item>
+        <item>전전월19</item>
+        <item>전전월20</item>
+        <item>전전월21</item>
+        <item>전전월22</item>
+        <item>전전월23</item>
+        <item>전전월24</item>
+        <item>전전월25</item>
+        <item>전전월26</item>
+        <item>전전월27</item>
+        <item>전전월28</item>
+        <item>전전월29</item>
+        <item>전전월30</item>
+        <item>전전월31</item>
+        <item>전월1</item>
+        <item>전월2</item>
+        <item>전월3</item>
+        <item>전월4</item>
+        <item>전월5</item>
+        <item>전월6</item>
+        <item>전월7</item>
+        <item>전월8</item>
+        <item>전월9</item>
+        <item>전월10</item>
+        <item>전월11</item>
+        <item>전월12</item>
+        <item>전월13</item>
+        <item>전월14</item>
+        <item>전월15</item>
+        <item>전월16</item>
+        <item>전월17</item>
+        <item>전월18</item>
+        <item>전월19</item>
+        <item>전월20</item>
+        <item>전월21</item>
+        <item>전월22</item>
+        <item>전월23</item>
+        <item>전월24</item>
+        <item>전월25</item>
+        <item>전월26</item>
+        <item>전월27</item>
+        <item>전월28</item>
+        <item>전월29</item>
+        <item>전월30</item>
+        <item>전월31</item>
+    </string-array>
+    
+    <!-- Do not change order -->
+    <string-array name="account_category_array">
+        <item>일반</item>
+        <item>거래처관리항목</item>
+        <item>유동비용</item>
+        <item>고정비용</item>
+        <item>신용카드</item>
+        <item>직불(체크)카드</item>
+        <item>유동수익</item>
+        <item>고정수익</item>        
+    </string-array>
 </resources>

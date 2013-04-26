@@ -9,7 +9,7 @@
     <net.wisedog.android.whooing.widget.WiTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="사용기간" />
+        android:text="@string/account_setting_modify_billing_period" />
 
     <Spinner
         android:id="@+id/account_setting_card_spinner_period"
@@ -19,7 +19,7 @@
     <net.wisedog.android.whooing.widget.WiTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="결제일" />
+        android:text="@string/account_setting_modify_pay_date" />
 
     <Spinner
         android:id="@+id/account_setting_card_spinner_date"
@@ -29,7 +29,7 @@
     <net.wisedog.android.whooing.widget.WiTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="대금결제 항목" />
+        android:text="@string/account_setting_modify_payment_account" />
 
     <Spinner
         android:id="@+id/account_setting_card_spinner_accounts"

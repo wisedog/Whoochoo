@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="항목명" 
+            android:text="@string/account_setting_modify_account_title" 
             />
 
         <EditText
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="사용시작일" />
+            android:text="@string/account_setting_modify_activate_date" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="사용종료일" />
+            android:text="@string/account_setting_modify_deactivate_date" />
 
     <LinearLayout 
         android:layout_width="match_parent"
@@ -80,7 +80,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginBottom="5dp"
-	        android:text="사용종료" />
+	        android:text="@string/text_deactivate" />
         
         
     </LinearLayout>
@@ -90,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="종류" 
+            android:text="@string/text_category" 
             android:layout_marginBottom="5dp"/>
 
     <Spinner

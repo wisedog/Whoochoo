@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="대금결제항목" />
+        android:text="@string/account_setting_modify_payment_account" />
 
     <Spinner
         android:id="@+id/account_setting_checkcard_spinner"
