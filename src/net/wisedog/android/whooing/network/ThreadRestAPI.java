@@ -2,6 +2,7 @@ package net.wisedog.android.whooing.network;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.activity.BbsFragmentActivity;
+import net.wisedog.android.whooing.api.AccountsApi;
 import net.wisedog.android.whooing.api.BbsApi;
 import net.wisedog.android.whooing.api.Board;
 import net.wisedog.android.whooing.api.Entries;
@@ -148,12 +149,7 @@ public class ThreadRestAPI extends Thread {
             result = balanceApi.getInfo(budgetURL, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
             break;
-		case Define.API_GET_ACCOUNTS:
-			GeneralApi api = new GeneralApi();
-			result = api.getInfo("https://whooing.com/api/accounts.json_array?section_id="+Define.APP_SECTION, 
-					Define.APP_ID, Define.REAL_TOKEN,
-					 Define.APP_SECRET, Define.TOKEN_SECRET);
-			break;
+            
 		case Define.API_GET_MOUNTAIN:
 		    if(mBundle == null){
                 Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_GET_MOUNTAIN");
@@ -356,6 +352,30 @@ public class ThreadRestAPI extends Thread {
             result = bbsDeleteCommentApi.delBbsComment(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
             break;
+            
+         //Accounts 
+		case Define.API_GET_ACCOUNTS:
+            GeneralApi api = new GeneralApi();
+            result = api.getInfo("https://whooing.com/api/accounts.json_array?section_id="+Define.APP_SECTION, 
+                    Define.APP_ID, Define.REAL_TOKEN,
+                     Define.APP_SECRET, Define.TOKEN_SECRET);
+            break;
+            
+		case Define.API_PUT_ACCOUNTS:
+		    AccountsApi putAccounts = new AccountsApi();
+		    result = putAccounts.postOrPutAccounts(AccountsApi.TYPE_PUT, Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+		    break;
+		case Define.API_POST_ACCOUNTS:
+		    AccountsApi postAccounts = new AccountsApi();
+		    result = postAccounts.postOrPutAccounts(AccountsApi.TYPE_POST, Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);           
+		    break;
+		case Define.API_DELETE_ACCOUNTS:
+		    AccountsApi delAccounts = new AccountsApi();
+		    result = delAccounts.deleteAccounts(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);           
+		    break;
 		    
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

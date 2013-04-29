@@ -170,6 +170,7 @@
     <string name="account_setting_select">Select</string>
     <string name="account_setting_month_before_last">Month before last</string>
     <string name="account_setting_previous_month">Previous month</string>
+    <string name="account_setting_msg_same">Nothing to change</string>
     
         
     <!-- Content Description -->

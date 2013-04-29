@@ -58,7 +58,7 @@ public class Define {
 	public static final int API_GET_MAIN = 2020;
 	public static final int API_GET_BUDGET = 2030;
 	public static final int API_GET_BALANCE = 2040;
-	public static final int API_GET_ACCOUNTS = 2050;
+
     public static final int API_GET_ENTRIES_LATEST = 2060;
     public static final int API_GET_ENTRIES_INSERT = 2061;
     public static final int API_GET_ENTRIES_LATEST_ITEMS = 2062;
@@ -66,11 +66,14 @@ public class Define {
     public static final int API_GET_MOUNTAIN = 2080;
     public static final int API_GET_ENTRIES = 2090;
     public static final int API_GET_BILL = 2100;
+    
+    // Post It
     public static final int API_GET_POST_IT = 2110;
     public static final int API_POST_POSTIT = 2111;
     public static final int API_PUT_POSTIT = 2112;
     public static final int API_DELETE_POSTIT = 2113;
     
+    // Board
     public static final int API_GET_BOARD = 2190;
     public static final int API_GET_BOARD_BASE = 2200;
     public static final int API_GET_BOARD_FREE = 2200;
@@ -94,9 +97,18 @@ public class Define {
     public static final int API_POST_BOARD_COMMENT = 2231;
     public static final int API_PUT_BOARD_COMMENT = 2232;
     public static final int API_DELETE_BOARD_COMMENT = 2233;
+
+    // Account
+    public static final int API_GET_ACCOUNTS = 2300;
+    public static final int API_POST_ACCOUNTS = 2301;
+    public static final int API_PUT_ACCOUNTS = 2302;
+    public static final int API_DELETE_ACCOUNTS = 2303;
     
-    public static final int API_GET_USER_INFO = 2300;
-    public static final int API_GET_FREQUENT_ITEM = 2310;
+    
+    public static final int API_GET_USER_INFO = 3000;
+    public static final int API_GET_FREQUENT_ITEM = 3010;
+    
+
 
     
     

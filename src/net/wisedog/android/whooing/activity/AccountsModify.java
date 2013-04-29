@@ -3,6 +3,7 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountSettingCardDialog;
@@ -10,6 +11,7 @@ import net.wisedog.android.whooing.dialog.AccountSettingCardDialog.AccountCardSe
 import net.wisedog.android.whooing.dialog.AccountSettingCheckcardDialog;
 import net.wisedog.android.whooing.dialog.AccountSettingCheckcardDialog.AccountCheckCardSettingListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
+import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.DatePickerDialog;
@@ -18,9 +20,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -265,17 +271,26 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             }
         }
         
-        if(beforeEntity == null){   //newly added          
-            
-          //TODO RPC-Call
+        if(beforeEntity == null){   //newly added
+            if(validateInput() == false){
+                return;
+            }
+            Bundle b = new Bundle();
+            b.putParcelable("account_entity", entity);
+            ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_ACCOUNTS, b);
+            thread.start();
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }else{  //modify
             if(beforeEntity.compareEntity(entity)){ //Same
-                //TODO Same message
+                Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                v.startAnimation(shake);
+                Toast.makeText(this, getString(R.string.account_setting_msg_same), Toast.LENGTH_LONG).show();
             }
             else{   //Different
-                
-              //TODO RPC-Call
+                Bundle b = new Bundle();
+                b.putParcelable("account_entity", entity);
+                ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_ACCOUNTS, b);
+                thread.start();
             }
         }
         
@@ -370,4 +385,27 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             textView.setText(getString(R.string.account_setting_modify_payment_account) + entity.title);
         }
     }
+    
+    private boolean validateInput(){
+        EditText accountTitleEdit = (EditText)findViewById(R.id.account_modify_account_edittext);
+        if(accountTitleEdit != null){
+            if(accountTitleEdit.getText().toString().length() == 0){
+                Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
+                accountTitleEdit.startAnimation(shake);
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    Handler mHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+        }
+        
+        
+    };
 }
