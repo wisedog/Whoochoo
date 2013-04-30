@@ -24,6 +24,8 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * @author	Wisedog(me@wisedog.net)
  * */
 public class AccountsSetting extends SherlockFragmentActivity{
+    public static final int REQUEST_CODE_ADD = 0;
+    public static final int REQUEST_CODE_MODIFY = 1;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -75,7 +77,7 @@ public class AccountsSetting extends SherlockFragmentActivity{
                 public void onClick(View v) {
                     Intent intent = new Intent(AccountsSetting.this, AccountsModify.class);
                     intent.putExtra("account_entity", entity);
-                    startActivityForResult(intent, 1);                    
+                    startActivityForResult(intent, REQUEST_CODE_MODIFY);                    
                 }
             });
             layout.findViewById(R.id.account_setting_item_icon_del).setOnClickListener(new OnClickListener() {
@@ -106,7 +108,7 @@ public class AccountsSetting extends SherlockFragmentActivity{
                 public void onClick(View v) {
                     Intent intent = new Intent(AccountsSetting.this, AccountsModify.class);
                     intent.putExtra("account_type", type);
-                    startActivityForResult(intent, 1);
+                    startActivityForResult(intent, REQUEST_CODE_ADD);
                 }
             });
 	    }
@@ -115,7 +117,25 @@ public class AccountsSetting extends SherlockFragmentActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
-            //TODO Refresh 
+            if(data == null){
+                Toast.makeText(this, getString(R.string.account_setting_msg_fail_add_modify), Toast.LENGTH_LONG).show();
+            }
+            
+            AccountsEntity entity = data.getParcelableExtra("account_entity");
+            GeneralProcessor generic = new GeneralProcessor(this);
+            if(requestCode == REQUEST_CODE_ADD){
+                if(generic.addAccount(entity)){
+                    //TODO Refresh;
+                }
+                
+            }else if(requestCode == REQUEST_CODE_MODIFY){
+                if(generic.modifyAccount(entity)){
+                    //;TODO refresh
+                }
+            }else{
+                ;//Show error
+            }
+            
         }
         else{
             ; // Nothing happen!

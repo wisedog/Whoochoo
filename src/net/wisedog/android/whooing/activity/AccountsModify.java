@@ -3,6 +3,9 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
@@ -44,6 +47,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     private String accountId = null;
     private int payDate = 25;    
     private int selectDay = 0;
+    private String mAccountType = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,6 +257,11 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         entity.memo = memo;
         entity.type = "account";
         entity.accountType = intent.getStringExtra("account_type");
+        if(entity.accountType == null){
+            entity.accountType = ((AccountsEntity)intent.getParcelableExtra("account_entity")).accountType;
+        }
+        mAccountType = entity.accountType;
+        
         entity.category = getCurrentCategoryString();
         entity.open_date = selectDay;
         String msg = name + " , " + memo + " , " + entity.type + ", " + entity.accountType + " , " + entity.category + " , " + entity.open_date;
@@ -293,7 +302,6 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
                 thread.start();
             }
         }
-        
         
         setResult(RESULT_OK);
         this.finish();
@@ -399,13 +407,36 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     }
     
     Handler mHandler = new Handler(){
-
         @Override
         public void handleMessage(Message msg) {
-            // TODO Auto-generated method stub
+            if(msg.what == Define.MSG_API_OK){
+                JSONObject obj = (JSONObject)msg.obj;
+                int result = 0;
+                try {
+                    result = obj.getInt("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                    //TODO Toast
+                }
+                
+                if(msg.arg1 == Define.API_POST_ACCOUNTS || msg.arg1 == Define.API_PUT_ACCOUNTS){
+                    if(result == Define.RESULT_OK){
+                        try {
+                            JSONObject resultObj = obj.getJSONObject("results");
+                            AccountsEntity entity = new AccountsEntity(mAccountType, resultObj);
+                            Intent intent = new Intent();
+                            intent.putExtra("account_entity", entity);
+                            setResult(RESULT_OK, intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            setResult(RESULT_CANCELED);
+                        }                        
+                        finish();
+                    }                    
+                }
+            }
             super.handleMessage(msg);
-        }
-        
-        
+        }        
     };
 }

@@ -4,7 +4,6 @@
 package net.wisedog.android.whooing.db;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -88,7 +87,8 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     
     /**
      * Accounts 정보 레코드 추가
-    * @param       info     DataClass of Recent Movie info         
+    * @param       info     DataClass of Recent Movie info
+    * @return   Return true if it success, otherwise return false         
      * */
     public boolean addAccountEntity(AccountsEntity info){
         if(info == null){
@@ -104,11 +104,9 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         values.put(KEY_OPEN_DATE, info.open_date);
         values.put(KEY_CLOSE_DATE, info.close_date);
         values.put(KEY_CATEGORY, info.category);
-        //if(info.accountType.equals("liabilities")){
-            values.put(KEY_OPT_USE_DATE, info.opt_use_date);
-            values.put(KEY_OPT_PAY_DATE, info.opt_pay_date);
-            values.put(KEY_OPT_PAY_ACCOUNT_ID, info.opt_pay_account_id);
-        //}
+        values.put(KEY_OPT_USE_DATE, info.opt_use_date);
+        values.put(KEY_OPT_PAY_DATE, info.opt_pay_date);
+        values.put(KEY_OPT_PAY_ACCOUNT_ID, info.opt_pay_account_id);
         
         long result = db.insert(TABLE_ACCOUNTS, null, values);
         if(result == -1){
@@ -117,7 +115,58 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         db.close();
         return true;
     }
+    
+    /**
+     * Delete an account
+     * @param   entity      entity to delete
+     * @return      Return true if it success, or false 
+     * */
+    public boolean deleteAccount(AccountsEntity entity){
+        if(entity == null){
+            return false;
+        }
+        //String selectQuery = "DELETE FROM " + TABLE_ACCOUNTS + " WHERE account_id=" + entity.account_id;
+        SQLiteDatabase db = this.getWritableDatabase();
+        int result = db.delete(TABLE_ACCOUNTS, KEY_ACCOUNT_ID+"=" + entity.account_id, null);        
+        db.close();
+        if(result == 0){
+            return false;
+        }            
+        return true;
+    }
+    
+    /**
+     * Update account with given account entity info
+     * @param   entity      entity information to update
+     * @return   Return true if it success, or false
+     * */
+    public boolean updateAccount(AccountsEntity entity){
+        if(entity == null){
+            return false;
+        }
+        SQLiteDatabase db = this.getWritableDatabase();
+        
+        ContentValues values = new ContentValues();
+        values.put(KEY_ACCOUNT_TYPE, entity.accountType);
+        values.put(KEY_TYPE, entity.type);
+        values.put(KEY_TITLE, entity.memo);
+        values.put(KEY_MEMO, entity.memo);
+        values.put(KEY_OPEN_DATE, entity.open_date);
+        values.put(KEY_CLOSE_DATE, entity.close_date);
+        values.put(KEY_CATEGORY, entity.category);
+        values.put(KEY_OPT_USE_DATE, entity.opt_use_date);
+        values.put(KEY_OPT_PAY_DATE, entity.opt_pay_date);
+        values.put(KEY_OPT_PAY_ACCOUNT_ID, entity.opt_pay_account_id);        
+        
+        db.update(TABLE_ACCOUNTS, values, KEY_ACCOUNT_ID + " = " + entity.account_id,
+                new String[] { entity.account_id });
+        return true;
+    }
+    
 
+    /**
+     * @return  Return all account information
+     * */
     public ArrayList<AccountsEntity> getAllAccountsInfo() {
         ArrayList<AccountsEntity> entityList = new ArrayList<AccountsEntity>();
         // Select All Query
@@ -212,7 +261,6 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-        // return count
         return count;
     }
 

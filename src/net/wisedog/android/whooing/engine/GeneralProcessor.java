@@ -70,16 +70,16 @@ public class GeneralProcessor {
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                    }
-                    
-                }
-                
-            }
-            
+                    }                    
+                }                
+            }            
         }).start();
         return true;
     }
     
+    /**
+     * @return  Return all account information in database
+     * */
     public ArrayList<AccountsEntity> getAllAccount(){
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
         return dbHelper.getAllAccountsInfo();
@@ -131,5 +131,32 @@ public class GeneralProcessor {
             }
         } 
         return NOTHING;
+    }
+
+    /**
+     * Add an account entity to database 
+     * @param   entity      entity to add
+     * */
+    public boolean addAccount(AccountsEntity entity) {
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        return dbHelper.addAccountEntity(entity);
+    }
+
+    /**
+     * Modify given account entity 
+     * @param   entity      entity to update
+     * */
+    public boolean modifyAccount(AccountsEntity entity) {
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        return dbHelper.updateAccount(entity);
+    }
+    
+    /**
+     * Delete give account entity
+     * @param   entity      entity to delete
+     * */
+    public boolean deleteAccount(AccountsEntity entity){
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        return dbHelper.deleteAccount(entity); 
     }
 }
