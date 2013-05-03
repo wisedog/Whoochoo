@@ -35,6 +35,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -280,13 +281,18 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             }
         }
         
+        ProgressBar progress = (ProgressBar)findViewById(R.id.account_modify_progress_bar);
         if(beforeEntity == null){   //newly added
             if(validateInput() == false){
                 return;
             }
             Bundle b = new Bundle();
             b.putParcelable("account_entity", entity);
-            ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_ACCOUNTS, b);
+            if(progress != null){
+                progress.setVisibility(View.VISIBLE);
+            }
+            v.setEnabled(false);
+            ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_ACCOUNTS, b);
             thread.start();
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }else{  //modify
@@ -298,13 +304,18 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             else{   //Different
                 Bundle b = new Bundle();
                 b.putParcelable("account_entity", entity);
-                ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_ACCOUNTS, b);
+                b.putString("account_id", beforeEntity.account_id);
+                if(progress != null){
+                    progress.setVisibility(View.VISIBLE);
+                }
+                v.setEnabled(false);
+                ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_ACCOUNTS, b);
                 thread.start();
             }
         }
         
-        setResult(RESULT_OK);
-        this.finish();
+        /*setResult(RESULT_OK);
+        this.finish();*/
     }
     
     public void onClickChangeOpenDate(View v){
@@ -418,6 +429,10 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
                     e.printStackTrace();
                     return;
                     //TODO Toast
+                }
+                ProgressBar progress = (ProgressBar)findViewById(R.id.account_modify_progress_bar);
+                if(progress != null){
+                    progress.setVisibility(View.INVISIBLE);
                 }
                 
                 if(msg.arg1 == Define.API_POST_ACCOUNTS || msg.arg1 == Define.API_PUT_ACCOUNTS){

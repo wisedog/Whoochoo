@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:background="#E5E5E5">
+
+    <LinearLayout
+        android:id="@+id/account_setting_del_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical" 
+        android:visibility="invisible">
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/account_setting_del_text_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/account_setting_del_msg"
+            android:textSize="18sp" 
+            android:textColor="#333333"/>
+        <RadioGroup
+	        android:id="@+id/account_setting_del_radio_group"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+
+	        <RadioButton
+	            android:id="@+id/account_setting_del_radio1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/account_setting_del_option1" 
+	            android:textColor="#666666"
+	            android:checked="true"/>
+	
+	        <RadioButton
+	            android:id="@+id/account_setting_del_radio2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/account_setting_del_option2" 
+	            android:textColor="#666666"/>
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" >
+
+            <net.wisedog.android.whooing.widget.WiButton
+                android:id="@+id/account_setting_del_btn_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_confirm" 
+                android:textColor="#333333"/>
+
+            <net.wisedog.android.whooing.widget.WiButton
+                android:id="@+id/account_setting_del_btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel" 
+                android:textColor="#333333"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:id="@+id/account_setting_del_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:text="@string/text_loading" 
+        android:textColor="#333333"/>
+
+    <ProgressBar
+        android:id="@+id/account_setting_del_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/account_setting_del_loading" />
+
+</RelativeLayout>

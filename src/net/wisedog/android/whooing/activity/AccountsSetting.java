@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.dialog.AccountDeleteConfirmDialog;
+import net.wisedog.android.whooing.dialog.AccountDeleteConfirmDialog.AccountDeleteListener;
+import net.wisedog.android.whooing.dialog.AccountDeleteDialog;
 
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
@@ -23,7 +26,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
  * Setting user accounts(for banking account - like budget, expenses)
  * @author	Wisedog(me@wisedog.net)
  * */
-public class AccountsSetting extends SherlockFragmentActivity{
+public class AccountsSetting extends SherlockFragmentActivity implements AccountDeleteListener{
     public static final int REQUEST_CODE_ADD = 0;
     public static final int REQUEST_CODE_MODIFY = 1;
 
@@ -33,13 +36,6 @@ public class AccountsSetting extends SherlockFragmentActivity{
 		setContentView(R.layout.account_setting);		
 		inflateAccountLayout();
         onSetupUi();
-	}
-
-	@Override
-	protected void onResume() {
-	    
-		
-		super.onResume();
 	}
 	
 	protected void inflateAccountLayout(){
@@ -84,10 +80,11 @@ public class AccountsSetting extends SherlockFragmentActivity{
                 
                 @Override
                 public void onClick(View v) {
-                    //TODO Alert Dialog
-                    
+                    AccountDeleteDialog newFragment = AccountDeleteDialog.newInstance(entity.account_id, entity.accountType);
+                    newFragment.show(getSupportFragmentManager(), "account_del_dialog");
                 }
             });
+            
             tr.addView(layout, new LayoutParams(0 , LayoutParams.WRAP_CONTENT, 1.0f));
             if(tl != null){
                 tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
@@ -119,18 +116,21 @@ public class AccountsSetting extends SherlockFragmentActivity{
         if(resultCode == RESULT_OK){
             if(data == null){
                 Toast.makeText(this, getString(R.string.account_setting_msg_fail_add_modify), Toast.LENGTH_LONG).show();
+                return;
             }
             
             AccountsEntity entity = data.getParcelableExtra("account_entity");
             GeneralProcessor generic = new GeneralProcessor(this);
             if(requestCode == REQUEST_CODE_ADD){
                 if(generic.addAccount(entity)){
-                    //TODO Refresh;
+                    clearLayout();
+                    inflateAccountLayout();
                 }
                 
             }else if(requestCode == REQUEST_CODE_MODIFY){
                 if(generic.modifyAccount(entity)){
-                    //;TODO refresh
+                    clearLayout();
+                    inflateAccountLayout();
                 }
             }else{
                 ;//Show error
@@ -142,7 +142,22 @@ public class AccountsSetting extends SherlockFragmentActivity{
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-	
-	
 
+    private void clearLayout() {
+        int[] tableIds = new int[]{R.id.account_setting_table_asset, R.id.account_setting_table_expenses, R.id.account_setting_table_capital,
+                R.id.account_setting_table_income, R.id.account_setting_table_liabilities};
+       for(int i = 0; i < 5; i++)
+       {
+           TableLayout tl = (TableLayout)findViewById(tableIds[i]);
+           if(tl != null){
+               tl.removeAllViews();
+           }
+       }
+    }
+
+    @Override
+    public void onFinishingDeleting() {
+        clearLayout();
+        inflateAccountLayout();        
+    }
 }

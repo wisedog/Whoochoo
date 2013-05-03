@@ -127,7 +127,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         }
         //String selectQuery = "DELETE FROM " + TABLE_ACCOUNTS + " WHERE account_id=" + entity.account_id;
         SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(TABLE_ACCOUNTS, KEY_ACCOUNT_ID+"=" + entity.account_id, null);        
+        int result = db.delete(TABLE_ACCOUNTS, KEY_ACCOUNT_ID+"='" + entity.account_id + "'", null);        
         db.close();
         if(result == 0){
             return false;
@@ -149,7 +149,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_ACCOUNT_TYPE, entity.accountType);
         values.put(KEY_TYPE, entity.type);
-        values.put(KEY_TITLE, entity.memo);
+        values.put(KEY_TITLE, entity.title);
         values.put(KEY_MEMO, entity.memo);
         values.put(KEY_OPEN_DATE, entity.open_date);
         values.put(KEY_CLOSE_DATE, entity.close_date);
@@ -158,8 +158,8 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         values.put(KEY_OPT_PAY_DATE, entity.opt_pay_date);
         values.put(KEY_OPT_PAY_ACCOUNT_ID, entity.opt_pay_account_id);        
         
-        db.update(TABLE_ACCOUNTS, values, KEY_ACCOUNT_ID + " = " + entity.account_id,
-                new String[] { entity.account_id });
+        db.update(TABLE_ACCOUNTS, values, KEY_ACCOUNT_ID + "='" + entity.account_id+"'", null);
+        db.close();
         return true;
     }
     

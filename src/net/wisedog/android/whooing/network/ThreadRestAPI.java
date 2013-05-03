@@ -376,6 +376,11 @@ public class ThreadRestAPI extends Thread {
 		    result = delAccounts.deleteAccounts(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);           
 		    break;
+		case Define.API_GET_ACCOUNT_EXISTS_ENTRIES:
+		    AccountsApi existAccounts = new AccountsApi();
+		    result = existAccounts.existTransaction(Define.APP_SECTION, Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+		    break;
 		    
 		default:
 			Log.e(ThreadRestAPI.class.toString(), "Unknown API");

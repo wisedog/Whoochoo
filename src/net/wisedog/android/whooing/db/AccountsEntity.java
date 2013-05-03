@@ -102,9 +102,9 @@ public class AccountsEntity implements Parcelable{
         if(accountType.compareTo(entity.accountType) != 0){
             return false;
         }
-        if(account_id.compareTo(entity.account_id) != 0){
+        /*if(account_id.compareTo(entity.account_id) != 0){
             return false;
-        }
+        }*/
         if(type.compareTo(entity.type) != 0){
             return false;
         }
