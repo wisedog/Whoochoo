@@ -172,8 +172,8 @@
     <string name="account_setting_previous_month">Previous month</string>
     <string name="account_setting_msg_same">Nothing to change</string>
     <string name="account_setting_msg_fail_add_modify">Fail to add or modify account information. Please contact to developer.</string>
-    <string name="account_setting_del_option1">(Recommended)Deactivate the account </string>
-    <string name="account_setting_del_option2">Disregard related transaction(s) and continue to delete.</string>
+    <string name="account_setting_del_option1">(Recommended)Deactivate the account from %s </string>
+    <string name="account_setting_del_option2">Disregard related %d transaction(s) and continue to delete.</string>
     <string name="account_setting_del_msg">This account is involved in transaction(s). Please choose one of the following : </string>
     <string name="account_setting_del_msg_really_delete">Really delete?</string>
     

@@ -7,17 +7,22 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.activity.AccountsSetting;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiButton;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.app.Dialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -47,22 +52,15 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
         setStyle(android.support.v4.app.DialogFragment.STYLE_NO_TITLE, android.R.style.Theme_Dialog);
        
     }    
-    
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        
-        super.onActivityCreated(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.account_setting_del_account, container, true);
-        v.findViewById(R.id.account_setting_del_layout).setVisibility(View.INVISIBLE);
+        final View view = inflater.inflate(R.layout.account_setting_del_account, container, true);
+        view.findViewById(R.id.account_setting_del_layout).setVisibility(View.INVISIBLE);
         
-        WiButton confirmBtn = (WiButton) v.findViewById(R.id.account_setting_del_btn_confirm);
-        final RadioGroup group = (RadioGroup)v.findViewById(R.id.account_setting_del_radio_group);
+        WiButton confirmBtn = (WiButton) view.findViewById(R.id.account_setting_del_btn_confirm);
+        final RadioGroup group = (RadioGroup)view.findViewById(R.id.account_setting_del_radio_group);
         
         if(confirmBtn != null){
             confirmBtn.setOnClickListener(new OnClickListener() {
@@ -76,12 +74,17 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                         }else{  //Delete case
                             isDelete = true;
                         }
-                        //Check Radio buttons                
                     }
                     else{   //Delete case
                         isDelete = true;
                     }
                     
+                    ProgressBar progress = (ProgressBar)view.findViewById(R.id.account_setting_confirm_progress);
+                    if(progress != null){
+                    	progress.setVisibility(View.VISIBLE);
+                    }
+                    
+                    v.setEnabled(false);
                     if(isDelete){
                         Bundle b = new Bundle();
                         b.putString("account_type", getArguments().getString("account_type"));
@@ -103,9 +106,16 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
             });
         }
         
-        WiButton cancelBtn = (WiButton) v.findViewById(R.id.account_setting_del_btn_cancel);
+        WiButton cancelBtn = (WiButton) view.findViewById(R.id.account_setting_del_btn_cancel);
         if(cancelBtn != null){
-            this.dismiss();
+        	cancelBtn.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					AccountDeleteConfirmDialog.this.dismiss();
+				}
+			});
+            
         }
         
      // Check transactions
@@ -115,7 +125,7 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
         ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_GET_ACCOUNT_EXISTS_ENTRIES, b);
         thread.start();
         
-        return v;
+        return view;
     }
     
 
@@ -128,6 +138,7 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                 int result = 0;
                 try {
                     result = obj.getInt("code");
+                    Log.i("wisedog", "Result : " + obj.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     return;
@@ -142,32 +153,50 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                         JSONObject resultObj = obj.getJSONObject("results");
                         int count = resultObj.getInt("count");
                         String lastOne = resultObj.getString("last_one");
-                        WiTextView loadingText = (WiTextView)getActivity().findViewById(R.id.account_setting_del_loading);
+                        Dialog dl = AccountDeleteConfirmDialog.this.getDialog();
+                        WiTextView loadingText = (WiTextView)dl.findViewById(R.id.account_setting_del_loading);
                         if(loadingText != null){
                             loadingText.setVisibility(View.GONE);
                         }
-                        ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.account_setting_del_progress);
+                        ProgressBar progress = (ProgressBar)dl.findViewById(R.id.account_setting_del_progress);
                         if(progress != null){
                             progress.setVisibility(View.GONE);
                         }
                         
-                        LinearLayout ll = (LinearLayout) getActivity().findViewById(R.id.account_setting_del_layout);
+                        LinearLayout ll = (LinearLayout) dl.findViewById(R.id.account_setting_del_layout);
                         ll.setVisibility(View.VISIBLE);
-                        WiTextView msgText = (WiTextView)getActivity().findViewById(R.id.account_setting_del_text_msg);
+                        WiTextView msgText = (WiTextView)dl.findViewById(R.id.account_setting_del_text_msg);
+                        RadioButton radio1 = (RadioButton)dl.findViewById(R.id.account_setting_del_radio1);
+                        RadioButton radio2 = (RadioButton)dl.findViewById(R.id.account_setting_del_radio2);
                         if(lastOne.compareTo("y") == 0){
                             //TODO change msg board that "not delete. only this account is in account type"
-                            getActivity().findViewById(R.id.account_setting_del_btn_confirm).setEnabled(false);
-                            getActivity().findViewById(R.id.account_setting_del_radio1).setVisibility(View.GONE);
-                            getActivity().findViewById(R.id.account_setting_del_radio2).setVisibility(View.GONE);
+                        	dl.findViewById(R.id.account_setting_del_btn_confirm).setEnabled(false);
+                        	if(radio1 != null && radio2 != null){
+                        		radio1.setVisibility(View.GONE);
+                        		radio2.setVisibility(View.GONE);
+                        	}
                             return;
                         }
                         if(count == 0){
                             msgText.setText(getActivity().getString(R.string.account_setting_del_msg_really_delete));
-                            getActivity().findViewById(R.id.account_setting_del_radio1).setVisibility(View.GONE);
-                            getActivity().findViewById(R.id.account_setting_del_radio2).setVisibility(View.GONE);
+                            if(radio1 != null && radio2 != null){
+                        		radio1.setVisibility(View.GONE);
+                        		radio2.setVisibility(View.GONE);
+                        	}
                             isExistEntries = false;
                         }
                         else{
+                        	if(radio1 != null && radio2 != null){
+                        		Resources res = getResources();
+                        		String text = String.format(res.getString(R.string.account_setting_del_option1), 
+                        				WhooingCalendar.getTodayLocale());
+                        		radio1.setText(text);
+                        		text = String.format(res.getString(R.string.account_setting_del_option2), 
+                        				count);
+                        		radio2.setText(text);
+                        		radio1.setVisibility(View.VISIBLE);
+                        		radio2.setVisibility(View.VISIBLE);
+                        	}
                             isExistEntries = true;
                         }                        
                     } catch (JSONException e) {
@@ -178,10 +207,12 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                 else if(msg.arg1 == Define.API_PUT_ACCOUNTS){   
                     AccountsSetting activity = (AccountsSetting)getActivity();
                     activity.onFinishingDeleting();
+                    AccountDeleteConfirmDialog.this.dismiss();
                 }
                 else if(msg.arg1 == Define.API_DELETE_ACCOUNTS){
                     AccountsSetting activity = (AccountsSetting)getActivity();
                     activity.onFinishingDeleting();
+                    AccountDeleteConfirmDialog.this.dismiss();
                 }
                 super.handleMessage(msg);
             }

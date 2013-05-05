@@ -121,14 +121,14 @@ public class AccountsApi extends AbstractAPI {
                 }
                 else{
                     nameValuePairs.add(new BasicNameValuePair("is_close", "n"));
-                }                
+                }
             }
             
             String accountId = bundle.getString("account_id");
-            entriesURL =  "https://whooing.com/api/accounts/" + accountType + "/" + accountId + ".json";
+            entriesURL =  "https://whooing.com/api/accounts/" + accountType + "/" + accountId 
+            		+ ".json?section_id=" + appSection;
             result = callApiPut(entriesURL, appID, token, appKey, tokenSecret, appSection, nameValuePairs);
         }
-        
         return result;
     }
 }

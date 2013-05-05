@@ -6,7 +6,6 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.dialog.AccountDeleteConfirmDialog;
 import net.wisedog.android.whooing.dialog.AccountDeleteConfirmDialog.AccountDeleteListener;
-import net.wisedog.android.whooing.dialog.AccountDeleteDialog;
 
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
@@ -80,7 +79,7 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
                 
                 @Override
                 public void onClick(View v) {
-                    AccountDeleteDialog newFragment = AccountDeleteDialog.newInstance(entity.account_id, entity.accountType);
+                    AccountDeleteConfirmDialog newFragment = AccountDeleteConfirmDialog.newInstance(entity.account_id, entity.accountType);
                     newFragment.show(getSupportFragmentManager(), "account_del_dialog");
                 }
             });

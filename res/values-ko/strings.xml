@@ -65,6 +65,9 @@
     <string name="text_next">다음</string>
     <string name="text_okay">확인</string>
     <string name="text_inform">알림</string>
+    <string name="text_memo">메모</string>
+    <string name="text_category">종류</string>
+    <string name="text_deactivate">비활성화</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">정보 더보기&#8230;</string>
@@ -151,5 +154,29 @@
     <string name="global_no_api_inform">죄송합니다. 남은 API가 없습니다. 하지만 보고서를 열람하는 것 외에는 어떠한 일이든 할 수 있습니다. 주어진  API는 GMT 0:00에 다시 채워집니다. 써드 파티 앱인 이 앱은 Whooing의 API정책에 따릅니다.</string>
     <string name="global_no_api_inform_title">API 부족</string>
     <string name="global_go_setting_whooing">복잡한 이슈로 설정 메뉴는 이 버전에서 지원하지 않습니다. 다음버전에 지원하도록 하겠습니다.</string>
+    <string name="alert_go_setting_whooing_btn">후잉으로 가기</string>
+    
+    <!-- Account Setting -->
+    <string name="account_setting_add_assets">+ 자산 계정 추가</string>
+    <string name="account_setting_add_liabilities">+ 부채 계정 추가</string>
+    <string name="account_setting_add_capital">+ 자본 계정 추가</string>
+    <string name="account_setting_add_expenses">+ 지출 계정 추가</string>
+    <string name="account_setting_add_income">+ 수입 계정 추가</string>
+    <string name="account_setting_modify_activate_date">사용시작일 </string>
+    <string name="account_setting_modify_account_title">항목명</string>
+    <string name="account_setting_modify_deactivate_date">사용종료일</string>
+    <string name="account_setting_modify_billing_period">사용기간</string>
+    <string name="account_setting_modify_pay_date">결제일</string>
+    <string name="account_setting_modify_payment_account">대금결제 항목</string>
+    <string name="account_setting_one_month">한달</string>
+    <string name="account_setting_select">지정해주세요</string>
+    <string name="account_setting_month_before_last">전전월</string>
+    <string name="account_setting_previous_month">전월</string>
+    <string name="account_setting_msg_same">수정할 것이 없습니다.</string>
+    <string name="account_setting_msg_fail_add_modify">계정 추가 혹은 수정이 실패했습니다. 개발자에게 연락해주세요.</string>
+    <string name="account_setting_del_option1">(권장) 마지막 항목 사용일 \'%s\'부로 종료시킴</string>
+    <string name="account_setting_del_option2">관련된 %d개의 거래를 무시하고 삭제진행</string>
+    <string name="account_setting_del_msg">현재 관련 거래가 남아 있는 것으로 확인되어 있습니다. 아래의 방법 중 택1 하십시오.</string>
+    <string name="account_setting_del_msg_really_delete">정말로 삭제하시겠습니까?</string>
     
 </resources>
