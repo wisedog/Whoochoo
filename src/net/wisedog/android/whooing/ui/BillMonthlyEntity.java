@@ -37,15 +37,8 @@ public class BillMonthlyEntity extends RelativeLayout{
         mContext = context;
     }
     
-    
-    /*
-     {"total":200000,"date":201302,
-     * "accounts":[
-     * {"end_use_date":20130131,"money":200000,"pay_date":25,
-     * "account_id":"x21","start_use_date":20130101},
-     * {"end_use_date":20130131,"money":0,"pay_date":28,"account_id":"x76",
-     * "start_use_date":20130101}
-     * ]}
+    /**
+     * @param   objRowItem  
      * */
     public void setupMonthlyCard(JSONObject objRowItem) throws JSONException{
     	inflate(mContext, R.layout.bill_item_month, this);

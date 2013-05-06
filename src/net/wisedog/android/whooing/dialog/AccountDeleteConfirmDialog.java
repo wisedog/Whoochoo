@@ -15,7 +15,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -138,7 +137,6 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                 int result = 0;
                 try {
                     result = obj.getInt("code");
-                    Log.i("wisedog", "Result : " + obj.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                     return;

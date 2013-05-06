@@ -9,6 +9,7 @@ import net.wisedog.android.whooing.dialog.AccountDeleteConfirmDialog.AccountDele
 
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -43,11 +44,15 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
         
         
         for(int i = 0; i < list.size(); i++)    {
+            final AccountsEntity entity = list.get(i);
+            if(entity.close_date <= WhooingCalendar.getTodayYYYYMMDDint()){
+                continue;
+            }
             TableRow tr = new TableRow(this);
             tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
-            final AccountsEntity entity = list.get(i);
+            
             TableLayout tl = null;
             if(entity.accountType.equals("assets")){
                 tl = (TableLayout)findViewById(R.id.account_setting_table_asset);

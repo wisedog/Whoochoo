@@ -176,6 +176,7 @@
     <string name="account_setting_del_option2">Disregard related %d transaction(s) and continue to delete.</string>
     <string name="account_setting_del_msg">This account is involved in transaction(s). Please choose one of the following : </string>
     <string name="account_setting_del_msg_really_delete">Really delete?</string>
+    <string name="account_setting_msg_close">Deactivate - Click "Confirm" to apply</string>
     
         
     <!-- Content Description -->

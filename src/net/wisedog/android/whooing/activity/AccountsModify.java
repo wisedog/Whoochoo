@@ -16,6 +16,7 @@ import net.wisedog.android.whooing.dialog.AccountSettingCheckcardDialog.AccountC
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
+import net.wisedog.android.whooing.widget.WiButton;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -35,6 +36,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     private int payDate = 25;    
     private int selectDay = 0;
     private String mAccountType = null;
+    private boolean isClose = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,12 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         AccountsEntity entity = intent.getParcelableExtra("account_entity");
         
         if(accountType != null){
+            WiTextView textDeactivate = (WiTextView)findViewById(R.id.account_modify_label_deactivate);
+            if(textDeactivate != null){
+                textDeactivate.setVisibility(View.GONE);
+            }
+            LinearLayout ll = (LinearLayout)findViewById(R.id.account_modify_layout_deactivate);
+            ll.setVisibility(View.GONE);                    
             setupUi(accountType);
         }else {
             setupUi(entity.accountType);
@@ -265,19 +274,16 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         
         entity.category = getCurrentCategoryString();
         entity.open_date = selectDay;
-        String msg = name + " , " + memo + " , " + entity.type + ", " + entity.accountType + " , " + entity.category + " , " + entity.open_date;
         if(entity.accountType.compareTo("liabilities") == 0){
             if(entity.category.compareTo("creditcard") == 0){
                 entity.opt_pay_account_id = accountId;
                 entity.opt_pay_date = payDate;
                 entity.opt_use_date = useDate;
-                msg += " , " + accountId + ", " + payDate + " , " + useDate;
             }
             else if(entity.category.compareTo("checkcard") == 0){
                 entity.opt_pay_account_id = accountId;
                 entity.opt_pay_date = 0;
                 entity.opt_use_date = null;
-                msg += " , " + accountId + ", " + payDate + " , " + useDate;
             }
         }
         
@@ -294,17 +300,21 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
             v.setEnabled(false);
             ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_POST_ACCOUNTS, b);
             thread.start();
-            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         }else{  //modify
-            if(beforeEntity.compareEntity(entity)){ //Same
+            if(beforeEntity.compareEntity(entity) && isClose ){ //Same
                 Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
                 v.startAnimation(shake);
-                Toast.makeText(this, getString(R.string.account_setting_msg_same), Toast.LENGTH_LONG).show();
             }
             else{   //Different
                 Bundle b = new Bundle();
                 b.putParcelable("account_entity", entity);
                 b.putString("account_id", beforeEntity.account_id);
+                if(isClose){
+                    b.putString("is_close", "y");
+                }else{
+                    b.putString("is_close", "n");
+                }
+                
                 if(progress != null){
                     progress.setVisibility(View.VISIBLE);
                 }
@@ -312,10 +322,22 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
                 ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_ACCOUNTS, b);
                 thread.start();
             }
-        }
+        }        
+    }
+    
+    public void onClickCloseDate(View v){
+        WiTextView msgClose = (WiTextView)findViewById(R.id.account_modify_text_close);
+        WiButton btnClose = (WiButton)findViewById(R.id.account_modify_btn_close);
         
-        /*setResult(RESULT_OK);
-        this.finish();*/
+        if(isClose){
+            msgClose.setText("");
+            btnClose.setText(getString(R.string.text_deactivate));
+            isClose = false;
+        }else{
+            msgClose.setText(getString(R.string.account_setting_msg_close));
+            btnClose.setText(getString(R.string.cancel));
+            isClose = true;
+        }
     }
     
     public void onClickChangeOpenDate(View v){

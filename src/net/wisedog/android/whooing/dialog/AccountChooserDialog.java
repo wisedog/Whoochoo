@@ -9,6 +9,7 @@ import java.util.HashMap;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.activity.TransactionAdd;
 import net.wisedog.android.whooing.db.AccountsEntity;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiTextView;
 
 import com.actionbarsherlock.app.SherlockDialogFragment;
@@ -142,6 +143,10 @@ public class AccountChooserDialog extends SherlockDialogFragment {
         
         for(int i = 0; i < list.size(); i++){
             AccountsEntity entity = list.get(i);
+            
+            if(entity.close_date <= WhooingCalendar.getTodayYYYYMMDDint()){
+                continue;
+            }
             
             //Creating accounts item
             WiTextView textView = new WiTextView(getActivity());
