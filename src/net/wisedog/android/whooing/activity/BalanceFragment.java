@@ -41,19 +41,13 @@ import com.google.ads.AdView;
  */
 public class BalanceFragment extends SherlockFragment implements OnBsChangeListener{
 
-    public static BalanceFragment newInstance(String content) {
+    public static BalanceFragment newInstance() {
         BalanceFragment fragment = new BalanceFragment();
-
         return fragment;
     }
 
     private Activity mActivity;
 	private AdView adView;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,26 +74,17 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     public void onResume() {
         TableLayout tl = (TableLayout) mActivity
                 .findViewById(R.id.balance_asset_table);
-        if(tl.getChildCount() > 2){
-            super.onResume();
-            return;
-        }
-        DataRepository repository = DataRepository.getInstance();
-        if(repository.getBsValue() != null){
-            showBalance(repository.getBsValue());
-           super.onResume();
-           return;
-        }
-        else{
-            repository.refreshBsValue(getSherlockActivity());
-            repository.registerObserver(this, DataRepository.BS_MODE);
+        if(tl.getChildCount() <= 2){
+        	DataRepository repository = DataRepository.getInstance();
+            if(repository.getBsValue() != null){
+                showBalance(repository.getBsValue());
+            }
+            else{
+                repository.refreshBsValue(getSherlockActivity());
+                repository.registerObserver(this, DataRepository.BS_MODE);
+            }
         }
         super.onResume();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
     
     @Override
@@ -112,6 +97,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     public void onDestroyView() {
         DataRepository repository = DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.BS_MODE);
+        adView.destroy();
         super.onDestroyView();
     }
     
@@ -179,7 +165,6 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			        valueWidth, tableLiabilites, 0xFF5294FF);
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
