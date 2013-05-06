@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Whooing</string>
+    <string name="app_name">WhooChoo</string>
     <string name="ok">Okay</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
@@ -8,7 +8,7 @@
     <string name="authorizing">Authorizing&#8230;</string>
     <string name="msg_auth_success">Authorization is succeed!</string>
     <string name="msg_auth_fail">Authorization is failed!</string>
-    <string name="main_title">Whooing</string>
+    <string name="main_title">WhooChoo</string>
     <string name="accounts_assets">Assets</string>
     <string name="accounts_liabilities">Liabilities</string>
     <string name="accounts_capital">Capital</string>

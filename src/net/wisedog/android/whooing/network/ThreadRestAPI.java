@@ -38,14 +38,14 @@ public class ThreadRestAPI extends Thread {
 	
 	public ThreadRestAPI(Handler mHandler, int apiName, Bundle bundle) {
         super();
-        checkLoginInfo();
+        //checkLoginInfo();
         this.mHandler = mHandler;
         this.mAPIName = apiName;
         this.mBundle = bundle;
     }
 
 	private void checkLoginInfo() {
-		if(Define.DEBUG){
+		/*if(Define.DEBUG){
             Define.REAL_TOKEN = "9772ff8e2f751ddf1c5cf74b0d9b328f392a4b71";
             Define.PIN = "339599";
             Define.TOKEN_SECRET = "7776e79057bc222254da0b108555afd86e3b7d3c";
@@ -56,7 +56,7 @@ public class ThreadRestAPI extends Thread {
             Define.LOCALE_LANGUAGE = "ko";
         }
         
-        /*SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
         Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
         Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
         Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
@@ -64,13 +64,12 @@ public class ThreadRestAPI extends Thread {
         Define.USER_ID = prefs.getInt(Define.KEY_SHARED_USER_ID, 0);
         Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, null);
         Define.COUNTRY_CODE = prefs.getString(Define.KEY_SHARED_COUNTRY_CODE, null);
-        Define.LANGUAGE_APP = prefs.getString(Define.KEY_SHARED_LANGUAGE_APP, null);
         Define.TIMEZONE = prefs.getString(Define.KEY_SHARED_TIMEZONE, null);
         Log.i("wisedog", "user_id: " + Define.USER_ID + " app_section : " + Define.APP_SECTION + " real_token:" + Define.REAL_TOKEN
                 + " pin : " + Define.PIN + " token_secret : " + Define.TOKEN_SECRET);
         Log.i("wisedog", "country: " + Define.COUNTRY_CODE + " currency: " + Define.CURRENCY_CODE 
-                + " LanguageApp : " + Define.LANGUAGE_APP + " Timezone: " + Define.TIMEZONE );*/
-		
+                + " LanguageApp : " + Define.LANGUAGE_APP + " Timezone: " + Define.TIMEZONE );
+		*/
 	}
 
 	@Override

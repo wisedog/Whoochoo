@@ -18,7 +18,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -212,17 +211,17 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param	obj		Data formatted in JSON
      * */
     private void showMountainValue(JSONObject obj){
+    	if(getSherlockActivity() == null){
+    		Log.i("wisedog", "showMountainValue - getSherlockActivity() is null");
+    	}
         WiTextView currentBalance = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
         if(currentBalance == null){
         	return;
         }
         WiTextView doubtValue = (WiTextView)getSherlockActivity().findViewById(R.id.doubt_num);
-        Typeface typeface = Typeface.createFromAsset(getSherlockActivity().getAssets(), "fonts/Roboto-Light.ttf");
         if(currentBalance == null || doubtValue == null){
         	return;
         }
-        currentBalance.setTypeface(typeface);
-        doubtValue.setTypeface(typeface);
         JSONObject objResult = null;
         try{
         	if(Define.DEBUG){
@@ -265,7 +264,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         }
         setCompareArrow(diff);
         WiTextView compareValue = (WiTextView)mActivity.findViewById(R.id.text_compare_premonth_value);
-        compareValue.setTypeface(typeface);
         compareValue.setText(WhooingCurrency.getFormattedValue(diff));
     }
     

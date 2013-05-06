@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Whooing</string>
+    <string name="app_name">WhooChoo</string>
     <string name="exit">종료하시겠습니까?</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
@@ -10,7 +10,7 @@
     <string name="authorizing">인증중입니다&#8230;</string>
     <string name="msg_auth_success">인증성공!</string>
     <string name="msg_auth_fail">인증 실패!</string>
-    <string name="main_title">Whooing</string>
+    <string name="main_title">WhooChoo</string>
     <string name="accounts_assets">자산</string>
     <string name="accounts_liabilities">부채</string>
     <string name="accounts_capital">자본</string>
@@ -125,7 +125,7 @@
     <string name="about_app_blog">Blog : http://peashellapps.wordpress.com</string>
     <string name="about_app_creator">Created by Peashell Apps.</string>
     <string name="about_app_send_email">Choose Email Client</string>
-    <string name="about_app_version">Version : </string>
+    <string name="about_app_version">버전 : </string>
     
     <!-- BBS -->
     <string name="bbs_deleted">해당 글이 삭제되었습니다.</string>
@@ -139,13 +139,13 @@
     
     <!-- Welcome -->
     <string name="welcome_msg">Welcome,\nThis is Whooing.</string>
-    <string name="welcome_no_internet">No network connection. Please check your network connectivity.</string>
-    <string name="welcome_no_internet_title">Alert</string>
-    <string name="welcome_loading_get_user_info">Getting User Info&#8230;</string>
-    <string name="welcome_loading_get_transaction">Getting Transactions&#8230;</string>
-    <string name="welcome_loading_get_account_info">Getting Account Info&#8230;</string>
-    <string name="welcome_loading_get_data">Getting Data&#8230;</string>
-    <string name="welcome_logging_in">Logging in&#8230;</string>
+    <string name="welcome_no_internet">네트워크 연결이 되어있지 않습니다. 네트워크 연결을 확인해주세요.</string>
+    <string name="welcome_no_internet_title">알림</string>
+    <string name="welcome_loading_get_user_info">사용자 정보 가져오는 중&#8230;</string>
+    <string name="welcome_loading_get_transaction">거래내역 가져오는 중&#8230;</string>
+    <string name="welcome_loading_get_account_info">계정 정보 가져오는 중&#8230;</string>
+    <string name="welcome_loading_get_data">데이터를 가져오는 중&#8230;</string>
+    <string name="welcome_logging_in">로그인 중&#8230;</string>
     
     <!-- Auth -->
     <string name="auth_doing">▶</string>

@@ -125,21 +125,6 @@ public class WhooingGraph {
 
 	/**
 	 * Draw graphs with given data. Data is like below:
-	 * "results":{"rows_type":"month"
-	 * ,"aggregate":{"capital":11593688,"liabilities"
-	 * :814335,"assets":12408023,"goal":0},
-	 * "rows":[{"liabilities":0,"assets":0,"date"
-	 * :201206,"capital":0,"goal":null},
-	 * {"liabilities":0,"assets":0,"date":201207,"capital":0,"goal":null},
-	 * {"liabilities":0,"assets":0,"date":201208,"capital":0,"goal":null},
-	 * {"liabilities":0,"assets":0,"date":201209,"capital":0,"goal":null},
-	 * {"liabilities"
-	 * :567890,"assets":12395678,"date":201210,"capital":11827788,"goal":null},
-	 * {"liabilities":694335,"assets":12408023,"date":201211,"capital":11713688,
-	 * "goal":null},
-	 * {"liabilities":814335,"assets":12408023,"date":201212,"capital"
-	 * :11593688,"goal":null}]}
-	 * 
 	 * @param activity
 	 *            Activity
 	 * @param data
