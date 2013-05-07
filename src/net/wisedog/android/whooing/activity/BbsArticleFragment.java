@@ -163,12 +163,12 @@ public class BbsArticleFragment extends SherlockFragment {
 						}
                 	}
                 	if(Define.DEBUG){
-                	    Log.i("wisedog", "BOARD_REPLY : " + obj.toString());
+                	    Log.d("wisedog", "BOARD_REPLY : " + obj.toString());
                 	}
                 }
                 else if(msg.arg1 == Define.API_DELETE_BOARD_ARTICLE){
                     if(Define.DEBUG){
-                        Log.i("wisedog", "BOARD_DELETE : " + obj.toString());
+                        Log.d("wisedog", "BOARD_DELETE : " + obj.toString());
                     }
                     int result = 0;
                     try {

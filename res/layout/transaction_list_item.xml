@@ -40,7 +40,7 @@
 
         <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/transaction_listitem_item"
-            android:layout_width="100dip"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
@@ -52,8 +52,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
+            android:maxWidth="100dp"
             android:text=""
+            android:lines="1"
+            android:maxLines="1"
             android:textSize="16sp"/>
         </RelativeLayout>
         <LinearLayout

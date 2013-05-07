@@ -19,6 +19,7 @@ import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -187,6 +188,15 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             
             WiTextView accountText = new WiTextView(mActivity);
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
+            if(entity == null){
+            	return;
+            }
+            if(entity.type.compareTo("group") == 0){
+            	accountText.setTypeface(null, Typeface.BOLD);
+            }
+            else{
+            	accountText.setPadding(30, 0, 0, 0);
+            }
             accountText.setText(entity.title);
             accountText.setLayoutParams(new LayoutParams(
                     0, LayoutParams.WRAP_CONTENT, 0.4f));

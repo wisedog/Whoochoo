@@ -6,6 +6,7 @@ package net.wisedog.android.whooing.test;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
@@ -14,7 +15,7 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 
 /**
- * @author newmoni
+ * @author Wisedog(me@wisedog.net)
  *
  */
 public class GeneralProcessorTests extends AndroidTestCase {
@@ -77,7 +78,9 @@ public class GeneralProcessorTests extends AndroidTestCase {
             fail("Error on inserting JSONObject");
         }
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
-        Log.i("wisedog", "DB records count : " + dbHelper.getAccountsInfoCount());
+        if(Define.DEBUG){
+        	Log.i("wisedog", "DB records count : " + dbHelper.getAccountsInfoCount());
+        }
     }
 
 }

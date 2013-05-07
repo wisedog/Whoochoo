@@ -16,9 +16,11 @@ import net.wisedog.android.whooing.utils.FragmentUtil;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -93,12 +95,25 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             JSONObject objResult = obj.getJSONObject("results");
             JSONObject objExpenses = objResult.getJSONObject("expenses");
             double totalExpensesValue = objExpenses.getDouble("total");
+            
+            JSONObject objIncome = objResult.getJSONObject("income");
+            JSONArray objIncomeAccounts = objIncome.getJSONArray("accounts");
+            double totalIncomeValue = objIncome.getDouble("total");
+            double maxValue = 0.0f;
+            if(Double.compare(totalExpensesValue, totalIncomeValue) > 0){
+            	maxValue = totalExpensesValue;
+            }
+            else{
+            	maxValue = totalIncomeValue;
+            }
+            
             if (labelTotalExpensesValue != null) {
             	double value1 = objExpenses.getDouble("total");
                 labelTotalExpensesValue.setText(WhooingCurrency.getFormattedValue(value1));
                 View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_expense);
                 int barWidth = FragmentUtil.getBarWidth(objExpenses.getInt("total"), totalExpensesValue,
                         secondColumnWidth, valueWidth);
+                Log.i("wisedog", "BarWidth1 : " + barWidth);
                 
                 android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                         barWidth, viewHeight);
@@ -111,8 +126,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             showPlEntities(objExpensesAccounts, totalExpensesValue, secondColumnWidth, 
                     valueWidth, tl, 0xFFF08537);
             
-            JSONObject objIncome = objResult.getJSONObject("income");
-            JSONArray objIncomeAccounts = objIncome.getJSONArray("accounts");
+            
             TableLayout tableIncome = (TableLayout) getSherlockActivity()
                     .findViewById(R.id.pl_fragment_income_table);
             
@@ -121,7 +135,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             	double value1 = objIncome.getDouble("total");
                 labelTotalIncomeValue.setText(WhooingCurrency.getFormattedValue(value1));
                 View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_income);
-                int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalExpensesValue, 
+                int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalIncomeValue, 
                         secondColumnWidth, valueWidth);
                 android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
                         barWidth, viewHeight);
@@ -130,7 +144,7 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
                 bar.setLayoutParams(lParams);
             }
             
-            showPlEntities(objIncomeAccounts, totalExpensesValue, secondColumnWidth, 
+            showPlEntities(objIncomeAccounts, maxValue, secondColumnWidth, 
                     valueWidth, tableIncome, 0xFFBED431);
 
         } catch (JSONException e) {
@@ -158,6 +172,12 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
             if(entity == null){
                 continue;
+            }
+            if(entity.type.compareTo("group") == 0){
+            	accountText.setTypeface(null, Typeface.BOLD);
+            }
+            else{
+            	accountText.setPadding(30, 0, 0, 0);
             }
             accountText.setText(entity.title);
             accountText.setLayoutParams(new LayoutParams(
