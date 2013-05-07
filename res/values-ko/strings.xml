@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WhooChoo</string>
-    <string name="exit">종료하시겠습니까?</string>
+    <string name="exit">종료</string>
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="yes">네</string>
@@ -184,5 +184,11 @@
     <string name="account_setting_del_msg_really_delete">정말로 삭제하시겠습니까?</string>
     <string name="account_setting_msg_close">비활성화 적용 예정</string>
     <string name="account_setting_del_unavailable">삭제할 수 없습니다. 이 계정 유형에 해당 계정밖에 존재하지 않습니다.</string>
+    
+    <!-- Content Description -->
+    <string name="desc_imgbtn_delete">Delete</string>
+    <string name="desc_imgbtn_modify">Modify</string>
+    <string name="desc_imgbtn_calendar">Calendar</string>
+    <string name="desc_img_possibility">Possibility to archive object</string>
     
 </resources>
