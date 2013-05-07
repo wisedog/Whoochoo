@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.SubMenu;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.TransactionAddAdapter;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.dataset.TransactionItem;
@@ -183,7 +184,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         }
         
         //To support transaction insert suggest
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         JSONObject obj = repository.getLastestItems();
         JSONArray array = null;
         mEntryItemArray = new ArrayList<TransactionItem>();
@@ -414,7 +415,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             	textView.requestFocus();
             	
             	//Clear cached data - mt, pl, bs ... 
-            	DataRepository repository = DataRepository.getInstance();
+            	DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
             	repository.clearCachedData();
 				super.onPostExecute(result);
 			}

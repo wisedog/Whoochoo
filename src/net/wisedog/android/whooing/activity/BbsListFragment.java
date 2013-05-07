@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -164,7 +165,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         b.putInt("board_type", mBoardType);
         b.putInt("page", mPageNum);
         b.putInt("limit", 20);
-        JSONObject obj = DataRepository.getInstance().getUserValue();
+        JSONObject obj = WhooingApplication.getInstance().getRepo().getUserValue(); //DataRepository.getInstance().getUserValue();
         String language = Define.LOCALE_LANGUAGE;
         try {
             language = obj.getString("language");

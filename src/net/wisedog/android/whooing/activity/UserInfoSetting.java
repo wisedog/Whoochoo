@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnUserChangeListener;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
@@ -26,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * UserInfo setting class. User can set country, currency, language, nickname
@@ -43,10 +45,10 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_setting);
         setEnableUi(false);
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         if(repository.getUserValue() == null){
             mProgress = ProgressDialog.show(this, "", 
-                    getString(R.string.account_setting_progress));
+                    getString(R.string.user_info_setting_progress));
             repository.refreshUserInfo(this);
             repository.registerObserver(this, DataRepository.USER_MODE);
         }
@@ -220,7 +222,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
      */
     @Override
     protected void onDestroy() {
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.USER_MODE);
         super.onDestroy();
     }
@@ -238,7 +240,8 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 		Spinner countrySpinner = (Spinner)findViewById(R.id.user_setting_spinner_country);
 		int idx = countrySpinner.getSelectedItemPosition();
 		if(idx <= 0){
-			//TODO Error
+		    Toast.makeText(this, getString(R.string.user_info_setting_alert_country), Toast.LENGTH_LONG).show();
+		    return;
 		}else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_COUNTRY_CODE, WhooingCurrency.COUNTRY_CODE[idx]);
 			editor.commit();
@@ -248,7 +251,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 		Spinner timezoneSpinner = (Spinner)findViewById(R.id.user_setting_spinner_timezone);
 		idx = timezoneSpinner.getSelectedItemPosition();
 		if(idx <= 0){
-			//TODO Error
+			; //do nothing. Timezone information is not import for us
 		}else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_TIMEZONE, WhooingCurrency.TIMEZONE[idx]);
 			editor.commit();
@@ -257,7 +260,8 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         Spinner langAppSpinner = (Spinner)findViewById(R.id.user_setting_spinner_language_app);
         idx = langAppSpinner.getSelectedItemPosition();
         if(idx <= 0){
-			//TODO Error
+            Toast.makeText(this, getString(R.string.user_info_setting_alert_language), Toast.LENGTH_LONG).show();
+            return;
         }else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_LOCALE_LANGUAGE, WhooingCurrency.LOCALE_LANGUAGE_CODE[idx]);
 			editor.commit();
@@ -266,7 +270,8 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         Spinner currencySpinner = (Spinner)findViewById(R.id.user_setting_spinner_currency);
         idx = currencySpinner.getSelectedItemPosition();
 		if(idx <= 0){
-			//TODO Error
+		    Toast.makeText(this, R.string.user_info_setting_alert_currency, Toast.LENGTH_LONG).show();
+            return;
 		}else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_CURRENCY_CODE, WhooingCurrency.CURRENCY[idx]);
 			editor.commit();

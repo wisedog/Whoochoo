@@ -66,6 +66,7 @@
     <string name="text_memo">Memo</string>
     <string name="text_category">Category</string>
     <string name="text_deactivate">Deactivate</string>
+    <string name="text_deleted">Deleted</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -107,11 +108,15 @@
     <string name="add_transaction_add_complete">Add complete</string>
     
     <!-- User Account -->
-    <string name="account_setting_timezone">Timezone</string>
-    <string name="account_setting_locale_language">Language(for Date formatting, Board)</string>
-    <string name="account_setting_username_hint">Nick name here</string>
-    <string name="account_setting_username_optional">User Name(Optional)</string>
-    <string name="account_setting_progress">Loading User Information</string>
+    <string name="user_info_setting_timezone">Timezone</string>
+    <string name="user_info_setting_locale_language">Language(for Date formatting, Board)</string>
+    <string name="user_info_setting_username_hint">Nick name here</string>
+    <string name="user_info_setting_username_optional">User Name(Optional)</string>
+    <string name="user_info_setting_progress">Loading User Information</string>
+    <string name="user_info_setting_alert_country">Please select country.</string>
+    <string name="user_info_setting_alert_language">Please select language.</string>
+    <string name="user_info_setting_alert_currency">Please select currency.</string>
+    
     
     <!-- About dialog  -->
     <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without user id, language, currency.</string>

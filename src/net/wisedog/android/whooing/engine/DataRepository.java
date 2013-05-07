@@ -36,15 +36,15 @@ public class DataRepository{
     public static final int DASHBOARD_MODE = 7;
     
     /**자산부채 - bs*/
-    private JSONObject mBsValue = null;
+    private static JSONObject mBsValue = null;
     /**비용수익 - pl*/
-    private JSONObject mPlValue = null;
+    private static JSONObject mPlValue = null;
     /**Mountain*/
-    private JSONObject mMtValue = null;
-    private JSONObject mExpBudgetValue = null; //Budget
-    private JSONObject mUserValue = null;	//User data
+    private static JSONObject mMtValue = null;
+    private static JSONObject mExpBudgetValue = null; //Budget
+    private static JSONObject mUserValue = null;	//User data
     /** Frequent item info*/
-    private JSONObject mLastestItem = null;    
+    private static JSONObject mLastestItem = null;    
     
     private ArrayList<OnBsChangeListener> mBsObservers = new ArrayList<OnBsChangeListener>();
     private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
@@ -82,36 +82,22 @@ public class DataRepository{
     }
     
     //using singleton
-    private static DataRepository dataRepository = null;
+    //private static DataRepository dataRepository = null;
     
-    public static synchronized DataRepository getInstance(){
+    /*public static synchronized DataRepository getInstance(){
     	if(dataRepository == null){
     		Log.d("wisedog", "DataRepository is just created");
-    		//some init here
     		dataRepository = new DataRepository();
     	}
         return dataRepository;
-    }
+    }*/
 
-	/**
-     * Init here
-     *
-     * */
-    private void init(){
-        //FIXME 여기 릴리즈 전 고칠것
-        /*Define.REAL_TOKEN = "13165741351c21b2088c12706c1acd1d63cf7b49";
-        Define.PIN = "992505";
-        Define.TOKEN_SECRET = "e56d804b1a703625596ed3a1fd0f4c529fc2ff2c";
-        Define.USER_ID = "8955"; 
-        Define.APP_SECTION = "s10550";*/
-    }
     
 	/**
 	 * Refresh Dashboard infomation from server
 	 * */
 	public void refreshDashboardValue(Context context) {
 	    mContext = context;
-		init();
 
 		Bundle bundle = new Bundle();
 		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
@@ -134,7 +120,6 @@ public class DataRepository{
      * */
     public void refreshBsValue(Context context){
         mContext = context;
-		init();
 		Bundle bundle = new Bundle();
 		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
 		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
@@ -147,7 +132,6 @@ public class DataRepository{
      * */
     public void refreshPlValue(Context context){
         mContext = context;
-        init();
         Bundle bundle = new Bundle();
         bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
         bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
@@ -169,7 +153,6 @@ public class DataRepository{
     
     public void refreshExpBudget(Context context){
         mContext = context;
-        init();
         Bundle bundle = new Bundle();
         bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
         bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
@@ -180,13 +163,11 @@ public class DataRepository{
     
 	public void refreshUserInfo(Context context) {
 		mContext = context;
-		init();
 		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_USER_INFO);
 		thread.start();
 	}
 	
 	public void refreshLastestItems(Context context){
-	    init();
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES_LATEST_ITEMS);
         thread.start();
 	}

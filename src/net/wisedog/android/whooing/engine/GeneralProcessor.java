@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import android.content.Context;
@@ -89,9 +90,19 @@ public class GeneralProcessor {
      * @param accountName   String 
      * @return  An AccountsEntity if it successed, else return null
      */
-    public AccountsEntity findAccountById(String accountName) {
+    public AccountsEntity findAccountById(String accountId) {
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
-        AccountsEntity entity = dbHelper.getAccountById(accountName);
+        AccountsEntity entity = null;
+        if(accountId.compareTo("x0") == 0){ //Deleted item
+            entity = new AccountsEntity();
+            entity.title = mContext.getString(R.string.text_deleted);
+            entity.account_id = "x0";
+            entity.accountType = "N/A";
+        }
+        else{
+            entity = dbHelper.getAccountById(accountId);
+        }
+        
         return entity;
     }
     

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.auth.WhooingAuthWeb;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
@@ -40,17 +41,11 @@ import com.google.ads.AdView;
  * */
 public class DashboardFragment extends SherlockFragment implements OnMountainChangeListener, OnExpBudgetChangeListener{
 	
-	public static DashboardFragment newInstance(String text) {
+	public static DashboardFragment newInstance() {
         DashboardFragment fragment = new DashboardFragment();
-        
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        
         return fragment;
     }
 
-    private Activity mActivity;
     private ProgressDialog dialog;
 	private AdView adView;
 	
@@ -74,24 +69,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 	    adView.loadAd(adRequest);
 		return view;
 	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	/* (non-Javadoc)
-     * @see com.actionbarsherlock.app.SherlockFragment#onAttach(android.app.Activity)
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        mActivity = activity;
-        super.onAttach(activity);
-    }
 
     @Override
     public void onResume() {
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         if(repository.getMtValue() == null || repository.getExpBudgetValue() == null){
         	repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
             repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
@@ -111,20 +92,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     @Override
 	public void onPause() {
-    	DataRepository repository = DataRepository.getInstance();
+    	DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
         repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
 		super.onPause();
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
 	}
 
 	/* (non-Javadoc)
@@ -141,10 +112,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_FAIL){
                 dialog.dismiss();
-                Toast.makeText(mActivity, getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
+                Toast.makeText(getSherlockActivity(), getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
             }
             else if(msg.what == Define.MSG_REQ_AUTH){
-                Intent intent = new Intent(mActivity, WhooingAuthWeb.class);
+                Intent intent = new Intent(getSherlockActivity(), WhooingAuthWeb.class);
                 intent.putExtra("first_token", (String)msg.obj);
                 
                 startActivityForResult(intent, Define.REQUEST_AUTH);
@@ -162,23 +133,20 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         String section = obj.getString("section_id");
                         if(section != null){
                             Define.APP_SECTION = section;
-                            if(Define.DEBUG){
-                                Log.d("whooing", "APP SECTION:"+ Define.APP_SECTION);
-                            }
-                            SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
+                            SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Define.SHARED_PREFERENCE,
                                     Activity.MODE_PRIVATE);
                             SharedPreferences.Editor editor = prefs.edit();
                             editor.putString(Define.KEY_SHARED_SECTION_ID, section);
                             editor.commit();
                             dialog.dismiss();
-                            Toast.makeText(mActivity, getString(R.string.msg_auth_success),
+                            Toast.makeText(getSherlockActivity(), getString(R.string.msg_auth_success),
                                     Toast.LENGTH_LONG).show();
                         }
                         else{
                             throw new JSONException("Error in getting section id");
                         }
                     } catch (JSONException e) {
-                        setErrorHandler("통신 오류! Err-SCT1");
+                        setErrorHandler("Comm error! Err-SCT1");
                         e.printStackTrace();
                     }
                 }
@@ -197,11 +165,10 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void onActivityCreated(Bundle bundle) {
         
         if(Define.NEED_TO_REFRESH == false && bundle != null){
-            WiTextView textView = (WiTextView)mActivity.findViewById(R.id.balance_num);
+            WiTextView textView = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
             textView.setText(bundle.getString("assets_value"));
             textView = (WiTextView)getActivity().findViewById(R.id.doubt_num);
             textView.setText(bundle.getString("doubt_value"));
-            //isFirstCalling = bundle.getBoolean("first_calling");
         }
         super.onActivityCreated(bundle);
     }
@@ -211,9 +178,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param	obj		Data formatted in JSON
      * */
     private void showMountainValue(JSONObject obj){
-    	if(getSherlockActivity() == null){
-    		Log.i("wisedog", "showMountainValue - getSherlockActivity() is null");
-    	}
         WiTextView currentBalance = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
         if(currentBalance == null){
         	return;
@@ -242,7 +206,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             currentBalance.setText(WhooingCurrency.getFormattedValue(capital));
             doubtValue.setText(WhooingCurrency.getFormattedValue(liabilities));
         }catch(JSONException e){
-            setErrorHandler("통신 오류! Err-MAIN2");
+            setErrorHandler("Comm error! Err-MAIN2");
             e.printStackTrace();
         }catch(IllegalArgumentException e){
             e.printStackTrace();
@@ -259,11 +223,11 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             diff = (int)(lastCapital - preLastCapital);
 
         } catch (JSONException e) {
-            setErrorHandler("통신 오류! Err-MAIN2");
+            setErrorHandler("Comm error! Err-MAIN2");
             e.printStackTrace();
         }
         setCompareArrow(diff);
-        WiTextView compareValue = (WiTextView)mActivity.findViewById(R.id.text_compare_premonth_value);
+        WiTextView compareValue = (WiTextView)getSherlockActivity().findViewById(R.id.text_compare_premonth_value);
         compareValue.setText(WhooingCurrency.getFormattedValue(diff));
     }
     
@@ -297,7 +261,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
      * @param budgetValue	data formatted in JSON
      */
     private void showBudgetValue(JSONObject budgetValue) {
-        WiTextView monthlyExpenseText = (WiTextView)mActivity.findViewById(R.id.budget_monthly_expense_spent);
+        WiTextView monthlyExpenseText = (WiTextView)getSherlockActivity().findViewById(R.id.budget_monthly_expense_spent);
         if(monthlyExpenseText == null){
             return;
         }
@@ -324,7 +288,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
             }
             
         } catch (JSONException e) {
-            setErrorHandler("통신 오류! Err-BDG1");
+            setErrorHandler("Comm Error! Err-BDG1");
         }
     }
     

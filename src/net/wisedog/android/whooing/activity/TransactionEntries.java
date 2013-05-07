@@ -114,7 +114,7 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         
         // adView 만들기
 	    adView = new AdView(this, AdSize.SMART_BANNER, "a15147cd53daa26");
-	    LinearLayout layout = (LinearLayout)findViewById(R.id.bill_ads);
+	    LinearLayout layout = (LinearLayout)findViewById(R.id.transaction_entries_ads);
 
 	    // 찾은 LinearLayout에 adView를 추가
 	    layout.addView(adView);

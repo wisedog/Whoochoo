@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
@@ -37,11 +38,9 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
 	
 	@Override
 	protected void onResume() {
-	    DataRepository repository = DataRepository.getInstance();
+	    DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
 	    if(repository.getExpBudgetValue() != null){
 	        showExpBudget(repository.getExpBudgetValue());
-	        super.onResume();
-           return;
 	    }
 	    else{
 	        repository.refreshExpBudget(this);
@@ -158,7 +157,7 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
      */
     @Override
     protected void onDestroy() {
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
         super.onDestroy();
     }

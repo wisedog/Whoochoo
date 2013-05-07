@@ -71,7 +71,7 @@ public class Whooing extends Activity implements onLoadingMessage{
             WiTextView titleText = (WiTextView)findViewById(R.id.welcome_title_text);
             titleText.setText(getString(R.string.app_name));
 
-            DataRepository repository = DataRepository.getInstance();
+            DataRepository repository = WhooingApplication.getInstance().getRepo();// DataRepository.getInstance();
             repository.setLoadingMsgListener(this);
             repository.refreshUserInfo(this);
             repository.refreshDashboardValue(this);
@@ -124,7 +124,7 @@ public class Whooing extends Activity implements onLoadingMessage{
                 messageText.setVisibility(View.VISIBLE);
                 nextBtn.setVisibility(View.GONE);
                 getLoginInfo();
-                DataRepository repository = DataRepository.getInstance();
+                DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
                 repository.setLoadingMsgListener(this);
                 repository.refreshUserInfo(this);
                 repository.refreshAccount(this);
@@ -177,8 +177,9 @@ public class Whooing extends Activity implements onLoadingMessage{
         Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
         Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
         Define.USER_ID = prefs.getInt(Define.KEY_SHARED_USER_ID, 0);
-        Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, null);
-        Define.COUNTRY_CODE = prefs.getString(Define.KEY_SHARED_COUNTRY_CODE, null);
+        Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, "USD");
+        Define.COUNTRY_CODE = prefs.getString(Define.KEY_SHARED_COUNTRY_CODE, "US");
+        Define.LOCALE_LANGUAGE = prefs.getString(Define.KEY_SHARED_LOCALE_LANGUAGE, "en");
         Define.TIMEZONE = prefs.getString(Define.KEY_SHARED_TIMEZONE, null);
         if(Define.DEBUG){
         	Log.i("wisedog", "user_id: " + Define.USER_ID + " app_section : " + Define.APP_SECTION + " real_token:" + Define.REAL_TOKEN

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
@@ -75,7 +76,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
         TableLayout tl = (TableLayout) mActivity
                 .findViewById(R.id.balance_asset_table);
         if(tl.getChildCount() <= 2){
-        	DataRepository repository = DataRepository.getInstance();
+        	DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
             if(repository.getBsValue() != null){
                 showBalance(repository.getBsValue());
             }
@@ -95,7 +96,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     
     @Override
     public void onDestroyView() {
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.BS_MODE);
         adView.destroy();
         super.onDestroyView();

@@ -23,7 +23,7 @@
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_setting_username_optional"
+            android:text="@string/user_info_setting_username_optional"
             android:textColor="#AAAAAA"
             android:textSize="18sp" />
 
@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/account_setting_username_hint" >
+                android:hint="@string/user_info_setting_username_hint" >
             </EditText>
 
             <Button
@@ -70,7 +70,7 @@
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_setting_locale_language"
+            android:text="@string/user_info_setting_locale_language"
             android:textColor="#AAAAAA"
             android:textSize="18sp" />
 
@@ -97,7 +97,7 @@
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/account_setting_timezone"
+            android:text="@string/user_info_setting_timezone"
             android:textColor="#AAAAAA"
             android:textSize="18sp" />
 

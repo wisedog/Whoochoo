@@ -6,6 +6,7 @@ import java.util.List;
 import net.simonvt.menudrawer.MenuDrawer;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
 import net.wisedog.android.whooing.dialog.AboutDialog;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -204,7 +205,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    mRestApiText = new TextView(this);
 	    mRestApiText.setId(API_MENUITEM_ID);
-	    DataRepository repository = DataRepository.getInstance();
+	    DataRepository repository =  WhooingApplication.getInstance().getRepo();//DataRepository.getInstance();
 	    mRestApiText.setText("Api\r\n "+ repository.getRestApi());
 	    mRestApiText.setClickable(true);
 	    mRestApiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);

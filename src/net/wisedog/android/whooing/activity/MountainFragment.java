@@ -6,12 +6,14 @@ import org.json.JSONObject;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import net.wisedog.android.whooing.R;
+import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
 import net.wisedog.android.whooing.views.WhooingGraph;
 import android.app.Activity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,30 +43,23 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
     
     @Override
     public void onResume() {
-        /*
-         * WhooingGraph wg = new WhooingGraph(); wg.showGraph(mActivity);
-         */
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo();
         if(repository.getMtValue() != null){
            showMountainGraph(repository.getMtValue());
-           super.onResume();
-           return;
         }
-        repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+        else{
+            repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+        }
+        
         super.onResume();
         
     }
     
     @Override
     public void onDestroyView() {
-        DataRepository repository = DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
         repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
         super.onDestroyView();
-    }
-
-	@Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
     
     @Override

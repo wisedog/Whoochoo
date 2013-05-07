@@ -68,6 +68,7 @@
     <string name="text_memo">메모</string>
     <string name="text_category">종류</string>
     <string name="text_deactivate">비활성화</string>
+    <string name="text_deleted">삭제됨</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">정보 더보기&#8230;</string>
@@ -109,11 +110,14 @@
     <string name="add_transaction_add_complete">추가 완료</string>
     
     <!-- User Account -->
-    <string name="account_setting_timezone">시간대</string>
-    <string name="account_setting_locale_language">언어(날짜 형식 관련)</string>
-    <string name="account_setting_username_hint">별명을 적어주세요</string>
-    <string name="account_setting_username_optional">사용자 이름(선택)</string>
-    <string name="account_setting_progress">사용자 정보 로딩중</string>
+    <string name="user_info_setting_timezone">시간대</string>
+    <string name="user_info_setting_locale_language">언어(날짜 형식 관련)</string>
+    <string name="user_info_setting_username_hint">별명을 적어주세요</string>
+    <string name="user_info_setting_username_optional">사용자 이름(선택)</string>
+    <string name="user_info_setting_progress">사용자 정보 로딩중</string>
+    <string name="user_info_setting_alert_country">국가를 선택해주세요</string>
+    <string name="user_info_setting_alert_language">언어를 선택해주세요</string>
+    <string name="user_info_setting_alert_currency">통화를 선택해주세요 </string>
     
     <!-- About dialog  -->
     <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without user id, language, currency.</string>
