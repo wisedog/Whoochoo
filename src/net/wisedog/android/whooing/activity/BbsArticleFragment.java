@@ -149,7 +149,8 @@ public class BbsArticleFragment extends SherlockFragment {
 						result = obj.getInt("code");
 					} catch (JSONException e) {
 						e.printStackTrace();
-						//TODO Toast
+						Toast.makeText(getSherlockActivity(), "Error - BBS-03", Toast.LENGTH_LONG).show();
+						return;
 					}
                 	if(result == Define.RESULT_OK){
                 		LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
@@ -174,8 +175,8 @@ public class BbsArticleFragment extends SherlockFragment {
                         result = obj.getInt("code");
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(getSherlockActivity(), "Error - BBS-02", Toast.LENGTH_LONG).show();
                         return;
-                        //TODO Toast
                     }
                     if(result == Define.RESULT_OK){
                         mProgress.dismiss();

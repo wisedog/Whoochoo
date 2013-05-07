@@ -449,8 +449,8 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
                     result = obj.getInt("code");
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(AccountsModify.this , "Error - AccountsModify-01", Toast.LENGTH_LONG).show();
                     return;
-                    //TODO Toast
                 }
                 ProgressBar progress = (ProgressBar)findViewById(R.id.account_modify_progress_bar);
                 if(progress != null){

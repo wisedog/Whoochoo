@@ -182,6 +182,7 @@
     <string name="account_setting_del_msg">This account is involved in transaction(s). Please choose one of the following : </string>
     <string name="account_setting_del_msg_really_delete">Really delete?</string>
     <string name="account_setting_msg_close">Deactivate - Click "Confirm" to apply</string>
+    <string name="account_setting_del_unavailable">Unavailable to delete. Only this account is remain in the account type.</string>
     
         
     <!-- Content Description -->

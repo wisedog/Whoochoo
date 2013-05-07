@@ -167,7 +167,7 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                         RadioButton radio1 = (RadioButton)dl.findViewById(R.id.account_setting_del_radio1);
                         RadioButton radio2 = (RadioButton)dl.findViewById(R.id.account_setting_del_radio2);
                         if(lastOne.compareTo("y") == 0){
-                            //TODO change msg board that "not delete. only this account is in account type"
+                            msgText.setText(getString(R.string.account_setting_del_unavailable));
                         	dl.findViewById(R.id.account_setting_del_btn_confirm).setEnabled(false);
                         	if(radio1 != null && radio2 != null){
                         		radio1.setVisibility(View.GONE);

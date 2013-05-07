@@ -176,13 +176,13 @@ public class BbsWriteFragment extends SherlockFragment {
                     result = obj.getInt("code");
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Toast.makeText(getSherlockActivity(), "Error - BBS-01", Toast.LENGTH_LONG).show();
                     return;
-                    //TODO Toast
                 }
                 if(msg.arg1 == Define.API_POST_BOARD_ARTICLE){
                     
                     if(Define.DEBUG){
-                        Log.i("wisedog", "POST_BOARD_ARTICLE : " + obj.toString());
+                        Log.d("wisedog", "POST_BOARD_ARTICLE : " + obj.toString());
                     }
                     
                     if(result == Define.RESULT_OK){
@@ -192,7 +192,7 @@ public class BbsWriteFragment extends SherlockFragment {
                     
                 }else if(msg.arg1== Define.API_PUT_BOARD_ARTICLE){
                     if(Define.DEBUG){
-                        Log.i("wisedog", "PUT_BOARD_ARTICLE : " + obj.toString());
+                        Log.d("wisedog", "PUT_BOARD_ARTICLE : " + obj.toString());
                     }
                     
                     if(result == Define.RESULT_OK){
@@ -203,7 +203,7 @@ public class BbsWriteFragment extends SherlockFragment {
                     }
                 }else if(msg.arg1 == Define.API_PUT_BOARD_REPLY){
                 	if(Define.DEBUG){
-                		Log.i("wisedog", "API_PUT_BOARD_REPLY : " + obj.toString());
+                		Log.d("wisedog", "API_PUT_BOARD_REPLY : " + obj.toString());
                 	}
                 	
                 	if(result == Define.RESULT_OK){

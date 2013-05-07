@@ -143,10 +143,6 @@ public class TransactionEntries extends SherlockFragmentActivity implements
                         e.printStackTrace();
                     }
                 }
-                else if(msg.arg1 == Define.API_GET_ENTRIES_INSERT){
-                    //TODO 맞는 값이 왔다면 상단 ProgressBar 끄고 
-                    //TODO 아래 ListView에 아이템 넣기
-                }
             }
             super.handleMessage(msg);
         }

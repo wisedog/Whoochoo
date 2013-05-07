@@ -183,5 +183,6 @@
     <string name="account_setting_del_msg">현재 관련 거래가 남아 있는 것으로 확인되어 있습니다. 아래의 방법 중 택1 하십시오.</string>
     <string name="account_setting_del_msg_really_delete">정말로 삭제하시겠습니까?</string>
     <string name="account_setting_msg_close">비활성화 적용 예정</string>
+    <string name="account_setting_del_unavailable">삭제할 수 없습니다. 이 계정 유형에 해당 계정밖에 존재하지 않습니다.</string>
     
 </resources>

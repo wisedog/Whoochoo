@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BbsReplyEntity extends LinearLayout {
 
@@ -85,6 +86,7 @@ public class BbsReplyEntity extends LinearLayout {
             } catch (MalformedURLException e) {
                 profileImage.setImageResource(R.drawable.profile_anonymous);                 
                 e.printStackTrace();
+                Toast.makeText(mContext, "Error - Reply-04", Toast.LENGTH_LONG).show();
                 return;
             }
             
@@ -146,8 +148,8 @@ public class BbsReplyEntity extends LinearLayout {
 		                            
 		                        } catch (JSONException e) {
 		                            e.printStackTrace();
+		                            Toast.makeText(mContext, "Error - Reply-03", Toast.LENGTH_LONG).show();
 		                            return;
-		                            //TODO Toast
 		                        }
 		                        mProgress = ProgressDialog.show(mContext, "", 
                                         mContext.getString(R.string.text_deleting));
@@ -210,7 +212,7 @@ public class BbsReplyEntity extends LinearLayout {
 					b.putInt("bbs_id", objResult.getInt("bbs_id"));
 					b.putString("comment_id", obj.getString("comment_id"));
 				} catch (JSONException e) {
-					// TODO Toast here
+				    Toast.makeText(mContext, "Error - Reply-01", Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 					return;
 				}
@@ -266,7 +268,7 @@ public class BbsReplyEntity extends LinearLayout {
                         ll.addView(entity, 0);
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        // TODO toast
+                        Toast.makeText(mContext, "Error - Reply-02", Toast.LENGTH_LONG).show();
                     }
                     EditText editText = (EditText)findViewById(R.id.bbs_article_chunk_comment_edittext);
                     if(editText != null){
@@ -290,7 +292,7 @@ public class BbsReplyEntity extends LinearLayout {
                 }
                 else if(msg.arg1 == Define.API_DELETE_BOARD_REPLY){
                     if(Define.DEBUG){
-                        Log.i("wisedog", "API_DELETE_BOARD_REPLY : " + obj.toString());
+                        Log.d("wisedog", "API_DELETE_BOARD_REPLY : " + obj.toString());
                     }
                     mProgress.dismiss();
                     BbsFragmentActivity activity = (BbsFragmentActivity)mContext;

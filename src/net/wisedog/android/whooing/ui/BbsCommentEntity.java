@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BbsCommentEntity extends LinearLayout {
 
@@ -48,7 +49,6 @@ public class BbsCommentEntity extends LinearLayout {
 		TextView textContent = (TextView)findViewById(R.id.bbs_comment_contents);
 		textContent.setText(obj.getString("contents"));
 		
-		// TODO userid 에 따라서 코멘트 삭제 버튼으로 둔갑, 이벤트핸들러 연결
 		TextView textDate = (TextView) findViewById(R.id.bbs_comment_date);
 		if (textDate != null) {
 			if (objWriter.getInt("user_id") == Define.USER_ID) {
@@ -75,8 +75,8 @@ public class BbsCommentEntity extends LinearLayout {
 		                        	b.putInt("addition_id", obj.getInt("addition_id"));
 		                        } catch (JSONException e) {
 		                            e.printStackTrace();
+		                            Toast.makeText(mContext, "Error - Comment-01", Toast.LENGTH_LONG).show();
 		                            return;
-		                            //TODO Toast
 		                        }
 		                        mProgress = ProgressDialog.show(mContext, "", 
                                         mContext.getString(R.string.text_deleting));

@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import android.content.Context;
+import android.widget.Toast;
 
 /**
  * @author Wisedog(me@wisedog.net)
@@ -69,7 +70,7 @@ public class GeneralProcessor {
                             dbHelper.addAccountEntity(info);
                         }
                     } catch (JSONException e) {
-                        // TODO Auto-generated catch block
+                        Toast.makeText(mContext, "Error - General-01", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }                    
                 }                
