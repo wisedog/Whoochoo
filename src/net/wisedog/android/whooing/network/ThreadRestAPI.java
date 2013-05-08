@@ -11,6 +11,7 @@ import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.PostIt;
 import net.wisedog.android.whooing.api.Section;
+import net.wisedog.android.whooing.api.UserAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 
 import org.json.JSONObject;
@@ -105,8 +106,9 @@ public class ThreadRestAPI extends Thread {
 	            type = "whooing";
 	        }
 		}
-		
-		Log.i("wisedog", "API Thread : " + mAPIName);
+		if(Define.DEBUG){
+		    Log.d("wisedog", "API Thread : " + mAPIName);
+		}
 		        
 		switch(mAPIName){
 		case Define.API_GET_MAIN:
@@ -131,7 +133,9 @@ public class ThreadRestAPI extends Thread {
             String account = mBundle.getString("account");
             String requestURL = "https://whooing.com/api/budget/" + account + ".json_array?section_id=" + 
                     Define.APP_SECTION + "&start_date=" + startDate + "&end_date=" + endDate;
-            Log.i("wisedog", "app_id="+Define.APP_ID + ", real_token = " + Define.REAL_TOKEN + ",app_secret = " + Define.APP_SECRET + ", token = "+ Define.TOKEN_SECRET);
+            if(Define.DEBUG){
+                Log.d("wisedog", "app_id="+Define.APP_ID + ", real_token = " + Define.REAL_TOKEN + ",app_secret = " + Define.APP_SECRET + ", token = "+ Define.TOKEN_SECRET);
+            }            
             result = budget.getInfo(requestURL, Define.APP_ID, Define.REAL_TOKEN, Define.APP_SECRET,
                     Define.TOKEN_SECRET);
             break;
@@ -257,11 +261,21 @@ public class ThreadRestAPI extends Thread {
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 		    break;
 		case Define.API_GET_USER_INFO:
-			requestUrl = "https://whooing.com/api/user.json";
-			GeneralApi userAPI = new GeneralApi();
-            result = userAPI.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+			UserAPI getUserApi = new UserAPI();
+            result = getUserApi.getUserInfo(Define.APP_ID, Define.REAL_TOKEN,
                     Define.APP_SECRET, Define.TOKEN_SECRET);
 			break;
+		case Define.API_PUT_USER_INFO:
+		    if(mBundle == null){
+		        Log.e(ThreadRestAPI.class.toString(), "Not enough information for API_PUT_USER_INFO");
+                sendMessage(null, mAPIName);
+                return;
+		    }
+		    UserAPI putUserApi = new UserAPI();
+            result = putUserApi.putUserInfo(Define.APP_ID, Define.REAL_TOKEN,
+                    Define.APP_SECRET, Define.TOKEN_SECRET, mBundle);
+		    break;
+			
 		case Define.API_GET_BOARD:
 		    
 			int pageBoard = mBundle.getInt("page");

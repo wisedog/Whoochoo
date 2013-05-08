@@ -110,14 +110,16 @@
     <string name="add_transaction_add_complete">Add complete</string>
     
     <!-- User Account -->
-    <string name="user_info_setting_timezone">Timezone</string>
-    <string name="user_info_setting_locale_language">Language(for Date formatting, Board)</string>
-    <string name="user_info_setting_username_hint">Nick name here</string>
-    <string name="user_info_setting_username_optional">User Name(Optional)</string>
-    <string name="user_info_setting_progress">Loading User Information</string>
-    <string name="user_info_setting_alert_country">Please select country.</string>
-    <string name="user_info_setting_alert_language">Please select language.</string>
-    <string name="user_info_setting_alert_currency">Please select currency.</string>
+    <string name="user_info_timezone">Timezone</string>
+    <string name="user_info_locale_language">Language(for Date formatting, Board)</string>
+    <string name="user_info_username_hint">Nick name here</string>
+    <string name="user_info_username_optional">User Name(Optional)</string>
+    <string name="user_info_progress">Loading User Information</string>
+    <string name="user_info_alert_country">Please select country.</string>
+    <string name="user_info_alert_language">Please select language.</string>
+    <string name="user_info_alert_name_taken">The nickname is already taken</string>
+    <string name="user_info_alert_name_ok">You can use the nickname</string>
+    <string name="user_info_alert_check_name">Please check the name</string>
     
     
     <!-- About dialog  -->

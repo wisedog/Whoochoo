@@ -223,7 +223,9 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 		SubMenu subMenu1 = menu.addSubMenu("Lists");
 		subMenu1.add("Accounts Setting");
 		subMenu1.add("User Setting");
+		subMenu1.add("Logout");
 		subMenu1.add("About");
+		
 		
 
 		MenuItem subMenu1Item = subMenu1.getItem();
@@ -243,7 +245,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         else if(item.getTitle().equals("Accounts Setting")){
         	Intent intent = new Intent(this, AccountsSetting.class);
         	startActivityForResult(intent, 1);
-        	//WhooingAlert.showGoWhooing(this, getString(R.string.global_go_setting_whooing));
         }
         else if(item.getTitle().equals("User Setting")){
         	Intent intent = new Intent(this, UserInfoSetting.class);

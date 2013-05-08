@@ -105,7 +105,11 @@ public class Define {
     public static final int API_DELETE_ACCOUNTS = 2303;
     public static final int API_GET_ACCOUNT_EXISTS_ENTRIES = 2304;    
     
+    // user
     public static final int API_GET_USER_INFO = 3000;
+    public static final int API_PUT_USER_INFO = 3001;
+    
+    // etc
     public static final int API_GET_FREQUENT_ITEM = 3010;
     
     

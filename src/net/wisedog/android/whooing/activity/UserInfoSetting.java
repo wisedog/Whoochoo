@@ -11,7 +11,10 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnUserChangeListener;
+import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
+import net.wisedog.android.whooing.widget.WiButton;
+import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -19,12 +22,15 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +42,8 @@ import android.widget.Toast;
 public class UserInfoSetting extends Activity implements OnUserChangeListener{
 
     private ProgressDialog mProgress;
+    private String mUserName;
+    private boolean isChecked = false;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -45,10 +53,10 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_setting);
         setEnableUi(false);
-        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo();
         if(repository.getUserValue() == null){
             mProgress = ProgressDialog.show(this, "", 
-                    getString(R.string.user_info_setting_progress));
+                    getString(R.string.user_info_progress));
             repository.refreshUserInfo(this);
             repository.registerObserver(this, DataRepository.USER_MODE);
         }
@@ -68,9 +76,9 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         currencySpinner.setEnabled(flag);
         EditText nicknameEdit = (EditText)findViewById(R.id.user_setting_nickname_edit);
         nicknameEdit.setEnabled(flag);
-        Button completeBtn = (Button)findViewById(R.id.user_setting_complete);
+        WiButton completeBtn = (WiButton)findViewById(R.id.user_setting_complete);
         completeBtn.setEnabled(flag);
-        Button checkBtn = (Button)findViewById(R.id.user_setting_check_btn);
+        WiButton checkBtn = (WiButton)findViewById(R.id.user_setting_check_btn);
         checkBtn.setEnabled(flag);
         
         
@@ -79,6 +87,23 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
     protected void initUi(JSONObject obj){
         
         setEnableUi(true);
+        
+        if(getIntent().getBooleanExtra("from_menu", false)){
+            WiButton cancelBtn = (WiButton)findViewById(R.id.user_setting_cancel);
+            if(cancelBtn != null){
+                cancelBtn.setVisibility(View.VISIBLE);
+            }
+        }
+        else{
+            WiTextView textUsername = (WiTextView)findViewById(R.id.user_setting_text_username);
+            if(textUsername != null){
+                textUsername.setVisibility(View.GONE);
+            }
+            LinearLayout ll = (LinearLayout)findViewById(R.id.user_setting_layout_username);
+            if(ll != null){
+                ll.setVisibility(View.GONE);
+            }
+        }
         
         //Spinner adapter
         Spinner countrySpinner = (Spinner)findViewById(R.id.user_setting_spinner_country);
@@ -100,6 +125,9 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         } catch (JSONException e) {
             e.printStackTrace();            
         }
+        
+        mUserName = username;
+        
         int idxCountry = 0;
         for(int i = 0; i < WhooingCurrency.COUNTRY_CODE.length; i++){
             if(WhooingCurrency.COUNTRY_CODE[i].compareToIgnoreCase(country) == 0){
@@ -201,8 +229,6 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         };
         currencySpinner.setAdapter(currencyAdapter);
         currencySpinner.setSelection(idxCurrency);
-      //Nickname asynctask
-        //Complete button Asynctask
     }
 
     /* (non-Javadoc)
@@ -233,6 +259,20 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
      * 
      * */
     public void onClickComplete(View v){
+        if(getIntent().getBooleanExtra("from_menu", false)){
+            EditText editText = (EditText)findViewById(R.id.user_setting_nickname_edit);
+            if(editText.getText().toString().compareTo(mUserName) == 0){    //not be changed name. 
+                ;// go ahead
+            }else{
+                if(isChecked == false){
+                    Toast.makeText(this, getString(R.string.user_info_alert_check_name), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                else{
+                    ; //go ahead
+                }
+            }
+        }
         SharedPreferences prefs = this.getSharedPreferences(Define.SHARED_PREFERENCE,
 				Activity.MODE_PRIVATE);
 		SharedPreferences.Editor editor = prefs.edit();
@@ -240,7 +280,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 		Spinner countrySpinner = (Spinner)findViewById(R.id.user_setting_spinner_country);
 		int idx = countrySpinner.getSelectedItemPosition();
 		if(idx <= 0){
-		    Toast.makeText(this, getString(R.string.user_info_setting_alert_country), Toast.LENGTH_LONG).show();
+		    Toast.makeText(this, getString(R.string.user_info_alert_country), Toast.LENGTH_LONG).show();
 		    return;
 		}else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_COUNTRY_CODE, WhooingCurrency.COUNTRY_CODE[idx]);
@@ -260,7 +300,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         Spinner langAppSpinner = (Spinner)findViewById(R.id.user_setting_spinner_language_app);
         idx = langAppSpinner.getSelectedItemPosition();
         if(idx <= 0){
-            Toast.makeText(this, getString(R.string.user_info_setting_alert_language), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.user_info_alert_language), Toast.LENGTH_LONG).show();
             return;
         }else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_LOCALE_LANGUAGE, WhooingCurrency.LOCALE_LANGUAGE_CODE[idx]);
@@ -270,7 +310,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         Spinner currencySpinner = (Spinner)findViewById(R.id.user_setting_spinner_currency);
         idx = currencySpinner.getSelectedItemPosition();
 		if(idx <= 0){
-		    Toast.makeText(this, R.string.user_info_setting_alert_currency, Toast.LENGTH_LONG).show();
+		    Toast.makeText(this, R.string.user_info_alert_currency, Toast.LENGTH_LONG).show();
             return;
 		}else if(idx > 0){
 			editor.putString(Define.KEY_SHARED_CURRENCY_CODE, WhooingCurrency.CURRENCY[idx]);
@@ -279,6 +319,11 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 		}
 		
         setResult(RESULT_OK);
+        finish();
+    }
+    
+    public void onClickCancel(View v){
+        setResult(RESULT_CANCELED);
         finish();
     }
     
@@ -306,5 +351,55 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         }).show();
     }
     
+    public void onClickCheckName(View v){
+        EditText editText = (EditText)findViewById(R.id.user_setting_nickname_edit);
+        ProgressBar bar = (ProgressBar)findViewById(R.id.user_setting_progress_bar);
+        if(bar != null){
+            bar.setVisibility(View.VISIBLE);
+        }
+        v.setEnabled(false);
+        if(editText != null){
+            Bundle b = new Bundle();
+            b.putString("username", editText.getText().toString());
+            ThreadRestAPI thread = new ThreadRestAPI(mHandler,Define.API_PUT_USER_INFO, b);
+            thread.start();
+        }        
+    }
+    
+    Handler mHandler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            if(msg.what == Define.MSG_API_OK){
+                JSONObject obj = (JSONObject)msg.obj;
+                ProgressBar bar = (ProgressBar)findViewById(R.id.user_setting_progress_bar);
+                if(bar != null){
+                    bar.setVisibility(View.INVISIBLE);
+                }
+                WiButton btn = (WiButton)findViewById(R.id.user_setting_check_btn);
+                if(btn != null){
+                    btn.setEnabled(true);
+                }
+                int result = 0;
+                try {
+                    result = obj.getInt("code");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                if(result != Define.RESULT_OK){
+                    Toast.makeText(UserInfoSetting.this, getString(R.string.user_info_alert_name_taken), Toast.LENGTH_LONG).show();
+                    isChecked = false;
+                }
+                else{
+                    isChecked = true;
+                    Toast.makeText(UserInfoSetting.this, getString(R.string.user_info_alert_name_ok), Toast.LENGTH_LONG).show();
+                }
+                
+            }
+            super.handleMessage(msg);
+        }
+        
+    };
     
 }
