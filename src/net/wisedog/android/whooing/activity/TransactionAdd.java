@@ -12,9 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
@@ -110,7 +107,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             @Override
             protected void onPostExecute(JSONObject result) {
                 if(Define.DEBUG && result != null){
-                    Log.i("wisedog", "API Call - API_GET_ENTRIES_LATEST : " + result.toString());
+                    Log.d("wisedog", "API Call - API_GET_ENTRIES_LATEST : " + result.toString());
                 }
                 try {
                     showLatestTransaction(result);                    
@@ -166,7 +163,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
 
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
-        //String date = DateFormat.format("yyyy-MM-dd", new java.util.Date()).toString();
         String date = df.format(new java.util.Date()).toString();
         mDateDisplay.setText(date);
         
@@ -224,28 +220,6 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         });
         
         return true;
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        SubMenu subMenu1 = menu.addSubMenu("Lists");
-        subMenu1.add("Setting");
-        subMenu1.add("About");
-
-        MenuItem subMenu1Item = subMenu1.getItem();
-        subMenu1Item.setIcon(R.drawable.menu_lists_button);
-        subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	if (item.getItemId() == android.R.id.home) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            this.finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
     
     /**
@@ -385,7 +359,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
 			@Override
 			protected void onPostExecute(JSONObject result) {
 			    if(Define.DEBUG && result != null){
-                    Log.i("wisedog", "API Call - API_POST_ENTRIES : " + result.toString());
+                    Log.d("wisedog", "API Call - API_POST_ENTRIES : " + result.toString());
                 }
 				Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
             	goBtn.setEnabled(true);
@@ -415,7 +389,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
             	textView.requestFocus();
             	
             	//Clear cached data - mt, pl, bs ... 
-            	DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+            	DataRepository repository = WhooingApplication.getInstance().getRepo();
             	repository.clearCachedData();
 				super.onPostExecute(result);
 			}
