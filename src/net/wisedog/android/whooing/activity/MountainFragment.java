@@ -10,17 +10,14 @@ import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
 import net.wisedog.android.whooing.views.WhooingGraph;
-import android.app.Activity;
 import android.os.Bundle;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 public final class MountainFragment extends SherlockFragment implements OnMountainChangeListener {
-    private Activity mActivity;
 
     public static MountainFragment newInstance(String content) {
         MountainFragment fragment = new MountainFragment();
@@ -36,7 +33,7 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	View view = inflater.inflate(R.layout.mountain, null);
+    	View view = inflater.inflate(R.layout.mountain_fragment, null);
     	
         return view;
     }
@@ -49,6 +46,7 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
         }
         else{
             repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+            repository.refreshMtValue(getSherlockActivity());
         }
         
         super.onResume();
@@ -62,12 +60,6 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
         super.onDestroyView();
     }
     
-    @Override
-	public void onAttach(Activity activity) {
-		mActivity = activity;
-		super.onAttach(activity);
-	}
-
     /**
      * implements for OnMountainChangeListener
      * */
@@ -82,9 +74,18 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
         try {
             JSONObject resultObj = obj.getJSONObject("results");
             WhooingGraph wg = new WhooingGraph();
-            LinearLayout llBody = (LinearLayout) mActivity.findViewById(R.id.test1);
+            LinearLayout llBody = (LinearLayout) getSherlockActivity().findViewById(R.id.mountain_fragment_container);
             if(llBody != null){
-                wg.showGraph(mActivity, llBody, resultObj.getJSONArray("rows"));
+                boolean result = wg.showGraph(getSherlockActivity(), llBody, resultObj.getJSONArray("rows"));
+                if(result == false){
+                    DataRepository repository = WhooingApplication.getInstance().getRepo();
+                    Object observer = repository.findObserver(DataRepository.MOUNTAIN_MODE, (Object)this);
+                    if(observer == null)
+                    {
+                        repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
+                    }
+                    repository.refreshMtValue(getSherlockActivity());
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

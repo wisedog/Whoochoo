@@ -152,6 +152,9 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                         int count = resultObj.getInt("count");
                         String lastOne = resultObj.getString("last_one");
                         Dialog dl = AccountDeleteConfirmDialog.this.getDialog();
+                        if(dl == null){
+                            return;
+                        }
                         WiTextView loadingText = (WiTextView)dl.findViewById(R.id.account_setting_del_loading);
                         if(loadingText != null){
                             loadingText.setVisibility(View.GONE);
