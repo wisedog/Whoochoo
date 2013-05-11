@@ -72,8 +72,9 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     @Override
     public void onResume() {
-        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+        DataRepository repository = WhooingApplication.getInstance().getRepo();
         if(repository.getMtValue() == null || repository.getExpBudgetValue() == null){
+        	Log.i("wisedog", "Dashboard-  MT Update");
         	repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
             repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
         	repository.refreshDashboardValue(getSherlockActivity());

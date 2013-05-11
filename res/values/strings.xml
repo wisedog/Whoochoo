@@ -108,6 +108,7 @@
     
     <!-- Transaction Add -->
     <string name="add_transaction_add_complete">Add complete</string>
+    <string name="add_transaction_add">Add</string>
     
     <!-- User Account -->
     <string name="user_info_timezone">Timezone</string>

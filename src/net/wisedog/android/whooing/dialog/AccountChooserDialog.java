@@ -148,6 +148,10 @@ public class AccountChooserDialog extends SherlockDialogFragment {
                 continue;
             }
             
+            if(entity.type.compareTo("group") == 0){
+            	continue;
+            }
+            
             //Creating accounts item
             WiTextView textView = new WiTextView(getActivity());
             textView.setId(DYNAMIC_VIEW_ID+i);

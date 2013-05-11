@@ -23,11 +23,11 @@
     <string name="total_capital">총 자본</string>
     <string name="total_expenses">총 지출</string>
     <string name="total_income">총 수입</string>
-    <string name="text_item">항목</string>
+    <string name="text_item">아이템</string>
     <string name="text_account">계정</string>
     <string name="text_amount">금액</string>
-    <string name="text_left">Left</string>
-    <string name="text_right">Right</string>
+    <string name="text_left">왼쪽(차변)</string>
+    <string name="text_right">오른쪽(대변)</string>
     <string name="text_date">날짜</string>
     <string name="text_change">변경</string>
     <string name="text_search">찾기</string>
@@ -108,6 +108,7 @@
     
     <!-- Transaction Add -->
     <string name="add_transaction_add_complete">추가 완료</string>
+    <string name="add_transaction_add">추가</string>
     
     <!-- User Account -->
     <string name="user_info_timezone">시간대</string>

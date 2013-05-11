@@ -17,7 +17,6 @@ public class WhooingApplication extends Application {
     public synchronized DataRepository getRepo(){
         if(dataRepository == null){
             Log.d("wisedog", "DataRepository is just created");
-            //some init here
             dataRepository = new DataRepository();
         }
         return dataRepository;

@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.utils.WhooingCalendar;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -424,4 +425,24 @@ public class DataRepository{
 		mBsValue = null;
 		mExpBudgetValue = null;
 	}
+
+    public void refreshMtValue(Context context) {
+        Bundle bundle = new Bundle();
+        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
+        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
+        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                Define.API_GET_MOUNTAIN, bundle);
+        thread.start();        
+    }
+
+    public Object findObserver(int observerMode, Object object) {
+        if(mMtObservers != null){
+            for(int i = 0; i < mMtObservers.size(); i++){
+                if(object == mMtObservers.get(i)){
+                    return object;
+                }                
+            }
+        }
+        return null;
+    }
 }

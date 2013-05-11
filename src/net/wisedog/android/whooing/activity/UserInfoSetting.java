@@ -24,7 +24,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -115,18 +114,29 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         String currency = null;
         String username = null;
         String timezone = null;
+        String language = null;
         try {
             JSONObject objResult = obj.getJSONObject("results");
             country = objResult.getString("country");
             currency = objResult.getString("currency");
             username = objResult.getString("username");
             timezone = objResult.getString("timezone");
+            language = objResult.getString("language");
             
         } catch (JSONException e) {
             e.printStackTrace();            
         }
         
+        if(getIntent().getBooleanExtra("from_menu", false)){
+            if(Define.LOCALE_LANGUAGE != null){
+                language = Define.LOCALE_LANGUAGE;
+            }            
+        }
+        
         mUserName = username;
+        
+        EditText editText = (EditText)findViewById(R.id.user_setting_nickname_edit);
+        editText.setText(username);
         
         int idxCountry = 0;
         for(int i = 0; i < WhooingCurrency.COUNTRY_CODE.length; i++){
@@ -184,6 +194,13 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         timezoneSpinner.setAdapter(timezoneAdapter);
         timezoneSpinner.setSelection(idxTimeZone);
         
+        int idxLanguage = 0;
+        for(int i = 0; i < WhooingCurrency.LOCALE_LANGUAGE_CODE.length; i++){
+            if(WhooingCurrency.LOCALE_LANGUAGE_CODE[i].compareToIgnoreCase(language) == 0){
+                idxLanguage = i;
+                break;
+            }
+        }
         ArrayAdapter<String> langAppAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.select_dialog_item, WhooingCurrency.LOCALE_LANGUAGE_NAME) {
 
@@ -202,6 +219,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 
         };
         langAppSpinner.setAdapter(langAppAdapter);
+        langAppSpinner.setSelection(idxLanguage);
         
         int idxCurrency = 0;
         for(int i = 0; i < WhooingCurrency.CURRENCY.length; i++){
@@ -297,6 +315,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 			editor.commit();
 			Define.TIMEZONE = WhooingCurrency.TIMEZONE[idx];
 		}
+		
         Spinner langAppSpinner = (Spinner)findViewById(R.id.user_setting_spinner_language_app);
         idx = langAppSpinner.getSelectedItemPosition();
         if(idx <= 0){
@@ -307,6 +326,7 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
 			editor.commit();
 			Define.LOCALE_LANGUAGE = WhooingCurrency.LOCALE_LANGUAGE_CODE[idx];
 		}
+        
         Spinner currencySpinner = (Spinner)findViewById(R.id.user_setting_spinner_currency);
         idx = currencySpinner.getSelectedItemPosition();
 		if(idx <= 0){
