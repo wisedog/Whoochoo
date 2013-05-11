@@ -17,7 +17,6 @@ import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.FragmentUtil;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
-import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -47,8 +46,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
         BalanceFragment fragment = new BalanceFragment();
         return fragment;
     }
-
-    private Activity mActivity;
+    
 	private AdView adView;
 
     @Override
@@ -74,10 +72,10 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 
     @Override
     public void onResume() {
-        TableLayout tl = (TableLayout) mActivity
+        TableLayout tl = (TableLayout) getSherlockActivity()
                 .findViewById(R.id.balance_asset_table);
         if(tl.getChildCount() <= 2){
-        	DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+        	DataRepository repository = WhooingApplication.getInstance().getRepo();
             if(repository.getBsValue() != null){
                 showBalance(repository.getBsValue());
             }
@@ -87,12 +85,6 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             }
         }
         super.onResume();
-    }
-    
-    @Override
-    public void onAttach(Activity activity) {
-        mActivity = activity;
-        super.onAttach(activity);
     }
     
     @Override
@@ -108,12 +100,12 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 	 * @param	obj		JSON formatted balance data
 	 * */
 	public void showBalance(JSONObject obj) {
-	    WiTextView labelTotalAssetValue = (WiTextView)mActivity.findViewById(R.id.balance_total_asset_value);
+	    WiTextView labelTotalAssetValue = (WiTextView)getSherlockActivity().findViewById(R.id.balance_total_asset_value);
 		
-		TableLayout tl = (TableLayout) mActivity
+		TableLayout tl = (TableLayout) getSherlockActivity()
 				.findViewById(R.id.balance_asset_table);
 		DisplayMetrics metrics = new DisplayMetrics();
-		mActivity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		final int secondColumnWidth = (int) (metrics.widthPixels * 0.6);
 		Resources r = getResources();
 		final int valueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 95,
@@ -129,7 +121,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             if (labelTotalAssetValue != null) {
             	double totalAssetValue1 = objAssets.getDouble("total");
                 labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1));
-                View bar = (View) mActivity.findViewById(R.id.bar_total_asset);
+                View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_asset);
                 int barWidth = FragmentUtil.getBarWidth(objAssets.getInt("total"), totalAssetValue,
                         secondColumnWidth, valueWidth);
                 
@@ -146,14 +138,14 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 			
 			JSONObject objLiabilities = objResult.getJSONObject("liabilities");
 			JSONArray objLiabilitiesAccounts = objLiabilities.getJSONArray("accounts");
-			TableLayout tableLiabilites = (TableLayout) mActivity
+			TableLayout tableLiabilites = (TableLayout) getSherlockActivity()
 	                .findViewById(R.id.balance_liabilities_table);
 			
-			WiTextView labelTotalLiabilitiesValue = (WiTextView)mActivity.findViewById(R.id.balance_total_liabilities_value);
+			WiTextView labelTotalLiabilitiesValue = (WiTextView)getSherlockActivity().findViewById(R.id.balance_total_liabilities_value);
 			if(labelTotalLiabilitiesValue != null){
 				double totalLiabilities = objLiabilities.getDouble("total");
 			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities));
-                View bar = (View)mActivity.findViewById(R.id.bar_total_liabilities);
+                View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_liabilities);
                 int barWidth = FragmentUtil.getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
                         secondColumnWidth, valueWidth);
                 android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
@@ -176,17 +168,17 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 	    if(accounts == null){
 	        return;
 	    }
-	    GeneralProcessor genericProcessor = new GeneralProcessor(mActivity);
+	    GeneralProcessor genericProcessor = new GeneralProcessor(getSherlockActivity());
 	    for(int i = 0; i < accounts.length(); i++){
 	        JSONObject accountItem = (JSONObject) accounts.get(i);
             
             /* Create a new row to be added. */
-            TableRow tr = new TableRow(mActivity);
+            TableRow tr = new TableRow(getSherlockActivity());
             tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
             
-            WiTextView accountText = new WiTextView(mActivity);
+            WiTextView accountText = new WiTextView(getSherlockActivity());
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
             if(entity == null){
             	return;
@@ -203,7 +195,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
 
             tr.addView(accountText);
             
-            LinearLayout amountLayout = new LinearLayout(mActivity);
+            LinearLayout amountLayout = new LinearLayout(getSherlockActivity());
             amountLayout.setLayoutParams(new TableRow.LayoutParams(
                     0, 
                     LayoutParams.WRAP_CONTENT,0.6f));
@@ -216,7 +208,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
                     barWidth, px);
             
             //set up view for horizontally bar graph 
-            View barView = new View(mActivity);
+            View barView = new View(getSherlockActivity());
             barView.setBackgroundColor(color);
             int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
             lParams.setMargins(0, 0, rightMargin, 0);
@@ -224,7 +216,7 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
             barView.setLayoutParams(lParams);
             
             //set up textview for showing amount
-            WiTextView amountText = new WiTextView(mActivity);
+            WiTextView amountText = new WiTextView(getSherlockActivity());
             double money = accountItem.getDouble("money");
             amountText.setText(WhooingCurrency.getFormattedValue(money));
             amountLayout.addView(barView);

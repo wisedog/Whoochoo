@@ -12,6 +12,7 @@ import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListene
 import net.wisedog.android.whooing.views.WhooingGraph;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public final class MountainFragment extends SherlockFragment implements OnMounta
            showMountainGraph(repository.getMtValue());
         }
         else{
+        	Log.i("wisedog", "Mountain register");
             repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
             repository.refreshMtValue(getSherlockActivity());
         }

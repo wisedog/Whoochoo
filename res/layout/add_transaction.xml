@@ -35,7 +35,7 @@
 		            android:layout_height="wrap_content"
 		            android:layout_gravity="center_vertical"
 		            android:layout_marginLeft="10dip"
-		            android:text="2012.03.09"
+		            android:text=""
 		            android:textSize="24sp" />
 		        
 		        <ImageButton
@@ -157,7 +157,7 @@
 	            android:layout_width="match_parent"
 	            android:layout_height="wrap_content"
 	            android:onClick="onClickGo"
-	            android:text="Go" />
+	            android:text="@string/add_transaction_add" />
 	    </LinearLayout>
 	    <ListView
 	        android:id="@+id/list_lastest_transaction"
