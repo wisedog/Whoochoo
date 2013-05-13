@@ -7,14 +7,11 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
-import net.wisedog.android.whooing.auth.WhooingAuthWeb;
 import net.wisedog.android.whooing.engine.DataRepository;
-import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
-import net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,7 +36,7 @@ import com.google.ads.AdView;
  * 첫 페이지(대쉬보드)Fragment
  * @author Wisedog(me@wisedog.net)
  * */
-public class DashboardFragment extends SherlockFragment implements OnMountainChangeListener, OnExpBudgetChangeListener{
+public class DashboardFragment extends SherlockFragment{
 	
 	public static DashboardFragment newInstance() {
         DashboardFragment fragment = new DashboardFragment();
@@ -74,10 +71,20 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     public void onResume() {
         DataRepository repository = WhooingApplication.getInstance().getRepo();
         if(repository.getMtValue() == null || repository.getExpBudgetValue() == null){
-        	Log.i("wisedog", "Dashboard-  MT Update");
-        	repository.registerObserver(this, DataRepository.MOUNTAIN_MODE);
-            repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
-        	repository.refreshDashboardValue(getSherlockActivity());
+        	Bundle bundle = new Bundle();
+    		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
+    		bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
+    		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+    				Define.API_GET_MOUNTAIN, bundle);
+    		thread.start();
+
+    		Bundle bundleBudget = new Bundle();
+    		bundleBudget.putString("account", "expenses");
+    		bundleBudget.putString("end_date", WhooingCalendar.getTodayYYYYMM());
+    		bundleBudget.putString("start_date", WhooingCalendar.getTodayYYYYMM());
+    		ThreadRestAPI thread1 = new ThreadRestAPI(mHandler,
+    				Define.API_GET_BUDGET, bundleBudget);
+    		thread1.start();
         }else{
         	if(repository.getMtValue() != null){
                 showMountainValue(repository.getMtValue());
@@ -91,14 +98,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
         super.onResume();
     }
 
-    @Override
-	public void onPause() {
-    	DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
-        repository.removeObserver(this, DataRepository.MOUNTAIN_MODE);
-        repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
-		super.onPause();
-	}
-
 	/* (non-Javadoc)
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
@@ -111,7 +110,20 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            if(msg.what == Define.MSG_FAIL){
+        	if(msg.what == Define.MSG_API_OK){
+        		JSONObject obj = (JSONObject)msg.obj;
+        		DataRepository repository = WhooingApplication.getInstance().getRepo();
+        		if(msg.arg1 == Define.API_GET_MOUNTAIN){
+			        repository.setMtValue(obj);
+			        if(isAdded() == true){
+			            showMountainValue(obj);
+			        }
+        		}else if(msg.arg1 == Define.API_GET_BUDGET){
+        			repository.setExpBudgetValue(obj);
+        			showBudgetValue(obj);
+        		}
+        	}
+/*            if(msg.what == Define.MSG_FAIL){
                 dialog.dismiss();
                 Toast.makeText(getSherlockActivity(), getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
             }
@@ -151,7 +163,7 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
                         e.printStackTrace();
                     }
                 }
-            }
+            }*/
         }
     };
     
@@ -164,7 +176,6 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
 
     @Override
     public void onActivityCreated(Bundle bundle) {
-        
         if(Define.NEED_TO_REFRESH == false && bundle != null){
             WiTextView textView = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
             textView.setText(bundle.getString("assets_value"));
@@ -335,20 +346,4 @@ public class DashboardFragment extends SherlockFragment implements OnMountainCha
     	budgetGraph.setLayoutParams(params1);
     	spentGraph.setLayoutParams(params2);
     }
-
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnMountainChangeListener#onMountainUpdate(org.json.JSONObject)
-     */
-    public void onMountainUpdate(JSONObject obj) {
-        //여기서 Dashboard의 Asset, Doubt, 전월대비 설정한다. 
-        showMountainValue(obj);
-    }
-
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnBudgetChangeListener#onBudgetUpdate(org.json.JSONObject)
-     */
-    public void onExpBudgetUpdate(JSONObject obj) {
-       showBudgetValue(obj);
-    }
-    
 }

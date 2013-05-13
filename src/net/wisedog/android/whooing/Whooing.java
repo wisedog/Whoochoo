@@ -74,7 +74,6 @@ public class Whooing extends Activity implements onLoadingMessage{
             DataRepository repository = WhooingApplication.getInstance().getRepo();// DataRepository.getInstance();
             repository.setLoadingMsgListener(this);
             repository.refreshUserInfo(this);
-            repository.refreshDashboardValue(this);
             repository.refreshAccount(this);
             repository.refreshLastestItems(this);
         }
@@ -222,10 +221,6 @@ public class Whooing extends Activity implements onLoadingMessage{
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_account_info));
             break;
-/*        case DataRepository.DASHBOARD_MODE:
-            loadingStatus++;
-            messageText.setText(getString(R.string.welcome_loading_get_data));
-            break;*/
         }
         if(loadingStatus == 3){
             Intent intent = new Intent(Whooing.this, MainFragmentActivity.class);

@@ -12,14 +12,17 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
-import net.wisedog.android.whooing.engine.DataRepository.OnBsChangeListener;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
+import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.FragmentUtil;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -40,7 +43,7 @@ import com.google.ads.AdView;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class BalanceFragment extends SherlockFragment implements OnBsChangeListener{
+public class BalanceFragment extends SherlockFragment{
 
     public static BalanceFragment newInstance() {
         BalanceFragment fragment = new BalanceFragment();
@@ -80,8 +83,11 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
                 showBalance(repository.getBsValue());
             }
             else{
-                repository.refreshBsValue(getSherlockActivity());
-                repository.registerObserver(this, DataRepository.BS_MODE);
+            	Bundle bundle = new Bundle();
+        		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+        		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+        				Define.API_GET_BALANCE, bundle);
+        		thread.start();
             }
         }
         super.onResume();
@@ -89,8 +95,6 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     
     @Override
     public void onDestroyView() {
-        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
-        repository.removeObserver(this, DataRepository.BS_MODE);
         adView.destroy();
         super.onDestroyView();
     }
@@ -236,4 +240,23 @@ public class BalanceFragment extends SherlockFragment implements OnBsChangeListe
     public void onBsUpdate(JSONObject obj) {
         showBalance(obj);
     }
+
+	private Handler mHandler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			if(msg.what == Define.MSG_API_OK){
+				JSONObject obj = (JSONObject) msg.obj;
+				if(msg.arg1 == Define.API_GET_BALANCE){
+			        DataRepository repository = WhooingApplication.getInstance().getRepo();
+			        repository.setBsValue(obj);
+			        if(isAdded() == true){
+			        	showBalance(obj);
+			        }
+				}
+			}
+			super.handleMessage(msg);
+		}
+		
+	};
 }

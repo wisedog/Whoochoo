@@ -10,11 +10,14 @@ import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener;
+import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.ui.TableRowExpBudgetItem;
 import net.wisedog.android.whooing.utils.WhooingAlert;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -25,7 +28,7 @@ import android.widget.TableRow.LayoutParams;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implements OnExpBudgetChangeListener{
+public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,12 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
 	        showExpBudget(repository.getExpBudgetValue());
 	    }
 	    else{
-	        repository.refreshExpBudget(this);
-	        repository.registerObserver(this, DataRepository.EXP_BUDGET_MODE);
+	    	Bundle bundle = new Bundle();
+	        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
+	        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+	        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+	                Define.API_GET_PL, bundle);
+	        thread.start();
 	    }
 		super.onResume();
 	}
@@ -130,37 +137,26 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity implemen
         return tr;
     }
 
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnExpBudgetChangeListener#onExpBudgetUpdate(org.json.JSONObject)
-     */
-    @Override
-    public void onExpBudgetUpdate(JSONObject obj) {
-    	int returnCode = Define.RESULT_OK;
-		try {
-			returnCode = obj.getInt("code");
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return;
+	private Handler mHandler = new Handler(){
+
+		@Override
+		public void handleMessage(Message msg) {
+			int returnCode = Define.RESULT_OK;
+			JSONObject obj = (JSONObject) msg.obj;
+			try {
+				returnCode = obj.getInt("code");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				return;
+			}
+	    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+	    		Define.SHOW_NO_API_INFORM = true;
+	    		WhooingAlert.showNotEnoughApi(ExpBudgetFragmentActivity.this);
+	    	}
+	    	if(returnCode == Define.RESULT_OK){
+	    		showExpBudget(obj);
+	    	}
+			super.handleMessage(msg);
 		}
-    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
-    		Define.SHOW_NO_API_INFORM = true;
-    		WhooingAlert.showNotEnoughApi(this);
-    	}
-        showExpBudget(obj);
-        
-    }
-
-
-
-    /* (non-Javadoc)
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
-     */
-    @Override
-    protected void onDestroy() {
-        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
-        repository.removeObserver(this, DataRepository.EXP_BUDGET_MODE);
-        super.onDestroy();
-    }
-    
-    
+	};    
 }

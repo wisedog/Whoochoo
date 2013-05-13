@@ -3,8 +3,6 @@
  */
 package net.wisedog.android.whooing.engine;
 
-import java.util.ArrayList;
-
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
@@ -19,7 +17,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -37,21 +34,19 @@ public class DataRepository{
     public static final int DASHBOARD_MODE = 7;
     
     /**자산부채 - bs*/
-    private static JSONObject mBsValue = null;
+    private JSONObject mBsValue = null;
     /**비용수익 - pl*/
-    private static JSONObject mPlValue = null;
-    /**Mountain*/
-    private static JSONObject mMtValue = null;
-    private static JSONObject mExpBudgetValue = null; //Budget
-    private static JSONObject mUserValue = null;	//User data
+    private JSONObject mPlValue = null;
+    /**Mountain Value*/
+    private JSONObject mMtValue = null;
+    /** Expenses Budget Value */
+    private JSONObject mExpBudgetValue = null;
+    
+    /** User Information value*/
+    private JSONObject mUserValue = null;
     /** Frequent item info*/
     private static JSONObject mLastestItem = null;    
     
-    private ArrayList<OnBsChangeListener> mBsObservers = new ArrayList<OnBsChangeListener>();
-    private ArrayList<OnPlChangeListener> mPlObservers = new ArrayList<OnPlChangeListener>();
-    private ArrayList<OnMountainChangeListener> mMtObservers = new ArrayList<OnMountainChangeListener>();
-    private ArrayList<OnExpBudgetChangeListener> mExpBudgetObservers = new ArrayList<OnExpBudgetChangeListener>();
-    private ArrayList<OnUserChangeListener> mUserObservers = new ArrayList<OnUserChangeListener>();
     private onLoadingMessage mLoadingMsgListener = null;
 	private Context mContext;
 	
@@ -62,85 +57,11 @@ public class DataRepository{
     public interface DataChangeListener{
         ;
     }
-    public static interface OnBsChangeListener extends DataChangeListener {
-        public void onBsUpdate(JSONObject obj);
-    }
-    public static interface OnPlChangeListener extends DataChangeListener{
-        public void onPlUpdate(JSONObject obj);
-    }
-    public static interface OnMountainChangeListener extends DataChangeListener{
-        public void onMountainUpdate(JSONObject obj);
-    }
-    public static interface OnExpBudgetChangeListener extends DataChangeListener{
-        public void onExpBudgetUpdate(JSONObject obj);
-    }
-    public static interface OnUserChangeListener extends DataChangeListener{
-        public void onUserUpdate(JSONObject obj);
-    }
     
     public static interface onLoadingMessage{
         public void onMessage(int message);
     }
-    
-    //using singleton
-    //private static DataRepository dataRepository = null;
-    
-    /*public static synchronized DataRepository getInstance(){
-    	if(dataRepository == null){
-    		Log.d("wisedog", "DataRepository is just created");
-    		dataRepository = new DataRepository();
-    	}
-        return dataRepository;
-    }*/
-
-    
-	/**
-	 * Refresh Dashboard infomation from server
-	 * */
-	public void refreshDashboardValue(Context context) {
-	    mContext = context;
-
-		Bundle bundle = new Bundle();
-		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
-		bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
-		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-				Define.API_GET_MOUNTAIN, bundle);
-		thread.start();
-
-		Bundle bundleBudget = new Bundle();
-		bundleBudget.putString("account", "expenses");
-		bundleBudget.putString("end_date", WhooingCalendar.getTodayYYYYMM());
-		bundleBudget.putString("start_date", WhooingCalendar.getTodayYYYYMM());
-		ThreadRestAPI thread1 = new ThreadRestAPI(mHandler,
-				Define.API_GET_BUDGET, bundleBudget);
-		thread1.start();
-	}
-	
-	/**
-     * Refresh Balance infomation from server
-     * */
-    public void refreshBsValue(Context context){
-        mContext = context;
-		Bundle bundle = new Bundle();
-		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-				Define.API_GET_BALANCE, bundle);
-		thread.start();
-    }
-    
-    /**
-     * Refresh Profit/Loss infomation from server
-     * */
-    public void refreshPlValue(Context context){
-        mContext = context;
-        Bundle bundle = new Bundle();
-        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
-        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-                Define.API_GET_PL, bundle);
-        thread.start();
-    }
-    
+        
     /**
      * Refresh account infomation from server
      * @param		context		Context that is needed for accessing database
@@ -151,17 +72,7 @@ public class DataRepository{
                 Define.API_GET_ACCOUNTS);
         thread.start();
 	}
-    
-    public void refreshExpBudget(Context context){
-        mContext = context;
-        Bundle bundle = new Bundle();
-        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
-        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-                Define.API_GET_PL, bundle);
-        thread.start();
-    }
-    
+        
 	public void refreshUserInfo(Context context) {
 		mContext = context;
 		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_USER_INFO);
@@ -193,50 +104,7 @@ public class DataRepository{
                     }
                 }
                 
-                if (msg.arg1 == Define.API_GET_BALANCE) {
-                	try {
-						mBsValue = new JSONObject(obj.toString());
-					} catch (JSONException e) {
-						e.printStackTrace();
-						mBsValue = null;
-					}
-                    for (OnBsChangeListener observer : mBsObservers) {
-                        observer.onBsUpdate(mBsValue);
-                    }
-                }else if(msg.arg1 == Define.API_GET_PL){
-                	try {
-                		mPlValue = new JSONObject(obj.toString());
-					} catch (JSONException e) {
-						e.printStackTrace();
-						mPlValue = null;
-					}
-                    for (OnPlChangeListener observer : mPlObservers) {
-                        observer.onPlUpdate(mPlValue);
-                    }
-                }
-                else if(msg.arg1 == Define.API_GET_MOUNTAIN){
-                    try {
-                    	mMtValue = new JSONObject(obj.toString());
-					} catch (JSONException e) {
-						e.printStackTrace();
-						mMtValue = null;
-					}
-                    for (OnMountainChangeListener observer : mMtObservers) {
-                        observer.onMountainUpdate(mMtValue);
-                    }
-                }
-                else if(msg.arg1 == Define.API_GET_BUDGET){
-                    try {
-                    	mExpBudgetValue = new JSONObject(obj.toString());
-					} catch (JSONException e) {
-						e.printStackTrace();
-						mExpBudgetValue = null;
-					}
-                    for (OnExpBudgetChangeListener observer : mExpBudgetObservers) {
-                        observer.onExpBudgetUpdate(mExpBudgetValue);
-                    }
-
-                } else if (msg.arg1 == Define.API_GET_ACCOUNTS) {
+                if (msg.arg1 == Define.API_GET_ACCOUNTS) {
                     if (mContext != null) {
                         GeneralProcessor general = new GeneralProcessor(mContext);
                         try {
@@ -263,9 +131,6 @@ public class DataRepository{
 							return;
 						}
                 		
-                        for (OnUserChangeListener observer : mUserObservers) {
-                            observer.onUserUpdate(obj);
-                        }
                         if(mLoadingMsgListener != null){
                             mLoadingMsgListener.onMessage(USER_MODE);
                         }
@@ -311,93 +176,39 @@ public class DataRepository{
         // TODO Auto-generated method stub
         return true;
     }
-
-    public void registerObserver(DataChangeListener o, int observerMode){
-        if(o == null){
-            return;
-        }
-        if(observerMode == BS_MODE){
-            mBsObservers.add((OnBsChangeListener) o);
-        }
-        else if(observerMode == PL_MODE){
-            mPlObservers.add((OnPlChangeListener) o);
-        }
-        else if(observerMode == MOUNTAIN_MODE){
-            mMtObservers.add((OnMountainChangeListener)o);
-        }
-        else if(observerMode == EXP_BUDGET_MODE){
-            mExpBudgetObservers.add((OnExpBudgetChangeListener)o);
-        }
-        else if(observerMode == USER_MODE){
-            mUserObservers.add((OnUserChangeListener)o);
-        }
-        
-    }
-
-    public void removeObserver(DataChangeListener o, int observerMode) {
-        if(observerMode == BS_MODE){
-            int idx = mBsObservers.indexOf(o);
-            if(idx > 0) {
-                mBsObservers.remove(idx);
-           }
-        }else if(observerMode == PL_MODE){
-            int idx = mPlObservers.indexOf(o);
-            if(idx > 0) {
-                mPlObservers.remove(idx);
-           }
-        }
-        else if(observerMode == MOUNTAIN_MODE){
-            int idx = mMtObservers.indexOf(o);
-            if(idx > 0) {
-                mMtObservers.remove(idx);
-           }
-        }
-        else if(observerMode == EXP_BUDGET_MODE){
-            int idx = mExpBudgetObservers.indexOf(o);
-            if(idx > 0) {
-                mExpBudgetObservers.remove(idx);
-           }
-        }
-        else if(observerMode == USER_MODE){
-        	int idx = mUserObservers.indexOf(o);
-        	if(idx > 0){
-        		mUserObservers.remove(idx);
-        	}
-        }
-    }
-    
+ 
     /**
      * @return  Return saved mountain value
      * */
-    public JSONObject getMtValue(){
+    public synchronized JSONObject getMtValue(){
         return mMtValue;
     }
     
     /**
      * @return  Return saved budget value
      * */
-    public JSONObject getExpBudgetValue(){
+    public synchronized JSONObject getExpBudgetValue(){
         return mExpBudgetValue;
     }
     
     /**
      * @return	return Balance info
      * */
-    public JSONObject getBsValue(){
+    public synchronized JSONObject getBsValue(){
         return mBsValue;
     }
     
     /**
      * @return	return Profit/Loss info
      * */
-    public JSONObject getPlValue(){
+    public synchronized JSONObject getPlValue(){
         return mPlValue;
     }
     
     /**
      * @return	return user info
      * */
-    public JSONObject getUserValue(){
+    public synchronized JSONObject getUserValue(){
     	return mUserValue;
     }
     
@@ -434,15 +245,44 @@ public class DataRepository{
                 Define.API_GET_MOUNTAIN, bundle);
         thread.start();        
     }
+    
+    /**
+     * Store User information
+     * @param	obj		JSONObject to store
+     * */
+	public synchronized void setUserInfo(JSONObject obj) {
+		this.mUserValue = obj;
+	}
 
-    public Object findObserver(int observerMode, Object object) {
-        if(mMtObservers != null){
-            for(int i = 0; i < mMtObservers.size(); i++){
-                if(object == mMtObservers.get(i)){
-                    return object;
-                }                
-            }
-        }
-        return null;
-    }
+	/**
+	 * Store Profit/Loss value
+	 * @param	obj		JSONObject to store
+	 * */
+	public synchronized void setPLValue(JSONObject obj) {
+		this.mPlValue = obj;
+	}
+
+	/**
+	 * Store Mountain value
+	 * @param	obj		JSONObject to store
+	 * */
+	public synchronized void setMtValue(JSONObject obj) {
+		this.mMtValue = obj;
+	}
+
+	/**
+	 * Store Balance value
+	 * @param	obj		JSONObject to store
+	 * */
+	public synchronized void setBsValue(JSONObject obj) {
+		this.mBsValue = obj;
+	}
+
+	/**
+	 * Store Expenses Budget value
+	 * @param	obj		JSONObject to store
+	 * */
+	public synchronized void setExpBudgetValue(JSONObject obj) {
+		this.mExpBudgetValue = obj;
+	}
 }

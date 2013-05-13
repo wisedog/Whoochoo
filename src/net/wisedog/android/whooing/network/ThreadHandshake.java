@@ -170,7 +170,7 @@ public class ThreadHandshake extends Thread {
 			user_id = result.getInt("user_id");
 			Log.d("wisedog", "USER ID:"+user_id);
 			realToken = result.getString("token");
-			Log.d("wisedog", "Real Token:"+user_id);
+			Log.d("wisedog", "Real Token:"+realToken);
 			
 		} catch (JSONException e) {
 			Log.e(ThreadHandshake.class.toString(), "JSON Error");

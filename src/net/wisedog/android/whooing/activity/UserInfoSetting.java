@@ -10,7 +10,6 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.engine.DataRepository;
-import net.wisedog.android.whooing.engine.DataRepository.OnUserChangeListener;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiButton;
@@ -38,7 +37,7 @@ import android.widget.Toast;
  * UserInfo setting class. User can set country, currency, language, nickname
  * @author Wisedog(me@wisedog.net)
  */
-public class UserInfoSetting extends Activity implements OnUserChangeListener{
+public class UserInfoSetting extends Activity{
 
     private ProgressDialog mProgress;
     private String mUserName;
@@ -56,8 +55,11 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
         if(repository.getUserValue() == null){
             mProgress = ProgressDialog.show(this, "", 
                     getString(R.string.user_info_progress));
-            repository.refreshUserInfo(this);
-            repository.registerObserver(this, DataRepository.USER_MODE);
+
+    		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_USER_INFO);
+    		thread.start();
+            //repository.refreshUserInfo(this);
+            //repository.registerObserver(this, DataRepository.USER_MODE);
         }
         else{
             initUi(repository.getUserValue());
@@ -250,24 +252,12 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
     }
 
     /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnUserChangeListener#onUserUpdate(org.json.JSONObject)
-     */
-    @Override
-    public void onUserUpdate(JSONObject obj) {
-        if(mProgress != null){
-            mProgress.dismiss();
-        }
-        initUi(obj);
-        
-    }
-
-    /* (non-Javadoc)
      * @see android.app.Activity#onDestroy()
      */
     @Override
     protected void onDestroy() {
-        DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
-        repository.removeObserver(this, DataRepository.USER_MODE);
+        /*DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+        repository.removeObserver(this, DataRepository.USER_MODE);*/
         super.onDestroy();
     }
     
@@ -387,34 +377,45 @@ public class UserInfoSetting extends Activity implements OnUserChangeListener{
     }
     
     Handler mHandler = new Handler(){
-
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
-                JSONObject obj = (JSONObject)msg.obj;
-                ProgressBar bar = (ProgressBar)findViewById(R.id.user_setting_progress_bar);
-                if(bar != null){
-                    bar.setVisibility(View.INVISIBLE);
-                }
-                WiButton btn = (WiButton)findViewById(R.id.user_setting_check_btn);
-                if(btn != null){
-                    btn.setEnabled(true);
-                }
-                int result = 0;
-                try {
-                    result = obj.getInt("code");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                if(result != Define.RESULT_OK){
-                    Toast.makeText(UserInfoSetting.this, getString(R.string.user_info_alert_name_taken), Toast.LENGTH_LONG).show();
-                    isChecked = false;
-                }
-                else{
-                    isChecked = true;
-                    Toast.makeText(UserInfoSetting.this, getString(R.string.user_info_alert_name_ok), Toast.LENGTH_LONG).show();
-                }
+            	JSONObject obj = (JSONObject)msg.obj;
+            	if(msg.arg1 == Define.API_GET_USER_INFO){
+            		DataRepository repository = WhooingApplication.getInstance().getRepo();
+            		repository.setUserInfo(obj);
+            		if(mProgress != null){
+                        mProgress.dismiss();
+                    }
+                    initUi(obj);
+            	}
+            	else if(msg.arg1 == Define.API_PUT_USER_INFO){
+            		
+                    ProgressBar bar = (ProgressBar)findViewById(R.id.user_setting_progress_bar);
+                    if(bar != null){
+                        bar.setVisibility(View.INVISIBLE);
+                    }
+                    WiButton btn = (WiButton)findViewById(R.id.user_setting_check_btn);
+                    if(btn != null){
+                        btn.setEnabled(true);
+                    }
+                    int result = 0;
+                    try {
+                        result = obj.getInt("code");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    if(result != Define.RESULT_OK){
+                        Toast.makeText(UserInfoSetting.this, getString(R.string.user_info_alert_name_taken), Toast.LENGTH_LONG).show();
+                        isChecked = false;
+                    }
+                    else{
+                        isChecked = true;
+                        Toast.makeText(UserInfoSetting.this, getString(R.string.user_info_alert_name_ok), Toast.LENGTH_LONG).show();
+                    }
+            	}
+                
                 
             }
             super.handleMessage(msg);

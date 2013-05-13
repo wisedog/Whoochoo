@@ -6,18 +6,22 @@ import org.json.JSONObject;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener;
+import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.FragmentUtil;
+import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -31,7 +35,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 
-public final class ProfitLossFragment extends SherlockFragment implements OnPlChangeListener{
+public final class ProfitLossFragment extends SherlockFragment{
     
     public static ProfitLossFragment newInstance() {
         ProfitLossFragment fragment = new ProfitLossFragment();
@@ -55,8 +59,13 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
                showPl(repository.getPlValue());
             }
             else{
-                repository.refreshPlValue(getSherlockActivity());
-                repository.registerObserver(this, DataRepository.PL_MODE);
+                //repository.refreshPlValue(getSherlockActivity());
+            	Bundle bundle = new Bundle();
+                bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
+                bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
+                ThreadRestAPI thread = new ThreadRestAPI(mHandler,
+                        Define.API_GET_PL, bundle);
+                thread.start();
             }
         }        
 		super.onResume();
@@ -68,8 +77,6 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
      */
     @Override
     public void onDestroyView() {
-        DataRepository repository = WhooingApplication.getInstance().getRepo();
-        repository.removeObserver(this, DataRepository.PL_MODE);
         super.onDestroyView();
     }
 
@@ -218,14 +225,23 @@ public final class ProfitLossFragment extends SherlockFragment implements OnPlCh
                     LayoutParams.WRAP_CONTENT));
         }
     }
+    
+	private Handler mHandler = new Handler(){
 
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.OnPlChangeListener#onPlUpdate(org.json.JSONObject)
-     */
-    public void onPlUpdate(JSONObject obj) {
-        if(isAdded() == true){
-        	showPl(obj);
-        }
-        
-    }
+		@Override
+		public void handleMessage(Message msg) {
+			if(msg.what == Define.MSG_API_OK){
+				JSONObject obj = (JSONObject) msg.obj;
+				if(msg.arg1 == Define.API_GET_PL){
+			        DataRepository repository = WhooingApplication.getInstance().getRepo();
+			        repository.setPLValue(obj);
+			        if(isAdded() == true){
+			        	showPl(obj);
+			        }
+				}
+			}
+			super.handleMessage(msg);
+		}
+		
+	};
 }
