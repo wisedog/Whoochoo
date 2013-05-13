@@ -14,7 +14,6 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
-import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.annotation.SuppressLint;
 import android.content.Context;

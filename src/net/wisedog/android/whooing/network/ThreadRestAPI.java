@@ -8,7 +8,6 @@ import net.wisedog.android.whooing.api.BbsApi;
 import net.wisedog.android.whooing.api.Board;
 import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.api.GeneralApi;
-import net.wisedog.android.whooing.api.MainInfo;
 import net.wisedog.android.whooing.api.PostIt;
 import net.wisedog.android.whooing.api.Section;
 import net.wisedog.android.whooing.api.UserAPI;
@@ -111,11 +110,6 @@ public class ThreadRestAPI extends Thread {
 		}
 		        
 		switch(mAPIName){
-		case Define.API_GET_MAIN:
-			MainInfo mainInfo = new MainInfo();
-			result = mainInfo.getInfo(Define.APP_SECTION,Define.APP_ID, Define.REAL_TOKEN, 
-					Define.APP_SECRET, Define.TOKEN_SECRET);
-			break;
 		case Define.API_GET_SECTIONS:
 			Section section = new Section();
 			result = section.getSections(Define.APP_ID, Define.REAL_TOKEN, 

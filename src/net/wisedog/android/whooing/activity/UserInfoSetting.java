@@ -58,8 +58,6 @@ public class UserInfoSetting extends Activity{
 
     		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_USER_INFO);
     		thread.start();
-            //repository.refreshUserInfo(this);
-            //repository.registerObserver(this, DataRepository.USER_MODE);
         }
         else{
             initUi(repository.getUserValue());

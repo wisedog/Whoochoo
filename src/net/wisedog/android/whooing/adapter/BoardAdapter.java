@@ -22,12 +22,10 @@ import android.widget.TextView;
 public class BoardAdapter extends BaseAdapter {
     private ArrayList<BoardItem> mDataArray;
     private LayoutInflater mInflater;
-	private Context mContext;
     
     public BoardAdapter(Context context, ArrayList<BoardItem> dataArray){
         mDataArray = dataArray;
         mInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mContext = context;
     }
     
     public ArrayList<BoardItem> getData(){

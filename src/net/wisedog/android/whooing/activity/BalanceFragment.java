@@ -10,20 +10,20 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.FragmentUtil;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -83,11 +83,36 @@ public class BalanceFragment extends SherlockFragment{
                 showBalance(repository.getBsValue());
             }
             else{
-            	Bundle bundle = new Bundle();
-        		bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-        		ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-        				Define.API_GET_BALANCE, bundle);
-        		thread.start();
+            	AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
+
+                    @Override
+                    protected JSONObject doInBackground(Void... arg0) {
+                        String budgetURL = "https://whooing.com/api/bs.json_array" + "?section_id="
+                                + Define.APP_SECTION + "&end_date=" + WhooingCalendar.getTodayYYYYMMDD();
+                        GeneralApi balanceApi = new GeneralApi();
+                        JSONObject result = balanceApi.getInfo(budgetURL, Define.APP_ID, Define.REAL_TOKEN,
+                                Define.APP_SECRET, Define.TOKEN_SECRET);
+                        balanceApi = null;	//for gc
+                    	
+                        return result;
+                    }
+
+                    @Override
+                    protected void onPostExecute(JSONObject result) {
+                        if(Define.DEBUG && result != null){
+                            Log.d("wisedog", "API Call - Balance : " + result.toString());
+                        }
+                        DataRepository repository = WhooingApplication.getInstance().getRepo();
+						repository.setBsValue(result);
+						if(isAdded() == true){
+							showBalance(result);
+						}
+                        super.onPostExecute(result);
+                    }
+
+                };
+                
+                task.execute();            	
             }
         }
         super.onResume();
@@ -240,23 +265,4 @@ public class BalanceFragment extends SherlockFragment{
     public void onBsUpdate(JSONObject obj) {
         showBalance(obj);
     }
-
-	private Handler mHandler = new Handler(){
-
-		@Override
-		public void handleMessage(Message msg) {
-			if(msg.what == Define.MSG_API_OK){
-				JSONObject obj = (JSONObject) msg.obj;
-				if(msg.arg1 == Define.API_GET_BALANCE){
-			        DataRepository repository = WhooingApplication.getInstance().getRepo();
-			        repository.setBsValue(obj);
-			        if(isAdded() == true){
-			        	showBalance(obj);
-			        }
-				}
-			}
-			super.handleMessage(msg);
-		}
-		
-	};
 }

@@ -15,7 +15,6 @@ import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;

@@ -1,20 +1,8 @@
 package net.wisedog.android.whooing.network;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import net.wisedog.android.whooing.Define;
-import net.wisedog.android.whooing.auth.WhooingAuthMain;
-import net.wisedog.android.whooing.utils.StringUtil;
 import net.wisedog.android.whooing.utils.JSONUtil;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -103,50 +91,6 @@ public class ThreadHandshake extends Thread {
 		editor.commit();*/
 		
 		return firstToken;
-	}
-	
-
-	
-	/**
-	 * Getting PIN number. If shaking hand with server is successful, then 
-	 * invoke an activity to try to authorize user
-	 * @return Returns true if it success
-	 * */
-	@Deprecated
-	private boolean secondHandshake(String token){
-		if(token == null)
-			return false;
-		HttpClient client = new DefaultHttpClient();
-		HttpGet httpGet = new HttpGet(
-				"https://whooing.com/app_auth/authorize?token=");//+ Define.FIRST_TOKEN);
-		try{
-			HttpResponse response = client.execute(httpGet);
-			StatusLine statusLine = response.getStatusLine();
-			int statusCode = statusLine.getStatusCode();
-			if (statusCode == 200) {
-				HttpEntity entity = response.getEntity();
-				InputStream content = entity.getContent();
-				String contentStr = StringUtil.convertStreamToString(content);
-				
-				Message msg = new Message();		
-				msg.what = Define.MSG_REQ_AUTH;
-				msg.obj = contentStr;
-				mHandler.sendMessage(msg);
-			}
-			else {
-				Log.e(WhooingAuthMain.class.toString(), "Failed to download file");
-				return false;
-			}
-		}
-		catch(ClientProtocolException e){
-			Log.e(WhooingAuthMain.class.toString(), "HttpResponse Failed");
-			return false;
-		} 
-		catch (IOException e) {
-			Log.e(WhooingAuthMain.class.toString(), "HttpResponse IO Failed");
-			return false;
-		}
-		return false;
 	}
 	
 	/**

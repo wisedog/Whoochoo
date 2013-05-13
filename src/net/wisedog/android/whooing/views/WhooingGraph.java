@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.wisedog.android.whooing.R;
-
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.chart.PointStyle;
@@ -21,7 +19,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.Paint.Align;
 import android.util.Log;
 import android.widget.LinearLayout;
 

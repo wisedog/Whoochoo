@@ -7,18 +7,18 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.ui.TableRowExpBudgetItem;
 import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TableLayout;
@@ -46,12 +46,50 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
 	        showExpBudget(repository.getExpBudgetValue());
 	    }
 	    else{
-	    	Bundle bundle = new Bundle();
-	        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
-	        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-	        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-	                Define.API_GET_PL, bundle);
-	        thread.start();
+	        AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
+	        	
+                @Override
+                protected JSONObject doInBackground(Void... arg0) {
+        			String requestUrl = "https://whooing.com/api/pl.json_array?section_id="
+        					+ Define.APP_SECTION 
+        					+"&start_date=" + WhooingCalendar.getPreMonthYYYYMMDD(1)
+        					+ "&end_date=" + WhooingCalendar.getTodayYYYYMMDD();
+        			GeneralApi pl = new GeneralApi();
+        			JSONObject result = pl.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+        					Define.APP_SECRET, Define.TOKEN_SECRET);
+        			pl = null;	//for gc
+                    return result;
+                }
+
+                @Override
+                protected void onPostExecute(JSONObject result) {
+                    if(Define.DEBUG && result != null){
+                        Log.d("wisedog", "API Call - Balance : " + result.toString());
+                    }
+                    int returnCode = Define.RESULT_OK;
+        			try {
+        				returnCode = result.getInt("code");
+        			} catch (JSONException e) {
+        				e.printStackTrace();
+        				return;
+        			}
+        	    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+        	    		Define.SHOW_NO_API_INFORM = true;
+        	    		WhooingAlert.showNotEnoughApi(ExpBudgetFragmentActivity.this);
+        	    	}
+        	    	
+        	    	if(returnCode == Define.RESULT_OK){
+        	    		DataRepository repository = WhooingApplication.getInstance().getRepo();
+        	    		repository.setExpBudgetValue(result);
+        	    		showExpBudget(result);
+        	    	}
+        	    	
+                    super.onPostExecute(result);
+                }
+            };
+            
+            task.execute();            	
+
 	    }
 		super.onResume();
 	}
@@ -136,27 +174,4 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
         tr.addView(layout);
         return tr;
     }
-
-	private Handler mHandler = new Handler(){
-
-		@Override
-		public void handleMessage(Message msg) {
-			int returnCode = Define.RESULT_OK;
-			JSONObject obj = (JSONObject) msg.obj;
-			try {
-				returnCode = obj.getInt("code");
-			} catch (JSONException e) {
-				e.printStackTrace();
-				return;
-			}
-	    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
-	    		Define.SHOW_NO_API_INFORM = true;
-	    		WhooingAlert.showNotEnoughApi(ExpBudgetFragmentActivity.this);
-	    	}
-	    	if(returnCode == Define.RESULT_OK){
-	    		showExpBudget(obj);
-	    	}
-			super.handleMessage(msg);
-		}
-	};    
 }

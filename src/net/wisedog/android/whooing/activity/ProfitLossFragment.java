@@ -59,7 +59,6 @@ public final class ProfitLossFragment extends SherlockFragment{
                showPl(repository.getPlValue());
             }
             else{
-                //repository.refreshPlValue(getSherlockActivity());
             	Bundle bundle = new Bundle();
                 bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
                 bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
@@ -70,15 +69,6 @@ public final class ProfitLossFragment extends SherlockFragment{
         }        
 		super.onResume();
 	}
-    
-
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
     /**
      * @param obj       Profit/Loss value formatted JSON
