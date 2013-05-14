@@ -15,6 +15,7 @@ import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.utils.FragmentUtil;
+import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
@@ -102,7 +103,26 @@ public class BalanceFragment extends SherlockFragment{
                         if(Define.DEBUG && result != null){
                             Log.d("wisedog", "API Call - Balance : " + result.toString());
                         }
+                        try {
+                            int returnCode = result.getInt("code");
+                            if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+                                Define.SHOW_NO_API_INFORM = true;
+                                WhooingAlert.showNotEnoughApi(getSherlockActivity());
+                                return;
+                            }
+                        }
+                        catch(JSONException e){
+                            e.printStackTrace();
+                            return;
+                        }
                         DataRepository repository = WhooingApplication.getInstance().getRepo();
+                        try {
+                            repository.setRestApi(result.getInt("rest_of_api"));
+                            repository.refreshRestApi(getSherlockActivity());
+                        } catch (JSONException e) {
+                            // Just passing..... 
+                            e.printStackTrace();
+                        }
 						repository.setBsValue(result);
 						if(isAdded() == true){
 							showBalance(result);

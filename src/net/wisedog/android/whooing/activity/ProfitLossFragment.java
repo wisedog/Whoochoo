@@ -9,19 +9,19 @@ import com.actionbarsherlock.app.SherlockFragment;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
-import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.FragmentUtil;
+import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -59,12 +59,55 @@ public final class ProfitLossFragment extends SherlockFragment{
                showPl(repository.getPlValue());
             }
             else{
-            	Bundle bundle = new Bundle();
-                bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMMDD(1));
-                bundle.putString("end_date", WhooingCalendar.getTodayYYYYMMDD());
-                ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-                        Define.API_GET_PL, bundle);
-                thread.start();
+                AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
+
+                    @Override
+                    protected JSONObject doInBackground(Void... arg0) {
+                        String requestUrl = "https://whooing.com/api/pl.json_array?section_id="
+                                + Define.APP_SECTION + "&start_date=" + WhooingCalendar.getPreMonthYYYYMMDD(1)
+                                + "&end_date=" + WhooingCalendar.getTodayYYYYMMDD();
+                        GeneralApi pl = new GeneralApi();
+                        JSONObject result = pl.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+                                Define.APP_SECRET, Define.TOKEN_SECRET);
+                        
+                        return result;
+                    }
+
+                    @Override
+                    protected void onPostExecute(JSONObject result) {
+                        if(Define.DEBUG && result != null){
+                            Log.d("wisedog", "API Call - Balance : " + result.toString());
+                        }
+                        try {
+                            int returnCode = result.getInt("code");
+                            if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+                                Define.SHOW_NO_API_INFORM = true;
+                                WhooingAlert.showNotEnoughApi(getSherlockActivity());
+                                return;
+                            }
+                        }
+                        catch(JSONException e){
+                            e.printStackTrace();
+                            return;
+                        }
+                        DataRepository repository = WhooingApplication.getInstance().getRepo();
+                        try {
+                            repository.setRestApi(result.getInt("rest_of_api"));
+                            repository.refreshRestApi(getSherlockActivity());
+                        } catch (JSONException e) {
+                            // Just passing..... 
+                            e.printStackTrace();
+                        }
+                        repository.setPLValue(result);
+                        if(isAdded() == true){
+                            showPl(result);
+                        }
+                        super.onPostExecute(result);
+                    }
+
+                };
+                
+                task.execute();             
             }
         }        
 		super.onResume();
@@ -215,23 +258,4 @@ public final class ProfitLossFragment extends SherlockFragment{
                     LayoutParams.WRAP_CONTENT));
         }
     }
-    
-	private Handler mHandler = new Handler(){
-
-		@Override
-		public void handleMessage(Message msg) {
-			if(msg.what == Define.MSG_API_OK){
-				JSONObject obj = (JSONObject) msg.obj;
-				if(msg.arg1 == Define.API_GET_PL){
-			        DataRepository repository = WhooingApplication.getInstance().getRepo();
-			        repository.setPLValue(obj);
-			        if(isAdded() == true){
-			        	showPl(obj);
-			        }
-				}
-			}
-			super.handleMessage(msg);
-		}
-		
-	};
 }

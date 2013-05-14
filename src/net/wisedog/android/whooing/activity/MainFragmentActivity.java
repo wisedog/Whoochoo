@@ -16,7 +16,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,7 +207,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	    mRestApiText.setClickable(true);
 	    mRestApiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
 	    mRestApiText.setTextColor(Color.WHITE);
-	    menu.add("Api").setActionView(mRestApiText).setShowAsAction(android.view.MenuItem.SHOW_AS_ACTION_ALWAYS);
+	    menu.add("Api").setActionView(mRestApiText).setShowAsAction(android.support.v4.view.MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
 	    
 	    if(repository.getRestApi() == 0 && Define.SHOW_NO_API_INFORM == false){
 	    	Define.SHOW_NO_API_INFORM = true;

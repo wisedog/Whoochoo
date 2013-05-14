@@ -6,7 +6,6 @@ package net.wisedog.android.whooing.engine;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
-import net.wisedog.android.whooing.utils.WhooingCalendar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +13,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.TextView;
@@ -53,11 +51,6 @@ public class DataRepository{
 	private int mRestApiNum = -1;
     
     // 대쉬보드 - Asset/Doubt: bs,pl / Monthly Budget : pl/ Credit Card : bs 
-    
-    public interface DataChangeListener{
-        ;
-    }
-    
     public static interface onLoadingMessage{
         public void onMessage(int message);
     }
@@ -168,6 +161,10 @@ public class DataRepository{
     	return mRestApiNum;
     }
     
+    public void setRestApi(int apiNum){
+        mRestApiNum = apiNum;
+    }
+    
     /**
      * @param returnCode
      * @return
@@ -236,15 +233,6 @@ public class DataRepository{
 		mBsValue = null;
 		mExpBudgetValue = null;
 	}
-
-    public void refreshMtValue(Context context) {
-        Bundle bundle = new Bundle();
-        bundle.putString("end_date", WhooingCalendar.getTodayYYYYMM());
-        bundle.putString("start_date", WhooingCalendar.getPreMonthYYYYMM(6));
-        ThreadRestAPI thread = new ThreadRestAPI(mHandler,
-                Define.API_GET_MOUNTAIN, bundle);
-        thread.start();        
-    }
     
     /**
      * Store User information

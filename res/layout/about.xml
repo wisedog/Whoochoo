@@ -21,29 +21,6 @@
         android:textSize="18sp"
         android:textColor="#777777"
         android:layout_marginBottom="10dp"/>
-    <net.wisedog.android.whooing.widget.WiTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/about_app_contact_whooing" 
-        android:textSize="20sp"
-        android:textColor="#333333"
-        android:layout_margin="5dp"/>
-
-    <Button
-        android:id="@+id/about_btn_contact_whooing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/about_app_contact_whooing_email" 
-        android:layout_marginBottom="5dp"/>
-    
-    <net.wisedog.android.whooing.widget.WiTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="#333333"
-        android:autoLink="web"
-        android:text="@string/about_app_whooing_url"
-        android:layout_marginBottom="10dp"/>
 
     <net.wisedog.android.whooing.widget.WiTextView
         android:layout_width="match_parent"
@@ -84,5 +61,29 @@
         android:textSize="16sp"
         android:textColor="#333333"
         android:autoLink="web"/>
+    
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_contact_whooing" 
+        android:textSize="20sp"
+        android:textColor="#333333"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/about_btn_contact_whooing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_app_contact_whooing_email" 
+        android:layout_marginBottom="5dp"/>
+    
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:autoLink="web"
+        android:text="@string/about_app_whooing_url"
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>

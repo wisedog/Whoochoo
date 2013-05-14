@@ -50,21 +50,21 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
 	        	
                 @Override
                 protected JSONObject doInBackground(Void... arg0) {
-        			String requestUrl = "https://whooing.com/api/pl.json_array?section_id="
+        			String requestUrl = "https://whooing.com/api/budget/expenses.json_array?section_id="
         					+ Define.APP_SECTION 
         					+"&start_date=" + WhooingCalendar.getPreMonthYYYYMMDD(1)
         					+ "&end_date=" + WhooingCalendar.getTodayYYYYMMDD();
-        			GeneralApi pl = new GeneralApi();
-        			JSONObject result = pl.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
+        			GeneralApi expBudget = new GeneralApi();
+        			JSONObject result = expBudget.getInfo(requestUrl, Define.APP_ID, Define.REAL_TOKEN,
         					Define.APP_SECRET, Define.TOKEN_SECRET);
-        			pl = null;	//for gc
+        			expBudget = null;	//for gc
                     return result;
                 }
 
                 @Override
                 protected void onPostExecute(JSONObject result) {
                     if(Define.DEBUG && result != null){
-                        Log.d("wisedog", "API Call - Balance : " + result.toString());
+                        Log.d("wisedog", "API Call - ExpBudgetFragmentActivity : " + result.toString());
                     }
                     int returnCode = Define.RESULT_OK;
         			try {

@@ -9,12 +9,11 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -94,7 +93,6 @@ public class DashboardFragment extends SherlockFragment{
             }
         }
         
-        repository.refreshRestApi(getSherlockActivity());
         super.onResume();
     }
 
@@ -112,58 +110,40 @@ public class DashboardFragment extends SherlockFragment{
         public void handleMessage(Message msg) {
         	if(msg.what == Define.MSG_API_OK){
         		JSONObject obj = (JSONObject)msg.obj;
+                try {
+                    int returnCode = obj.getInt("code");
+                    if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+                        Define.SHOW_NO_API_INFORM = true;
+                        WhooingAlert.showNotEnoughApi(getSherlockActivity());
+                        return;
+                    }
+                }
+                catch(JSONException e){
+                    e.printStackTrace();
+                    return;
+                }
         		DataRepository repository = WhooingApplication.getInstance().getRepo();
+        		try {
+        		    int restApi = obj.getInt("rest_of_api");
+                    repository.setRestApi(restApi);
+                    repository.refreshRestApi(getSherlockActivity());
+                } catch (JSONException e) {
+                    // Just passing..... 
+                    e.printStackTrace();
+                }
+        		
         		if(msg.arg1 == Define.API_GET_MOUNTAIN){
 			        repository.setMtValue(obj);
 			        if(isAdded() == true){
 			            showMountainValue(obj);
 			        }
+			        
+			        repository.refreshRestApi(getSherlockActivity());
         		}else if(msg.arg1 == Define.API_GET_BUDGET){
         			repository.setExpBudgetValue(obj);
         			showBudgetValue(obj);
         		}
         	}
-/*            if(msg.what == Define.MSG_FAIL){
-                dialog.dismiss();
-                Toast.makeText(getSherlockActivity(), getString(R.string.msg_auth_fail), Toast.LENGTH_LONG).show();
-            }
-            else if(msg.what == Define.MSG_REQ_AUTH){
-                Intent intent = new Intent(getSherlockActivity(), WhooingAuthWeb.class);
-                intent.putExtra("first_token", (String)msg.obj);
-                
-                startActivityForResult(intent, Define.REQUEST_AUTH);
-            }
-            else if(msg.what == Define.MSG_AUTH_DONE){
-                ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_SECTIONS);
-                thread.start();
-            }
-            else if(msg.what == Define.MSG_API_OK){
-                if(msg.arg1 == Define.API_GET_SECTIONS){
-                    JSONObject result = (JSONObject)msg.obj;                    
-                    try {
-                        JSONArray array = result.getJSONArray("results");
-                        JSONObject obj = (JSONObject) array.get(0);
-                        String section = obj.getString("section_id");
-                        if(section != null){
-                            Define.APP_SECTION = section;
-                            SharedPreferences prefs = getSherlockActivity().getSharedPreferences(Define.SHARED_PREFERENCE,
-                                    Activity.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = prefs.edit();
-                            editor.putString(Define.KEY_SHARED_SECTION_ID, section);
-                            editor.commit();
-                            dialog.dismiss();
-                            Toast.makeText(getSherlockActivity(), getString(R.string.msg_auth_success),
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        else{
-                            throw new JSONException("Error in getting section id");
-                        }
-                    } catch (JSONException e) {
-                        setErrorHandler("Comm error! Err-SCT1");
-                        e.printStackTrace();
-                    }
-                }
-            }*/
         }
     };
     
