@@ -38,8 +38,6 @@ import android.widget.Toast;
 public class BbsReplyEntity extends LinearLayout {
 
 	private Context mContext;
-	/**사용자가 답글의 댓글을 추가했을 때, 여기에 있는 정보를 사용한다.*/
-	private JSONObject mObjParent = null;
     private int mBbsId;
     private int mBoardType;	
     private String mCommentId;	//This is reply ID. Reply = Comment in this application
@@ -69,9 +67,6 @@ public class BbsReplyEntity extends LinearLayout {
 		
 		if(obj == null){	//objResult may be null, but it's acceptance
 			return;
-		}
-		if(objResult != null){
-			mObjParent = objResult;
 		}
 		
 		mCommentId = obj.getString("comment_id");
