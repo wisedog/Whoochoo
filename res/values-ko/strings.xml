@@ -109,6 +109,9 @@
     <!-- Transaction Add -->
     <string name="add_transaction_add_complete">추가 완료</string>
     <string name="add_transaction_add">추가</string>
+    <string name="add_transaction_msg_same">좌측과 우측이 같습니다</string>
+    <string name="add_transaction_msg_check_lr">왼쪽 혹은 오른쪽을 확인해주세요</string>
+    <string name="add_transaction_msg_check_amount">금액을 확인해주세요</string>
     
     <!-- User Account -->
     <string name="user_info_timezone">시간대</string>
@@ -124,15 +127,15 @@
     <string name="user_info_alert_check_name">별명 중복확인을 해주세요</string>
     
     <!-- About dialog  -->
-    <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without user id, language, currency.</string>
-    <string name="about_app_contact_whooing">Contact to Whooing</string>
+    <string name="about_app_desc">이 앱은 후잉의 API로 제작한 써드파티 어플리케이션입니다. 이 앱은 당신이 설정한  언어 정보, 통화정보 외에 어떠한 정보도 담고있지 않습니다.</string>
+    <string name="about_app_contact_whooing">후잉에 연락하기</string>
     <string name="about_app_contact_whooing_email">support@whooing.com</string>
-    <string name="about_app_contact_developer">Contact to App developer</string>
+    <string name="about_app_contact_developer">앱 개발자에게 연락하기</string>
     <string name="about_app_contact_developer_email">peashellapps@gmail.com</string>
-    <string name="about_app_whooing_url">Website : http://whooing.com</string>
-    <string name="about_app_blog">Blog : http://peashellapps.wordpress.com</string>
+    <string name="about_app_whooing_url">웹사이트 : http://whooing.com</string>
+    <string name="about_app_blog">블로그 : http://peashellapps.wordpress.com</string>
     <string name="about_app_creator">Created by Peashell Apps.</string>
-    <string name="about_app_send_email">Choose Email Client</string>
+    <string name="about_app_send_email">이메일 프로그램을 선택하세요</string>
     <string name="about_app_version">버전 : </string>
     
     <!-- BBS -->

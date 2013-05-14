@@ -9,6 +9,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.activity.MainFragmentActivity.IShowedFragment;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -18,6 +19,7 @@ import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -35,8 +37,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 
-public final class ProfitLossFragment extends SherlockFragment{
+public final class ProfitLossFragment extends SherlockFragment implements IShowedFragment{
     
+	private ProgressDialog mDialog;
+	
     public static ProfitLossFragment newInstance() {
         ProfitLossFragment fragment = new ProfitLossFragment();
         return fragment;
@@ -78,6 +82,10 @@ public final class ProfitLossFragment extends SherlockFragment{
                         if(Define.DEBUG && result != null){
                             Log.d("wisedog", "API Call - Balance : " + result.toString());
                         }
+                        if(mDialog != null){
+                    		mDialog.dismiss();
+                    		mDialog = null;
+                    	}
                         try {
                             int returnCode = result.getInt("code");
                             if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
@@ -258,4 +266,19 @@ public final class ProfitLossFragment extends SherlockFragment{
                     LayoutParams.WRAP_CONTENT));
         }
     }
+
+	@Override
+	public void onShowedFragment() {
+		if(mDialog != null){
+    		mDialog = null;	//for GC
+    	}
+		DataRepository repository = WhooingApplication.getInstance().getRepo();
+        if(repository.getBsValue() == null){
+        	mDialog = new ProgressDialog(getSherlockActivity());
+        	mDialog.setIndeterminate(true);
+        	mDialog.setCancelable(true);
+        	mDialog.setMessage(getString(R.string.text_loading));
+        	mDialog.show();
+        }
+	}
 }

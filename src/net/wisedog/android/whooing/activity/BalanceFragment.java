@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.activity.MainFragmentActivity.IShowedFragment;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -19,6 +20,7 @@ import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -44,7 +46,7 @@ import com.google.ads.AdView;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class BalanceFragment extends SherlockFragment{
+public class BalanceFragment extends SherlockFragment implements IShowedFragment{
 
     public static BalanceFragment newInstance() {
         BalanceFragment fragment = new BalanceFragment();
@@ -52,6 +54,7 @@ public class BalanceFragment extends SherlockFragment{
     }
     
 	private AdView adView;
+	private ProgressDialog mDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +103,10 @@ public class BalanceFragment extends SherlockFragment{
 
                     @Override
                     protected void onPostExecute(JSONObject result) {
+                    	if(mDialog != null){
+                    		mDialog.dismiss();
+                    		mDialog = null;
+                    	}
                         if(Define.DEBUG && result != null){
                             Log.d("wisedog", "API Call - Balance : " + result.toString());
                         }
@@ -285,4 +292,21 @@ public class BalanceFragment extends SherlockFragment{
     public void onBsUpdate(JSONObject obj) {
         showBalance(obj);
     }
+
+
+
+	@Override
+	public void onShowedFragment() {
+		if(mDialog != null){
+    		mDialog = null;	//for GC
+    	}
+		DataRepository repository = WhooingApplication.getInstance().getRepo();
+        if(repository.getBsValue() == null){
+        	mDialog = new ProgressDialog(getSherlockActivity());
+        	mDialog.setIndeterminate(true);
+        	mDialog.setCancelable(true);
+        	mDialog.setMessage(getString(R.string.text_loading));
+        	mDialog.show();
+        }
+	}
 }

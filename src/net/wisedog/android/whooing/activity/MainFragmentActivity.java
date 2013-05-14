@@ -13,9 +13,12 @@ import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.utils.WhooingAlert;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +33,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
+
 
 public class MainFragmentActivity extends SherlockFragmentActivity{
 	private MainFragmentAdapter mFragmentAdapter;
@@ -49,6 +53,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     
     public static final int API_MENUITEM_ID = 100000;
     
+
+	public interface IShowedFragment {
+	
+	    public void onShowedFragment();
+	}
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +116,25 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         mPager.setAdapter(mFragmentAdapter);
         mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
         mIndicator.setViewPager(mPager);
+        mIndicator.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int position) {
+				Fragment fragment = (Fragment) mFragmentAdapter.instantiateItem(
+						mPager, position);
+				if (fragment instanceof IShowedFragment) {
+					((IShowedFragment) fragment).onShowedFragment();
+				}
+			}
+			
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {	
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int position) {
+			}
+		});
         
     }
 	
@@ -218,11 +246,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 		SubMenu subMenu1 = menu.addSubMenu("Lists");
-		subMenu1.add("Accounts Setting");
-		subMenu1.add("User Setting");
-		subMenu1.add("Logout");
-		subMenu1.add("About");
-		
+	
+        String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
+        for(int i = 0; i < menuItemsArray.length; i++){
+        	subMenu1.add(menuItemsArray[i]);
+        }
 		
 
 		MenuItem subMenu1Item = subMenu1.getItem();
@@ -234,28 +262,42 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
         if (item.getTitle().equals("Plus")) {
             Intent intent = new Intent(this, TransactionAdd.class);
             intent.putExtra("title", getString(R.string.text_add_transaction));
             startActivityForResult(intent, 1);
         }
-        else if(item.getTitle().equals("Accounts Setting")){
+        else if(item.getTitle().equals(menuItemsArray[0])){
         	Intent intent = new Intent(this, AccountsSetting.class);
         	startActivityForResult(intent, 1);
         }
-        else if(item.getTitle().equals("User Setting")){
+        else if(item.getTitle().equals(menuItemsArray[1])){
         	Intent intent = new Intent(this, UserInfoSetting.class);
         	intent.putExtra("from_menu", true);
         	startActivityForResult(intent, 1);
         }
-        else if(item.getTitle().equals("Logout")){
+        else if(item.getTitle().equals(menuItemsArray[2])){
+        	final String appName = "net.wisedog.android.whooing";
+        	try {
+        	    startActivity(
+        	    		new Intent(Intent.ACTION_VIEW, 
+        	    				Uri.parse("market://details?id="+appName)));
+        	} catch (android.content.ActivityNotFoundException anfe) {
+        	    startActivity(
+        	    		new Intent(Intent.ACTION_VIEW, 
+        	    				Uri.parse("http://play.google.com/store/apps/details?id="+appName)));
+        	}
+        }
+        
+        else if(item.getTitle().equals(menuItemsArray[3])){
         	Define.REAL_TOKEN = null;
         	Define.TOKEN_SECRET = null;
         	Define.PIN = null;
         	setResult(RESULT_OK);
         	finish();
         }
-        else if(item.getTitle().equals("About")){
+        else if(item.getTitle().equals(menuItemsArray[4])){
             DialogFragment newFragment = AboutDialog.newInstance();
             newFragment.show(getSupportFragmentManager(), "dialog");
         }

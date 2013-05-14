@@ -109,6 +109,10 @@
     <!-- Transaction Add -->
     <string name="add_transaction_add_complete">Add complete</string>
     <string name="add_transaction_add">Add</string>
+    <string name="add_transaction_msg_same">Left and Right are the same</string>
+    <string name="add_transaction_msg_check_lr">Check left or right</string>
+    <string name="add_transaction_msg_check_amount">Check amount</string>
+    
     
     <!-- User Account -->
     <string name="user_info_timezone">Timezone</string>
@@ -124,7 +128,7 @@
     
     
     <!-- About dialog  -->
-    <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without user id, language, currency.</string>
+    <string name="about_app_desc">This is 3rd party application of Whooing.com. This application does not contain any information about you without language, currency.</string>
     <string name="about_app_contact_whooing">Contact to Whooing</string>
     <string name="about_app_contact_whooing_email">support@whooing.com</string>
     <string name="about_app_contact_developer">Contact to App developer</string>
@@ -188,7 +192,6 @@
     <string name="account_setting_del_msg_really_delete">Really delete?</string>
     <string name="account_setting_msg_close">Deactivate - Click "Confirm" to apply</string>
     <string name="account_setting_del_unavailable">Unavailable to delete. Only this account is remain in the account type.</string>
-    
         
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

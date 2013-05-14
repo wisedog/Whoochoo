@@ -21,8 +21,6 @@ import net.wisedog.android.whooing.api.Entries;
 import net.wisedog.android.whooing.dataset.TransactionItem;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.AccountsEntity;
-import net.wisedog.android.whooing.dialog.AccountChooserDialog;
-import net.wisedog.android.whooing.dialog.AccountChooserDialog.AccountChooserListener;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.widget.WiTextView;
@@ -32,7 +30,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,11 +47,14 @@ import android.widget.Toast;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class TransactionAdd extends SherlockFragmentActivity implements AccountChooserListener{
+public class TransactionAdd extends SherlockFragmentActivity{
     
     protected static final int DATE_DIALOG_ID = 0;
     protected static final int REQUEST_CODE_LEFT = 10;
     protected static final int REQUEST_CODE_RIGHT = 11;
+    
+    public static final int LEFT_SIDE = 10;
+    public static final int RIGHT_SIDE = 11;
     
     private WiTextView    mDateDisplay;
     private ArrayList<AccountsEntity> mAccountsList = null;
@@ -227,15 +227,20 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
      * @param   v       View what be clicked
      * */
     public void onClickLRAccount(View v){
-        String mode = "";
+        int mode = 0;
         if(v.getId() == R.id.add_transaction_text_left_account){
-            mode =  "left";
+            mode = LEFT_SIDE;
             
         }else{
-            mode = "right";
+            mode = RIGHT_SIDE;
         }
-        DialogFragment newFragment = AccountChooserDialog.newInstance(mAccountsList, mYear, mMonth, mDay, mode);
-        newFragment.show(getSupportFragmentManager(), "dialog");
+        Intent intent = new Intent(TransactionAdd.this, AccountChooserActivity.class);
+        intent.putParcelableArrayListExtra("accounts_list", mAccountsList);
+        intent.putExtra("year", mYear);
+        intent.putExtra("month", mMonth);
+        intent.putExtra("day", mDay);
+        intent.putExtra("mode", mode);
+        startActivityForResult(intent, mode);
     }
     
     /**
@@ -363,7 +368,7 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
                 }
 				Button goBtn = (Button)findViewById(R.id.add_transaction_btn_go);
             	goBtn.setEnabled(true);
-            	goBtn.setText("go");
+            	goBtn.setText(getString(R.string.add_transaction_add));
             	try {
                     JSONArray objResult = result.getJSONArray("results");
                     if(mDataArray != null){
@@ -444,7 +449,8 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         final EditText editAmount = (EditText)findViewById(R.id.add_transaction_edit_amount);
         String itemAmount = editAmount.getText().toString();
         if(itemAmount.equals("")){
-            Toast.makeText(this, "Check Amount", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.add_transaction_msg_check_amount), 
+            		Toast.LENGTH_LONG).show();
             runOnUiThread(new Runnable() {
                 public void run() {
                     editAmount.requestFocus();
@@ -455,12 +461,14 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
         }
         
         if(mLeftAccount == null || mRightAccount == null){
-            Toast.makeText(this, "Check left/right", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.add_transaction_msg_check_lr), 
+            		Toast.LENGTH_SHORT).show();
             return false;
         }
         
         if(mLeftAccount.account_id.equals(mRightAccount.account_id)){
-            Toast.makeText(this, "Left and Right are the same", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.add_transaction_msg_same), 
+            		Toast.LENGTH_LONG).show();
             return false;
         }
         
@@ -494,13 +502,4 @@ public class TransactionAdd extends SherlockFragmentActivity implements AccountC
     public AccountsEntity getRightAccounts(){
         return mRightAccount;
     }
-
-	public void onFinishingChoosing(AccountsEntity entity, String mode) {
-		if(mode.equals("left")){
-            setLeftAccount(entity);
-        }else if(mode.equals("right")){
-            setRightAccount(entity);
-        }
-		
-	}
 }
