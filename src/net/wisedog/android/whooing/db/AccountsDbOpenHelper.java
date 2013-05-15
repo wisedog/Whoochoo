@@ -56,7 +56,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.i("wisedog", "DB Helper onCreate");
+        Log.d("wisedog", "DB Helper onCreate");
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS + "("
                 + KEY_ACCOUNT_ID + " TEXT PRIMARY KEY," 
                 + KEY_ACCOUNT_TYPE + " TEXT,"

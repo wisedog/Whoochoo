@@ -8,7 +8,9 @@ import android.os.Parcelable;
 public class AccountsEntity implements Parcelable{
     /** String for Asset, liabilities and so on*/
     public String accountType = null;
+    /** account id like X1, X2*/
     public String account_id = null;
+    /** account type - 'account' or 'group*/
     public String type = null;
     /** The name of the accounts */
     public String title = null;
@@ -16,6 +18,7 @@ public class AccountsEntity implements Parcelable{
     public String memo = null;
     public int open_date = 0;
     public int close_date = 0;
+    /** Account category. normal, steady, client .... */
     public String category = null;
     
     //only for liabilities
@@ -102,9 +105,6 @@ public class AccountsEntity implements Parcelable{
         if(accountType.compareTo(entity.accountType) != 0){
             return false;
         }
-        /*if(account_id.compareTo(entity.account_id) != 0){
-            return false;
-        }*/
         if(type.compareTo(entity.type) != 0){
             return false;
         }
