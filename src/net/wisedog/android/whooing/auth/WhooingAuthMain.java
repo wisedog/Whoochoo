@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -60,9 +61,9 @@ public class WhooingAuthMain extends Activity {
             indicator1.setVisibility(View.VISIBLE);
             progress0.setVisibility(View.INVISIBLE);
             progress1.setVisibility(View.VISIBLE);
-            text0.setTextColor(0xff888888);
+            text0.setTextColor(Color.GRAY);
             text0.setTypeface(null, Typeface.NORMAL);
-            text1.setTextColor(0xff333333);
+            text1.setTextColor(Color.BLACK);
             text1.setTypeface(null, Typeface.BOLD);
             
         }else if(index == 2){
@@ -70,9 +71,9 @@ public class WhooingAuthMain extends Activity {
             indicator2.setVisibility(View.VISIBLE);
             progress1.setVisibility(View.INVISIBLE);
             progress2.setVisibility(View.VISIBLE);
-            text1.setTextColor(0xff888888);
+            text1.setTextColor(Color.GRAY);
             text1.setTypeface(null, Typeface.NORMAL);
-            text2.setTextColor(0xff333333);
+            text2.setTextColor(Color.BLACK);
             text2.setTypeface(null, Typeface.BOLD);
         }
     }
@@ -175,7 +176,6 @@ public class WhooingAuthMain extends Activity {
 			        setErrorHandler("인증오류! Err No.2");
 			        return;
 			    }
-			    Log.d("wisedog", "APP pin:"+ pin);
 			    Define.PIN = pin;
 				SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE,
 						MODE_PRIVATE);

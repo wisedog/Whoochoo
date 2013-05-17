@@ -19,6 +19,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -250,8 +251,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
         for(int i = 0; i < menuItemsArray.length; i++){
         	subMenu1.add(menuItemsArray[i]);
-        }
-		
+        }	
 
 		MenuItem subMenu1Item = subMenu1.getItem();
 		subMenu1Item.setIcon(R.drawable.menu_lists_button);
@@ -310,6 +310,19 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
                 mMenuDrawer.openMenu();
             }
         }
+        /*else if(item.getTitle().toString().compareTo("test") == 0){
+        	SmsDbOpenHelper helper = new SmsDbOpenHelper(this);
+        	
+        	ContentValues values = new ContentValues();
+        	values.put(SmsDbOpenHelper.KEY_ID, 0);
+        	values.put(SmsDbOpenHelper.KEY_ACCOUNT_ID, "X12");
+        	values.put(SmsDbOpenHelper.KEY_DATE, 20130515);
+        	values.put(SmsDbOpenHelper.KEY_AMOUNT, 1234.3f);
+        	values.put(SmsDbOpenHelper.KEY_MSG, "blahblah");
+        	boolean result = helper.addMessage(values);
+        	Log.i("wisedog", "DB insert is " + result);
+        	helper.getAllAccountsInfo();
+        }*/
         return super.onOptionsItemSelected(item);
     }
     

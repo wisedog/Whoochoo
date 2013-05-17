@@ -3,7 +3,6 @@ package net.wisedog.android.whooing.cp;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.SmsDbOpenHelper;
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -11,27 +10,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 public class SmsProvider extends ContentProvider {
-    static final int ALL_CARD = 1;
+    static final int TYPE_ACCOUNT = 100;
+    static final int TYPE_SMS = 200;
     
     private AccountsDbOpenHelper mAccountDb;
     private SmsDbOpenHelper mSmsDb;
     
-    private static final String AUTHORITY = "net.wisedog.whooing.contentprovider";
-
-    private static final String BASE_PATH = "sms";
-    public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY
-        + "/" + BASE_PATH);
-
-    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
-        + "/sms";
-    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
-        + "/smsitem";
-
+    private static final String AUTHORITY = "net.wisedog.android.whooing.contentprovider";
     
     static final UriMatcher Matcher;
     static{
         Matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        Matcher.addURI(AUTHORITY, "account", ALL_CARD);
+        Matcher.addURI(AUTHORITY, "account", TYPE_ACCOUNT);
+        Matcher.addURI(AUTHORITY, "sms", TYPE_SMS);
     }
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
@@ -41,7 +32,7 @@ public class SmsProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        if(Matcher.match(uri) == ALL_CARD) {
+        if(Matcher.match(uri) == TYPE_ACCOUNT) {
             return "vnd." + AUTHORITY + "/card";
         }
         return null;
@@ -49,7 +40,10 @@ public class SmsProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        mSmsDb.addMessage(values);
+    	if(Matcher.match(uri) == TYPE_SMS){
+    		mSmsDb.addMessage(values);
+    	}
+        
         return null;
     }
 
@@ -63,13 +57,16 @@ public class SmsProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
             String[] selectionArgs, String sortOrder) {
-        String sql = "SELECT * FROM " + AccountsDbOpenHelper.TABLE_ACCOUNTS;
-        if(Matcher.match(uri) == ALL_CARD){
-            sql += " WHERE account_type='liabilities' AND (category='creditcard' OR category='checkcard');";
+        if(Matcher.match(uri) == TYPE_ACCOUNT){
+        	String sql = "SELECT * FROM " + AccountsDbOpenHelper.TABLE_ACCOUNTS;
+            sql += " WHERE (account_type='liabilities' AND type='account') " +
+            		"AND (category='creditcard' OR category='checkcard');";
+
+            SQLiteDatabase db = mAccountDb.getReadableDatabase();
+            Cursor cursor = db.rawQuery(sql, null);
+            return cursor;
         }
-        SQLiteDatabase db = mAccountDb.getReadableDatabase();
-        Cursor cursor = db.rawQuery(sql, null);
-        return cursor;
+        return null;
     }
 
     @Override
