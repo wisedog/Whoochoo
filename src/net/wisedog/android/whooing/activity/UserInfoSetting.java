@@ -124,7 +124,9 @@ public class UserInfoSetting extends Activity{
             language = objResult.getString("language");
             
         } catch (JSONException e) {
-            e.printStackTrace();            
+            e.printStackTrace();
+            Toast.makeText(this, "Error while getting info. Please contact the developer.", Toast.LENGTH_LONG).show();
+            return;
         }
         
         if(getIntent().getBooleanExtra("from_menu", false)){

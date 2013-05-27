@@ -157,7 +157,7 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
             
             if (labelTotalExpensesValue != null) {
             	double value1 = objExpenses.getDouble("total");
-                labelTotalExpensesValue.setText(WhooingCurrency.getFormattedValue(value1));
+                labelTotalExpensesValue.setText(WhooingCurrency.getFormattedValue(value1, getSherlockActivity()));
                 View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_expense);
                 int barWidth = FragmentUtil.getBarWidth(objExpenses.getInt("total"), totalExpensesValue,
                         secondColumnWidth, valueWidth);
@@ -181,7 +181,7 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
             WiTextView labelTotalIncomeValue = (WiTextView)getSherlockActivity().findViewById(R.id.pl_fragment_total_income_value);
             if(labelTotalIncomeValue != null){
             	double value1 = objIncome.getDouble("total");
-                labelTotalIncomeValue.setText(WhooingCurrency.getFormattedValue(value1));
+                labelTotalIncomeValue.setText(WhooingCurrency.getFormattedValue(value1, getSherlockActivity()));
                 View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_income);
                 int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalIncomeValue, 
                         secondColumnWidth, valueWidth);
@@ -256,7 +256,7 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
             //set up textview for showing amount
             WiTextView amountText = new WiTextView(getSherlockActivity());
             double value1 = accountItem.getDouble("money");
-            amountText.setText(WhooingCurrency.getFormattedValue(value1));
+            amountText.setText(WhooingCurrency.getFormattedValue(value1, getSherlockActivity()));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);

@@ -48,7 +48,7 @@ public class BillMonthlyEntity extends RelativeLayout{
     	double total = objRowItem.getDouble("total");
     	TextView totalAmount = (TextView)findViewById(R.id.bill_label_total_value);
     	if(totalAmount != null){
-    		totalAmount.setText(WhooingCurrency.getFormattedValue(total));
+    		totalAmount.setText(WhooingCurrency.getFormattedValue(total, mContext));
     	}
     	
     	int date = objRowItem.getInt("date");
@@ -110,7 +110,7 @@ public class BillMonthlyEntity extends RelativeLayout{
     	for(int i = 0; i < 31; i++){
     		Double d = paymentDateArray[i];
     		if(d > 0.0f){
-    			paymentInfo = paymentInfo + i + " : " + WhooingCurrency.getFormattedValue(d) + "   ";
+    			paymentInfo = paymentInfo + i + " : " + WhooingCurrency.getFormattedValue(d, mContext) + "   ";
     		}
     	}
     	

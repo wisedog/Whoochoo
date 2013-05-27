@@ -161,6 +161,7 @@ public class TransactionAdd extends SherlockFragmentActivity{
         textView.setText("");
         ((EditText)findViewById(R.id.add_transaction_edit_amount)).setText("");
 
+        Define.gettingLoginInfo(this);
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
         String date = df.format(new java.util.Date()).toString();

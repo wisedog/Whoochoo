@@ -6,6 +6,9 @@ package net.wisedog.android.whooing.utils;
 import java.text.NumberFormat;
 import java.util.Currency;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import net.wisedog.android.whooing.Define;
 
 
@@ -246,9 +249,12 @@ public class WhooingCurrency {
      * Return string formatted locale currency
      * @param	d	value
      * */
-    public static String getFormattedValue(double d){
+    public static String getFormattedValue(double d, Context context){
         NumberFormat format = NumberFormat.getInstance();
-        
+        if(Define.CURRENCY_CODE == null){
+        	SharedPreferences prefs = context.getSharedPreferences(Define.SHARED_PREFERENCE, 0);
+        	Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, "USD");
+        }
         Currency currency = Currency.getInstance(Define.CURRENCY_CODE);
         format.setMaximumFractionDigits(currency.getDefaultFractionDigits());
         try{

@@ -42,6 +42,7 @@ public class SmsProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
     	if(Matcher.match(uri) == TYPE_SMS){
     		mSmsDb.addMessage(values);
+    		//TODO Notification ... 
     	}
         
         return null;

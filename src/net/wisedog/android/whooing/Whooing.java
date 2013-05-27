@@ -10,14 +10,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,7 +26,6 @@ import android.widget.Button;
 public class Whooing extends Activity implements onLoadingMessage{
     private final int MSG_GO_MAIN = 0;
     
-	Context mContext = null;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +38,6 @@ public class Whooing extends Activity implements onLoadingMessage{
         }
         Define.ROBOFONT = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         setContentView(R.layout.welcome);
-        mContext = this;
         if(checkNetworkConnection() == false){
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle(getString(R.string.welcome_no_internet_title));
@@ -56,7 +52,7 @@ public class Whooing extends Activity implements onLoadingMessage{
             return;
         }
         
-        getLoginInfo();
+        Define.gettingLoginInfo(this);
         
         Button nextBtn = (Button)findViewById(R.id.welcome_button_next);
         WiTextView messageText = (WiTextView)findViewById(R.id.welcome_message_board);
@@ -122,8 +118,8 @@ public class Whooing extends Activity implements onLoadingMessage{
                 WiTextView messageText = (WiTextView)findViewById(R.id.welcome_message_board);
                 messageText.setVisibility(View.VISIBLE);
                 nextBtn.setVisibility(View.GONE);
-                getLoginInfo();
-                DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+                Define.gettingLoginInfo(this);
+                DataRepository repository = WhooingApplication.getInstance().getRepo();
                 repository.setLoadingMsgListener(this);
                 repository.refreshUserInfo(this);
                 repository.refreshAccount(this);
@@ -155,38 +151,6 @@ public class Whooing extends Activity implements onLoadingMessage{
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("execute_before", true);
         super.onSaveInstanceState(outState);
-    }
-    
-    protected void getLoginInfo(){
-        /*
-        if(Define.DEBUG){
-            Define.REAL_TOKEN = "9772ff8e2f751ddf1c5cf74b0d9b328f392a4b71";
-            Define.PIN = "339599";
-            Define.TOKEN_SECRET = "7776e79057bc222254da0b108555afd86e3b7d3c";
-            Define.APP_SECTION = "s10550";
-            Define.USER_ID = 8955;
-            Define.CURRENCY_CODE = "KRW";
-            Define.COUNTRY_CODE="KR";
-            Define.LOCALE_LANGUAGE = "ko";
-        }*/
-        
-        SharedPreferences prefs = getSharedPreferences(Define.SHARED_PREFERENCE, MODE_PRIVATE);
-        Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
-        Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
-        Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
-        Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
-        Define.USER_ID = prefs.getInt(Define.KEY_SHARED_USER_ID, 0);
-        Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, "USD");
-        Define.COUNTRY_CODE = prefs.getString(Define.KEY_SHARED_COUNTRY_CODE, "US");
-        Define.LOCALE_LANGUAGE = prefs.getString(Define.KEY_SHARED_LOCALE_LANGUAGE, "en");
-        Define.TIMEZONE = prefs.getString(Define.KEY_SHARED_TIMEZONE, null);
-        if(Define.DEBUG){
-        	Log.i("wisedog", "user_id: " + Define.USER_ID + " app_section : " + Define.APP_SECTION + " real_token:" + Define.REAL_TOKEN
-                    + " pin : " + Define.PIN + " token_secret : " + Define.TOKEN_SECRET);
-            Log.i("wisedog", "country: " + Define.COUNTRY_CODE + " currency: " + Define.CURRENCY_CODE 
-                    + " Timezone: " + Define.TIMEZONE );
-        }
-        
     }
     
     /**

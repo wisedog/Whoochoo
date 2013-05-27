@@ -53,7 +53,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 
 		TextView textAmount = (TextView) findViewById(R.id.bill_listitem_label_payment_amount);
 		if (textAmount != null) {
-			textAmount.setText(WhooingCurrency.getFormattedValue(item.amount));
+			textAmount.setText(WhooingCurrency.getFormattedValue(item.amount, context));
 		}
 
 		TextView textPaymentDate = (TextView) findViewById(R.id.bill_listitem_payment_date);

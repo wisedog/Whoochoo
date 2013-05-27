@@ -88,7 +88,7 @@ public class TransactionAddAdapter extends BaseAdapter {
        }
        textDate.setText(item.date.subSequence(0, 8));
        textItem.setText(item.item);
-       textAmount.setText(WhooingCurrency.getFormattedValue(item.money));
+       textAmount.setText(WhooingCurrency.getFormattedValue(item.money, mContext));
        textLeft.setText(entityLeft.title);
        textRight.setText(entityRight.title);
        

@@ -99,6 +99,7 @@ public class BbsCommentEntity extends LinearLayout {
 
 			} else {
 				Date date = new Date(obj.getLong("timestamp") * 1000);
+				Define.gettingLoginInfo(mContext);
 				Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
 				java.text.DateFormat df = java.text.DateFormat.getDateInstance(
 						java.text.DateFormat.SHORT, locale);

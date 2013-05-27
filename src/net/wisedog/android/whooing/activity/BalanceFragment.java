@@ -176,7 +176,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
 			double totalAssetValue = objAssets.getDouble("total");
             if (labelTotalAssetValue != null) {
             	double totalAssetValue1 = objAssets.getDouble("total");
-                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1));
+                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1, getSherlockActivity()));
                 View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_asset);
                 int barWidth = FragmentUtil.getBarWidth(objAssets.getInt("total"), totalAssetValue,
                         secondColumnWidth, valueWidth);
@@ -200,7 +200,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
 			WiTextView labelTotalLiabilitiesValue = (WiTextView)getSherlockActivity().findViewById(R.id.balance_total_liabilities_value);
 			if(labelTotalLiabilitiesValue != null){
 				double totalLiabilities = objLiabilities.getDouble("total");
-			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities));
+			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities, getSherlockActivity()));
                 View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_liabilities);
                 int barWidth = FragmentUtil.getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
                         secondColumnWidth, valueWidth);
@@ -274,7 +274,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
             //set up textview for showing amount
             WiTextView amountText = new WiTextView(getSherlockActivity());
             double money = accountItem.getDouble("money");
-            amountText.setText(WhooingCurrency.getFormattedValue(money));
+            amountText.setText(WhooingCurrency.getFormattedValue(money, getSherlockActivity()));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);

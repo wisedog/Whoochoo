@@ -195,8 +195,8 @@ public class DashboardFragment extends SherlockFragment{
             JSONObject objAggregate = objResult.getJSONObject("aggregate");
             double capital = objAggregate.getDouble("capital");
             double liabilities = objAggregate.getDouble("liabilities");
-            currentBalance.setText(WhooingCurrency.getFormattedValue(capital));
-            doubtValue.setText(WhooingCurrency.getFormattedValue(liabilities));
+            currentBalance.setText(WhooingCurrency.getFormattedValue(capital, getSherlockActivity()));
+            doubtValue.setText(WhooingCurrency.getFormattedValue(liabilities, getSherlockActivity()));
         }catch(JSONException e){
             setErrorHandler("Comm error! Err-MAIN2");
             e.printStackTrace();
@@ -220,7 +220,7 @@ public class DashboardFragment extends SherlockFragment{
         }
         setCompareArrow(diff);
         WiTextView compareValue = (WiTextView)getSherlockActivity().findViewById(R.id.text_compare_premonth_value);
-        compareValue.setText(WhooingCurrency.getFormattedValue(diff));
+        compareValue.setText(WhooingCurrency.getFormattedValue(diff, getSherlockActivity()));
     }
     
     /**
@@ -293,8 +293,8 @@ public class DashboardFragment extends SherlockFragment{
     	LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.budget_monthly_layout);
     	WiTextView budgetText = (WiTextView)getActivity().findViewById(R.id.budget_monthly_expense_budget);
     	WiTextView spentText = (WiTextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
-    	budgetText.setText(WhooingCurrency.getFormattedValue(budget));
-    	spentText.setText(WhooingCurrency.getFormattedValue(expenses));
+    	budgetText.setText(WhooingCurrency.getFormattedValue(budget, getSherlockActivity()));
+    	spentText.setText(WhooingCurrency.getFormattedValue(expenses, getSherlockActivity()));
     	
     	//Calculate width
     	int totalWidth = ll.getMeasuredWidth();
