@@ -1,13 +1,22 @@
 package net.wisedog.android.whooing.cp;
 
+import net.wisedog.android.whooing.Whooing;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.SmsDbOpenHelper;
+import android.R;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.widget.Toast;
 
 public class SmsProvider extends ContentProvider {
     static final int TYPE_ACCOUNT = 100;
@@ -41,8 +50,38 @@ public class SmsProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
     	if(Matcher.match(uri) == TYPE_SMS){
+    		Toast.makeText(getContext(), "Receiving a message.", 
+                    Toast.LENGTH_LONG).show();
     		mSmsDb.addMessage(values);
-    		//TODO Notification ... 
+    		Context context = getContext();
+    		
+    		NotificationCompat.Builder mBuilder =
+    		        new NotificationCompat.Builder(context)
+    		        .setSmallIcon(R.drawable.alert_dark_frame)
+    		        .setContentTitle("My notification")
+    		        .setContentText("Hello World!");
+    		// Creates an explicit intent for an Activity in your app
+    		Intent resultIntent = new Intent(context, Whooing.class);
+    		
+    		// The stack builder object will contain an artificial back stack for the
+    		// started Activity.
+    		// This ensures that navigating backward from the Activity leads out of
+    		// your application to the Home screen.
+    		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+    		// Adds the back stack for the Intent (but not the Intent itself)
+    		stackBuilder.addParentStack(Whooing.class);
+    		// Adds the Intent that starts the Activity to the top of the stack
+    		stackBuilder.addNextIntent(resultIntent);
+    		PendingIntent resultPendingIntent =
+    		        stackBuilder.getPendingIntent(
+    		            0,
+    		            PendingIntent.FLAG_UPDATE_CURRENT
+    		        );
+    		mBuilder.setContentIntent(resultPendingIntent);
+    		NotificationManager mNotificationManager =
+    		    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+    		// mId allows you to update the notification later on.
+    		mNotificationManager.notify(0, mBuilder.build());
     	}
         
         return null;
