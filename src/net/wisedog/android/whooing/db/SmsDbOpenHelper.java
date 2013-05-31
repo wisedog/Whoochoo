@@ -95,19 +95,42 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
         return true;
     }
     
-    public int deleteAll(int id){
+    /**
+     * Delete an item which id is given param
+     * @param	id		id to delete
+     * @return	Returns how many records are affected
+     * */
+    public int deleteItem(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_SMS, KEY_ID+"='" + id + "'", null);        
         db.close();
         return result;
     }
     
-    public int deleteItem(){
+    /**
+     * Delete all record in table
+     * */
+    public int deleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_SMS, null, null);        
         db.close();
         return result;
     }
+    
+    /**
+     * @return	Count of the table records
+     * */
+    public int getCount(){
+    	String selectQuery = "SELECT * FROM " + TABLE_SMS;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+    
     
     /**
      * @return  Return all account information

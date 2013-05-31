@@ -1,9 +1,24 @@
+/*
+  Copyright 2013 Jongha Kim(me@wisedog.net)
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+ */
 package net.wisedog.android.whooing.cp;
 
+import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.Whooing;
 import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.SmsDbOpenHelper;
-import android.R;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentProvider;
@@ -52,14 +67,16 @@ public class SmsProvider extends ContentProvider {
     	if(Matcher.match(uri) == TYPE_SMS){
     		Toast.makeText(getContext(), "Receiving a message.", 
                     Toast.LENGTH_LONG).show();
+    		
     		mSmsDb.addMessage(values);
     		Context context = getContext();
     		
     		NotificationCompat.Builder mBuilder =
     		        new NotificationCompat.Builder(context)
-    		        .setSmallIcon(R.drawable.alert_dark_frame)
-    		        .setContentTitle("My notification")
-    		        .setContentText("Hello World!");
+    		        .setSmallIcon(R.drawable.ic_launcher)
+    		        .setContentTitle(context.getString(
+    		        		net.wisedog.android.whooing.R.string.app_name))
+    		        .setContentText("1건의 카드거래가 입력되었습니다");
     		// Creates an explicit intent for an Activity in your app
     		Intent resultIntent = new Intent(context, Whooing.class);
     		
