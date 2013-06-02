@@ -63,7 +63,7 @@
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
     <string name="text_next">Next</string>
-    <string name="text_okay">Okay</string>
+    <string name="text_okay">OK</string>
     <string name="text_inform">Inform</string>
     <string name="text_memo">Memo</string>
     <string name="text_category">Category</string>
@@ -193,6 +193,9 @@
     <string name="account_setting_msg_close">Deactivate - Click "Confirm" to apply</string>
     <string name="account_setting_del_unavailable">Unavailable to delete. Only this account is remain in the account type.</string>
         
+    <!-- SMS -->
+    <string name="sms_set_expense">Set Exp.</string>
+    
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>

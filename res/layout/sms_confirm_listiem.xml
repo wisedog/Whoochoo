@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" 
+    android:padding="3dp"
+    android:weightSum="100">
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:id="@+id/sms_list_account_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+        android:layout_weight="32"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textSize="18sp" />
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:id="@+id/sms_list_expenses"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+        android:layout_weight="32"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/sms_set_expense"
+        android:textSize="18sp" />
+
+    <ImageButton 
+        android:id="@+id/sms_list_discard"
+        android:src="@drawable/icon_delete"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="18"/>
+
+    <net.wisedog.android.whooing.widget.WiButton
+        android:id="@+id/sms_list_ok"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="18"
+        android:text="@string/text_okay" />
+
+</LinearLayout>

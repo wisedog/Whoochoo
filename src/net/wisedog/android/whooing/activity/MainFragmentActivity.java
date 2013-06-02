@@ -8,9 +8,11 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
+import net.wisedog.android.whooing.db.SmsDbOpenHelper;
 import net.wisedog.android.whooing.dialog.AboutDialog;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.utils.WhooingAlert;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -252,6 +254,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         for(int i = 0; i < menuItemsArray.length; i++){
         	subMenu1.add(menuItemsArray[i]);
         }	
+        subMenu1.add("test");
 
 		MenuItem subMenu1Item = subMenu1.getItem();
 		subMenu1Item.setIcon(R.drawable.menu_lists_button);
@@ -310,19 +313,18 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
                 mMenuDrawer.openMenu();
             }
         }
-        /*else if(item.getTitle().toString().compareTo("test") == 0){
+        else if(item.getTitle().toString().compareTo("test") == 0){
         	SmsDbOpenHelper helper = new SmsDbOpenHelper(this);
         	
         	ContentValues values = new ContentValues();
         	values.put(SmsDbOpenHelper.KEY_ID, 0);
-        	values.put(SmsDbOpenHelper.KEY_ACCOUNT_ID, "X12");
+        	values.put(SmsDbOpenHelper.KEY_ACCOUNT_ID, "x12");
         	values.put(SmsDbOpenHelper.KEY_DATE, 20130515);
-        	values.put(SmsDbOpenHelper.KEY_AMOUNT, 1234.3f);
+        	values.put(SmsDbOpenHelper.KEY_AMOUNT, 12345);
         	values.put(SmsDbOpenHelper.KEY_MSG, "blahblah");
-        	boolean result = helper.addMessage(values);
+        	long result = helper.addMessage(values);
         	Log.i("wisedog", "DB insert is " + result);
-        	helper.getAllAccountsInfo();
-        }*/
+        }
         return super.onOptionsItemSelected(item);
     }
     
@@ -340,6 +342,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         }
         this.setResult(RESULT_CANCELED);
         finish();
+    }
+    
+    public void onClickTest(View v){
+    	Intent intent = new Intent(MainFragmentActivity.this, SmsConfirmList.class);
+		startActivityForResult(intent, 1);
     }
 
 

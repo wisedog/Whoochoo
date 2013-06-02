@@ -40,6 +40,7 @@
         <activity android:name=".activity.AccountsModify"></activity>
         <activity android:screenOrientation="portrait" android:name=".activity.AccountChooserActivity"></activity>
         <provider android:name=".cp.SmsProvider" android:authorities="net.wisedog.android.whooing.contentprovider"></provider>
+        <activity android:screenOrientation="portrait" android:name=".activity.SmsConfirmList"></activity>
 </application>
 
 </manifest>

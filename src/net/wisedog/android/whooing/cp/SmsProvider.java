@@ -22,6 +22,7 @@ import net.wisedog.android.whooing.db.SmsDbOpenHelper;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +32,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
-import android.widget.Toast;
 
 public class SmsProvider extends ContentProvider {
     static final int TYPE_ACCOUNT = 100;
@@ -65,25 +65,22 @@ public class SmsProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
     	if(Matcher.match(uri) == TYPE_SMS){
-    		Toast.makeText(getContext(), "Receiving a message.", 
-                    Toast.LENGTH_LONG).show();
-    		
-    		mSmsDb.addMessage(values);
+    		long row = mSmsDb.addMessage(values);
+    		long recordCount = mSmsDb.getCount();
     		Context context = getContext();
+    		Uri CONTENT_URI = Uri.parse("content://net.wisedog.android.whooing.contentprovider/sms");
+    		Uri notiuri = ContentUris.withAppendedId(CONTENT_URI, row);
+    		context.getContentResolver().notifyChange(notiuri, null);
     		
     		NotificationCompat.Builder mBuilder =
     		        new NotificationCompat.Builder(context)
-    		        .setSmallIcon(R.drawable.ic_launcher)
+    		        .setSmallIcon(R.drawable.notification_icon)
     		        .setContentTitle(context.getString(
     		        		net.wisedog.android.whooing.R.string.app_name))
-    		        .setContentText("1건의 카드거래가 입력되었습니다");
-    		// Creates an explicit intent for an Activity in your app
+    		        .setContentText("" + recordCount + "건의 카드거래가 입력되었습니다");
+
     		Intent resultIntent = new Intent(context, Whooing.class);
     		
-    		// The stack builder object will contain an artificial back stack for the
-    		// started Activity.
-    		// This ensures that navigating backward from the Activity leads out of
-    		// your application to the Home screen.
     		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
     		// Adds the back stack for the Intent (but not the Intent itself)
     		stackBuilder.addParentStack(Whooing.class);
@@ -99,6 +96,7 @@ public class SmsProvider extends ContentProvider {
     		    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     		// mId allows you to update the notification later on.
     		mNotificationManager.notify(0, mBuilder.build());
+    		return notiuri;
     	}
         
         return null;

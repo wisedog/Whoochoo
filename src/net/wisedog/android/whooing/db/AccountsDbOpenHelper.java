@@ -26,6 +26,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     // Database Name
     public static final String DATABASE_NAME = "whooing";
  
+    ////// Account Table 
     // Contacts table name
     public static final String TABLE_ACCOUNTS = "accounts";
  
@@ -42,6 +43,15 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_OPT_PAY_DATE = "opt_pay_date";
     private static final String KEY_OPT_PAY_ACCOUNT_ID = "opt_pay_account_id";
     
+    ////// // Contacts table name
+    public static final String TABLE_SMS = "sms";
+    
+    // Contacts Table Columns names
+    public static final String KEY_ID = "id";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_AMOUNT = "amount";
+    public static final String KEY_MSG = "msg";
+    
     public AccountsDbOpenHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -57,7 +67,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("wisedog", "DB Helper onCreate");
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS + "("
+        String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS + "("
                 + KEY_ACCOUNT_ID + " TEXT PRIMARY KEY," 
                 + KEY_ACCOUNT_TYPE + " TEXT,"
                 + KEY_TYPE + " TEXT," 
@@ -70,7 +80,16 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
                 + KEY_OPT_PAY_DATE + " INTEGER,"
                 + KEY_OPT_PAY_ACCOUNT_ID + " TEXT"
                 +")"; 
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_ACCOUNT_TABLE);
+        
+        String CREATE_SMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SMS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
+                + KEY_DATE + " INTEGER,"
+                + KEY_AMOUNT + " REAL," 
+                + KEY_ACCOUNT_ID + " TEXT,"
+                + KEY_MSG + " TEXT"
+                +")"; 
+        db.execSQL(CREATE_SMS_TABLE);
     }
 
     /* (non-Javadoc)
@@ -80,7 +99,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNTS);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SMS);
         // Create tables again
         onCreate(db);
     }

@@ -3,6 +3,8 @@
  */
 package net.wisedog.android.whooing.db;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +20,7 @@ import android.util.Log;
  */
 public class SmsDbOpenHelper extends SQLiteOpenHelper {
     
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     
     // Database Name
     public static final String DATABASE_NAME = "whooing";
@@ -60,24 +62,26 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
-    	String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SMS + "("
+    	Log.i("wisedog", "on DB upgrade");
+    	// Create in AccountsDbOpenHelper
+    	/*String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SMS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
                 + KEY_DATE + " INTEGER,"
                 + KEY_AMOUNT + " REAL," 
                 + KEY_ACCOUNT_ID + " TEXT,"
                 + KEY_MSG + " TEXT"
                 +")"; 
-        db.execSQL(CREATE_TABLE);
+        db.execSQL(CREATE_TABLE);*/
     }
     
     /**
      * Accounts 정보 레코드 추가
     * @param       info     DataClass of Recent Movie info
-    * @return   Return true if it success, otherwise return false         
+    * @return   	Return affected records     
      * */
-    public boolean addMessage(ContentValues values){
+    public long addMessage(ContentValues values){
         if(values == null){
-            return false;
+            return 0;
         }
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -90,9 +94,9 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
         }
         db.close();
         if(result == -1){
-            return false;
+            return 0;
         }
-        return true;
+        return result;
     }
     
     /**
@@ -135,28 +139,41 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
     /**
      * @return  Return all account information
      * */
-    public void getAllAccountsInfo() {
+    public ArrayList<SmsInfoEntity> getAllAccountsInfo() {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_SMS;
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = null;
+        try{
+        	cursor = db.rawQuery(selectQuery, null);
+        }
+        catch(SQLException e){
+        	e.printStackTrace();
+        	db.close();
+        	return null;
+        }
 
         Log.i("wisedog", "Cursor Count : " + cursor.getCount());
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-            	Log.i("wisedog", "Column 0" + cursor.getString(0));
-            	Log.i("wisedog", "Column 1" + cursor.getString(1));
-            	Log.i("wisedog", "Column 2" + cursor.getString(2));
-            	Log.i("wisedog", "Column 3" + cursor.getString(3));
-            	Log.i("wisedog", "Column 4" + cursor.getString(4));
-            
-                
-            } while (cursor.moveToNext());
+        ArrayList<SmsInfoEntity> array = null;
+        if(cursor.getCount() > 0){
+        	array = new ArrayList<SmsInfoEntity>();
+        	// looping through all rows and adding to list
+            if (cursor.moveToFirst()) {
+                do {
+                	SmsInfoEntity entity = new SmsInfoEntity();
+                	entity.use_date = cursor.getInt(1);
+                	entity.amount = cursor.getInt(2);
+                	entity.account_id = cursor.getString(3);
+                	entity.msg = cursor.getString(4);
+                	array.add(entity);
+                } while (cursor.moveToNext());
+            }
         }
+        
         cursor.close();
         db.close();
+        return array;
     }
 
 }
