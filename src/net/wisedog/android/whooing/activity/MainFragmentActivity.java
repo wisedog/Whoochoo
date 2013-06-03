@@ -8,6 +8,7 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
+import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
 import net.wisedog.android.whooing.db.SmsDbOpenHelper;
 import net.wisedog.android.whooing.dialog.AboutDialog;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -317,11 +318,12 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         	SmsDbOpenHelper helper = new SmsDbOpenHelper(this);
         	
         	ContentValues values = new ContentValues();
-        	values.put(SmsDbOpenHelper.KEY_ID, 0);
-        	values.put(SmsDbOpenHelper.KEY_ACCOUNT_ID, "x12");
-        	values.put(SmsDbOpenHelper.KEY_DATE, 20130515);
-        	values.put(SmsDbOpenHelper.KEY_AMOUNT, 12345);
-        	values.put(SmsDbOpenHelper.KEY_MSG, "blahblah");
+        	values.put(AccountsDbOpenHelper.KEY_ID, 0);
+        	values.put(AccountsDbOpenHelper.KEY_ACCOUNT_ID, "x37");
+        	values.put(AccountsDbOpenHelper.KEY_DATE, 20130515);
+        	values.put(AccountsDbOpenHelper.KEY_AMOUNT, 12345);
+        	values.put(AccountsDbOpenHelper.KEY_SMS_ITEM, "asdfasdf");
+        	values.put(AccountsDbOpenHelper.KEY_MSG, "blahblah");
         	long result = helper.addMessage(values);
         	Log.i("wisedog", "DB insert is " + result);
         }

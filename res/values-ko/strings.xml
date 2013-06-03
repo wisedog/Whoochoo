@@ -192,6 +192,10 @@
     <string name="account_setting_msg_close">비활성화 적용 예정</string>
     <string name="account_setting_del_unavailable">삭제할 수 없습니다. 이 계정 유형에 해당 계정밖에 존재하지 않습니다.</string>
     
+    <!-- SMS -->
+    <string name="sms_set_expense">지출계정설정</string>
+    <string name="sms_toast_no_set_expense">지출 계정을 설정해주세요.</string>
+    
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>

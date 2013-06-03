@@ -15,6 +15,12 @@ public class SmsInfoEntity {
 	/** money amount */
 	public int amount;
 	
+	/** Expense account ID */
+	public String targetAccountId = null;
+
+	/** Expense Item (ex. 레스토랑, 선물 ....) */
+    public String item;
+	
 	public SmsInfoEntity(){
 	    ; //Do nothing
 	}

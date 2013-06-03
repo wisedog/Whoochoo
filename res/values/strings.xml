@@ -195,6 +195,7 @@
         
     <!-- SMS -->
     <string name="sms_set_expense">Set Exp.</string>
+    <string name="sms_toast_no_set_expense">Please select expense account</string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

@@ -25,10 +25,10 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
     // Database Name
     public static final String DATABASE_NAME = "whooing";
     
-    // Contacts table name
+    // SMS table name
     public static final String TABLE_SMS = "sms";
     
-    // Contacts Table Columns names
+    // SMS Table Columns names
     public static final String KEY_ID = "id";
     public static final String KEY_DATE = "date";
     public static final String KEY_AMOUNT = "amount";
@@ -115,6 +115,7 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
      * Delete all record in table
      * */
     public int deleteAll(){
+        Log.i("wisedog", "Delete All");
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_SMS, null, null);        
         db.close();
@@ -165,7 +166,8 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
                 	entity.use_date = cursor.getInt(1);
                 	entity.amount = cursor.getInt(2);
                 	entity.account_id = cursor.getString(3);
-                	entity.msg = cursor.getString(4);
+                	entity.item = cursor.getString(4);
+                	entity.msg = cursor.getString(5);
                 	array.add(entity);
                 } while (cursor.moveToNext());
             }

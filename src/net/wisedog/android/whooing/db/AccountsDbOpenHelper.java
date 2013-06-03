@@ -31,17 +31,17 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     public static final String TABLE_ACCOUNTS = "accounts";
  
     // Contacts Table Columns names
-    private static final String KEY_ACCOUNT_ID = "account_id";
-    private static final String KEY_ACCOUNT_TYPE = "account_type";
-    private static final String KEY_TYPE = "type";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_MEMO = "memo";
-    private static final String KEY_OPEN_DATE = "open_date";
-    private static final String KEY_CLOSE_DATE = "close_date";
-    private static final String KEY_CATEGORY = "category";
-    private static final String KEY_OPT_USE_DATE = "opt_use_date";
-    private static final String KEY_OPT_PAY_DATE = "opt_pay_date";
-    private static final String KEY_OPT_PAY_ACCOUNT_ID = "opt_pay_account_id";
+    public static final String KEY_ACCOUNT_ID = "account_id";
+    public static final String KEY_ACCOUNT_TYPE = "account_type";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MEMO = "memo";
+    public static final String KEY_OPEN_DATE = "open_date";
+    public static final String KEY_CLOSE_DATE = "close_date";
+    public static final String KEY_CATEGORY = "category";
+    public static final String KEY_OPT_USE_DATE = "opt_use_date";
+    public static final String KEY_OPT_PAY_DATE = "opt_pay_date";
+    public static final String KEY_OPT_PAY_ACCOUNT_ID = "opt_pay_account_id";
     
     ////// // Contacts table name
     public static final String TABLE_SMS = "sms";
@@ -51,6 +51,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     public static final String KEY_DATE = "date";
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_MSG = "msg";
+    public static final String KEY_SMS_ITEM = "item";
     
     public AccountsDbOpenHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -87,6 +88,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
                 + KEY_DATE + " INTEGER,"
                 + KEY_AMOUNT + " REAL," 
                 + KEY_ACCOUNT_ID + " TEXT,"
+                + KEY_SMS_ITEM + " TEXT,"
                 + KEY_MSG + " TEXT"
                 +")"; 
         db.execSQL(CREATE_SMS_TABLE);
@@ -96,7 +98,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
      * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
      */
     @Override
-    public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SMS);
@@ -144,7 +146,6 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         if(entity == null){
             return false;
         }
-        //String selectQuery = "DELETE FROM " + TABLE_ACCOUNTS + " WHERE account_id=" + entity.account_id;
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_ACCOUNTS, KEY_ACCOUNT_ID+"='" + entity.account_id + "'", null);        
         db.close();

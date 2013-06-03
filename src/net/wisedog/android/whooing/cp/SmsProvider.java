@@ -59,6 +59,9 @@ public class SmsProvider extends ContentProvider {
         if(Matcher.match(uri) == TYPE_ACCOUNT) {
             return "vnd." + AUTHORITY + "/card";
         }
+        else if(Matcher.match(uri) == TYPE_SMS) {
+            return "vnd." + AUTHORITY + "/sms";
+        }
         return null;
     }
 
