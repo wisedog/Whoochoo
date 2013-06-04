@@ -8,12 +8,9 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
-import net.wisedog.android.whooing.db.AccountsDbOpenHelper;
-import net.wisedog.android.whooing.db.SmsDbOpenHelper;
 import net.wisedog.android.whooing.dialog.AboutDialog;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.utils.WhooingAlert;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -22,7 +19,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -255,7 +251,9 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         for(int i = 0; i < menuItemsArray.length; i++){
         	subMenu1.add(menuItemsArray[i]);
         }	
-        subMenu1.add("test");
+        if(Define.DEBUG){
+        	subMenu1.add("test");
+        }
 
 		MenuItem subMenu1Item = subMenu1.getItem();
 		subMenu1Item.setIcon(R.drawable.menu_lists_button);
@@ -314,7 +312,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
                 mMenuDrawer.openMenu();
             }
         }
-        else if(item.getTitle().toString().compareTo("test") == 0){
+        /*else if(item.getTitle().toString().compareTo("test") == 0){
         	SmsDbOpenHelper helper = new SmsDbOpenHelper(this);
         	
         	ContentValues values = new ContentValues();
@@ -326,7 +324,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         	values.put(AccountsDbOpenHelper.KEY_MSG, "blahblah");
         	long result = helper.addMessage(values);
         	Log.i("wisedog", "DB insert is " + result);
-        }
+        }*/
         return super.onOptionsItemSelected(item);
     }
     
@@ -346,7 +344,11 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         finish();
     }
     
-    public void onClickTest(View v){
+    /**
+     * Click handler for sms
+     * @param	v	view to click
+     * */
+    public void onClickSms(View v){
     	Intent intent = new Intent(MainFragmentActivity.this, SmsConfirmList.class);
 		startActivityForResult(intent, 1);
     }
@@ -446,5 +448,4 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             return v;
         }
     }
-
 }

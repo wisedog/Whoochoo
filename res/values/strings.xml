@@ -69,6 +69,7 @@
     <string name="text_category">Category</string>
     <string name="text_deactivate">Deactivate</string>
     <string name="text_deleted">Deleted</string>
+    <string name="text_zero">0</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -196,12 +197,16 @@
     <!-- SMS -->
     <string name="sms_set_expense">Set Exp.</string>
     <string name="sms_toast_no_set_expense">Please select expense account</string>
+    <string name="sms_notification_msg"> new transaction(s) added</string>
+    <string name="sms_no_received">No received card transaction alarm SMS</string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>
     <string name="desc_imgbtn_calendar">Calendar</string>
     <string name="desc_img_possibility">Possibility to archive object</string>
+    <string name="desc_img_sms">SMS</string>
+    <string name="desc_img_arrow">Arrow</string>
     
     
 </resources>

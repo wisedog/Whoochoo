@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" 
-    android:padding="3dp">
+    android:padding="3dp"
+    android:background="#E5E5E5">
 
     <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
             android:layout_weight="50"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="#333333"
             android:textSize="18sp" />
 
         <net.wisedog.android.whooing.widget.WiTextView
@@ -29,6 +31,7 @@
             android:layout_weight="50"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="#333333"
             android:textSize="18sp" />
         
     </LinearLayout>
@@ -49,6 +52,7 @@
             android:layout_weight="50"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="#333333"
             android:textSize="18sp" />
 
         <net.wisedog.android.whooing.widget.WiTextView
@@ -59,6 +63,7 @@
             android:layout_weight="50"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="#333333"
             android:textSize="18sp" />
     </LinearLayout>
     
@@ -66,23 +71,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="90">
+        
         <Spinner
         android:id="@+id/sms_list_spinner_expense"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_weight="50" 
         android:layout_gravity="center_vertical"/>
-	
-	    <!-- <net.wisedog.android.whooing.widget.WiTextView
-	        android:id="@+id/sms_list_expenses"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_marginRight="3dp"
-	        android:layout_weight="32"
-	        android:ellipsize="end"
-	        android:maxLines="1"
-	        android:text="@string/sms_set_expense"
-	        android:textSize="18sp" /> -->
 
         <ImageButton
             android:id="@+id/sms_list_discard"
@@ -91,7 +86,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="20"
             android:src="@drawable/icon_delete" 
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:contentDescription="@string/desc_imgbtn_delete"/>
 	
 	    <net.wisedog.android.whooing.widget.WiButton
 	        android:id="@+id/sms_list_ok"
@@ -102,9 +98,4 @@
 	        android:text="@string/text_okay" 
 	        android:layout_gravity="center_vertical"/>
     </LinearLayout>
-    
-    
-
-    
-
 </LinearLayout>

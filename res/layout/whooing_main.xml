@@ -189,7 +189,6 @@
 	        android:layout_marginTop="10dp"
 	        android:layout_marginRight="10dp"
 	        android:layout_marginLeft="10dp"
-	        android:layout_marginBottom="10dp"
 	        android:background="#FFFFFF"
 	        android:orientation="vertical" 
 	        android:padding="10dip">
@@ -213,6 +212,7 @@
 	                android:src="@drawable/arrow_none" 
 	                android:layout_marginRight="5dp"
 	                android:layout_marginLeft="20dp"
+	                android:contentDescription="@string/desc_img_arrow"
 	                />
 
 	            <net.wisedog.android.whooing.widget.WiTextView
@@ -223,18 +223,51 @@
 	                android:background="#00000000"
 	                android:text=""
 	                android:textSize="18sp" />
-
-	        </LinearLayout>
-	        
-		        
+	        </LinearLayout>        
 	    </LinearLayout>
+	    
+	    <LinearLayout
+	        android:id="@+id/layout_sms"
+	        android:layout_width="match_parent"
+	        android:layout_height="80dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginRight="10dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_marginBottom="10dp"
+	        android:background="#FFFFFF"
+	        android:orientation="vertical"
+	        android:onClick="onClickSms" 
+	        android:padding="10dip">
+	        
+	        <LinearLayout android:orientation="horizontal"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            >
 
-	    <Button
-	        android:id="@+id/button1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="Button" 
-	        android:onClick="onClickTest"/>
+	            <ImageView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:layout_marginRight="10dp"
+	                android:adjustViewBounds="true"
+	                android:contentDescription="@string/desc_img_sms"
+	                android:onClick="onClickSms"
+	                android:src="@drawable/icon_sms" />
+
+	            <net.wisedog.android.whooing.widget.WiTextView
+	                android:id="@+id/text_sms_count"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:onClick="onClickSms"
+	                android:text="@string/text_zero"
+	                android:textColor="#888888"
+	                android:textSize="50sp" />
+	            
+	        </LinearLayout>	        
+        </LinearLayout>
+	    
+
 
 	</LinearLayout>
 </ScrollView>

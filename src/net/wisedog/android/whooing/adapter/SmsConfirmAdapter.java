@@ -45,7 +45,8 @@ public class SmsConfirmAdapter extends BaseAdapter {
 	
 	private class ExpEntity{
 	    private String account_id;
-	    private String title;
+	    @SuppressWarnings("unused")
+		private String title;
 	    public ExpEntity(String account_id, String title){
 	        this.account_id = account_id;
 	        this.title = title;
@@ -192,7 +193,8 @@ public class SmsConfirmAdapter extends BaseAdapter {
                     protected void onPreExecute() {
                         super.onPreExecute();
                         progressDialog.setIndeterminate(true);
-                        progressDialog.setTitle(mContext.getString(R.string.text_loading));
+                        progressDialog.setMessage(mContext.getString(R.string.text_loading));
+                        progressDialog.setCancelable(true);
                         progressDialog.show();                        
                     }
                     @Override

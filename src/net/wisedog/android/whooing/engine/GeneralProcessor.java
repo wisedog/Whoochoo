@@ -52,9 +52,8 @@ public class GeneralProcessor {
         }
         
         //There are five sections. - assets, liabilites, capital, income, expenses
-        
-        mContext.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
         final AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        dbHelper.clearTable();
         final String accountsType[] = new String[]{"assets", "liabilities", "capital", "income", "expenses"};
         new Thread(new Runnable(){
 

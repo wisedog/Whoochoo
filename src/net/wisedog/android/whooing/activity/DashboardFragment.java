@@ -1,5 +1,7 @@
 package net.wisedog.android.whooing.activity;
 
+import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,6 +9,7 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.db.SmsDbOpenHelper;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingAlert;
@@ -63,6 +66,7 @@ public class DashboardFragment extends SherlockFragment{
 	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
 	    }
 	    adView.loadAd(adRequest);
+	    
 		return view;
 	}
 
@@ -91,6 +95,13 @@ public class DashboardFragment extends SherlockFragment{
             if(repository.getExpBudgetValue() != null){
                 showBudgetValue(repository.getExpBudgetValue());
             }
+        }
+        
+        WiTextView smsCount = (WiTextView)getSherlockActivity().findViewById(R.id.text_sms_count);
+        if(smsCount != null){
+        	SmsDbOpenHelper db = new SmsDbOpenHelper(getSherlockActivity());
+        	int count = db.getCount();
+        	smsCount.setText(String.valueOf(count));
         }
         
         super.onResume();

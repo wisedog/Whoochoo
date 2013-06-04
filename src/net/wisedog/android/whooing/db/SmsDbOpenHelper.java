@@ -163,6 +163,7 @@ public class SmsDbOpenHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                 	SmsInfoEntity entity = new SmsInfoEntity();
+                	entity.id = cursor.getInt(0);
                 	entity.use_date = cursor.getInt(1);
                 	entity.amount = cursor.getInt(2);
                 	entity.account_id = cursor.getString(3);

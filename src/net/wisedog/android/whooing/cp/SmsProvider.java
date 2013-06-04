@@ -78,9 +78,9 @@ public class SmsProvider extends ContentProvider {
     		NotificationCompat.Builder mBuilder =
     		        new NotificationCompat.Builder(context)
     		        .setSmallIcon(R.drawable.notification_icon)
-    		        .setContentTitle(context.getString(
-    		        		net.wisedog.android.whooing.R.string.app_name))
-    		        .setContentText("" + recordCount + "건의 카드거래가 입력되었습니다");
+    		        .setContentTitle(context.getString(R.string.app_name))
+    		        .setContentText("" + recordCount + context.getString(R.string.sms_notification_msg))
+    		        .setAutoCancel(true);
 
     		Intent resultIntent = new Intent(context, Whooing.class);
     		
@@ -133,5 +133,4 @@ public class SmsProvider extends ContentProvider {
         // Do not support update feature
         return 0;
     }
-
 }

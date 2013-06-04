@@ -11,6 +11,7 @@ import net.wisedog.android.whooing.db.SmsInfoEntity;
 
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
@@ -29,6 +30,12 @@ public class SmsConfirmList extends SherlockActivity {
 		SmsDbOpenHelper db = new SmsDbOpenHelper(this);
 		AccountsDbOpenHelper accountDb = new AccountsDbOpenHelper(this);
 		ArrayList<SmsInfoEntity> array = db.getAllAccountsInfo();
+		if(array == null){
+			Toast.makeText(this, getString(R.string.sms_no_received), Toast.LENGTH_LONG).show();
+		}else if(array.size() == 0){
+			Toast.makeText(this, getString(R.string.sms_no_received), Toast.LENGTH_LONG).show();
+		}
+		
 		ArrayList<AccountsEntity> accountArray = accountDb.getAllAccountsInfo();
 		SmsConfirmAdapter adapter = new SmsConfirmAdapter(this, array, accountArray);
 		ListView list = (ListView) findViewById(R.id.sms_confirm_listview);

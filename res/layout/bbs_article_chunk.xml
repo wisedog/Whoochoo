@@ -20,7 +20,8 @@
             android:layout_alignParentTop="true"             
             android:src="@drawable/icon_delete_gray"
             android:background="@null"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/desc_imgbtn_delete"/>
         <ImageButton
             android:id="@+id/bbs_article_chunk_modify"
             android:layout_width="25dp"
@@ -30,7 +31,8 @@
             android:layout_toLeftOf="@id/bbs_article_chunk_delete"
             android:src="@drawable/icon_modify_gray"
             android:background="@null"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/desc_imgbtn_modify"/>
         <ImageView
             android:id="@+id/bbs_article_chunk_img"
             android:layout_width="50dp"
