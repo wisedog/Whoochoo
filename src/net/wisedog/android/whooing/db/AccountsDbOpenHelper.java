@@ -187,10 +187,13 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     /**
      * @return  Return all account information
      * */
-    public ArrayList<AccountsEntity> getAllAccountsInfo() {
+    public ArrayList<AccountsEntity> getAllAccountsInfo(boolean exceptGroup) {
         ArrayList<AccountsEntity> entityList = new ArrayList<AccountsEntity>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_ACCOUNTS;
+        if(exceptGroup == true){
+        	selectQuery += " WHERE " + AccountsDbOpenHelper.KEY_TYPE + " = 'account'"; 
+        }
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

@@ -36,6 +36,7 @@ public class AccountChooserActivity extends SherlockActivity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
+    	setTheme(R.style.Theme_Styled);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accounts_selection);
         setupUi();        

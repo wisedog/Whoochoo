@@ -277,7 +277,7 @@ public class TransactionAdd extends SherlockFragmentActivity{
      * */
     public int getAllAccountsInfo(){
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(this);
-        mAccountsList = dbHelper.getAllAccountsInfo();
+        mAccountsList = dbHelper.getAllAccountsInfo(true);
         if(mAccountsList != null){
             return mAccountsList.size();
         }

@@ -3,6 +3,8 @@ package net.wisedog.android.whooing.utils;
 import java.util.Calendar;
 import java.util.Locale;
 
+import android.content.Context;
+
 import net.wisedog.android.whooing.Define;
 
 public class WhooingCalendar {
@@ -52,7 +54,8 @@ public class WhooingCalendar {
         return "" + year + monthString;
     }
     
-    static public String getTodayLocale(){
+    static public String getTodayLocale(Context context){
+    	Define.gettingLoginInfo(context);
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         Calendar calendar = Calendar.getInstance(); 
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
@@ -94,7 +97,8 @@ public class WhooingCalendar {
         return "" + year + monthString + dayString;
     }
     
-    static public String getPreMonthLocale(int premonth){
+    static public String getPreMonthLocale(Context context, int premonth){
+    	Define.gettingLoginInfo(context);
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         Calendar calendar = Calendar.getInstance(); 
         calendar.add(Calendar.MONTH, -(premonth));

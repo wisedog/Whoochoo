@@ -79,7 +79,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     private void fillUi(AccountsEntity entity) {
         WiTextView dateText = (WiTextView) findViewById(R.id.account_modify_text_open_date);
         if(entity ==null){  //Newly added
-            String today = WhooingCalendar.getTodayLocale();            
+            String today = WhooingCalendar.getTodayLocale(this);            
             dateText.setText(today);
             selectDay = WhooingCalendar.getTodayYYYYMMDDint();
         }
@@ -200,14 +200,14 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     
     public void onClickBtnCheckCard(View v){
         GeneralProcessor general = new GeneralProcessor(this);
-        ArrayList<AccountsEntity> list = general.getAllAccount();
+        ArrayList<AccountsEntity> list = general.getAllAccount(true);
         DialogFragment newFragment = AccountSettingCheckcardDialog.newInstance(list);
         newFragment.show(getSupportFragmentManager(), "dialog");   
     }
     
     public void onClickBtnCard(View v){
         GeneralProcessor general = new GeneralProcessor(this);
-        ArrayList<AccountsEntity> list = general.getAllAccount();
+        ArrayList<AccountsEntity> list = general.getAllAccount(true);
         Intent intent = getIntent();
         AccountsEntity entity = intent.getParcelableExtra("account_entity");
         DialogFragment newFragment = AccountSettingCardDialog.newInstance(entity, list);

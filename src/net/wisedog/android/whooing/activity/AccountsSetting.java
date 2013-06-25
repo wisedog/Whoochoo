@@ -40,7 +40,7 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
 	
 	protected void inflateAccountLayout(){
 	    GeneralProcessor general = new GeneralProcessor(this);
-        ArrayList<AccountsEntity> list = general.getAllAccount();
+        ArrayList<AccountsEntity> list = general.getAllAccount(true);
         
         
         for(int i = 0; i < list.size(); i++)    {

@@ -190,7 +190,7 @@ public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
                         	if(radio1 != null && radio2 != null){
                         		Resources res = getResources();
                         		String text = String.format(res.getString(R.string.account_setting_del_option1), 
-                        				WhooingCalendar.getTodayLocale());
+                        				WhooingCalendar.getTodayLocale(getActivity()));
                         		radio1.setText(text);
                         		text = String.format(res.getString(R.string.account_setting_del_option2), 
                         				count);

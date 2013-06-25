@@ -79,11 +79,12 @@ public class GeneralProcessor {
     }
     
     /**
+     * @param	exceptGroup		If you need all account include group, set false. Otherwise set true
      * @return  Return all account information in database
      * */
-    public ArrayList<AccountsEntity> getAllAccount(){
+    public ArrayList<AccountsEntity> getAllAccount(boolean exceptGroup){
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
-        return dbHelper.getAllAccountsInfo();
+        return dbHelper.getAllAccountsInfo(exceptGroup);
     }
 
     /**

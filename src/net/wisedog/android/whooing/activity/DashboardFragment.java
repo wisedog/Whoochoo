@@ -97,11 +97,13 @@ public class DashboardFragment extends SherlockFragment{
             }
         }
         
-        WiTextView smsCount = (WiTextView)getSherlockActivity().findViewById(R.id.text_sms_count);
-        if(smsCount != null){
-        	SmsDbOpenHelper db = new SmsDbOpenHelper(getSherlockActivity());
-        	int count = db.getCount();
-        	smsCount.setText(String.valueOf(count));
+        if(getView() != null){
+        	WiTextView smsCount = (WiTextView)getView().findViewById(R.id.text_sms_count);
+            if(smsCount != null){
+            	SmsDbOpenHelper db = new SmsDbOpenHelper(getSherlockActivity());
+            	int count = db.getCount();
+            	smsCount.setText(String.valueOf(count));
+            }
         }
         
         super.onResume();
@@ -168,10 +170,12 @@ public class DashboardFragment extends SherlockFragment{
     @Override
     public void onActivityCreated(Bundle bundle) {
         if(Define.NEED_TO_REFRESH == false && bundle != null){
-            WiTextView textView = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
-            textView.setText(bundle.getString("assets_value"));
-            textView = (WiTextView)getActivity().findViewById(R.id.doubt_num);
-            textView.setText(bundle.getString("doubt_value"));
+        	if(getView() != null){
+        		WiTextView textView = (WiTextView)getView().findViewById(R.id.balance_num);
+                textView.setText(bundle.getString("assets_value"));
+                textView = (WiTextView)getView().findViewById(R.id.doubt_num);
+                textView.setText(bundle.getString("doubt_value"));
+        	}            
         }
         super.onActivityCreated(bundle);
     }
@@ -181,11 +185,15 @@ public class DashboardFragment extends SherlockFragment{
      * @param	obj		Data formatted in JSON
      * */
     private void showMountainValue(JSONObject obj){
-        WiTextView currentBalance = (WiTextView)getSherlockActivity().findViewById(R.id.balance_num);
+    	View v = getView();
+    	if(v == null){
+    		return;
+    	}
+        WiTextView currentBalance = (WiTextView)v.findViewById(R.id.balance_num);
         if(currentBalance == null){
         	return;
         }
-        WiTextView doubtValue = (WiTextView)getSherlockActivity().findViewById(R.id.doubt_num);
+        WiTextView doubtValue = (WiTextView)v.findViewById(R.id.doubt_num);
         if(currentBalance == null || doubtValue == null){
         	return;
         }
@@ -264,7 +272,11 @@ public class DashboardFragment extends SherlockFragment{
      * @param budgetValue	data formatted in JSON
      */
     private void showBudgetValue(JSONObject budgetValue) {
-        WiTextView monthlyExpenseText = (WiTextView)getSherlockActivity().findViewById(R.id.budget_monthly_expense_spent);
+    	View v = getView();
+    	if(v == null){
+    		return;
+    	}
+        WiTextView monthlyExpenseText = (WiTextView)v.findViewById(R.id.budget_monthly_expense_spent);
         if(monthlyExpenseText == null){
             return;
         }
@@ -277,7 +289,7 @@ public class DashboardFragment extends SherlockFragment{
             double possibility = obj.getJSONObject("misc").getDouble("possibility");
             showBudgetGraph(budget, expenses);
 
-            ImageView possibleView = (ImageView)getActivity().findViewById(R.id.dashboard_budget_possiblities);
+            ImageView possibleView = (ImageView)v.findViewById(R.id.dashboard_budget_possiblities);
             if(possibility >= 80){
             	possibleView.setImageResource(R.drawable.icon_sunny);
             }else if(possibility >= 60){
@@ -301,9 +313,13 @@ public class DashboardFragment extends SherlockFragment{
      * @param	expenses	spent amount
      * */
     public void showBudgetGraph(double budget, double expenses){
-    	LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.budget_monthly_layout);
-    	WiTextView budgetText = (WiTextView)getActivity().findViewById(R.id.budget_monthly_expense_budget);
-    	WiTextView spentText = (WiTextView)getActivity().findViewById(R.id.budget_monthly_expense_spent);
+    	View v = getView();
+    	if(v == null){
+    		return;
+    	}
+    	LinearLayout ll = (LinearLayout)v.findViewById(R.id.budget_monthly_layout);
+    	WiTextView budgetText = (WiTextView)v.findViewById(R.id.budget_monthly_expense_budget);
+    	WiTextView spentText = (WiTextView)v.findViewById(R.id.budget_monthly_expense_spent);
     	budgetText.setText(WhooingCurrency.getFormattedValue(budget, getSherlockActivity()));
     	spentText.setText(WhooingCurrency.getFormattedValue(expenses, getSherlockActivity()));
     	
@@ -326,8 +342,8 @@ public class DashboardFragment extends SherlockFragment{
     	    budgetGraphWidth = (int) (spentGraphWidth * (budget / expenses));
     	    spentText.setTextColor(Color.RED);
     	}
-    	View budgetGraph = (View)getActivity().findViewById(R.id.budget_monthly_expense_budget_graph);
-    	View spentGraph = (View)getActivity().findViewById(R.id.budget_monthly_expense_spent_graph);
+    	View budgetGraph = (View)v.findViewById(R.id.budget_monthly_expense_budget_graph);
+    	View spentGraph = (View)v.findViewById(R.id.budget_monthly_expense_spent_graph);
     	
     	LayoutParams params1 = (LayoutParams) budgetGraph.getLayoutParams();
     	LayoutParams params2 = (LayoutParams) spentGraph.getLayoutParams();

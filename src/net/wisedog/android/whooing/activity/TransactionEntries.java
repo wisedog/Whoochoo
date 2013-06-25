@@ -76,11 +76,11 @@ public class TransactionEntries extends SherlockFragmentActivity implements
         TextView startDate = (TextView)findViewById(R.id.transaction_entries_from_date);
         TextView endDate = (TextView)findViewById(R.id.transaction_entries_to_date);
         
-        startDate.setText(WhooingCalendar.getPreMonthLocale(1)); 
-        endDate.setText(WhooingCalendar.getTodayLocale());
+        startDate.setText(WhooingCalendar.getPreMonthLocale(this, 1)); 
+        endDate.setText(WhooingCalendar.getTodayLocale(this));
         
         GeneralProcessor processor = new GeneralProcessor(this);
-        mAccountsArray = processor.getAllAccount();
+        mAccountsArray = processor.getAllAccount(false);
         ArrayList<String> stringArray = new ArrayList<String>();
         stringArray.add("");
         for(int i = 0; i < mAccountsArray.size(); i++){

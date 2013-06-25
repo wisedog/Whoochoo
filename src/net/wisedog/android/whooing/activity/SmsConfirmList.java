@@ -36,7 +36,7 @@ public class SmsConfirmList extends SherlockActivity {
 			Toast.makeText(this, getString(R.string.sms_no_received), Toast.LENGTH_LONG).show();
 		}
 		
-		ArrayList<AccountsEntity> accountArray = accountDb.getAllAccountsInfo();
+		ArrayList<AccountsEntity> accountArray = accountDb.getAllAccountsInfo(true);
 		SmsConfirmAdapter adapter = new SmsConfirmAdapter(this, array, accountArray);
 		ListView list = (ListView) findViewById(R.id.sms_confirm_listview);
 		list.setAdapter(adapter);
