@@ -13,7 +13,6 @@
         <item>Accounts Setting</item>
         <item>User Setting</item>
         <item>Rating me!</item>
-        <item>Logout</item>
         <item>About</item>
     </string-array>
     <string-array name="card_start_date_array">

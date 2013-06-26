@@ -29,7 +29,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -126,10 +125,9 @@ public class SmsConfirmAdapter extends BaseAdapter {
     	       textDate.setText(date);
     	   }
     	   
-    	   final EditText editItem = (EditText)convertView.findViewById(R.id.sms_list_expense_item);
-    	   
+    	   WiTextView textItem = (WiTextView)convertView.findViewById(R.id.sms_list_expense_item);
            if(entity.item != null){
-               editItem.setText(entity.item);
+               textItem.setText(entity.item);
            }
     	   
            // Setting Spinner
@@ -189,6 +187,8 @@ public class SmsConfirmAdapter extends BaseAdapter {
 			    final ProgressDialog progressDialog = new ProgressDialog(mContext);
 			    final SmsInfoEntity entity  = mDataArray.get(pos);
 			    AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
+
+			        
                     @Override
                     protected void onPreExecute() {
                         super.onPreExecute();
@@ -208,13 +208,7 @@ public class SmsConfirmAdapter extends BaseAdapter {
                         bundle.putInt("entry_date", entity.use_date);
                         bundle.putParcelable("l_account", leftAccount);
                         bundle.putParcelable("r_account", rightAccount);
-                        if(editItem == null){
-                        	bundle.putString("item", entity.item);
-                        }
-                        else{
-                        	bundle.putString("item", editItem.getText().toString());
-                        }
-                        
+                        bundle.putString("item", entity.item);
                         bundle.putDouble("money", entity.amount);
                         bundle.putString("memo", "");
                         

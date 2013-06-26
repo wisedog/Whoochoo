@@ -292,14 +292,14 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         	}
         }
         
-        else if(item.getTitle().equals(menuItemsArray[3])){
+        /*else if(item.getTitle().equals(menuItemsArray[3])){
         	Define.REAL_TOKEN = null;
         	Define.TOKEN_SECRET = null;
         	Define.PIN = null;
         	setResult(RESULT_OK);
         	finish();
-        }
-        else if(item.getTitle().equals(menuItemsArray[4])){
+        }*/
+        else if(item.getTitle().equals(menuItemsArray[3])){
             DialogFragment newFragment = AboutDialog.newInstance();
             newFragment.show(getSupportFragmentManager(), "dialog");
         }
@@ -323,7 +323,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         	values.put(AccountsDbOpenHelper.KEY_SMS_ITEM, "asdfasdf");
         	values.put(AccountsDbOpenHelper.KEY_MSG, "blahblah");
         	long result = helper.addMessage(values);
-        	Log.i("wisedog", "DB insert is " + result);
+        	//Log.i("wisedog", "DB insert is " + result);
         }*/
         return super.onOptionsItemSelected(item);
     }

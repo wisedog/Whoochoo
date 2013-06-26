@@ -199,6 +199,7 @@
     <string name="sms_toast_no_set_expense">Please select expense account</string>
     <string name="sms_notification_msg"> new transaction(s) added</string>
     <string name="sms_no_received">No received card transaction alarm SMS</string>
+    <string name="sms_toast_no_item_string">Please fill item</string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>

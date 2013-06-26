@@ -10,7 +10,6 @@
         <item>계정 설정</item>
         <item>사용자 설정</item>
         <item>별점매기기</item>
-        <item>로그 아웃</item>
         <item>정보</item>
     </string-array>
     <string-array name="card_start_date_array">

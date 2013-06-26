@@ -197,6 +197,7 @@
     <string name="sms_toast_no_set_expense">지출 계정을 설정해주세요.</string>
     <string name="sms_notification_msg">건의 카드거래가 입력되었습니다</string>
     <string name="sms_no_received">수신된 카드 거래내역 문자가 없습니다</string>
+    <string name="sms_toast_no_item_string">항목을 채워주세요</string>
     
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
