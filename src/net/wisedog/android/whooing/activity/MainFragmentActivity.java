@@ -3,7 +3,6 @@ package net.wisedog.android.whooing.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.simonvt.menudrawer.MenuDrawer;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
@@ -19,12 +18,13 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -39,17 +39,17 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	private MainFragmentAdapter mFragmentAdapter;
     private ViewPager mPager;
     private PageIndicator mIndicator;
-
-    /**Left sliding menu drawer*/
-    private MenuDrawer mMenuDrawer;
+    
+    //for left sliding menu
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
 
     /** Adpater for left menu*/
     private MenuAdapter mAdapter;
-    private MenuListView mList;
     
     private TextView mRestApiText = null;
 
-    private int mActivePosition = -1;
+    //private int mActivePosition = -1;
     
     public static final int API_MENUITEM_ID = 100000;
     
@@ -63,48 +63,19 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        setContentView(R.layout.whooing_tabs);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mMenuDrawer = MenuDrawer.attach(this, MenuDrawer.MENU_DRAG_CONTENT);
-        mMenuDrawer.setContentView(R.layout.whooing_tabs);
-
+        
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.left_drawer);
+        
         List<Object> items = new ArrayList<Object>();
-        items.add(new Category(getString(R.string.left_menu_category_report)));
-        items.add(new Item(getString(R.string.left_menu_item_dashboard), R.drawable.left_menu_dashboard));
-        items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
-        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
-        items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bs));
-        items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_pl));        
-        items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
-        items.add(new Item(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_mountain));
-        items.add(new Category(getString(R.string.left_menu_category_tool)));
-        items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.left_menu_post_it));
-        items.add(new Category(getString(R.string.left_menu_category_comm)));
-        items.add(new Item(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs_free));
-        items.add(new Item(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs_moneytalk));
-        items.add(new Item(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs_counseling));
-        items.add(new Item(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs_whooing));        
+        buildSlideMenu(items);
         
-
-        // A custom ListView is needed so the drawer can be notified when it's
-        // scrolled. This is to update the position
-        // of the arrow indicator.
-        mList = new MenuListView(this);
         mAdapter = new MenuAdapter(items);
+        mDrawerList.setAdapter(mAdapter);
         
-        mList.setCacheColorHint(Color.TRANSPARENT);
-        mList.setAdapter(mAdapter);
-        mList.setOnItemClickListener(mItemClickListener);
-        
-        mMenuDrawer.setMenuView(mList);
-        mList.setOnScrollListener(new AbsListView.OnScrollListener() {
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                mMenuDrawer.invalidate();                
-            }
-        });
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
         mPager = (ViewPager) findViewById(R.id.pager);
         mFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), this);
@@ -138,83 +109,107 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         
     }
 	
-	private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {
-        public void onItemClick(AdapterView<?> parent, View view, int position,
-                long id) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mActivePosition = position;
-            mMenuDrawer.setActiveView(view, position);
-            mMenuDrawer.closeMenu();
-            switch(position){
-            case 1: //Dashboard
-                mPager.setCurrentItem(0);
-                break;
-            case 2: //Transaction entries fragment activity
-            	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
-				intent.putExtra("title", getString(R.string.left_menu_item_history));
-				startActivityForResult(intent, 1);
-				break;
-            case 3: //Exp. budget fragment activity
-            	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
-            	intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
-            	startActivityForResult(intentBudget, 1);
-            	break;
-            case 4: //Balance
-                mPager.setCurrentItem(2);
-                break;
-            case 5: //Profit/Loss
-                mPager.setCurrentItem(3);
-                break;
-            case 6: //Bill fragment activity
-                Intent intentBill = new Intent(MainFragmentActivity.this, BillFragmentActivity.class);
-                intentBill.putExtra("title", getString(R.string.text_bill));
-                startActivityForResult(intentBill, 1);
-                break;
-            case 7: //Mountain 
-                mPager.setCurrentItem(1);
-                break;
-            case 9://Postit
-                Intent intentPostIt = new Intent(MainFragmentActivity.this, PostItFragmentActivity.class);
-                intentPostIt.putExtra("title", getString(R.string.text_post_it));
-                startActivityForResult(intentPostIt, 1);
-                break;
-			case 11: // Free board
-				Intent intentBbsFree = new Intent(MainFragmentActivity.this,
-						BbsFragmentActivity.class);
-				intentBbsFree
-						.putExtra("title", getString(R.string.text_free_board));
-				intentBbsFree.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_FREE);
-				startActivityForResult(intentBbsFree, 1);
-                break;
-			case 12: // Finance board
-                Intent intentBbsFinance = new Intent(MainFragmentActivity.this,
-                        BbsFragmentActivity.class);
-                intentBbsFinance
-                        .putExtra("title", getString(R.string.text_free_finance));
-                intentBbsFinance.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_MONEY_TALK);
-                startActivityForResult(intentBbsFinance, 1);
-                break;
-			case 13: // Counseling board
-                Intent intentBbsCounseling = new Intent(MainFragmentActivity.this,
-                        BbsFragmentActivity.class);
-                intentBbsCounseling
-                        .putExtra("title", getString(R.string.text_free_counseling));
-                intentBbsCounseling.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_COUNSELING);
-                startActivityForResult(intentBbsCounseling, 1);
-                break;
-			case 14: // Support Board
-                Intent intentBbsSupport = new Intent(MainFragmentActivity.this,
-                        BbsFragmentActivity.class);
-                intentBbsSupport
-                        .putExtra("title", getString(R.string.text_free_support));
-                intentBbsSupport.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_WHOOING);
-                startActivityForResult(intentBbsSupport, 1);
-                break;
-            default:
-        		break;
-            }
-        }
-    };
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+	    @Override
+	    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	        selectItem(position);
+	    }
+	}
+
+	/** Swaps fragments in the main content view */
+	private void selectItem(int position) {
+	    mDrawerList.setItemChecked(position, true);
+	    mDrawerLayout.closeDrawer(mDrawerList);
+		
+		switch(position){
+        case 1: //Dashboard
+            mPager.setCurrentItem(0);
+            break;
+        case 2: //Transaction entries fragment activity
+        	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
+			intent.putExtra("title", getString(R.string.left_menu_item_history));
+			startActivityForResult(intent, 1);
+			break;
+        case 3: //Exp. budget fragment activity
+        	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
+        	intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
+        	startActivityForResult(intentBudget, 1);
+        	break;
+        case 4: //Balance
+            mPager.setCurrentItem(2);
+            break;
+        case 5: //Profit/Loss
+            mPager.setCurrentItem(3);
+            break;
+        case 6: //Bill fragment activity
+            Intent intentBill = new Intent(MainFragmentActivity.this, BillFragmentActivity.class);
+            intentBill.putExtra("title", getString(R.string.text_bill));
+            startActivityForResult(intentBill, 1);
+            break;
+        case 7: //Mountain 
+            mPager.setCurrentItem(1);
+            break;
+        case 9://Postit
+            Intent intentPostIt = new Intent(MainFragmentActivity.this, PostItFragmentActivity.class);
+            intentPostIt.putExtra("title", getString(R.string.text_post_it));
+            startActivityForResult(intentPostIt, 1);
+            break;
+		case 11: // Free board
+			Intent intentBbsFree = new Intent(MainFragmentActivity.this,
+					BbsFragmentActivity.class);
+			intentBbsFree
+					.putExtra("title", getString(R.string.text_free_board));
+			intentBbsFree.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_FREE);
+			startActivityForResult(intentBbsFree, 1);
+            break;
+		case 12: // Finance board
+            Intent intentBbsFinance = new Intent(MainFragmentActivity.this,
+                    BbsFragmentActivity.class);
+            intentBbsFinance
+                    .putExtra("title", getString(R.string.text_free_finance));
+            intentBbsFinance.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_MONEY_TALK);
+            startActivityForResult(intentBbsFinance, 1);
+            break;
+		case 13: // Counseling board
+            Intent intentBbsCounseling = new Intent(MainFragmentActivity.this,
+                    BbsFragmentActivity.class);
+            intentBbsCounseling
+                    .putExtra("title", getString(R.string.text_free_counseling));
+            intentBbsCounseling.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_COUNSELING);
+            startActivityForResult(intentBbsCounseling, 1);
+            break;
+		case 14: // Support Board
+            Intent intentBbsSupport = new Intent(MainFragmentActivity.this,
+                    BbsFragmentActivity.class);
+            intentBbsSupport
+                    .putExtra("title", getString(R.string.text_free_support));
+            intentBbsSupport.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_WHOOING);
+            startActivityForResult(intentBbsSupport, 1);
+            break;
+        default:
+    		break;
+        }	
+	}
+	
+	private void buildSlideMenu(List<Object> items)
+	{
+        items.add(new Category(getString(R.string.left_menu_category_report)));
+        items.add(new Item(getString(R.string.left_menu_item_dashboard), R.drawable.left_menu_dashboard));
+        items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
+        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
+        items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bs));
+        items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_pl));        
+        items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
+        items.add(new Item(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_mountain));
+        items.add(new Category(getString(R.string.left_menu_category_tool)));
+        items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.left_menu_post_it));
+        items.add(new Category(getString(R.string.left_menu_category_comm)));
+        items.add(new Item(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs_free));
+        items.add(new Item(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs_moneytalk));
+        items.add(new Item(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs_counseling));
+        items.add(new Item(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs_whooing));
+	}
+	
 
     public void onClickBudgetMore(View v){
         Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
@@ -304,12 +299,12 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             newFragment.show(getSupportFragmentManager(), "dialog");
         }
         else if (item.getItemId() == android.R.id.home) {
-            if(mMenuDrawer.isMenuVisible() == true){
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-                mMenuDrawer.closeMenu();
-            }else{
+        	if(mDrawerLayout.isDrawerOpen(mDrawerList) == true){
+        		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        		mDrawerLayout.closeDrawer(mDrawerList);
+        	}else{
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-                mMenuDrawer.openMenu();
+                mDrawerLayout.openDrawer(mDrawerList);
             }
         }
         /*else if(item.getTitle().toString().compareTo("test") == 0){
@@ -335,11 +330,10 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
      */
     @Override
     public void onBackPressed() {
-        if(mMenuDrawer.isMenuVisible() == true){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            mMenuDrawer.closeMenu();
-            return;
-        }
+    	if(mDrawerLayout.isDrawerOpen(mDrawerList) == true){
+    		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    		mDrawerLayout.closeDrawer(mDrawerList);
+    	}
         this.setResult(RESULT_CANCELED);
         finish();
     }
@@ -440,10 +434,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
             }
 
             v.setTag(R.id.mdActiveViewPosition, position);
-
-            if (position == mActivePosition) {
-                mMenuDrawer.setActiveView(v, position);
-            }
 
             return v;
         }
