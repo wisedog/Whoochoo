@@ -48,8 +48,9 @@ import com.google.ads.AdView;
  */
 public class BalanceFragment extends SherlockFragment implements IShowedFragment{
 
-    public static BalanceFragment newInstance() {
+    public static BalanceFragment newInstance(Bundle b) {
         BalanceFragment fragment = new BalanceFragment();
+        fragment.setArguments(b);
         return fragment;
     }
     

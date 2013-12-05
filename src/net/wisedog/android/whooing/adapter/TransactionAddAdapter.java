@@ -13,6 +13,7 @@ import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,13 +86,13 @@ public class TransactionAddAdapter extends BaseAdapter {
     	   else{
     		   textHead.setText(mContext.getString(R.string.text_etc));
     	   }
+
+           textDate.setText(item.date.subSequence(0, 8));
+           textItem.setText(item.item);
+           textAmount.setText(WhooingCurrency.getFormattedValue(item.money, mContext));
+           textLeft.setText(entityLeft.title);
+           textRight.setText(entityRight.title);           
        }
-       textDate.setText(item.date.subSequence(0, 8));
-       textItem.setText(item.item);
-       textAmount.setText(WhooingCurrency.getFormattedValue(item.money, mContext));
-       textLeft.setText(entityLeft.title);
-       textRight.setText(entityRight.title);
-       
         return convertView;
     }
 

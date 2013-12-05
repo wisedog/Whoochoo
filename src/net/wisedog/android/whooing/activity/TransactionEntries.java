@@ -269,6 +269,5 @@ public class TransactionEntries extends SherlockFragmentActivity implements
             return new DatePickerDialog(getActivity(), 
             		(TransactionEntries)getActivity(), year, month, day);
         }
-
 	}
 }

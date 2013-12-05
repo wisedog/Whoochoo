@@ -55,7 +55,21 @@ public class GeneralProcessor {
         final AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
         dbHelper.clearTable();
         final String accountsType[] = new String[]{"assets", "liabilities", "capital", "income", "expenses"};
-        new Thread(new Runnable(){
+        for(int j = 0; j < accountsType.length; j++){
+            JSONArray assetsArray = null;
+            AccountsEntity info = null;
+            try {
+                assetsArray = objResult.getJSONArray(accountsType[j]);
+                for(int i = 0; i < assetsArray.length(); i++){
+                    info = new AccountsEntity(accountsType[j], (JSONObject) assetsArray.get(i));
+                    dbHelper.addAccountEntity(info);
+                }
+            } catch (JSONException e) {
+                Toast.makeText(mContext, "Error - General-01", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }                    
+        }
+/*        new Thread(new Runnable(){
 
             @Override
             public void run() {
@@ -74,7 +88,7 @@ public class GeneralProcessor {
                     }                    
                 }                
             }            
-        }).start();
+        }).start();*/
         return true;
     }
     

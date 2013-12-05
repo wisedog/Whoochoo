@@ -6,7 +6,9 @@ import java.util.List;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
-import net.wisedog.android.whooing.adapter.MainFragmentAdapter;
+import net.wisedog.android.whooing.dataset.DrawerAdapter;
+import net.wisedog.android.whooing.dataset.DrawerCategory;
+import net.wisedog.android.whooing.dataset.DrawerItem;
 import net.wisedog.android.whooing.dialog.AboutDialog;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.utils.WhooingAlert;
@@ -15,15 +17,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,25 +28,18 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.SubMenu;
-import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 
 
 public class MainFragmentActivity extends SherlockFragmentActivity{
-	private MainFragmentAdapter mFragmentAdapter;
-    private ViewPager mPager;
-    private PageIndicator mIndicator;
-    
+	
     //for left sliding menu
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
     /** Adpater for left menu*/
-    private MenuAdapter mAdapter;
+    private DrawerAdapter mAdapter;
     
     private TextView mRestApiText = null;
-
-    //private int mActivePosition = -1;
     
     public static final int API_MENUITEM_ID = 100000;
     
@@ -72,41 +62,17 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         List<Object> items = new ArrayList<Object>();
         buildSlideMenu(items);
         
-        mAdapter = new MenuAdapter(items);
+        mAdapter = new DrawerAdapter(items, this);
         mDrawerList.setAdapter(mAdapter);
         
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mFragmentAdapter = new MainFragmentAdapter(getSupportFragmentManager(), this);
-        mFragmentAdapter.addTab(DashboardFragment.class, null);
-        mFragmentAdapter.addTab(MountainFragment.class, null);
-        mFragmentAdapter.addTab(BalanceFragment.class, null);
-        mFragmentAdapter.addTab(ProfitLossFragment.class, null);
-        
-        mPager.setAdapter(mFragmentAdapter);
-        mIndicator = (TitlePageIndicator)findViewById(R.id.indicator);
-        mIndicator.setViewPager(mPager);
-        mIndicator.setOnPageChangeListener(new OnPageChangeListener() {
-			
-			@Override
-			public void onPageSelected(int position) {
-				Fragment fragment = (Fragment) mFragmentAdapter.instantiateItem(
-						mPager, position);
-				if (fragment instanceof IShowedFragment) {
-					((IShowedFragment) fragment).onShowedFragment();
-				}
-			}
-			
-			@Override
-			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {	
-			}
-			
-			@Override
-			public void onPageScrollStateChanged(int position) {
-			}
-		});
-        
+        TransactionAddFragment f = new TransactionAddFragment();
+        getSupportFragmentManager().beginTransaction()
+        .addToBackStack(null)
+        .replace(R.id.main_content, f)
+        .commit();
+                
     }
 	
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -120,35 +86,66 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	private void selectItem(int position) {
 	    mDrawerList.setItemChecked(position, true);
 	    mDrawerLayout.closeDrawer(mDrawerList);
-		
+	    
+    	Bundle b = new Bundle();	//bundle for all cases
+    	
 		switch(position){
-        case 1: //Dashboard
-            mPager.setCurrentItem(0);
+        case 1: //Home
+        	getSupportFragmentManager().popBackStack(0, 0);
             break;
         case 2: //Transaction entries fragment activity
-        	Intent intent = new Intent(MainFragmentActivity.this, TransactionEntries.class);
-			intent.putExtra("title", getString(R.string.left_menu_item_history));
-			startActivityForResult(intent, 1);
+        {
+        	b.putString("title", "ASDF");	//TODO Change name. This is temporary name
+        	TransactionEntriesFragment f = TransactionEntriesFragment.newInstance(b);
+            getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();
+        	
 			break;
+        }
         case 3: //Exp. budget fragment activity
         	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
         	intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
         	startActivityForResult(intentBudget, 1);
         	break;
         case 4: //Balance
-            mPager.setCurrentItem(2);
+        {
+        	//TODO put "title" value to bundle
+        	BalanceFragment f = BalanceFragment.newInstance(b);
+            getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();	
             break;
+        }   
         case 5: //Profit/Loss
-            mPager.setCurrentItem(3);
+        {
+        	//TODO put "title" value to bundle
+        	ProfitLossFragment f = ProfitLossFragment.newInstance(b);
+            getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();	
             break;
+        }
+        
         case 6: //Bill fragment activity
             Intent intentBill = new Intent(MainFragmentActivity.this, BillFragmentActivity.class);
             intentBill.putExtra("title", getString(R.string.text_bill));
             startActivityForResult(intentBill, 1);
             break;
         case 7: //Mountain 
-            mPager.setCurrentItem(1);
-            break;
+        {
+        	//TODO put "title" value to bundle
+        	MountainFragment f = MountainFragment.newInstance(b);
+            getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();	
+            break;        
+        }
+
         case 9://Postit
             Intent intentPostIt = new Intent(MainFragmentActivity.this, PostItFragmentActivity.class);
             intentPostIt.putExtra("title", getString(R.string.text_post_it));
@@ -193,39 +190,29 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	
 	private void buildSlideMenu(List<Object> items)
 	{
-        items.add(new Category(getString(R.string.left_menu_category_report)));
-        items.add(new Item(getString(R.string.left_menu_item_dashboard), R.drawable.left_menu_dashboard));
-        items.add(new Item(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
-        items.add(new Item(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
-        items.add(new Item(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bs));
-        items.add(new Item(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_pl));        
-        items.add(new Item(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
-        items.add(new Item(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_mountain));
-        items.add(new Category(getString(R.string.left_menu_category_tool)));
-        items.add(new Item(getString(R.string.left_menu_item_post_it), R.drawable.left_menu_post_it));
-        items.add(new Category(getString(R.string.left_menu_category_comm)));
-        items.add(new Item(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs_free));
-        items.add(new Item(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs_moneytalk));
-        items.add(new Item(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs_counseling));
-        items.add(new Item(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs_whooing));
+        items.add(new DrawerCategory(getString(R.string.left_menu_category_report)));
+        //items.add(new DrawerItem(getString(R.string.left_menu_item_dashboard), R.drawable.left_menu_dashboard));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_home), R.drawable.left_menu_dashboard));	//TODO
+        items.add(new DrawerItem(getString(R.string.left_menu_item_history), R.drawable.left_menu_entries));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_exp_budget), R.drawable.left_menu_budget));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_balance), R.drawable.left_menu_bs));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_profit_loss), R.drawable.left_menu_pl));        
+        items.add(new DrawerItem(getString(R.string.left_menu_item_credit), R.drawable.left_menu_bill));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_mountain), R.drawable.left_menu_mountain));
+        items.add(new DrawerCategory(getString(R.string.left_menu_category_tool)));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_post_it), R.drawable.left_menu_post_it));
+        items.add(new DrawerCategory(getString(R.string.left_menu_category_comm)));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_board_free), R.drawable.left_menu_bbs_free));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_board_finance), R.drawable.left_menu_bbs_moneytalk));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_board_counseling), R.drawable.left_menu_bbs_counseling));
+        items.add(new DrawerItem(getString(R.string.left_menu_item_board_support), R.drawable.left_menu_bbs_whooing));
 	}
-	
-
-    public void onClickBudgetMore(View v){
-        Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
-        intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
-        startActivityForResult(intentBudget, 1);
-    }
-    
-    public void onClickBalanceMore(View v){
-        mPager.setCurrentItem(2);
-    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    mRestApiText = new TextView(this);
 	    mRestApiText.setId(API_MENUITEM_ID);
-	    DataRepository repository =  WhooingApplication.getInstance().getRepo();//DataRepository.getInstance();
+	    DataRepository repository =  WhooingApplication.getInstance().getRepo();
 	    mRestApiText.setText("Api\r\n "+ repository.getRestApi());
 	    mRestApiText.setClickable(true);
 	    mRestApiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -237,9 +224,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	    	WhooingAlert.showNotEnoughApi(this);
 	    }
 	    
-		menu.add("Plus").setIcon(R.drawable.menu_plus_button_white)
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
 		SubMenu subMenu1 = menu.addSubMenu("Lists");
 	
         String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
@@ -260,12 +244,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
-        if (item.getTitle().equals("Plus")) {
-            Intent intent = new Intent(this, TransactionAdd.class);
-            intent.putExtra("title", getString(R.string.text_add_transaction));
-            startActivityForResult(intent, 1);
-        }
-        else if(item.getTitle().equals(menuItemsArray[0])){
+        if(item.getTitle().equals(menuItemsArray[0])){
         	Intent intent = new Intent(this, AccountsSetting.class);
         	startActivityForResult(intent, 1);
         }
@@ -334,108 +313,15 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     		mDrawerLayout.closeDrawer(mDrawerList);
     	}
-        this.setResult(RESULT_CANCELED);
-        finish();
-    }
-    
-    /**
-     * Click handler for sms
-     * @param	v	view to click
-     * */
-    public void onClickSms(View v){
-    	Intent intent = new Intent(MainFragmentActivity.this, SmsConfirmList.class);
-		startActivityForResult(intent, 1);
-    }
-
-
-
-    private static final class Item {
-
-        String mTitle;
-        int mIconRes;
-
-        Item(String title, int iconRes) {
-            mTitle = title;
-            mIconRes = iconRes;
-        }
-    }
-
-    private static final class Category {
-
-        String mTitle;
-
-        Category(String title) {
-            mTitle = title;
-        }
-    }
-
-    private class MenuAdapter extends BaseAdapter {
-
-        private List<Object> mItems;
-
-        MenuAdapter(List<Object> items) {
-            mItems = items;
-        }
-
-        public int getCount() {
-            return mItems.size();
-        }
-
-        public Object getItem(int position) {
-            return mItems.get(position);
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return getItem(position) instanceof Item ? 0 : 1;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 2;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return getItem(position) instanceof Item;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return false;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            Object item = getItem(position);
-
-            if (item instanceof Category) {
-                if (v == null) {
-                    v = getLayoutInflater().inflate(R.layout.menu_row_category,
-                            parent, false);
-                }
-
-                ((TextView) v).setText(((Category) item).mTitle);
-
-            } else {
-                if (v == null) {
-                    v = getLayoutInflater().inflate(R.layout.menu_row_item,
-                            parent, false);
-                }
-
-                TextView tv = (TextView) v;
-                tv.setText(((Item) item).mTitle);
-                tv.setCompoundDrawablesWithIntrinsicBounds(
-                        ((Item) item).mIconRes, 0, 0, 0);
-            }
-
-            v.setTag(R.id.mdActiveViewPosition, position);
-
-            return v;
-        }
+    	else{
+    		int count = getSupportFragmentManager().getBackStackEntryCount();
+    		if(count > 1){
+    			getSupportFragmentManager().popBackStack();
+    		}
+    		else{
+    			this.setResult(RESULT_CANCELED);
+    	        finish();
+    		}
+    	}
     }
 }

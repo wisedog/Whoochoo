@@ -41,8 +41,9 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
     
 	private ProgressDialog mDialog;
 	
-    public static ProfitLossFragment newInstance() {
+    public static ProfitLossFragment newInstance(Bundle b) {
         ProfitLossFragment fragment = new ProfitLossFragment();
+        fragment.setArguments(b);
         return fragment;
     }	
 

@@ -23,8 +23,9 @@ import android.widget.LinearLayout;
 
 public final class MountainFragment extends SherlockFragment{
 
-    public static MountainFragment newInstance(String content) {
+    public static MountainFragment newInstance(Bundle b) {
         MountainFragment fragment = new MountainFragment();
+        fragment.setArguments(b);
         return fragment;
     }
 

@@ -67,11 +67,11 @@ public class Whooing extends Activity implements onLoadingMessage{
             WiTextView titleText = (WiTextView)findViewById(R.id.welcome_title_text);
             titleText.setText(getString(R.string.app_name));
 
-            DataRepository repository = WhooingApplication.getInstance().getRepo();// DataRepository.getInstance();
+            DataRepository repository = WhooingApplication.getInstance().getRepo();
             repository.setLoadingMsgListener(this);
             repository.refreshUserInfo(this);
             repository.refreshAccount(this);
-            repository.refreshLastestItems(this);
+            //repository.refreshLastestItems(this);
         }
     }
     
@@ -123,7 +123,7 @@ public class Whooing extends Activity implements onLoadingMessage{
                 repository.setLoadingMsgListener(this);
                 repository.refreshUserInfo(this);
                 repository.refreshAccount(this);
-                repository.refreshLastestItems(this);
+                //repository.refreshLastestItems(this);
             }
             else if(requestCode == Define.REQUEST_NORMAL){
             	Button nextBtn = (Button)findViewById(R.id.welcome_button_next);
@@ -177,16 +177,16 @@ public class Whooing extends Activity implements onLoadingMessage{
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_user_info));
             break;
-        case DataRepository.LATEST_TRANSACTION:
+        /*case DataRepository.LATEST_TRANSACTION:
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_transaction));
-            break;
+            break;*/
         case DataRepository.ACCOUNT_MODE:
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_account_info));
             break;
         }
-        if(loadingStatus == 3){
+        if(loadingStatus == 2){
             Intent intent = new Intent(Whooing.this, MainFragmentActivity.class);
             startActivityForResult(intent, Define.REQUEST_NORMAL);
         }

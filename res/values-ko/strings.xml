@@ -95,6 +95,7 @@
     <string name="left_menu_item_board_support">고객지원</string>
     <string name="left_menu_item_post_it">포스트잇!</string>
     <string name="left_menu_item_dashboard">대쉬보드</string>
+    <string name="left_menu_item_home">홈</string>
     
     <!-- Exp. Budget -->
     <string name="exp_budget_budget_exp">지출/예산</string>
