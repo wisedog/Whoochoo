@@ -30,7 +30,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 		
 		View graphView = (View)findViewById(R.id.credit_graph);
 		if(graphView != null){
-			graphView.setBackgroundColor(0x5294FF);
+			graphView.setBackgroundColor(0xFF77D644);
 			if(Double.compare(0.0f, item.amount) != 0){
 				double ratio = item.amount / totalAmount;
 				Resources r = getResources();
@@ -65,6 +65,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 			String str = item.startUseDate + " ~ " + item.endUseDate;
 			textPeriod.setText(str);
 		}
+		this.requestLayout();
 	}
 
 }

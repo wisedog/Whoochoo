@@ -84,14 +84,6 @@
         </EditText>
         
     </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/transaction_entries_ads"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center" >
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

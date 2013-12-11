@@ -13,20 +13,20 @@
         android:layout_margin="5dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:weightSum="1.0" >
+        android:weightSum="100" >
 
         <TextView
             android:id="@+id/bill_listitem_label_card_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
+            android:layout_weight="40"
             android:text=""
             android:textColor="#333333" />
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.6"
+            android:layout_weight="60"
             android:gravity="center_vertical" >
 
             <View
@@ -61,7 +61,7 @@
             android:id="@+id/bill_listitem_period"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1.10 ~ "
+            android:text=""
             android:textSize="15sp"
             />
         <TextView
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="111"
+            android:text=""
             android:textSize="15sp"
             />
     </RelativeLayout>

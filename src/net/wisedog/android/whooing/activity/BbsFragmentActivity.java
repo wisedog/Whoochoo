@@ -43,12 +43,12 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 			return;
 		}
 		
-		 if (getSupportFragmentManager().findFragmentById(R.id.bbs_fragment_container) == null) {
+		 /*if (getSupportFragmentManager().findFragmentById(R.id.bbs_fragment_container) == null) {
 		     BbsListFragment list = new BbsListFragment();
 		     list.setData(mBoardType);
             getSupportFragmentManager().beginTransaction().add(R.id.bbs_fragment_container, 
                     list,BbsListFragment.BBS_LIST_FRAGMENT_TAG).commit();
-		 }
+		 }*/
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
 	 * @param  item    item info what the user selected        
 	 * */
 	public void addArticleFragment(BoardItem item){
-	    Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
+	    /*Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
 	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         BbsArticleFragment fragment = new BbsArticleFragment();
         fragment.setData(mBoardType, item);
@@ -64,12 +64,12 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
         ft.add(R.id.bbs_fragment_container, fragment, BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);
         ft.show(fragment);
         ft.addToBackStack(null);
-        ft.commit();
+        ft.commit();*/
         
 	}
 	
 	public void addWriteFragment(int mode, String subject, String contents, int bbs_id, String comment_id){
-	    Fragment fr0 = null;
+	    /*Fragment fr0 = null;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         BbsWriteFragment fragment = new BbsWriteFragment();
         if(mode == BbsWriteFragment.MODE_MODIFY_ARTICLE ){
@@ -89,7 +89,7 @@ public class BbsFragmentActivity extends SherlockFragmentActivity {
         ft.add(R.id.bbs_fragment_container, fragment, BbsWriteFragment.BBS_WRITE_FRAGMENT_TAG);
         ft.show(fragment);
         ft.addToBackStack(null);
-        ft.commit();
+        ft.commit();*/
 	}
 	
 	@Override

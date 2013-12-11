@@ -18,6 +18,7 @@ import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,20 +39,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 
 /**
  * @author wisedog(me@wisedog.net)
  *  @TODO   Account를 Spinner로 처리하도록 하기
  */
+@SuppressLint("HandlerLeak")
 public class TransactionEntriesFragment extends SherlockFragment implements View.OnClickListener{
 	protected int mFromDate;
     protected int mToDate;
     protected int mCalendarSelectionResId;
     protected ArrayList<AccountsEntity> mAccountsArray;
-	private AdView adView;
 	
 	static public TransactionEntriesFragment newInstance(Bundle b){
 		TransactionEntriesFragment f = new TransactionEntriesFragment();
@@ -116,20 +114,6 @@ public class TransactionEntriesFragment extends SherlockFragment implements View
 
 	        };
 	        accountSpinner.setAdapter(accountAdapter);
-	                
-	        // adView 만들기
-		    adView = new AdView(getSherlockActivity(), AdSize.SMART_BANNER, "a15147cd53daa26");
-		    LinearLayout layout = (LinearLayout)v.findViewById(R.id.transaction_entries_ads);
-
-		    // 찾은 LinearLayout에 adView를 추가
-		    layout.addView(adView);
-
-		    // 기본 요청을 시작하여 광고와 함께 요청을 로드
-		    AdRequest adRequest = new AdRequest();
-		    if(Define.DEBUG){
-		    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
-		    }
-		    adView.loadAd(adRequest);
 		}
 		return v;
 	}

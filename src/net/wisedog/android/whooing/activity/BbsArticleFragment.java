@@ -40,9 +40,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 
 /**
  * This fragment is for show bbs list
@@ -54,8 +51,6 @@ public class BbsArticleFragment extends SherlockFragment {
     private int mBoardType = -1;
     private BoardItem mItemData = null;
     private ProgressDialog mProgress = null;
-
-	private AdView adView;
 
     /* (non-Javadoc)
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
@@ -72,19 +67,6 @@ public class BbsArticleFragment extends SherlockFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View view = inflater.inflate(R.layout.bbs_article_fragment, container, false);
-        // adView 만들기
-	    adView = new AdView(getSherlockActivity(), AdSize.SMART_BANNER, "a15147cd53daa26");
-	    LinearLayout layout = (LinearLayout)view.findViewById(R.id.bbs_article_ads);
-
-	    // 찾은 LinearLayout에 adView를 추가
-	    layout.addView(adView);
-
-	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
-	    AdRequest adRequest = new AdRequest();
-	    if(Define.DEBUG){
-	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
-	    }
-	    adView.loadAd(adRequest);
         return view;
     }
 

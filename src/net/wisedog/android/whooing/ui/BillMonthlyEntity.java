@@ -88,10 +88,20 @@ public class BillMonthlyEntity extends RelativeLayout{
     				entity.getInt("pay_date"), entity.getDouble("money"));
     		creditArray.add(item);
     		
+    		if(Double.compare(0.0f, item.amount) > 0){	//Detect nagative cases
+    			total += -(item.amount);
+    		}
+    	}
+    	
+    	//Why I separate this routine from former for loop?
+    	//Sometimes bill amount value may has negative value
+    	for(int i = 0; i < creditArray.size(); i++){
+    		BillMonthlyItem item = creditArray.get(i);
+    		
     		//card payment info in the monthly credit card section
-           BillMonthlyCardItem itemCard = new BillMonthlyCardItem(mContext);
-           itemCard.setup(mContext, item, width, total);
-           baseLayout.addView(itemCard);
+            BillMonthlyCardItem itemCard = new BillMonthlyCardItem(mContext);
+            itemCard.setup(mContext, item, width, total);
+            baseLayout.addView(itemCard);
     	}
     	
     	//아래의 결제일 및 결제액 정보에 대한 처리

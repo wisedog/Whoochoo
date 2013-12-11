@@ -6,6 +6,7 @@ import java.util.List;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
+import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.dataset.DrawerAdapter;
 import net.wisedog.android.whooing.dataset.DrawerCategory;
 import net.wisedog.android.whooing.dataset.DrawerItem;
@@ -18,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,12 +44,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     private TextView mRestApiText = null;
     
     public static final int API_MENUITEM_ID = 100000;
-    
-
-	public interface IShowedFragment {
-	
-	    public void onShowedFragment();
-	}
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +87,13 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     	
 		switch(position){
         case 1: //Home
+        {
         	getSupportFragmentManager().popBackStack(0, 0);
             break;
+        }
         case 2: //Transaction entries fragment activity
         {
-        	b.putString("title", "ASDF");	//TODO Change name. This is temporary name
+        	b.putString("title", getString(R.string.left_menu_item_history));
         	TransactionEntriesFragment f = TransactionEntriesFragment.newInstance(b);
             getSupportFragmentManager().beginTransaction()
             .addToBackStack(null)
@@ -105,13 +103,18 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 			break;
         }
         case 3: //Exp. budget fragment activity
-        	Intent intentBudget = new Intent(MainFragmentActivity.this, ExpBudgetFragmentActivity.class);
-        	intentBudget.putExtra("title", getString(R.string.text_expenses_budget));
-        	startActivityForResult(intentBudget, 1);
-        	break;
+        {
+        	b.putString("title", getString(R.string.left_menu_item_balance));
+        	ExpBudgetFragment f = ExpBudgetFragment.newInstance(b);
+            getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();	
+            break;
+        }
         case 4: //Balance
         {
-        	//TODO put "title" value to bundle
+        	b.putString("title", getString(R.string.left_menu_item_balance));
         	BalanceFragment f = BalanceFragment.newInstance(b);
             getSupportFragmentManager().beginTransaction()
             .addToBackStack(null)
@@ -121,7 +124,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         }   
         case 5: //Profit/Loss
         {
-        	//TODO put "title" value to bundle
+        	b.putString("title", getString(R.string.left_menu_item_profit_loss));
         	ProfitLossFragment f = ProfitLossFragment.newInstance(b);
             getSupportFragmentManager().beginTransaction()
             .addToBackStack(null)
@@ -131,13 +134,18 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         }
         
         case 6: //Bill fragment activity
-            Intent intentBill = new Intent(MainFragmentActivity.this, BillFragmentActivity.class);
-            intentBill.putExtra("title", getString(R.string.text_bill));
-            startActivityForResult(intentBill, 1);
+        {
+        	b.putString("title", getString(R.string.left_menu_item_credit));
+        	BillFragment f = BillFragment.newInstance(b);
+            getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();	
             break;
+        }
         case 7: //Mountain 
         {
-        	//TODO put "title" value to bundle
+        	b.putString("title", getString(R.string.left_menu_item_mountain));
         	MountainFragment f = MountainFragment.newInstance(b);
             getSupportFragmentManager().beginTransaction()
             .addToBackStack(null)
@@ -147,42 +155,83 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         }
 
         case 9://Postit
+        {
             Intent intentPostIt = new Intent(MainFragmentActivity.this, PostItFragmentActivity.class);
             intentPostIt.putExtra("title", getString(R.string.text_post_it));
             startActivityForResult(intentPostIt, 1);
             break;
+        }
 		case 11: // Free board
-			Intent intentBbsFree = new Intent(MainFragmentActivity.this,
+		{
+			b.putInt("board_type", BbsListFragment.BOARD_TYPE_FREE);
+			b.putString("title", getString(R.string.text_free_board));
+			BbsListFragment f = BbsListFragment.newInstance(b);
+			getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();
+			/*Intent intentBbsFree = new Intent(MainFragmentActivity.this,
 					BbsFragmentActivity.class);
 			intentBbsFree
 					.putExtra("title", getString(R.string.text_free_board));
 			intentBbsFree.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_FREE);
-			startActivityForResult(intentBbsFree, 1);
+			startActivityForResult(intentBbsFree, 1);*/
             break;
+		}
 		case 12: // Finance board
-            Intent intentBbsFinance = new Intent(MainFragmentActivity.this,
+		{
+			b.putInt("board_type", BbsListFragment.BOARD_TYPE_MONEY_TALK);
+			b.putString("title", getString(R.string.text_free_board));
+			BbsListFragment f = BbsListFragment.newInstance(b);
+			getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();
+			break;
+            /*Intent intentBbsFinance = new Intent(MainFragmentActivity.this,
                     BbsFragmentActivity.class);
             intentBbsFinance
                     .putExtra("title", getString(R.string.text_free_finance));
             intentBbsFinance.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_MONEY_TALK);
             startActivityForResult(intentBbsFinance, 1);
-            break;
+            break;*/
+		}
 		case 13: // Counseling board
-            Intent intentBbsCounseling = new Intent(MainFragmentActivity.this,
+		{
+			b.putInt("board_type", BbsListFragment.BOARD_TYPE_COUNSELING);
+			b.putString("title", getString(R.string.text_free_board));
+			BbsListFragment f = BbsListFragment.newInstance(b);
+			getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();
+			break;
+            /*Intent intentBbsCounseling = new Intent(MainFragmentActivity.this,
                     BbsFragmentActivity.class);
             intentBbsCounseling
                     .putExtra("title", getString(R.string.text_free_counseling));
             intentBbsCounseling.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_COUNSELING);
             startActivityForResult(intentBbsCounseling, 1);
-            break;
+            break;*/
+		}
 		case 14: // Support Board
-            Intent intentBbsSupport = new Intent(MainFragmentActivity.this,
+		{
+			b.putInt("board_type", BbsListFragment.BOARD_TYPE_WHOOING);
+			b.putString("title", getString(R.string.text_free_board));
+			BbsListFragment f = BbsListFragment.newInstance(b);
+			getSupportFragmentManager().beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.main_content, f)
+            .commit();
+			break;
+            /*Intent intentBbsSupport = new Intent(MainFragmentActivity.this,
                     BbsFragmentActivity.class);
             intentBbsSupport
                     .putExtra("title", getString(R.string.text_free_support));
             intentBbsSupport.putExtra("board_type", BbsFragmentActivity.BOARD_TYPE_WHOOING);
             startActivityForResult(intentBbsSupport, 1);
-            break;
+            break;*/
+		}
         default:
     		break;
         }	
@@ -210,6 +259,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		Log.i("wisedog", "onCreateOptionMenu.... ");
 	    mRestApiText = new TextView(this);
 	    mRestApiText.setId(API_MENUITEM_ID);
 	    DataRepository repository =  WhooingApplication.getInstance().getRepo();
@@ -224,24 +274,18 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 	    	WhooingAlert.showNotEnoughApi(this);
 	    }
 	    
-		SubMenu subMenu1 = menu.addSubMenu("Lists");
-	
-        String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
-        for(int i = 0; i < menuItemsArray.length; i++){
-        	subMenu1.add(menuItemsArray[i]);
-        }	
-        if(Define.DEBUG){
-        	subMenu1.add("test");
-        }
-
-		MenuItem subMenu1Item = subMenu1.getItem();
-		subMenu1Item.setIcon(R.drawable.menu_lists_button);
-		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+	    addSubMenuItem(menu);
 
 		return super.onCreateOptionsMenu(menu);
 	}
 
     @Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+    	Log.i("wisedog", "onPrepareOptionsMenu.... ");
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
         if(item.getTitle().equals(menuItemsArray[0])){
@@ -324,4 +368,70 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     		}
     	}
     }
+    
+    public void addSubMenuItem(Menu menu){
+    	SubMenu subMenu1 = menu.addSubMenu("Lists");
+    	
+        String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
+        for(int i = 0; i < menuItemsArray.length; i++){
+        	subMenu1.add(menuItemsArray[i]);
+        }	
+        if(Define.DEBUG){
+        	subMenu1.add("test");
+        }
+
+		MenuItem subMenu1Item = subMenu1.getItem();
+		subMenu1Item.setIcon(R.drawable.menu_lists_button);
+		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
+    
+    public void addArticle(int boardType, BoardItem item){
+    	
+    	//TODO set actionbar icon - write button, menu tree
+    	BbsArticleFragment f = new BbsArticleFragment();
+    	f.setData(boardType, item);
+        getSupportFragmentManager().beginTransaction()
+        .addToBackStack(null)
+        .replace(R.id.main_content, f)
+        .commit();
+        
+        /*
+    	Fragment fr0 = (Fragment) getSupportFragmentManager().findFragmentByTag(BbsListFragment.BBS_LIST_FRAGMENT_TAG);
+	    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        BbsArticleFragment fragment = new BbsArticleFragment();
+        fragment.setData(mBoardType, item);
+        ft.hide(fr0);
+        ft.add(R.id.bbs_fragment_container, fragment, BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);
+        ft.show(fragment);
+        ft.addToBackStack(null);
+        ft.commit();*/
+    }
+    
+	public void addWriteFragment(int mode, String subject, String contents,
+			int bbs_id, String comment_id, int boardType) {
+		//TODO set actionbar icon - write button, menu tree
+		BbsWriteFragment f = new BbsWriteFragment();
+		if (mode == BbsWriteFragment.MODE_MODIFY_ARTICLE) {
+			/*f = (Fragment) getSupportFragmentManager().findFragmentByTag(
+					BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);*/
+			f.setData(mode, boardType, subject, contents, bbs_id);
+		} else if (mode == BbsWriteFragment.MODE_MODIFY_REPLY) {
+			/*f = (Fragment) getSupportFragmentManager().findFragmentByTag(
+					BbsArticleFragment.BBS_ARTICLE_FRAGMENT_TAG);*/
+			f.setData(mode, boardType, subject, contents, bbs_id,
+					comment_id);
+		} else {
+			/*f = (Fragment) getSupportFragmentManager().findFragmentByTag(
+					BbsListFragment.BBS_LIST_FRAGMENT_TAG);*/
+			f.setData(mode, boardType, subject, contents, bbs_id);
+		}
+		getSupportFragmentManager().beginTransaction().addToBackStack(null)
+				.replace(R.id.main_content, f).commit();
+		// fragment.setData(mode, mBoardType, subject, contents, bbs_id);
+		/*
+		 * ft.hide(f); ft.add(R.id.bbs_fragment_container, fragment,
+		 * BbsWriteFragment.BBS_WRITE_FRAGMENT_TAG); ft.show(fragment);
+		 * ft.addToBackStack(null); ft.commit();
+		 */
+	}
 }

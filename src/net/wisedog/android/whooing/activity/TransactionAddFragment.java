@@ -75,7 +75,6 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
 	public void onActivityCreated(Bundle savedInstanceState) {
     	//Fill Init values
     	int count = getAllAccountsInfo();
-    	Log.d("wisedog", "Account count : "+ count);
 		if(count > 0){
 	        mLeftAccount = mAccountsList.get(0);
 	        mRightAccount = mAccountsList.get(0);

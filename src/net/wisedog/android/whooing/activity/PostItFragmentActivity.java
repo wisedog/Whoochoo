@@ -28,13 +28,13 @@ public class PostItFragmentActivity extends SherlockFragmentActivity {
         setTheme(R.style.Theme_Styled);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.post_it_fragment);
-        setTitle(getIntent().getStringExtra("title"));
+/*        setTitle(getIntent().getStringExtra("title"));
         if (getSupportFragmentManager().findFragmentById(R.id.bbs_fragment_container) == null) {
             PostItListFragment list = new PostItListFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.post_it_fragment_container, list, PostItListFragment.LIST_FRAGMENT_TAG)
                     .commit();
-        }
+        }*/
     }
     
     @Override

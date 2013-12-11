@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#E5E5E5" >
-
-    <LinearLayout
-        android:id="@+id/bill_main_layout"
-        android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <ProgressBar
+        android:id="@+id/bill_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#E5E5E5"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:id="@+id/bill_ads"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-        </LinearLayout>
-    </LinearLayout>
-
-</ScrollView>
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true" />
+    
+	<ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="#E5E5E5" >
+	    <LinearLayout
+	        android:id="@+id/bill_main_layout"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:background="#E5E5E5"
+	        android:orientation="vertical" >
+	    </LinearLayout>
+	</ScrollView>
+</RelativeLayout>

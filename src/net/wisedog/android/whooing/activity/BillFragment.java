@@ -3,8 +3,6 @@
  */
 package net.wisedog.android.whooing.activity;
 
-import java.util.Calendar;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,49 +14,50 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.ui.BillMonthlyEntity;
 import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Window;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
+import com.actionbarsherlock.app.SherlockFragment;
 
 /**
  * @author wisedog(me@wisedog.net)
  *
  */
-public class BillFragmentActivity extends SherlockFragmentActivity implements
+public class BillFragment extends SherlockFragment implements
 DatePickerDialog.OnDateSetListener{
 	int mFromDate;
 	int mToDate;
 	int mCalendarSelectionResId;
-	private AdView adView;
+	
+	public static BillFragment newInstance(Bundle b){
+		BillFragment f = new BillFragment();
+		f.setArguments(b);
+		return f;
+	}
+	
 
-    /* (non-Javadoc)
-     * @see android.app.Activity#onCreate(android.os.Bundle)
-     */
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.Theme_Styled);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.bill_fragment);
-        
-        Intent intent = getIntent();
-        this.setTitle(intent.getStringExtra("title"));
-        
-        Bundle bundle = new Bundle();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.bill_fragment, container, false);
+		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		Bundle bundle = new Bundle();
         String endDateStr = WhooingCalendar.getTodayYYYYMMDD();
         String startDateStr = WhooingCalendar.getPreMonthYYYYMMDD(1);
         mToDate = Integer.valueOf(endDateStr);
@@ -66,28 +65,21 @@ DatePickerDialog.OnDateSetListener{
         bundle.putString("end_date", WhooingCalendar.getNextMonthYYYYMM(1));
         bundle.putString("start_date", WhooingCalendar.getTodayYYYYMM());
         
-        setSupportProgress(Window.PROGRESS_INDETERMINATE_ON);
-        setSupportProgressBarIndeterminateVisibility(true);
+        if(getView() != null){
+        	ProgressBar progress = (ProgressBar) getView().findViewById(R.id.bill_progress);
+        	if(progress != null){
+        		progress.setVisibility(View.VISIBLE);
+        	}
+        }
         
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_BILL, bundle);
         thread.start();
-        
-        // adView 만들기
-	    adView = new AdView(this, AdSize.SMART_BANNER, "a15147cd53daa26");
-	    LinearLayout layout = (LinearLayout)findViewById(R.id.bill_ads);
 
-	    // 찾은 LinearLayout에 adView를 추가
-	    layout.addView(adView);
+		super.onActivityCreated(savedInstanceState);
+	}
 
-	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
-	    AdRequest adRequest = new AdRequest();
-	    if(Define.DEBUG){
-	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
-	    }
-	    adView.loadAd(adRequest);
-    }
-    
-    protected Handler mHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+	protected Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
@@ -95,9 +87,10 @@ DatePickerDialog.OnDateSetListener{
                     JSONObject obj = (JSONObject)msg.obj;
                     try {
                     	int returnCode = obj.getInt("code");
-                    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
+                    	if(returnCode == Define.RESULT_INSUFFIENT_API 
+                    			&& Define.SHOW_NO_API_INFORM == false){
                     		Define.SHOW_NO_API_INFORM = true;
-                    		WhooingAlert.showNotEnoughApi(BillFragmentActivity.this);
+                    		WhooingAlert.showNotEnoughApi(getSherlockActivity());
                     		return;
                     	}
                         showBill(obj);
@@ -112,7 +105,7 @@ DatePickerDialog.OnDateSetListener{
     };
 
     private void showBill(JSONObject obj) throws JSONException{
-    	LinearLayout baseLayout = (LinearLayout)findViewById(R.id.bill_main_layout);
+    	LinearLayout baseLayout = (LinearLayout)getView().findViewById(R.id.bill_main_layout);
     	if(baseLayout == null){
     		return;
     	}
@@ -122,12 +115,18 @@ DatePickerDialog.OnDateSetListener{
         int count = array.length();
         for(int i = 0; i < count; i++){
         	JSONObject objRowItem = array.getJSONObject(i);
-        	BillMonthlyEntity monthly = new BillMonthlyEntity(this);
+        	BillMonthlyEntity monthly = new BillMonthlyEntity(getSherlockActivity());
         	monthly.setupMonthlyCard(objRowItem);
         	baseLayout.addView(monthly);
         }
         baseLayout.requestLayout();
-        setSupportProgressBarIndeterminateVisibility(false);
+        
+        if(getView() != null){
+        	ProgressBar progress = (ProgressBar) getView().findViewById(R.id.bill_progress);
+        	if(progress != null){
+        		progress.setVisibility(View.GONE);
+        	}
+        }
     }
     
     /**
@@ -140,8 +139,19 @@ DatePickerDialog.OnDateSetListener{
     	else if(v.getId() == R.id.transaction_entries_imgbtn_calendar_to){
     		mCalendarSelectionResId = R.id.transaction_entries_to_date;
     	}
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+    	DatePickerDialog datePickerDlg = new DatePickerDialog(
+				getSherlockActivity(), new DatePickerDialog.OnDateSetListener() {
+					
+					@Override
+					public void onDateSet(DatePicker view, int year, int monthOfYear,
+							int dayOfMonth) {
+						Toast.makeText(getSherlockActivity(), 
+								"year : " + year + " month : " + monthOfYear + " day : " + dayOfMonth, 
+								Toast.LENGTH_LONG).show();
+						
+					}
+				}, 2013, 12, 4);
+    	datePickerDlg.show();
     }
 
 	@Override
@@ -158,7 +168,7 @@ DatePickerDialog.OnDateSetListener{
  	   }else{
  		   dateString = dateString + "0" + String.valueOf(day);
  	   }
- 	   TextView textDate = (TextView)findViewById(mCalendarSelectionResId);
+ 	   TextView textDate = (TextView)getView().findViewById(mCalendarSelectionResId);
  	   if(textDate != null){
  		   textDate.setText(dateString);
  	   }
@@ -184,10 +194,10 @@ DatePickerDialog.OnDateSetListener{
         
 		ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_ENTRIES, bundle);
         thread.start();
-        ListView lastestTransactionList = (ListView)findViewById(R.id.transaction_entries_listview);
+        ListView lastestTransactionList = (ListView)getView().findViewById(R.id.transaction_entries_listview);
         ((TransactionAddAdapter)lastestTransactionList.getAdapter()).clearAdapter();
 	}
-	
+	/*
 	static public class DatePickerFragment extends DialogFragment  {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -199,8 +209,8 @@ DatePickerDialog.OnDateSetListener{
 
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(getActivity(), 
-            		(BillFragmentActivity)getActivity(), year, month, day);
+            		(BillFragment)getActivity(), year, month, day);
         }
 
-	}
+	}*/
 }
