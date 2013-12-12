@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,7 +33,6 @@
             android:textColor="#333333"
             android:textSize="20sp"
             android:textStyle="bold" />
-        
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,9 +54,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="5dp"
-                    android:src="@drawable/icon_delete_gray" 
                     android:background="@null"
-                    android:visibility="gone"/>
+                    android:src="@drawable/icon_delete_gray"
+                    android:visibility="gone" />
 
                 <ImageButton
                     android:id="@+id/bbs_article_modify"
@@ -52,10 +65,11 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginRight="5dp"
                     android:layout_toLeftOf="@id/bbs_article_delete"
-                    android:src="@drawable/icon_modify_gray" 
                     android:background="@null"
-                    android:visibility="gone"/>
-					<ImageView
+                    android:src="@drawable/icon_modify_gray"
+                    android:visibility="gone" />
+
+                <ImageView
                     android:id="@+id/bbs_article_profile_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -68,9 +82,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/bbs_article_profile_image"
+                    android:textIsSelectable="true"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textIsSelectable="true"/>
+                    android:textStyle="bold" />
 
                 <net.wisedog.android.whooing.widget.WiTextView
                     android:id="@+id/bbs_article_text_level"
@@ -79,7 +93,7 @@
                     android:layout_below="@id/bbs_article_text_name"
                     android:layout_marginTop="4dp"
                     android:layout_toRightOf="@+id/bbs_article_profile_image"
-                    android:textIsSelectable="true"/>
+                    android:textIsSelectable="true" />
 
                 <net.wisedog.android.whooing.widget.WiTextView
                     android:id="@+id/bbs_article_text_date"
@@ -87,8 +101,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp" 
-                    android:textIsSelectable="true"/>
+                    android:layout_marginRight="20dp"
+                    android:textIsSelectable="true" />
 
                 <ProgressBar
                     android:id="@+id/bbs_article_progress"
@@ -96,7 +110,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true" />
-
             </RelativeLayout>
 
             <net.wisedog.android.whooing.widget.WiTextView
@@ -104,24 +117,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#333333"
-                android:textSize="16sp" 
-                android:textIsSelectable="true"/>
+                android:textIsSelectable="true"
+                android:textSize="16sp" />
         </LinearLayout>
-        
-        <LinearLayout 
+
+        <LinearLayout
             android:id="@+id/bbs_article_post_reply_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_margin="5dp"
             android:background="@drawable/border_gray"
-            android:padding="8dp">
+            android:orientation="vertical"
+            android:padding="8dp" >
 
             <net.wisedog.android.whooing.widget.WiTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_write_reply" />
-            
+
             <EditText
                 android:id="@+id/bbs_article_post_reply_box"
                 android:layout_width="match_parent"
@@ -129,8 +142,8 @@
                 android:ems="10"
                 android:inputType="textMultiLine"
                 android:minLines="3" >
-
             </EditText>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -145,10 +158,9 @@
                 <ProgressBar
                     android:id="@+id/bbs_article_post_reply_progress"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" 
-                    android:visibility="invisible"/>
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible" />
             </LinearLayout>
-            
         </LinearLayout>
 
         <LinearLayout

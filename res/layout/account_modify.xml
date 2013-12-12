@@ -1,25 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
     android:background="#E5E5E5"
-    android:padding="5dp">
+    android:orientation="vertical"
+    android:padding="5dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:orientation="horizontal" >
 
-        <net.wisedog.android.whooing.widget.WiTextView 
+        <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/account_setting_modify_account_title" 
+            android:text="@string/account_setting_modify_account_title"
             android:textColor="#333333"
-            />
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/account_modify_account_edittext"
@@ -27,105 +41,101 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:inputType="text" 
-            android:textColor="#888888">
+            android:inputType="text"
+            android:textColor="#888888" >
 
             <requestFocus />
         </EditText>
-
     </LinearLayout>
-    <net.wisedog.android.whooing.widget.WiTextView 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/account_setting_modify_activate_date" 
-            android:textColor="#333333"/>
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_setting_modify_activate_date"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <net.wisedog.android.whooing.widget.WiTextView 
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/account_modify_text_open_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" 
-            android:textColor="#333333"/>
+            android:text=""
+            android:textColor="#333333" />
 
         <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_change_date"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_change" 
             android:onClick="onClickChangeOpenDate"
-            android:textColor="#333333"/>
-
+            android:text="@string/text_change"
+            android:textColor="#333333" />
     </LinearLayout>
 
-    <net.wisedog.android.whooing.widget.WiTextView 
+    <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/account_modify_label_deactivate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/account_setting_modify_deactivate_date" 
-            android:textColor="#333333"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/account_setting_modify_deactivate_date"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
-    <LinearLayout 
+    <LinearLayout
         android:id="@+id/account_modify_layout_deactivate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp" >
 
-        <net.wisedog.android.whooing.widget.WiTextView 
+        <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/account_modify_text_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" 
-            android:textColor="#333333"/>
+            android:text=""
+            android:textColor="#333333" />
 
         <net.wisedog.android.whooing.widget.WiButton
-	        android:id="@+id/account_modify_btn_close"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="5dp"
-	        android:text="@string/text_deactivate" 
-	        android:textColor="#333333"
-	        android:onClick="onClickCloseDate"/>
-        
-        
-    </LinearLayout>
-    
-
-    <net.wisedog.android.whooing.widget.WiTextView 
-            android:layout_width="match_parent"
+            android:id="@+id/account_modify_btn_close"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/text_category" 
             android:layout_marginBottom="5dp"
-            android:textColor="#333333"/>
+            android:onClick="onClickCloseDate"
+            android:text="@string/text_deactivate"
+            android:textColor="#333333" />
+    </LinearLayout>
+
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/text_category"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/account_modify_spinner_kind"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginBottom="5dp"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp" />
+
     <RelativeLayout
         android:id="@+id/account_modify_card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-        
+        android:visibility="gone" >
+
         <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_checkcard"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/text_modify" 
             android:onClick="onClickBtnCheckCard"
-            android:textColor="#333333"/>
+            android:text="@string/text_modify"
+            android:textColor="#333333" />
 
         <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_card"
@@ -133,9 +143,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/text_modify" 
             android:onClick="onClickBtnCard"
-            android:textColor="#333333"/>
+            android:text="@string/text_modify"
+            android:textColor="#333333" />
 
         <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/acount_modify_text_card"
@@ -143,53 +153,52 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:textSize="16sp" 
-            android:textColor="#333333"/>
-
+            android:textColor="#333333"
+            android:textSize="16sp" />
     </RelativeLayout>
 
-     
-    <net.wisedog.android.whooing.widget.WiTextView 
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/text_memo" 
-            android:layout_marginBottom="5dp"
-            android:textColor="#333333"/>
+    <net.wisedog.android.whooing.widget.WiTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/text_memo"
+        android:textColor="#333333"
+        android:textSize="18sp" />
+
     <EditText
-            android:id="@+id/account_modify_edittext_memo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:ems="10" 
-            android:textColor="#888888"/>
+        android:id="@+id/account_modify_edittext_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:textColor="#888888" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:layout_marginBottom="5dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp" >
 
         <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" 
             android:onClick="onCancel"
-            android:textColor="#333333"/>
+            android:text="@string/cancel"
+            android:textColor="#333333" />
 
         <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/account_modify_btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_confirm" 
             android:onClick="onConfirm"
-            android:textColor="#333333"/>
+            android:text="@string/text_confirm"
+            android:textColor="#333333" />
 
         <ProgressBar
             android:id="@+id/account_modify_progress_bar"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:visibility="invisible"/>
-
-    </LinearLayout> 
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+    </LinearLayout>
 
 </LinearLayout>
