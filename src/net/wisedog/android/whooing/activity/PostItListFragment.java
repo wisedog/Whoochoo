@@ -26,6 +26,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.adapter.PostItAdapter;
 import net.wisedog.android.whooing.dataset.PostItItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,47 +36,70 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
- * @author Wisedog(me@wisedog.net)
- *
+ * A fragment for showing Post it! item list
+ * TODO PostItFragmentActivity to here
  */
 public class PostItListFragment extends SherlockListFragment{
-    public static final String LIST_FRAGMENT_TAG = "post_it_list_tag";
     
     protected ArrayList<PostItItem> mDataArray;
     protected View footerView;
     protected PostItAdapter mAdapter;
     
+    static public PostItListFragment newInstance(Bundle b){
+    	PostItListFragment f = new PostItListFragment();
+    	f.setArguments(b);
+    	return f;
+    }
     
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataArray = new ArrayList<PostItItem>();
         mAdapter = new PostItAdapter(getActivity(), mDataArray);
+        setHasOptionsMenu(true);
     }
 
-    @Override
+	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        footerView = ((LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
-                R.layout.footer, null, false);
+        footerView = ((LayoutInflater) getActivity()
+        		.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+        		.inflate(R.layout.footer, null, false);
         getListView().addFooterView(footerView, null, false);
         setListAdapter(mAdapter);
         ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
         thread.start();
     }
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
+		inflater.inflate(R.menu.write_postit_menus, menu);
+
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	
+
 
 	@Override
     public void onListItemClick(ListView parent, View view, int position, long id) {
         PostItItem item = (PostItItem)getListView().getItemAtPosition(position);
-        ((PostItFragmentActivity)getActivity()).addArticleFragment(item, false);
+        PostItArticleFragment f = new PostItArticleFragment();
+        f.setData(item);
+        getSherlockActivity().getSupportFragmentManager().beginTransaction()
+        .addToBackStack(null)
+        .replace(R.id.main_content, f)
+        .commit();
+        //((MainFragmentActivity)getSherlockActivity()).addPostItArticleFragment(item);
     }
     
-    protected Handler mHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+	protected Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
@@ -92,6 +116,11 @@ public class PostItListFragment extends SherlockListFragment{
         }
     };
     
+    /**
+     * Show list items from data
+     * @param	obj		post-it data formatted in JSON
+     * @throws	JSONException 
+     * */
     protected void showPostIt(JSONObject obj) throws JSONException{
         JSONArray array = obj.getJSONArray("results");
         int length = array.length();
@@ -108,20 +137,5 @@ public class PostItListFragment extends SherlockListFragment{
         }
         getListView().removeFooterView(footerView);
         mAdapter.notifyDataSetChanged();
-        
-
     }
-
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		PostItFragmentActivity activity = ((PostItFragmentActivity) getActivity());
-		if(activity.getNeedRefresh()){
-	        getListView().addFooterView(footerView);
-            activity.needToRefresh(false);
-            ThreadRestAPI thread = new ThreadRestAPI(mHandler, Define.API_GET_POST_IT);
-            thread.start();
-			
-		}
-		super.onHiddenChanged(hidden);
-	}
 }

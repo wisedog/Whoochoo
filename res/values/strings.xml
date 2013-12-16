@@ -194,14 +194,13 @@
     <string name="account_setting_del_msg_really_delete">Really delete?</string>
     <string name="account_setting_msg_close">Deactivate - Click "Confirm" to apply</string>
     <string name="account_setting_del_unavailable">Unavailable to delete. Only this account is remain in the account type.</string>
-        
-    <!-- SMS -->
-    <string name="sms_set_expense">Set Exp.</string>
-    <string name="sms_toast_no_set_expense">Please select expense account</string>
-    <string name="sms_notification_msg"> new transaction(s) added</string>
-    <string name="sms_no_received">No received card transaction alarm SMS</string>
-    <string name="sms_toast_no_item_string">Please fill item</string>
     
+    <!-- Submenus -->
+    <string name="submenu_account_setting">Accounts Setting</string>
+    <string name="submenu_user_setting">User Setting</string>
+    <string name="submenu_rating">Rating me!</string>
+    <string name="submenu_about">About</string>
+        
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>

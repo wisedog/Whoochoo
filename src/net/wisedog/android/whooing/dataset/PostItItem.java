@@ -16,19 +16,9 @@
 package net.wisedog.android.whooing.dataset;
 
 /**
- * @author Wisedog(me@wisedog.net)
- *
+ * Data set class for PostIt items
  */
 public class PostItItem{
-
-    /*
-{
-            "post_it_id" : 13,
-            "page" : "_dashboard",
-            "everywhere" : "n",
-            "contents" : "포스트잇의 내용1"
-        },
-     * */
     public PostItItem(final int _id, final String _page, final String _everywhere, final String _content) {
         super();
         id = _id;
@@ -36,8 +26,22 @@ public class PostItItem{
         everywhere = _everywhere;
         content = _content;
     }
+
+    /* Below are sample data of post it item
+		{
+            "post_it_id" : 13,
+            "page" : "_dashboard",
+            "everywhere" : "n",
+            "contents" : "포스트잇의 내용1"
+        },*/
+
+    
+    /** Post It id*/
     public int id;
+    /** Attached page */
     public String page;
+    /** Flag for showing everywhere */
     public String everywhere;
+    /** Contents of Post It!*/
     public String content;    
 }

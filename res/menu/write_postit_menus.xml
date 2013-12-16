@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <item
+        android:id="@+id/menu_action_postit_write"
+        android:title=""
+        android:icon="@drawable/icon_write"
+        android:showAsAction="always"
+        />
+
+    <item
+        android:title=""
+        android:icon="@drawable/menu_lists_button"
+        android:showAsAction="always"
+        >
+
+        <!-- submenus -->
+        <menu>
+            <item
+                android:id="@+id/menu_action_account"
+                android:title="@string/submenu_account_setting"/>
+            <item
+                android:id="@+id/menu_action_user"
+                android:title="@string/submenu_user_setting"/>
+            <item
+                android:id="@+id/menu_action_rating"
+                android:title="@string/submenu_rating"/>
+            <item
+                android:id="@+id/menu_action_about"
+                android:title="@string/submenu_about"/>
+        </menu>
+    </item>
+
+</menu>
