@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,7 +44,6 @@ import android.widget.Toast;
 
 /**
  * Authorization activity
- * @author Wisedog(me@wisedog.net)
  * */
 public class WhooingAuthMain extends Activity {
 
@@ -93,7 +93,8 @@ public class WhooingAuthMain extends Activity {
         }
     }
     
-    Handler mHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+	Handler mHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 			if(msg.what == Define.MSG_FAIL){

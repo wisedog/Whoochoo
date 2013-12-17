@@ -18,7 +18,7 @@ package net.wisedog.android.whooing.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.wisedog.android.whooing.activity.BbsFragmentActivity;
+import net.wisedog.android.whooing.activity.BbsListFragment;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -152,13 +152,13 @@ public class BbsApi extends AbstractAPI{
      * */
     public String getBoardType(int type){
         String boardType = "free";
-        if(type == BbsFragmentActivity.BOARD_TYPE_FREE){
+        if(type == BbsListFragment.BOARD_TYPE_FREE){
             boardType = "free";
-        }else if(type == BbsFragmentActivity.BOARD_TYPE_MONEY_TALK){
+        }else if(type == BbsListFragment.BOARD_TYPE_MONEY_TALK){
             boardType = "moneytalk";
-        }else if(type == BbsFragmentActivity.BOARD_TYPE_COUNSELING){
+        }else if(type == BbsListFragment.BOARD_TYPE_COUNSELING){
             boardType = "counseling";
-        }else if(type == BbsFragmentActivity.BOARD_TYPE_WHOOING){
+        }else if(type == BbsListFragment.BOARD_TYPE_WHOOING){
             boardType = "whooing";
         }
         return boardType;

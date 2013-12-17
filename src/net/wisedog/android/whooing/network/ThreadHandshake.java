@@ -29,7 +29,6 @@ import android.util.Log;
 
 /**
  * A thread for network. 
- * @author Wisedog(me@wisedog.net)
  * */
 public class ThreadHandshake extends Thread {
 	private Handler mHandler;
@@ -85,7 +84,8 @@ public class ThreadHandshake extends Thread {
 	 * @return	Returns true if it sucess
 	 * */
 	public String initHandshake(){
-		String url = "https://whooing.com/app_auth/request_token?app_id="+ Define.APP_ID+"&app_secret="+Define.APP_SECRET;
+		String url = "https://whooing.com/app_auth/request_token?app_id="
+						+ Define.APP_ID+"&app_secret="+Define.APP_SECRET;
 		String firstToken = null;
 		try {
 			JSONObject result = JSONUtil.getJSONObject(url, null, null);
@@ -98,12 +98,6 @@ public class ThreadHandshake extends Thread {
 		if(firstToken != null){
 			Log.d("wisedog", "TOKEN : " + firstToken);
 		}
-		
-		/*SharedPreferences prefs = mActivity.getSharedPreferences(Define.SHARED_PREFERENCE,
-				Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(Define.KEY_SHARED_TOKEN, firstToken);
-		editor.commit();*/
 		
 		return firstToken;
 	}

@@ -19,6 +19,7 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.PostItItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -142,6 +143,7 @@ public class PostItArticleFragment extends SherlockFragment {
     }
     
     
+	@SuppressLint("HandlerLeak")
 	protected Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -149,14 +151,10 @@ public class PostItArticleFragment extends SherlockFragment {
 				if (msg.arg1 == Define.API_PUT_POSTIT) {
 					Toast.makeText(getActivity(), getString(R.string.bbs_article_post_modified),
 							Toast.LENGTH_SHORT).show();
-					/*((PostItFragmentActivity) getActivity())
-							.needToRefresh(true);*/
 					getActivity().getSupportFragmentManager().popBackStack();
 				} else if (msg.arg1 == Define.API_DELETE_POSTIT) {
 					Toast.makeText(getActivity(), getString(R.string.bbs_article_post_deleted),
 							Toast.LENGTH_SHORT).show();
-					/*((PostItFragmentActivity) getActivity())
-							.needToRefresh(true);*/
 					getActivity().getSupportFragmentManager().popBackStack();
 				}
 			}

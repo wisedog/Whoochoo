@@ -16,18 +16,14 @@
 package net.wisedog.android.whooing.engine;
 
 import net.wisedog.android.whooing.Define;
-import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.TextView;
 
 /**
  * FragmentPager에서 Fragment가 DestroyView되기때문에 값을 가지고 있다. 
@@ -153,14 +149,14 @@ public class DataRepository{
     
     protected void setRestApi(Context context, final int apiNum){
         if(context != null){
-            TextView textView = (TextView) ((Activity)context).findViewById(MainFragmentActivity.API_MENUITEM_ID);
+            /*TextView textView = (TextView) ((Activity)context).findViewById(MainFragmentActivity.API_MENUITEM_ID);
             if(textView != null){
                 if(apiNum == 0){
                     textView.setText("Api\r\n -");
                 }else{
                     textView.setText("Api\r\n "+String.valueOf(apiNum));
                 }
-            }
+            }*/
         }
     }
     

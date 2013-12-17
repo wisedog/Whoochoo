@@ -18,6 +18,7 @@ package net.wisedog.android.whooing.activity;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -113,6 +114,7 @@ public class PostItWriteFragment extends SherlockFragment {
 	}
     
     
+	@SuppressLint("HandlerLeak")
 	protected Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

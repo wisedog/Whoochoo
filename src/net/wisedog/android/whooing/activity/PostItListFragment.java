@@ -38,11 +38,9 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 /**
  * A fragment for showing Post it! item list
- * TODO PostItFragmentActivity to here
  */
 public class PostItListFragment extends SherlockListFragment{
     
@@ -95,7 +93,6 @@ public class PostItListFragment extends SherlockListFragment{
         .addToBackStack(null)
         .replace(R.id.main_content, f)
         .commit();
-        //((MainFragmentActivity)getSherlockActivity()).addPostItArticleFragment(item);
     }
     
     @SuppressLint("HandlerLeak")
