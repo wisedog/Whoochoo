@@ -20,6 +20,7 @@ import net.wisedog.android.whooing.auth.WhooingAuthMain;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.DataRepository.onLoadingMessage;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -86,15 +87,12 @@ public class Whooing extends Activity implements onLoadingMessage{
             repository.setLoadingMsgListener(this);
             repository.refreshUserInfo(this);
             repository.refreshAccount(this);
-            //repository.refreshLastestItems(this);
+            repository.refreshLastestItems(this);
         }
     }
     
-    Handler mHandler = new Handler(){
-
-        /* (non-Javadoc)
-         * @see android.os.Handler#handleMessage(android.os.Message)
-         */
+    @SuppressLint("HandlerLeak")
+	Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == MSG_GO_MAIN){
@@ -138,7 +136,7 @@ public class Whooing extends Activity implements onLoadingMessage{
                 repository.setLoadingMsgListener(this);
                 repository.refreshUserInfo(this);
                 repository.refreshAccount(this);
-                //repository.refreshLastestItems(this);
+                repository.refreshLastestItems(this);
             }
             else if(requestCode == Define.REQUEST_NORMAL){
             	Button nextBtn = (Button)findViewById(R.id.welcome_button_next);
@@ -159,9 +157,6 @@ public class Whooing extends Activity implements onLoadingMessage{
         }
     }
 	
-	/* (non-Javadoc)
-     * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
-     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("execute_before", true);
@@ -181,9 +176,6 @@ public class Whooing extends Activity implements onLoadingMessage{
     
     protected int loadingStatus = 0;
 
-    /* (non-Javadoc)
-     * @see net.wisedog.android.whooing.engine.DataRepository.onLoadingMessage#onMessage(int)
-     */
     @Override
     public void onMessage(int message) {
         WiTextView messageText = (WiTextView)findViewById(R.id.welcome_message_board);
@@ -192,16 +184,16 @@ public class Whooing extends Activity implements onLoadingMessage{
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_user_info));
             break;
-        /*case DataRepository.LATEST_TRANSACTION:
+        case DataRepository.LATEST_TRANSACTION:
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_transaction));
-            break;*/
+            break;
         case DataRepository.ACCOUNT_MODE:
             loadingStatus++;
             messageText.setText(getString(R.string.welcome_loading_get_account_info));
             break;
         }
-        if(loadingStatus == 2){
+        if(loadingStatus == 3){
             Intent intent = new Intent(Whooing.this, MainFragmentActivity.class);
             startActivityForResult(intent, Define.REQUEST_NORMAL);
         }

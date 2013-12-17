@@ -32,33 +32,29 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 /**
- * @author Wisedog(me@wisedog.net)
+ * A fragment for listing bbs items 
  *
  */
-public class BbsListFragment extends SherlockFragment implements OnScrollListener, OnItemClickListener {
-	public static final String BBS_LIST_FRAGMENT_TAG = "bbs_list_tag";
+public class BbsListFragment extends SherlockListFragment implements OnScrollListener, OnItemClickListener {
 	public static final int BOARD_TYPE_FREE = 0;
 	public static final int BOARD_TYPE_MONEY_TALK = 1;
 	public static final int BOARD_TYPE_COUNSELING = 2;
 	public static final int BOARD_TYPE_WHOOING = 3;
 
-	protected ListView mListView;
+	//protected ListView mListView;
 	protected ArrayList<BoardItem> mDataArray;
 	protected View footerView;
 	protected boolean loading = false;
@@ -84,68 +80,67 @@ public class BbsListFragment extends SherlockFragment implements OnScrollListene
         mBoardType = getArguments().getInt("board_type");
         setHasOptionsMenu(true);
     }
-
+/*
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.bbs_fragment, container, false);
 		if(view != null){
-			mListView = (ListView)view.findViewById(R.id.bbs_listview);
 			footerView = inflater.inflate(R.layout.footer, null, false);
-	        mListView.addFooterView(footerView, null, false);
-	        mListView.setAdapter(mAdapter);
-	        mListView.setOnScrollListener(this);
-	        mListView.setOnItemClickListener(this);
+			Log.i("wisedog", "addFooterView on CreateView");
+			getListView().addFooterView(footerView, null, false);
+	        
+			getListView().setOnScrollListener(this);
+			getListView().setOnItemClickListener(this);
+			getListView().removeFooterView(footerView);
+			getListView().setAdapter(mAdapter);
 		}
 		return view;
+	}*/
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		footerView = getActivity().getLayoutInflater().inflate(R.layout.footer, null, false);
+		//footerView = inflater.inflate(R.layout.footer, null, false);
+		Log.i("wisedog", "addFooterView on CreateView");
+		getListView().addFooterView(footerView, null, false);
+        
+		getListView().setOnScrollListener(this);
+		getListView().setOnItemClickListener(this);
+		getListView().removeFooterView(footerView);
+		getListView().setAdapter(mAdapter);
+		super.onActivityCreated(savedInstanceState);
 	}
 
 
 	@Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        
-        super.onActivityCreated(savedInstanceState);
-    }
-	
-
-	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		BoardItem item = (BoardItem)(mListView.getItemAtPosition(position));
-        ((MainFragmentActivity)getSherlockActivity()).addArticle(mBoardType, item);
+		BoardItem item = (BoardItem)(getListView().getItemAtPosition(position));
+		BbsArticleFragment f = new BbsArticleFragment();
+    	f.setData(mBoardType, item);
+        getSherlockActivity().getSupportFragmentManager().beginTransaction()
+        .addToBackStack(null)
+        .replace(R.id.main_content, f)
+        .commit();
 	}
     
     
     @Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		Log.i("wisedog", "BbsListFragment - onCreateOptionMenu");
-		menu.add("write").setIcon(R.drawable.icon_write)
-        .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
+    	menu.clear();
+    	inflater.inflate(R.menu.write_bbs_menus, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 	}
 
-
 	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		Log.i("wisedog", "BbsListFragment - onPrepareOptionMenu");
-		//menu.clear();
-/*		SubMenu subMenu1 = menu.addSubMenu("Lists");
-		
-        String[] menuItemsArray = getResources().getStringArray(R.array.main_actionbar_menuitem);
-        for(int i = 0; i < menuItemsArray.length; i++){
-        	subMenu1.add(menuItemsArray[i]);
-        }	
-        if(Define.DEBUG){
-        	subMenu1.add("test");
-        }
-
-		MenuItem subMenu1Item = subMenu1.getItem();
-		subMenu1Item.setIcon(R.drawable.menu_lists_button);
-		subMenu1Item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		*/
-		
-		super.onPrepareOptionsMenu(menu);
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.menu_action_bbs_write){
+			((MainFragmentActivity)getActivity()).addBbsWriteFragment(BbsWriteFragment.MODE_WRITE_ARTICLE, 
+					null, null, 0, null, mBoardType);
+		}
+		return super.onOptionsItemSelected(item);
 	}
+
 
 
 	@SuppressLint("HandlerLeak")
@@ -220,7 +215,8 @@ public class BbsListFragment extends SherlockFragment implements OnScrollListene
             mDataArray.add(item);
         }
         
-        mListView.removeFooterView(footerView);
+        Log.i("wisedog", "removeFooterView on showJSON");
+        getListView().removeFooterView(footerView);
         mAdapter.notifyDataSetChanged();
         loading = false;
     }
@@ -240,7 +236,7 @@ public class BbsListFragment extends SherlockFragment implements OnScrollListene
      * Get more list items
      * */
     public void getMore(){
-        mListView.addFooterView(footerView, null, false);
+    	getListView().addFooterView(footerView, null, false);
         Bundle b = new Bundle();
         b.putInt("board_type", mBoardType);
         b.putInt("page", mPageNum);
@@ -252,6 +248,10 @@ public class BbsListFragment extends SherlockFragment implements OnScrollListene
             language = obj.getString("language");
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch(NullPointerException e){
+        	e.printStackTrace();
+        	//TODO Get User Value when user value is null
+        	return;
         }
         b.putString("language", language);
         ThreadRestAPI thread = new ThreadRestAPI(mHandler,
@@ -270,7 +270,7 @@ public class BbsListFragment extends SherlockFragment implements OnScrollListene
     /* (non-Javadoc)
      * @see android.support.v4.app.Fragment#onHiddenChanged(boolean)
      */
-    @SuppressLint("NewApi")
+/*    @SuppressLint("NewApi")
     @Override
     public void onHiddenChanged(boolean hidden) {
     	
@@ -288,6 +288,6 @@ public class BbsListFragment extends SherlockFragment implements OnScrollListene
         }
         super.onHiddenChanged(hidden);
     }
-
+*/
 
 }

@@ -56,7 +56,8 @@
                     android:layout_marginRight="5dp"
                     android:background="@null"
                     android:src="@drawable/icon_delete_gray"
-                    android:visibility="gone" />
+                    android:visibility="gone" 
+                    android:contentDescription="@string/text_delete"/>
 
                 <ImageButton
                     android:id="@+id/bbs_article_modify"
@@ -67,7 +68,8 @@
                     android:layout_toLeftOf="@id/bbs_article_delete"
                     android:background="@null"
                     android:src="@drawable/icon_modify_gray"
-                    android:visibility="gone" />
+                    android:visibility="gone" 
+                    android:contentDescription="@string/text_modify"/>
 
                 <ImageView
                     android:id="@+id/bbs_article_profile_image"
@@ -153,7 +155,7 @@
                     android:id="@+id/bbs_article_post_reply_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Confirm" />
+                    android:text="@string/text_confirm" />
 
                 <ProgressBar
                     android:id="@+id/bbs_article_post_reply_progress"

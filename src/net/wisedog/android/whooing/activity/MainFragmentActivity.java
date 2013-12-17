@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.dataset.DrawerAdapter;
 import net.wisedog.android.whooing.dataset.DrawerCategory;
 import net.wisedog.android.whooing.dataset.DrawerItem;
@@ -47,6 +46,8 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
     /** Adpater for left menu*/
     private DrawerAdapter mAdapter;
+    
+    public boolean mDirtyFlagModifyBbs = false;
     
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,20 +328,6 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     	        finish();
     		}
     	}
-    }
-    
-    /**
-     * Add BBS Article fragment
-     * @param	boardType	board type(free, support...)
-     * @param	item		article data
-     * */
-    public void addBbsArticle(int boardType, BoardItem item){
-    	BbsArticleFragment f = new BbsArticleFragment();
-    	f.setData(boardType, item);
-        getSupportFragmentManager().beginTransaction()
-        .addToBackStack(null)
-        .replace(R.id.main_content, f)
-        .commit();
     }
     
     /**

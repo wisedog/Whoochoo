@@ -26,8 +26,7 @@ import android.os.Handler;
 import android.os.Message;
 
 /**
- * FragmentPager에서 Fragment가 DestroyView되기때문에 값을 가지고 있다. 
- * @author Wisedog(me@wisedog.net)
+ *  A class to store data
  */
 public class DataRepository{
     static public final int BS_MODE = 0;

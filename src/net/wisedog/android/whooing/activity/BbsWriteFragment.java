@@ -21,7 +21,6 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,17 +42,19 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
- * @author Wisedog(me@wisedog.net)
+ * A fragment for writing/modifying article/comment on BBS 
  *
  */
 public class BbsWriteFragment extends SherlockFragment {
-    public static final String BBS_WRITE_FRAGMENT_TAG = "bbs_write_tag";
     public static final int MODE_WRITE_ARTICLE = 0;
     public static final int MODE_MODIFY_ARTICLE = 1;
     public static final int MODE_MODIFY_REPLY = 2;
     
+    /** Board type(free, counseling ...) */
     private int mBoardType = -1;
+    /** subject string */
     private String mSubject = null;
+    /** content string*/
     private String mContent = null;
     private int mMode = 0;
     private int mBbsId = 0;
@@ -182,6 +183,7 @@ public class BbsWriteFragment extends SherlockFragment {
                 if(progress != null){
                     progress.setVisibility(View.INVISIBLE);
                 }
+                MainFragmentActivity activity = (MainFragmentActivity)getSherlockActivity();
                 JSONObject obj = (JSONObject)msg.obj;
                 int result = 0;
                 try {
@@ -198,8 +200,7 @@ public class BbsWriteFragment extends SherlockFragment {
                     }
                     
                     if(result == Define.RESULT_OK){
-                        ((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
-                        getActivity().getSupportFragmentManager().popBackStack();
+                        activity.getSupportFragmentManager().popBackStack();
                     }
                     
                 }else if(msg.arg1== Define.API_PUT_BOARD_ARTICLE){
@@ -208,10 +209,8 @@ public class BbsWriteFragment extends SherlockFragment {
                     }
                     
                     if(result == Define.RESULT_OK){
-                    	BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
-                    	activity.setListRefreshFlag(true);
-                        getActivity().getSupportFragmentManager().popBackStack();
-                    	activity.refreshArticleFragment();
+                    	activity.mDirtyFlagModifyBbs = true;
+                        activity.getSupportFragmentManager().popBackStack();
                     }
                 }else if(msg.arg1 == Define.API_PUT_BOARD_REPLY){
                 	if(Define.DEBUG){
@@ -219,30 +218,11 @@ public class BbsWriteFragment extends SherlockFragment {
                 	}
                 	
                 	if(result == Define.RESULT_OK){
-                		BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
-                    	activity.setListRefreshFlag(true);
                         getActivity().getSupportFragmentManager().popBackStack();
-                    	activity.refreshArticleFragment();
                 	}
                 }
             }
             super.handleMessage(msg);
-        }
-        
-    };
-    
-    
-
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-     */
-    @SuppressLint("NewApi")
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        ((BbsFragmentActivity)getActivity()).mItemVisible = false;
-        getSherlockActivity().invalidateOptionsMenu();
-        super.onActivityCreated(savedInstanceState);
-    }
-    
-    
+        }        
+    };    
 }

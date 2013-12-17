@@ -24,8 +24,8 @@ import org.json.JSONObject;
 
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
-import net.wisedog.android.whooing.activity.BbsFragmentActivity;
 import net.wisedog.android.whooing.activity.BbsWriteFragment;
+import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.network.ThreadThumbnailLoader;
 import net.wisedog.android.whooing.utils.DateUtil;
@@ -53,9 +53,11 @@ import android.widget.Toast;
 public class BbsReplyEntity extends LinearLayout {
 
 	private Context mContext;
-    private int mBbsId;
+    private int mBbsId;    
+    /** Board type(free, counseling ...) */
     private int mBoardType;	
-    private String mCommentId;	//This is reply ID. Reply = Comment in this application
+    /** This is reply ID. Reply is Comment in Whooing */
+    private String mCommentId;	
     private ProgressDialog mProgress;
 
 	public BbsReplyEntity(Context context) {
@@ -191,17 +193,14 @@ public class BbsReplyEntity extends LinearLayout {
 					@SuppressLint("NewApi")
 					@Override
 					public void onClick(View v) {
-						BbsFragmentActivity activity = (BbsFragmentActivity)mContext;
+						MainFragmentActivity activity = (MainFragmentActivity)mContext;
 						try {
-							activity.addWriteFragment(BbsWriteFragment.MODE_MODIFY_REPLY, null,
-									textContents.getText().toString(), mBbsId, obj.getString("comment_id"));
+							activity.addBbsWriteFragment(BbsWriteFragment.MODE_MODIFY_REPLY, null,
+									textContents.getText().toString(), mBbsId, obj.getString("comment_id"), 0);
 						} catch (JSONException e) {
 							e.printStackTrace();
 							return;
 						}
-						activity.mItemVisible = false;
-						activity.invalidateOptionsMenu();
-						
 					}
 				});
 			}
@@ -305,9 +304,6 @@ public class BbsReplyEntity extends LinearLayout {
                         Log.d("wisedog", "API_DELETE_BOARD_REPLY : " + obj.toString());
                     }
                     mProgress.dismiss();
-                    BbsFragmentActivity activity = (BbsFragmentActivity)mContext;
-                    activity.refreshArticleFragment();
-                    activity.setListRefreshFlag(true);
                 }
             }
         	else if(msg.what == 0){
@@ -321,8 +317,6 @@ public class BbsReplyEntity extends LinearLayout {
                 }           
             }
             super.handleMessage(msg);
-        }
-        
+        }      
     };
-
 }

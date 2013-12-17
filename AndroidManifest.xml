@@ -21,8 +21,6 @@
         </activity>
         <activity android:name=".activity.MainFragmentActivity"  android:screenOrientation="portrait" android:theme="@style/Theme.Styled">
         </activity>
-        <activity android:name=".activity.BbsFragmentActivity" android:screenOrientation="portrait">
-        </activity>
         <activity android:name=".activity.UserInfoSetting" android:screenOrientation="portrait">
         </activity>
         <activity android:name=".activity.AccountsSetting" android:screenOrientation="portrait"></activity>
