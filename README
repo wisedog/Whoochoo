@@ -1,1 +1,29 @@
-Welcome to whooing for android
+Whoochoo (Whooing Android client)
+=================================
+
+"Whoochoo" is Android client of Double-entry based account book "Whooing". It is not official application of Whooing. I have developing this application for my fun.  
+
+Features
+--------
+ * Support fully double-entry account book
+ * Insert/Remove/Search transactions
+
+Build Requirement
+-----------------
+ * ActionbarSherlock(https://github.com/JakeWharton/ActionBarSherlock)
+ 
+Contributing
+------------
+ Whoochoo is open source project and welcome contributing! Feel free to fork and improve any way you want. If you want to this application better, please open a pull request.  
+
+
+Development Items
+-----------------
+  * Remove transaction items
+  * Account manipulation
+  * Replace ugly graphs
+  * Make BBS HTML tags works
+  
+Download
+--------
+You can download in Google Play : https://play.google.com/store/apps/details?id=net.wisedog.android.whooing 
