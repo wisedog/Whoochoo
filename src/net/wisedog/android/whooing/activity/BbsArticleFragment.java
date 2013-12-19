@@ -289,12 +289,9 @@ public class BbsArticleFragment extends SherlockFragment {
 					public void onClick(View v) {
 						String subject = textSubject.getText().toString();
 						String content = textContents.getText().toString();
-						//BbsFragmentActivity activity = (BbsFragmentActivity) getActivity();
 						MainFragmentActivity activity = (MainFragmentActivity) getActivity();
 						activity.addBbsWriteFragment(BbsWriteFragment.MODE_MODIFY_ARTICLE, subject,
 								content, mItemData.id, null, mBoardType);
-						//activity.mItemVisible = false;
-						//activity.invalidateOptionsMenu();
 					}
                 });
             }

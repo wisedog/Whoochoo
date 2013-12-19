@@ -31,13 +31,11 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
@@ -54,14 +52,24 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
 	public static final int BOARD_TYPE_COUNSELING = 2;
 	public static final int BOARD_TYPE_WHOOING = 3;
 
-	//protected ListView mListView;
+	/** Container to store BBS List data */
 	protected ArrayList<BoardItem> mDataArray;
+	/** Footer view of Listview*/
 	protected View footerView;
-	protected boolean loading = false;
-	private int mPageNum = 1;
-	private int mBoardType = -1;
+	/** Adapter of this Listview*/
 	protected BoardAdapter mAdapter;
+	/** listview loading flag */
+	protected boolean loading = false;
+	/** Page number to loading*/
+	private int mPageNum = 1;
+	/** Board type*/
+	private int mBoardType = -1;
+	
     
+	/**
+	 * Get new fragment instance
+	 * @param	b	bundle instance to set argument to this fragment
+	 * */
     public static BbsListFragment newInstance(Bundle b){
     	BbsListFragment f = new BbsListFragment();
     	f.setArguments(b);
@@ -69,9 +77,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     }
 
     
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,29 +85,10 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         mBoardType = getArguments().getInt("board_type");
         setHasOptionsMenu(true);
     }
-/*
-    @Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.bbs_fragment, container, false);
-		if(view != null){
-			footerView = inflater.inflate(R.layout.footer, null, false);
-			Log.i("wisedog", "addFooterView on CreateView");
-			getListView().addFooterView(footerView, null, false);
-	        
-			getListView().setOnScrollListener(this);
-			getListView().setOnItemClickListener(this);
-			getListView().removeFooterView(footerView);
-			getListView().setAdapter(mAdapter);
-		}
-		return view;
-	}*/
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		footerView = getActivity().getLayoutInflater().inflate(R.layout.footer, null, false);
-		//footerView = inflater.inflate(R.layout.footer, null, false);
-		Log.i("wisedog", "addFooterView on CreateView");
 		getListView().addFooterView(footerView, null, false);
         
 		getListView().setOnScrollListener(this);
@@ -168,15 +154,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
      * @param	obj		The data formatted in JSON
      * @throws	JSONException
      * */
-    protected void fillListItems(JSONObject obj) throws JSONException{
-    	//Gone progress bar. Note that progress
-    	if(getView() != null){
-    		ProgressBar progress = (ProgressBar)getView().findViewById(R.id.bbs_progress);
-    		if(progress != null){
-    			progress.setVisibility(View.GONE);
-    		}
-    	}
-    	
+    protected void fillListItems(JSONObject obj) throws JSONException{    	
         JSONArray array = obj.getJSONArray("results");
         int length = array.length();
         
@@ -215,7 +193,6 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
             mDataArray.add(item);
         }
         
-        Log.i("wisedog", "removeFooterView on showJSON");
         getListView().removeFooterView(footerView);
         mAdapter.notifyDataSetChanged();
         loading = false;
@@ -266,28 +243,4 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
     public void onScrollStateChanged(AbsListView arg0, int arg1) {
         ; //Do nothing        
     }
-
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onHiddenChanged(boolean)
-     */
-/*    @SuppressLint("NewApi")
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-    	
-    	//TODO 이건 fragment hidden 할때 사용하는 것으로 현재 구조에서는 필요없다. 
-    	// 삭제할것. 
-        if(!hidden){
-            ((BbsFragmentActivity)getActivity()).mItemVisible = true;
-            getSherlockActivity().invalidateOptionsMenu();
-        }
-        BbsFragmentActivity activity = (BbsFragmentActivity)getActivity();
-        if(activity.getListNeedRefresh()){
-            activity.setListRefreshFlag(false);
-            mPageNum = 1;
-            getMore();
-        }
-        super.onHiddenChanged(hidden);
-    }
-*/
-
 }

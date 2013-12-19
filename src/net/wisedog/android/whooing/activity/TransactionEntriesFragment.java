@@ -44,7 +44,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -53,13 +52,15 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
- * @author wisedog(me@wisedog.net)
- *  @TODO   Account를 Spinner로 처리하도록 하기
+ *  A fragment to show transaction entries
  */
 @SuppressLint("HandlerLeak")
 public class TransactionEntriesFragment extends SherlockFragment implements View.OnClickListener{
-	protected int mFromDate;
-    protected int mToDate;
+	/** date from */
+	private int mFromDate;
+	/** date to*/
+    private int mToDate;
+    
     protected int mCalendarSelectionResId;
     protected ArrayList<AccountsEntity> mAccountsArray;
 	
