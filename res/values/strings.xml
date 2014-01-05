@@ -134,10 +134,10 @@
     <string name="about_app_contact_whooing">Contact to Whooing</string>
     <string name="about_app_contact_whooing_email">support@whooing.com</string>
     <string name="about_app_contact_developer">Contact to App developer</string>
-    <string name="about_app_contact_developer_email">peashellapps@gmail.com</string>
+    <string name="about_app_contact_developer_email">kim.jongha@gmail.com</string>
     <string name="about_app_whooing_url">Website : http://whooing.com</string>
-    <string name="about_app_blog">Blog : http://peashellapps.wordpress.com</string>
-    <string name="about_app_creator">Created by Peashell Apps.</string>
+    <string name="about_app_blog">Blog : http://story.wisedog.net</string>
+    <string name="about_app_creator">Created by Jongha Kim</string>
     <string name="about_app_send_email">Choose Email Client</string>
     <string name="about_app_version">Version : </string>
     

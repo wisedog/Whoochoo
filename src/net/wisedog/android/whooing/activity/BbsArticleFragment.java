@@ -119,7 +119,8 @@ public class BbsArticleFragment extends SherlockFragment {
         super.onActivityCreated(savedInstanceState);
     }
     
-    protected Handler mHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+	protected Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){

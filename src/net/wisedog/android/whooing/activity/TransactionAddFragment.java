@@ -130,6 +130,27 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
 		}
 		super.onActivityCreated(savedInstanceState);
 	}
+    
+    /**
+     * Build date string and set text
+     * 
+     * */
+    private void setDateText(int year, int month, int day){
+    	Define.gettingLoginInfo(getSherlockActivity());
+        Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
+        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
+        Calendar cal = Calendar.getInstance(locale);
+        cal.set(year, month, day);
+        df.setCalendar(cal);
+        String dateStr = df.format(cal.getTime()).toString();
+        if(mDateDisplay == null){
+            mDateDisplay = (WiTextView)(getView().findViewById(R.id.add_transaction_text_date));
+        }
+        
+        if(mDateDisplay != null){
+        	mDateDisplay.setText(dateStr);
+        }
+    }
 
 	/**
      * Initialize UI
@@ -172,7 +193,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         final Calendar c = Calendar.getInstance();
         
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH)+1;
+        mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
         
         mDateDisplay = (WiTextView)(getView().findViewById(R.id.add_transaction_text_date));
@@ -185,12 +206,9 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
 							@Override
 							public void onDateSet(DatePicker view, int year, int monthOfYear,
 									int dayOfMonth) {
-								Toast.makeText(getSherlockActivity(), 
-										"year : " + year + " month : " + monthOfYear + " day : " + dayOfMonth, 
-										Toast.LENGTH_LONG).show();
-								
+								setDateText(year, monthOfYear, dayOfMonth);								
 							}
-						}, mYear, mMonth-1, mDay);
+						}, mYear, mMonth, mDay);
 				dpdFromDate.show();
 				}
 
@@ -203,10 +221,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         ((EditText)(getView().findViewById(R.id.add_transaction_edit_amount))).setText("");
 
         Define.gettingLoginInfo(getSherlockActivity());
-        Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
-        java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
-        String date = df.format(new java.util.Date()).toString();
-        mDateDisplay.setText(date);
+        setDateText(mYear, mMonth, mDay);
         
         if(mLeftAccount != null && mRightAccount != null){
             
@@ -250,7 +265,6 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 String str = (String) arg0.getAdapter().getItem(position);
                 setEntry(str);
-                
             }
         });
         
@@ -339,6 +353,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         WiTextView textRight = (WiTextView)(getView().findViewById(R.id.add_transaction_text_right_account));
         textRight.setText(mRightAccount.title + GeneralProcessor.getPlusMinus(mRightAccount, false));
     }
+    
     /**
      * Show lastest Transaction 
      * @param   obj     JSON formatted data from calling API_GET_ENTRIES_LATEST
