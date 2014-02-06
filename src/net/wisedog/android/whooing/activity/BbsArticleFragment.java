@@ -1,5 +1,17 @@
-/**
- * 
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.wisedog.android.whooing.activity;
 
@@ -40,65 +52,46 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 
 /**
- * This fragment is for show bbs list
- * @author Wisedog(me@wisedog.net)
+ * A fragment for showing BBS(Free, Counselling, Support, ...) article.   
  */
 public class BbsArticleFragment extends SherlockFragment {
-    public static final String BBS_ARTICLE_FRAGMENT_TAG = "bbs_article_tag";
 
+    /** Board type defined in BbsListFragment */
     private int mBoardType = -1;
+    /** Article data */
     private BoardItem mItemData = null;
+    /** Progress dialog*/
     private ProgressDialog mProgress = null;
 
-	private AdView adView;
-
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        refreshArticle(false);
-        super.onCreate(savedInstanceState);
+    public void setData(int boardType, BoardItem item){
+        mBoardType = boardType;
+        mItemData = item;
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
     @Override
+	public void onCreate(Bundle savedInstanceState) {
+    	refreshArticle(false);
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View view = inflater.inflate(R.layout.bbs_article_fragment, container, false);
-        // adView 만들기
-	    adView = new AdView(getSherlockActivity(), AdSize.SMART_BANNER, "a15147cd53daa26");
-	    LinearLayout layout = (LinearLayout)view.findViewById(R.id.bbs_article_ads);
-
-	    // 찾은 LinearLayout에 adView를 추가
-	    layout.addView(adView);
-
-	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
-	    AdRequest adRequest = new AdRequest();
-	    if(Define.DEBUG){
-	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
-	    }
-	    adView.loadAd(adRequest);
         return view;
     }
 
-    /* (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
-     */
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-    	ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.bbs_article_progress);
+    	ProgressBar progress = (ProgressBar)getView().findViewById(R.id.bbs_article_progress);
         if(progress != null){
         	progress.setVisibility(View.VISIBLE);
         }
         
-        Button confirmButton = (Button)getActivity().findViewById(R.id.bbs_article_post_reply_btn);
+        refreshArticle(true);
+        
+        Button confirmButton = (Button)getView().findViewById(R.id.bbs_article_post_reply_btn);
         if(confirmButton != null){
         	confirmButton.setOnClickListener(new OnClickListener() {
 				
@@ -122,13 +115,12 @@ public class BbsArticleFragment extends SherlockFragment {
 			    	}
 				}
 			});
-        }
-        
-        
+        }    
         super.onActivityCreated(savedInstanceState);
     }
     
-    protected Handler mHandler = new Handler(){
+    @SuppressLint("HandlerLeak")
+	protected Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what == Define.MSG_API_OK){
@@ -142,7 +134,7 @@ public class BbsArticleFragment extends SherlockFragment {
                 }
                 else if(msg.arg1 == Define.API_POST_BOARD_REPLY){
                 	setEnableStatus(true);
-                	((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setText("");
+                	((EditText)getView().findViewById(R.id.bbs_article_post_reply_box)).setText("");
                 	
                 	int result = 0;
                 	try {
@@ -181,7 +173,7 @@ public class BbsArticleFragment extends SherlockFragment {
                     if(result == Define.RESULT_OK){
                         mProgress.dismiss();
                         Toast.makeText(getActivity(), getString(R.string.bbs_deleted), Toast.LENGTH_LONG).show();
-                        ((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
+                        //((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
                         getActivity().getSupportFragmentManager().popBackStack();                        
                     }
                     
@@ -190,7 +182,7 @@ public class BbsArticleFragment extends SherlockFragment {
             
             else if(msg.what == 0){
                 ImageView image = 
-                        (ImageView)getActivity().findViewById(R.id.bbs_article_profile_image);
+                   (ImageView)getView().findViewById(R.id.bbs_article_profile_image);
                 if(msg.obj == null){
                     image.setImageResource(R.drawable.profile_anonymous);
                 }
@@ -204,19 +196,14 @@ public class BbsArticleFragment extends SherlockFragment {
     };
     
     
-    public void setData(int boardType, BoardItem item){
-        mBoardType = boardType;
-        mItemData = item;
-    }
-    
     public void setEnableStatus(boolean enable){
-    	((EditText)getActivity().findViewById(R.id.bbs_article_post_reply_box)).setEnabled(enable);
-    	((Button)getActivity().findViewById(R.id.bbs_article_post_reply_btn)).setEnabled(enable);
+    	((EditText)getView().findViewById(R.id.bbs_article_post_reply_box)).setEnabled(enable);
+    	((Button)getView().findViewById(R.id.bbs_article_post_reply_btn)).setEnabled(enable);
     	
     	if(enable){
-    		((ProgressBar)getActivity().findViewById(R.id.bbs_article_post_reply_progress)).setVisibility(View.INVISIBLE);
+    		((ProgressBar)getView().findViewById(R.id.bbs_article_post_reply_progress)).setVisibility(View.INVISIBLE);
     	}else{
-    		((ProgressBar)getActivity().findViewById(R.id.bbs_article_post_reply_progress)).setVisibility(View.VISIBLE);
+    		((ProgressBar)getView().findViewById(R.id.bbs_article_post_reply_progress)).setVisibility(View.VISIBLE);
     	}
     }
     
@@ -228,39 +215,39 @@ public class BbsArticleFragment extends SherlockFragment {
         JSONObject objResult = obj.getJSONObject("results");
         JSONObject objWriter = objResult.getJSONObject("writer");
         
-        ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.bbs_article_progress);
+        ProgressBar progress = (ProgressBar)getView().findViewById(R.id.bbs_article_progress);
         if(progress != null){
         	progress.setVisibility(View.GONE);
         }
 
-        final TextView textSubject = (TextView)getActivity().findViewById(R.id.bbs_article_subject);
+        final TextView textSubject = (TextView)getView().findViewById(R.id.bbs_article_subject);
         if(textSubject != null){
             textSubject.setText(objResult.getString("subject"));
         }
         
-        TextView textName = (TextView)getActivity().findViewById(R.id.bbs_article_text_name);
+        TextView textName = (TextView)getView().findViewById(R.id.bbs_article_text_name);
         if(textName != null){
             textName.setText(objWriter.getString("username"));
         }
-        TextView textLevel = (TextView)getActivity().findViewById(R.id.bbs_article_text_level);
+        TextView textLevel = (TextView)getView().findViewById(R.id.bbs_article_text_level);
         if(textLevel != null){
             textLevel.setText("lv. " + objWriter.getInt("level"));
         }
         
-        TextView textDate = (TextView)getActivity().findViewById(R.id.bbs_article_text_date);
+        TextView textDate = (TextView)getView().findViewById(R.id.bbs_article_text_date);
         if(textDate != null){
             String dateString = DateUtil.getDateWithTimestamp(objResult.getLong("timestamp") * 1000);
             textDate.setText(dateString);
         }
         
-        final TextView textContents = (TextView)getActivity().findViewById(R.id.bbs_article_text_contents);
+        final TextView textContents = (TextView)getView().findViewById(R.id.bbs_article_text_contents);
         if(textContents != null){
             textContents.setText(objResult.getString("contents"));
         }
         
         if(Define.USER_ID == objWriter.getInt("user_id")){
-            ImageButton btnDelete = (ImageButton)getActivity().findViewById(R.id.bbs_article_delete);
-            ImageButton btnModify = (ImageButton)getActivity().findViewById(R.id.bbs_article_modify);
+            ImageButton btnDelete = (ImageButton)getView().findViewById(R.id.bbs_article_delete);
+            ImageButton btnModify = (ImageButton)getView().findViewById(R.id.bbs_article_modify);
             if(btnDelete != null && btnModify != null){
                 btnDelete.setVisibility(View.VISIBLE);
                 btnModify.setVisibility(View.VISIBLE);
@@ -303,19 +290,15 @@ public class BbsArticleFragment extends SherlockFragment {
 					public void onClick(View v) {
 						String subject = textSubject.getText().toString();
 						String content = textContents.getText().toString();
-						BbsFragmentActivity activity = (BbsFragmentActivity) getActivity();
-						activity.addWriteFragment(BbsWriteFragment.MODE_MODIFY_ARTICLE, subject,
-								content, mItemData.id, null);
-						activity.mItemVisible = false;
-						activity.invalidateOptionsMenu();
+						MainFragmentActivity activity = (MainFragmentActivity) getActivity();
+						activity.addBbsWriteFragment(BbsWriteFragment.MODE_MODIFY_ARTICLE, subject,
+								content, mItemData.id, null, mBoardType);
 					}
                 });
             }
         }
         
-        
-        
-        ImageView profileImage = (ImageView)getActivity().findViewById(R.id.bbs_article_profile_image);
+        ImageView profileImage = (ImageView)getView().findViewById(R.id.bbs_article_profile_image);
         profileImage.setScaleType(ImageView.ScaleType.FIT_XY);
         String profileUrl = objWriter.getString("image_url");
         if(profileImage != null){
@@ -340,7 +323,7 @@ public class BbsArticleFragment extends SherlockFragment {
         //inflate reply
         JSONArray replyArray = objResult.getJSONArray("rows");
         int len = replyArray.length();
-        LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
+        LinearLayout ll = (LinearLayout)getView().findViewById(R.id.bbs_article_reply_container);
         for(int i = 0;i < len; i++){
         	BbsReplyEntity entity = new BbsReplyEntity(getActivity(), this, mItemData.id, this.mBoardType);
         	entity.setupReply((JSONObject) replyArray.get(i), objResult);
@@ -348,25 +331,15 @@ public class BbsArticleFragment extends SherlockFragment {
         }
         
     }
-
-    @SuppressLint("NewApi")
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        if (!hidden) {
-            ((BbsFragmentActivity) getActivity()).mItemVisible = true;
-            getSherlockActivity().invalidateOptionsMenu();
-        }
-        BbsFragmentActivity activity = (BbsFragmentActivity) getActivity();
-        if (activity.mRefreshArticleFlag) {
-            Toast.makeText(getActivity(), "TEST1", Toast.LENGTH_SHORT).show();
-            activity.mRefreshArticleFlag = false;
-            refreshArticle(true);
-        }
-        super.onHiddenChanged(hidden);
-    }
-	
+    
+    /**
+     * Get Article data.
+     * @param	clear	clear legacy data
+     * */
 	public void refreshArticle(boolean clear){
-	    clearContent();
+		if(clear == true){
+			clearContent();
+		}
 	    Bundle b = new Bundle();
         b.putInt("bbs_id", mItemData.id);
         b.putInt("board_type", mBoardType);
@@ -375,35 +348,35 @@ public class BbsArticleFragment extends SherlockFragment {
 	}
 	
 	protected void clearContent(){
-	    LinearLayout ll = (LinearLayout)getActivity().findViewById(R.id.bbs_article_reply_container);
+	    LinearLayout ll = (LinearLayout)getView().findViewById(R.id.bbs_article_reply_container);
 	    if(ll != null){
 	        ll.removeAllViews();
 	    }
-	    ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.bbs_article_progress);
+	    ProgressBar progress = (ProgressBar)getView().findViewById(R.id.bbs_article_progress);
         if(progress != null){
             progress.setVisibility(View.VISIBLE);
         }
 
-        final TextView textSubject = (TextView)getActivity().findViewById(R.id.bbs_article_subject);
+        final TextView textSubject = (TextView)getView().findViewById(R.id.bbs_article_subject);
         if(textSubject != null){
             textSubject.setText("");
         }
         
-        TextView textName = (TextView)getActivity().findViewById(R.id.bbs_article_text_name);
+        TextView textName = (TextView)getView().findViewById(R.id.bbs_article_text_name);
         if(textName != null){
             textName.setText("");
         }
-        TextView textLevel = (TextView)getActivity().findViewById(R.id.bbs_article_text_level);
+        TextView textLevel = (TextView)getView().findViewById(R.id.bbs_article_text_level);
         if(textLevel != null){
             textLevel.setText("");
         }
         
-        TextView textDate = (TextView)getActivity().findViewById(R.id.bbs_article_text_date);
+        TextView textDate = (TextView)getView().findViewById(R.id.bbs_article_text_date);
         if(textDate != null){
             textDate.setText("");
         }
         
-        final TextView textContents = (TextView)getActivity().findViewById(R.id.bbs_article_text_contents);
+        final TextView textContents = (TextView)getView().findViewById(R.id.bbs_article_text_contents);
         if(textContents != null){
             textContents.setText("");
         }

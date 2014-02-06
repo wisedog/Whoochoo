@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-	
-    <TableLayout
+    android:layout_height="match_parent" >
+
+    <ProgressBar
+        android:id="@+id/exp_budget_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateOnly="true" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:id="@+id/exp_budget_table"
-        android:layout_marginTop="4dip">
-        <TableRow
-            android:id="@+id/table_row_total_label"
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TableLayout
+            android:id="@+id/exp_budget_table"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1.0" 
-            android:background="#444444">
+            android:layout_marginTop="4dip" >
 
-            <net.wisedog.android.whooing.widget.WiTextView
-                android:id="@+id/table_row_total_asset_label_account"
-                android:layout_width="0dip"
+            <TableRow
+                android:id="@+id/table_row_total_label"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:text="@string/text_account" 
-                android:textColor="@android:color/white"/>
-            <net.wisedog.android.whooing.widget.WiTextView
-                android:id="@+id/table_row_total_asset_label_budget"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/exp_budget_budget_exp" 
-                android:textColor="@android:color/white"/>
+                android:background="#444444"
+                android:weightSum="1.0" >
 
-            <net.wisedog.android.whooing.widget.WiTextView
-                android:id="@+id/table_row_total_asset_label_amount"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:text="@string/text_remains" 
-                android:textColor="@android:color/white"/>
-        </TableRow>
+                <net.wisedog.android.whooing.widget.WiTextView
+                    android:id="@+id/table_row_total_asset_label_account"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.3"
+                    android:text="@string/text_account"
+                    android:textColor="@android:color/white" />
 
-    </TableLayout>
-</ScrollView>
+                <net.wisedog.android.whooing.widget.WiTextView
+                    android:id="@+id/table_row_total_asset_label_budget"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="@string/exp_budget_budget_exp"
+                    android:textColor="@android:color/white" />
+
+                <net.wisedog.android.whooing.widget.WiTextView
+                    android:id="@+id/table_row_total_asset_label_amount"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:text="@string/text_remains"
+                    android:textColor="@android:color/white" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,36 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:background="@drawable/border"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp" >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp" >
+
         <ImageButton
             android:id="@+id/bbs_article_chunk_delete"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginRight="5dp"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"             
-            android:src="@drawable/icon_delete_gray"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
             android:background="@null"
-            android:visibility="gone"/>
+            android:contentDescription="@string/desc_imgbtn_delete"
+            android:src="@drawable/icon_delete_gray"
+            android:visibility="gone" />
+
         <ImageButton
             android:id="@+id/bbs_article_chunk_modify"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginRight="5dp"
             android:layout_alignParentTop="true"
+            android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/bbs_article_chunk_delete"
-            android:src="@drawable/icon_modify_gray"
             android:background="@null"
-            android:visibility="gone"/>
+            android:contentDescription="@string/desc_imgbtn_modify"
+            android:src="@drawable/icon_modify_gray"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/bbs_article_chunk_img"
             android:layout_width="50dp"
@@ -45,7 +65,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/bbs_article_chunk_img"
             android:textSize="17sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/bbs_article_chunk_level"
@@ -70,33 +90,33 @@
         android:id="@+id/bbs_article_chunk_contents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:autoLink="web"
         android:text=""
         android:textColor="#333333"
-        android:autoLink="web"
         android:textSize="16sp" />
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
-        <net.wisedog.android.whooing.widget.WiTextView
-        android:id="@+id/bbs_article_chunk_comment_num"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="comments"
-        android:textColor="#333333"
-        android:textSize="16sp" />
+        android:orientation="horizontal" >
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/bbs_article_chunk_comment_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="comments"
+            android:textColor="#333333"
+            android:textSize="16sp" />
+
         <ProgressBar
             android:id="@+id/bbs_article_chunk_comment_progress"
             style="?android:attr/progressBarStyleSmall"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:visibility="invisible"/>
-
+            android:visibility="invisible" />
     </LinearLayout>
-    
-    
+
     <LinearLayout
         android:id="@+id/bbs_article_chunk_comment_container"
         android:layout_width="match_parent"

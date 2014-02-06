@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.wisedog.android.whooing.activity;
 
 import org.json.JSONArray;
@@ -21,31 +36,43 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockFragment;
 
-public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
+public class ExpBudgetFragment extends SherlockFragment{
+	
+	public static ExpBudgetFragment newInstance(Bundle b) {
+		ExpBudgetFragment fragment = new ExpBudgetFragment();
+        fragment.setArguments(b);
+        return fragment;
+    }
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.Theme_Styled);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.exp_budget_fragment);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.exp_budget_fragment, container, false);
+		return view;
 	}
-	
-	
-	
+
 	@Override
-	protected void onResume() {
-	    DataRepository repository = WhooingApplication.getInstance().getRepo(); //DataRepository.getInstance();
+	public void onActivityCreated(Bundle savedInstanceState) {
+	    DataRepository repository = WhooingApplication.getInstance().getRepo();
 	    if(repository.getExpBudgetValue() != null){
 	        showExpBudget(repository.getExpBudgetValue());
 	    }
 	    else{
+	    	ProgressBar progress = (ProgressBar) getView().findViewById(R.id.exp_budget_progress);
+	    	if(progress != null){
+	    		progress.setVisibility(View.VISIBLE);
+	    	}
 	        AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
 	        	
                 @Override
@@ -75,13 +102,17 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
         			}
         	    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
         	    		Define.SHOW_NO_API_INFORM = true;
-        	    		WhooingAlert.showNotEnoughApi(ExpBudgetFragmentActivity.this);
+        	    		WhooingAlert.showNotEnoughApi(getSherlockActivity());
         	    	}
         	    	
         	    	if(returnCode == Define.RESULT_OK){
         	    		DataRepository repository = WhooingApplication.getInstance().getRepo();
         	    		repository.setExpBudgetValue(result);
         	    		showExpBudget(result);
+        	    		ProgressBar progress = (ProgressBar) getView().findViewById(R.id.exp_budget_progress);
+        	        	if(progress != null){
+        	        		progress.setVisibility(View.GONE);
+        	        	}
         	    	}
         	    	
                     super.onPostExecute(result);
@@ -91,14 +122,14 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
             task.execute();            	
 
 	    }
-		super.onResume();
+	    super.onActivityCreated(savedInstanceState);
 	}
 
     private void showExpBudget(JSONObject obj){
         
-        TableLayout tl = (TableLayout) findViewById(R.id.exp_budget_table);
+        TableLayout tl = (TableLayout) getView().findViewById(R.id.exp_budget_table);
         DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         
         final int secondColumnWidth = (int) (metrics.widthPixels * 0.7);
         
@@ -131,7 +162,7 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
         if(accounts == null){
             return;
         }
-        GeneralProcessor genericProcessor = new GeneralProcessor(this);
+        GeneralProcessor genericProcessor = new GeneralProcessor(getSherlockActivity());
         for(int i = 0; i < accounts.length(); i++){
             JSONObject accountItem = (JSONObject) accounts.get(i);
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
@@ -144,7 +175,6 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
             tl.addView(tr, new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
         }
-        
     }
     
     private TableRow addOneRowItem(String accountName, double spent, double budget, double remains, 
@@ -153,12 +183,12 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
         final int margin4Dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
                 r.getDisplayMetrics());
         /* Create a new row to be added. */
-        TableRow tr = new TableRow(this);
+        TableRow tr = new TableRow(getSherlockActivity());
         tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
         tr.setWeightSum(1.0f);
         
-        TextView accountText = new TextView(this);
+        TextView accountText = new TextView(getSherlockActivity());
         accountText.setText(accountName);
         LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.3f);
         params.gravity = Gravity.CENTER_VERTICAL;
@@ -166,7 +196,7 @@ public class ExpBudgetFragmentActivity extends SherlockFragmentActivity{
         accountText.setLayoutParams(params);
         tr.addView(accountText);
         
-        TableRowExpBudgetItem layout = new TableRowExpBudgetItem(this);
+        TableRowExpBudgetItem layout = new TableRowExpBudgetItem(getSherlockActivity());
         layout.setupListItem(spent, budget, remains, maxColumnWidth, minColumnWidth, color);
         layout.setLayoutParams(new LayoutParams(
                 0, LayoutParams.WRAP_CONTENT, 0.7f));

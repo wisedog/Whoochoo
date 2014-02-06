@@ -1,5 +1,17 @@
-/**
- * 
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.wisedog.android.whooing.activity;
 
@@ -10,7 +22,6 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
-import net.wisedog.android.whooing.activity.MainFragmentActivity.IShowedFragment;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -20,7 +31,6 @@ import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
-import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -33,52 +43,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 
 /**
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class BalanceFragment extends SherlockFragment implements IShowedFragment{
+public class BalanceFragment extends SherlockFragment{
 
-    public static BalanceFragment newInstance() {
+    public static BalanceFragment newInstance(Bundle b) {
         BalanceFragment fragment = new BalanceFragment();
+        fragment.setArguments(b);
         return fragment;
     }
     
-	private AdView adView;
-	private ProgressDialog mDialog;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.balance_fragment, null);
-        // adView 만들기
-	    adView = new AdView(getSherlockActivity(), AdSize.SMART_BANNER, "a15147cd53daa26");
-	    LinearLayout layout = (LinearLayout)view.findViewById(R.id.balance_ads);
-
-	    // 찾은 LinearLayout에 adView를 추가
-	    layout.addView(adView);
-
-	    // 기본 요청을 시작하여 광고와 함께 요청을 로드
-	    AdRequest adRequest = new AdRequest();
-	    if(Define.DEBUG){
-	    	adRequest.addTestDevice("65E3B8CB214707370B559D98093D74AA");
-	    }
-	    adView.loadAd(adRequest);
 		return view;
     }
     
     
 
     @Override
-    public void onResume() {
+    public void onActivityCreated(Bundle savedInstanceState) {
         TableLayout tl = (TableLayout) getSherlockActivity()
                 .findViewById(R.id.balance_asset_table);
         if(tl.getChildCount() <= 2){
@@ -87,6 +80,12 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
                 showBalance(repository.getBsValue());
             }
             else{
+            	if(getView() != null){
+            		ProgressBar progress = (ProgressBar)getView().findViewById(R.id.balance_progress);
+            		if(progress != null){
+            			progress.setVisibility(View.VISIBLE);
+            		}
+            	}
             	AsyncTask<Void, Integer, JSONObject> task = new AsyncTask<Void, Integer, JSONObject>(){
 
                     @Override
@@ -103,10 +102,15 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
 
                     @Override
                     protected void onPostExecute(JSONObject result) {
-                    	if(mDialog != null){
-                    		mDialog.dismiss();
-                    		mDialog = null;
+                    	
+                    	if(getView() != null){
+                    		ProgressBar progress = (ProgressBar)getView().findViewById(R.id.balance_progress);
+                    		if(progress != null){
+                    			progress.setVisibility(View.VISIBLE);
+                    		}
                     	}
+                    	
+                    	
                         if(Define.DEBUG && result != null){
                             Log.d("wisedog", "API Call - Balance : " + result.toString());
                         }
@@ -142,13 +146,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
                 task.execute();            	
             }
         }
-        super.onResume();
-    }
-    
-    @Override
-    public void onDestroyView() {
-        adView.destroy();
-        super.onDestroyView();
+        super.onActivityCreated(savedInstanceState);
     }
     
 	/**
@@ -176,7 +174,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
 			double totalAssetValue = objAssets.getDouble("total");
             if (labelTotalAssetValue != null) {
             	double totalAssetValue1 = objAssets.getDouble("total");
-                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1));
+                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1, getSherlockActivity()));
                 View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_asset);
                 int barWidth = FragmentUtil.getBarWidth(objAssets.getInt("total"), totalAssetValue,
                         secondColumnWidth, valueWidth);
@@ -200,7 +198,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
 			WiTextView labelTotalLiabilitiesValue = (WiTextView)getSherlockActivity().findViewById(R.id.balance_total_liabilities_value);
 			if(labelTotalLiabilitiesValue != null){
 				double totalLiabilities = objLiabilities.getDouble("total");
-			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities));
+			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities, getSherlockActivity()));
                 View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_liabilities);
                 int barWidth = FragmentUtil.getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
                         secondColumnWidth, valueWidth);
@@ -274,7 +272,7 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
             //set up textview for showing amount
             WiTextView amountText = new WiTextView(getSherlockActivity());
             double money = accountItem.getDouble("money");
-            amountText.setText(WhooingCurrency.getFormattedValue(money));
+            amountText.setText(WhooingCurrency.getFormattedValue(money, getSherlockActivity()));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);
@@ -292,21 +290,4 @@ public class BalanceFragment extends SherlockFragment implements IShowedFragment
     public void onBsUpdate(JSONObject obj) {
         showBalance(obj);
     }
-
-
-
-	@Override
-	public void onShowedFragment() {
-		if(mDialog != null){
-    		mDialog = null;	//for GC
-    	}
-		DataRepository repository = WhooingApplication.getInstance().getRepo();
-        if(repository.getBsValue() == null){
-        	mDialog = new ProgressDialog(getSherlockActivity());
-        	mDialog.setIndeterminate(true);
-        	mDialog.setCancelable(true);
-        	mDialog.setMessage(getString(R.string.text_loading));
-        	mDialog.show();
-        }
-	}
 }

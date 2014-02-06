@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.wisedog.android.whooing.activity;
 
 import org.json.JSONArray;
@@ -9,7 +24,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
-import net.wisedog.android.whooing.activity.MainFragmentActivity.IShowedFragment;
 import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.engine.DataRepository;
@@ -19,7 +33,6 @@ import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
-import android.app.ProgressDialog;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -37,12 +50,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 
-public final class ProfitLossFragment extends SherlockFragment implements IShowedFragment{
+public final class ProfitLossFragment extends SherlockFragment{
     
-	private ProgressDialog mDialog;
 	
-    public static ProfitLossFragment newInstance() {
+    public static ProfitLossFragment newInstance(Bundle b) {
         ProfitLossFragment fragment = new ProfitLossFragment();
+        fragment.setArguments(b);
         return fragment;
     }	
 
@@ -82,10 +95,6 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
                         if(Define.DEBUG && result != null){
                             Log.d("wisedog", "API Call - Balance : " + result.toString());
                         }
-                        if(mDialog != null){
-                    		mDialog.dismiss();
-                    		mDialog = null;
-                    	}
                         try {
                             int returnCode = result.getInt("code");
                             if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
@@ -157,7 +166,7 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
             
             if (labelTotalExpensesValue != null) {
             	double value1 = objExpenses.getDouble("total");
-                labelTotalExpensesValue.setText(WhooingCurrency.getFormattedValue(value1));
+                labelTotalExpensesValue.setText(WhooingCurrency.getFormattedValue(value1, getSherlockActivity()));
                 View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_expense);
                 int barWidth = FragmentUtil.getBarWidth(objExpenses.getInt("total"), totalExpensesValue,
                         secondColumnWidth, valueWidth);
@@ -181,7 +190,7 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
             WiTextView labelTotalIncomeValue = (WiTextView)getSherlockActivity().findViewById(R.id.pl_fragment_total_income_value);
             if(labelTotalIncomeValue != null){
             	double value1 = objIncome.getDouble("total");
-                labelTotalIncomeValue.setText(WhooingCurrency.getFormattedValue(value1));
+                labelTotalIncomeValue.setText(WhooingCurrency.getFormattedValue(value1, getSherlockActivity()));
                 View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_income);
                 int barWidth = FragmentUtil.getBarWidth(objIncome.getInt("total"), totalIncomeValue, 
                         secondColumnWidth, valueWidth);
@@ -256,7 +265,7 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
             //set up textview for showing amount
             WiTextView amountText = new WiTextView(getSherlockActivity());
             double value1 = accountItem.getDouble("money");
-            amountText.setText(WhooingCurrency.getFormattedValue(value1));
+            amountText.setText(WhooingCurrency.getFormattedValue(value1, getSherlockActivity()));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);
@@ -266,19 +275,4 @@ public final class ProfitLossFragment extends SherlockFragment implements IShowe
                     LayoutParams.WRAP_CONTENT));
         }
     }
-
-	@Override
-	public void onShowedFragment() {
-		if(mDialog != null){
-    		mDialog = null;	//for GC
-    	}
-		DataRepository repository = WhooingApplication.getInstance().getRepo();
-        if(repository.getBsValue() == null){
-        	mDialog = new ProgressDialog(getSherlockActivity());
-        	mDialog.setIndeterminate(true);
-        	mDialog.setCancelable(true);
-        	mDialog.setMessage(getString(R.string.text_loading));
-        	mDialog.show();
-        }
-	}
 }

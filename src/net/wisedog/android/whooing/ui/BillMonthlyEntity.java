@@ -1,5 +1,17 @@
-/**
- * 
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.wisedog.android.whooing.ui;
 
@@ -48,7 +60,7 @@ public class BillMonthlyEntity extends RelativeLayout{
     	double total = objRowItem.getDouble("total");
     	TextView totalAmount = (TextView)findViewById(R.id.bill_label_total_value);
     	if(totalAmount != null){
-    		totalAmount.setText(WhooingCurrency.getFormattedValue(total));
+    		totalAmount.setText(WhooingCurrency.getFormattedValue(total, mContext));
     	}
     	
     	int date = objRowItem.getInt("date");
@@ -88,10 +100,20 @@ public class BillMonthlyEntity extends RelativeLayout{
     				entity.getInt("pay_date"), entity.getDouble("money"));
     		creditArray.add(item);
     		
+    		if(Double.compare(0.0f, item.amount) > 0){	//Detect nagative cases
+    			total += -(item.amount);
+    		}
+    	}
+    	
+    	//Why I separate this routine from former for loop?
+    	//Sometimes bill amount value may has negative value
+    	for(int i = 0; i < creditArray.size(); i++){
+    		BillMonthlyItem item = creditArray.get(i);
+    		
     		//card payment info in the monthly credit card section
-           BillMonthlyCardItem itemCard = new BillMonthlyCardItem(mContext);
-           itemCard.setup(mContext, item, width, total);
-           baseLayout.addView(itemCard);
+            BillMonthlyCardItem itemCard = new BillMonthlyCardItem(mContext);
+            itemCard.setup(mContext, item, width, total);
+            baseLayout.addView(itemCard);
     	}
     	
     	//아래의 결제일 및 결제액 정보에 대한 처리
@@ -110,7 +132,7 @@ public class BillMonthlyEntity extends RelativeLayout{
     	for(int i = 0; i < 31; i++){
     		Double d = paymentDateArray[i];
     		if(d > 0.0f){
-    			paymentInfo = paymentInfo + i + " : " + WhooingCurrency.getFormattedValue(d) + "   ";
+    			paymentInfo = paymentInfo + i + " : " + WhooingCurrency.getFormattedValue(d, mContext) + "   ";
     		}
     	}
     	

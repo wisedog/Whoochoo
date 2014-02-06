@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.wisedog.android.whooing.activity;
 
 import java.util.ArrayList;
@@ -79,7 +94,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     private void fillUi(AccountsEntity entity) {
         WiTextView dateText = (WiTextView) findViewById(R.id.account_modify_text_open_date);
         if(entity ==null){  //Newly added
-            String today = WhooingCalendar.getTodayLocale();            
+            String today = WhooingCalendar.getTodayLocale(this);            
             dateText.setText(today);
             selectDay = WhooingCalendar.getTodayYYYYMMDDint();
         }
@@ -200,14 +215,14 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     
     public void onClickBtnCheckCard(View v){
         GeneralProcessor general = new GeneralProcessor(this);
-        ArrayList<AccountsEntity> list = general.getAllAccount();
+        ArrayList<AccountsEntity> list = general.getAllAccount(true);
         DialogFragment newFragment = AccountSettingCheckcardDialog.newInstance(list);
         newFragment.show(getSupportFragmentManager(), "dialog");   
     }
     
     public void onClickBtnCard(View v){
         GeneralProcessor general = new GeneralProcessor(this);
-        ArrayList<AccountsEntity> list = general.getAllAccount();
+        ArrayList<AccountsEntity> list = general.getAllAccount(true);
         Intent intent = getIntent();
         AccountsEntity entity = intent.getParcelableExtra("account_entity");
         DialogFragment newFragment = AccountSettingCardDialog.newInstance(entity, list);

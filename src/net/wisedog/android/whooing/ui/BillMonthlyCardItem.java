@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.wisedog.android.whooing.ui;
 
 import net.wisedog.android.whooing.R;
@@ -30,7 +45,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 		
 		View graphView = (View)findViewById(R.id.credit_graph);
 		if(graphView != null){
-			graphView.setBackgroundColor(0x5294FF);
+			graphView.setBackgroundColor(0xFF77D644);
 			if(Double.compare(0.0f, item.amount) != 0){
 				double ratio = item.amount / totalAmount;
 				Resources r = getResources();
@@ -53,7 +68,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 
 		TextView textAmount = (TextView) findViewById(R.id.bill_listitem_label_payment_amount);
 		if (textAmount != null) {
-			textAmount.setText(WhooingCurrency.getFormattedValue(item.amount));
+			textAmount.setText(WhooingCurrency.getFormattedValue(item.amount, context));
 		}
 
 		TextView textPaymentDate = (TextView) findViewById(R.id.bill_listitem_payment_date);
@@ -65,6 +80,7 @@ public class BillMonthlyCardItem extends LinearLayout{
 			String str = item.startUseDate + " ~ " + item.endUseDate;
 			textPeriod.setText(str);
 		}
+		this.requestLayout();
 	}
 
 }

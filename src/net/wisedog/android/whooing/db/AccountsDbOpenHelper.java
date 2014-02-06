@@ -1,5 +1,17 @@
-/**
- * 
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.wisedog.android.whooing.db;
 
@@ -26,21 +38,32 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     // Database Name
     public static final String DATABASE_NAME = "whooing";
  
+    ////// Account Table 
     // Contacts table name
     public static final String TABLE_ACCOUNTS = "accounts";
  
     // Contacts Table Columns names
-    private static final String KEY_ACCOUNT_ID = "account_id";
-    private static final String KEY_ACCOUNT_TYPE = "account_type";
-    private static final String KEY_TYPE = "type";
-    private static final String KEY_TITLE = "title";
-    private static final String KEY_MEMO = "memo";
-    private static final String KEY_OPEN_DATE = "open_date";
-    private static final String KEY_CLOSE_DATE = "close_date";
-    private static final String KEY_CATEGORY = "category";
-    private static final String KEY_OPT_USE_DATE = "opt_use_date";
-    private static final String KEY_OPT_PAY_DATE = "opt_pay_date";
-    private static final String KEY_OPT_PAY_ACCOUNT_ID = "opt_pay_account_id";
+    public static final String KEY_ACCOUNT_ID = "account_id";
+    public static final String KEY_ACCOUNT_TYPE = "account_type";
+    public static final String KEY_TYPE = "type";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MEMO = "memo";
+    public static final String KEY_OPEN_DATE = "open_date";
+    public static final String KEY_CLOSE_DATE = "close_date";
+    public static final String KEY_CATEGORY = "category";
+    public static final String KEY_OPT_USE_DATE = "opt_use_date";
+    public static final String KEY_OPT_PAY_DATE = "opt_pay_date";
+    public static final String KEY_OPT_PAY_ACCOUNT_ID = "opt_pay_account_id";
+    
+    ////// // Contacts table name
+    public static final String TABLE_SMS = "sms";
+    
+    // Contacts Table Columns names
+    public static final String KEY_ID = "id";
+    public static final String KEY_DATE = "date";
+    public static final String KEY_AMOUNT = "amount";
+    public static final String KEY_MSG = "msg";
+    public static final String KEY_SMS_ITEM = "item";
     
     public AccountsDbOpenHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -57,7 +80,7 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d("wisedog", "DB Helper onCreate");
-        String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS + "("
+        String CREATE_ACCOUNT_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS + "("
                 + KEY_ACCOUNT_ID + " TEXT PRIMARY KEY," 
                 + KEY_ACCOUNT_TYPE + " TEXT,"
                 + KEY_TYPE + " TEXT," 
@@ -70,17 +93,27 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
                 + KEY_OPT_PAY_DATE + " INTEGER,"
                 + KEY_OPT_PAY_ACCOUNT_ID + " TEXT"
                 +")"; 
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_ACCOUNT_TABLE);
+        
+        String CREATE_SMS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_SMS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," 
+                + KEY_DATE + " INTEGER,"
+                + KEY_AMOUNT + " REAL," 
+                + KEY_ACCOUNT_ID + " TEXT,"
+                + KEY_SMS_ITEM + " TEXT,"
+                + KEY_MSG + " TEXT"
+                +")"; 
+        db.execSQL(CREATE_SMS_TABLE);
     }
 
     /* (non-Javadoc)
      * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
      */
     @Override
-    public void onUpgrade(SQLiteDatabase db, int arg1, int arg2) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNTS);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SMS);
         // Create tables again
         onCreate(db);
     }
@@ -125,7 +158,6 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
         if(entity == null){
             return false;
         }
-        //String selectQuery = "DELETE FROM " + TABLE_ACCOUNTS + " WHERE account_id=" + entity.account_id;
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(TABLE_ACCOUNTS, KEY_ACCOUNT_ID+"='" + entity.account_id + "'", null);        
         db.close();
@@ -167,10 +199,13 @@ public class AccountsDbOpenHelper extends SQLiteOpenHelper {
     /**
      * @return  Return all account information
      * */
-    public ArrayList<AccountsEntity> getAllAccountsInfo() {
+    public ArrayList<AccountsEntity> getAllAccountsInfo(boolean exceptGroup) {
         ArrayList<AccountsEntity> entityList = new ArrayList<AccountsEntity>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_ACCOUNTS;
+        if(exceptGroup == true){
+        	selectQuery += " WHERE " + AccountsDbOpenHelper.KEY_TYPE + " = 'account'"; 
+        }
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

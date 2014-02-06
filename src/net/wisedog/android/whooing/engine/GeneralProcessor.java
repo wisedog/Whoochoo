@@ -1,5 +1,17 @@
-/**
- * 
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.wisedog.android.whooing.engine;
 
@@ -52,11 +64,24 @@ public class GeneralProcessor {
         }
         
         //There are five sections. - assets, liabilites, capital, income, expenses
-        
-        mContext.deleteDatabase(AccountsDbOpenHelper.DATABASE_NAME);
         final AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
+        dbHelper.clearTable();
         final String accountsType[] = new String[]{"assets", "liabilities", "capital", "income", "expenses"};
-        new Thread(new Runnable(){
+        for(int j = 0; j < accountsType.length; j++){
+            JSONArray assetsArray = null;
+            AccountsEntity info = null;
+            try {
+                assetsArray = objResult.getJSONArray(accountsType[j]);
+                for(int i = 0; i < assetsArray.length(); i++){
+                    info = new AccountsEntity(accountsType[j], (JSONObject) assetsArray.get(i));
+                    dbHelper.addAccountEntity(info);
+                }
+            } catch (JSONException e) {
+                Toast.makeText(mContext, "Error - General-01", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }                    
+        }
+/*        new Thread(new Runnable(){
 
             @Override
             public void run() {
@@ -75,16 +100,17 @@ public class GeneralProcessor {
                     }                    
                 }                
             }            
-        }).start();
+        }).start();*/
         return true;
     }
     
     /**
+     * @param	exceptGroup		If you need all account include group, set false. Otherwise set true
      * @return  Return all account information in database
      * */
-    public ArrayList<AccountsEntity> getAllAccount(){
+    public ArrayList<AccountsEntity> getAllAccount(boolean exceptGroup){
         AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(mContext);
-        return dbHelper.getAllAccountsInfo();
+        return dbHelper.getAllAccountsInfo(exceptGroup);
     }
 
     /**

@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="#EEEEEE">
-
-    
+    android:background="#EEEEEE"
+    android:orientation="vertical" >
 
     <net.wisedog.android.whooing.widget.WiTextView
         android:id="@+id/bbs_write_text_subject"
@@ -13,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/text_subject" 
         android:layout_margin="5dp"
-        android:textSize="18sp"
-        android:textColor="#333333"/>
+        android:text="@string/text_subject"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/bbs_write_edit_subject"
@@ -24,9 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/bbs_write_text_subject"
-        android:ems="10" 
-        android:textColor="#333333" 
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:ems="10"
+        android:textColor="#333333" >
 
         <requestFocus />
     </EditText>
@@ -38,9 +51,9 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/bbs_write_edit_subject"
         android:layout_margin="5dp"
-        android:text="@string/text_content" 
-        android:textSize="18sp"
-        android:textColor="#333333"/>
+        android:text="@string/text_content"
+        android:textColor="#333333"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/bbs_write_edit_content"
@@ -52,6 +65,7 @@
         android:ems="10"
         android:inputType="textMultiLine"
         android:textColor="#333333" />
+
     <Button
         android:id="@+id/bbs_write_confirm_btn"
         android:layout_width="wrap_content"
@@ -66,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/bbs_write_confirm_btn"
-        android:layout_toLeftOf="@+id/bbs_write_confirm_btn" 
-        android:visibility="invisible"/>
+        android:layout_toLeftOf="@+id/bbs_write_confirm_btn"
+        android:visibility="invisible" />
 
 </RelativeLayout>

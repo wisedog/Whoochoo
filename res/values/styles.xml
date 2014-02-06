@@ -29,14 +29,4 @@
         <item name="android:drawablePadding">16dp</item>
         <item name="android:gravity">center_vertical</item>
     </style>
-
-    <style name="MenuDrawerStyle" parent="Widget.MenuDrawer">
-        <item name="mdActiveIndicator">@drawable/menu_arrow</item>
-        <item name="mdMenuSize">250dp</item>
-    </style>
-
-    <style name="MenuDrawerStyle.Right" parent="Widget.MenuDrawer">
-        <item name="mdActiveIndicator">@drawable/menu_arrow_right</item>
-        <item name="mdMenuSize">150dp</item>
-    </style>
 </resources>

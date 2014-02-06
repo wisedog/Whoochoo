@@ -1,115 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="vertical" 
-    android:background="#EEEEEE">
+    android:background="#E5E5E5" >
 
-    <net.wisedog.android.whooing.widget.WiTextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/accounts_assets"
-        android:id="@+id/accounts_selection_title_assets"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="4dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="#CCCCCC"
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/accounts_selection_assets"
-        android:layout_marginBottom="6dip">
-        
-    </LinearLayout>
-    <net.wisedog.android.whooing.widget.WiTextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/accounts_liabilities"
-        android:id="@+id/accounts_selection_title_liabilities"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="4dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="#CCCCCC"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/accounts_selection_liabilities"
-        android:layout_marginBottom="6dip">
-        
-    </LinearLayout>
-    <net.wisedog.android.whooing.widget.WiTextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/accounts_capital"
-        android:id="@+id/accounts_selection_title_capital"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="4dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="#CCCCCC"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/accounts_selection_capital"
-        android:layout_marginBottom="6dip">
-        
-    </LinearLayout>
-    <net.wisedog.android.whooing.widget.WiTextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/accounts_income"
-        android:id="@+id/accounts_selection_title_income"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="4dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="#CCCCCC"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/accounts_selection_income"
-        android:layout_marginBottom="6dip">
-        
-    </LinearLayout>
-    <net.wisedog.android.whooing.widget.WiTextView 
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/accounts_expenses"
-        android:id="@+id/accounts_selection_title_expenses"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginBottom="4dip"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:background="#CCCCCC"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/accounts_selection_expenses"
-        android:layout_marginBottom="6dip">
-    </LinearLayout>
-    
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/accounts_selection_title_assets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="#CCCCCC"
+            android:text="@string/accounts_assets"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/accounts_selection_assets"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/accounts_selection_title_liabilities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="#CCCCCC"
+            android:text="@string/accounts_liabilities"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/accounts_selection_liabilities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/accounts_selection_title_capital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="#CCCCCC"
+            android:text="@string/accounts_capital"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/accounts_selection_capital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/accounts_selection_title_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="#CCCCCC"
+            android:text="@string/accounts_income"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/accounts_selection_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <net.wisedog.android.whooing.widget.WiTextView
+            android:id="@+id/accounts_selection_title_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dip"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="#CCCCCC"
+            android:text="@string/accounts_expenses"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/accounts_selection_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dip"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

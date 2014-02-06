@@ -8,14 +8,6 @@
         <item>Profit/Loss</item>
     </string-array>
     
-    <!-- Do not change order -->
-    <string-array name="main_actionbar_menuitem">
-        <item>Accounts Setting</item>
-        <item>User Setting</item>
-        <item>Rating me!</item>
-        <item>Logout</item>
-        <item>About</item>
-    </string-array>
     <string-array name="card_start_date_array">
         <item>Month before last1</item>
         <item>Month before last2</item>

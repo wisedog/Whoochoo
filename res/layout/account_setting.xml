@@ -1,129 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#E5E5E5">
+    android:background="#E5E5E5" >
 
-	<LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical" >
-	    
-	    <!-- Asset -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_assets" 
-	        android:textSize="20sp"
-	        android:textColor="#333333"
-	        android:textStyle="bold"/>
+        <!-- Asset -->
 
-	    <TableLayout
-	        android:id="@+id/account_setting_table_asset"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" 
-	        android:background="#555555">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accounts_assets"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-	    </TableLayout>
-	    <Button
-	        android:id="@+id/account_setting_asset_btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="10dp"
-	        android:text="@string/account_setting_add_assets" />
-	    
-	    <!-- Liabilities -->
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_liabilities" 
-	        android:textSize="20sp"
-	        android:textColor="#333333"
-	        android:textStyle="bold"/>
-	    <TableLayout
-	        android:id="@+id/account_setting_table_liabilities"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	    </TableLayout>
-	    
-	    <Button
-	        android:id="@+id/account_setting_liabilities_btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="10dp"
-	        android:text="@string/account_setting_add_liabilities" />
-	    
-	    <!-- Capital -->
+        <TableLayout
+            android:id="@+id/account_setting_table_asset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#555555" >
+        </TableLayout>
 
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_capital" 
-	        android:textSize="20sp"
-	        android:textColor="#333333"
-	        android:textStyle="bold"
-	        />
+        <Button
+            android:id="@+id/account_setting_asset_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/account_setting_add_assets" />
 
-	    <TableLayout
-	        android:id="@+id/account_setting_table_capital"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	    </TableLayout>
+        <!-- Liabilities -->
 
-	    <Button
-	        android:id="@+id/account_setting_capital_btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="10dp"
-	        android:text="@string/account_setting_add_capital" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accounts_liabilities"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-	    <!-- Expenses -->
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_expenses" 
-	        android:textSize="20sp"
-	        android:textColor="#333333"
-	        android:textStyle="bold"/>
-	    
-	    <TableLayout
-	        android:id="@+id/account_setting_table_expenses"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	    </TableLayout>
-	    
-	    <Button
-	        android:id="@+id/account_setting_expenses_btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="10dp"
-	        android:text="@string/account_setting_add_expenses" />
-	    
-	    <!-- Income -->
-	    <TextView
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/accounts_income" 
-	        android:textSize="20sp"
-	        android:textColor="#333333"
-	        android:textStyle="bold"/>
-	    
-	    <TableLayout
-	        android:id="@+id/account_setting_table_income"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content" >
-	    </TableLayout>
+        <TableLayout
+            android:id="@+id/account_setting_table_liabilities"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TableLayout>
 
-	    <Button
-	        android:id="@+id/account_setting_income_btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="10dp"
-	        android:text="@string/account_setting_add_income" />
+        <Button
+            android:id="@+id/account_setting_liabilities_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/account_setting_add_liabilities" />
 
-	    
-	</LinearLayout>
+        <!-- Capital -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accounts_capital"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:id="@+id/account_setting_table_capital"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TableLayout>
+
+        <Button
+            android:id="@+id/account_setting_capital_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/account_setting_add_capital" />
+
+        <!-- Expenses -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accounts_expenses"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:id="@+id/account_setting_table_expenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TableLayout>
+
+        <Button
+            android:id="@+id/account_setting_expenses_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/account_setting_add_expenses" />
+
+        <!-- Income -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/accounts_income"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TableLayout
+            android:id="@+id/account_setting_table_income"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </TableLayout>
+
+        <Button
+            android:id="@+id/account_setting_income_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/account_setting_add_income" />
+    </LinearLayout>
 
 </ScrollView>

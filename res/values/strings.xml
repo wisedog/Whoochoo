@@ -63,12 +63,13 @@
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
     <string name="text_next">Next</string>
-    <string name="text_okay">Okay</string>
+    <string name="text_okay">OK</string>
     <string name="text_inform">Inform</string>
     <string name="text_memo">Memo</string>
     <string name="text_category">Category</string>
     <string name="text_deactivate">Deactivate</string>
     <string name="text_deleted">Deleted</string>
+    <string name="text_zero">0</string>
     
     <!-- Dashboard -->
     <string name="dashboard_more">More&#8230;</string>
@@ -95,6 +96,7 @@
     <string name="left_menu_item_board_support">Support</string>
     <string name="left_menu_item_post_it">Post it!</string>
     <string name="left_menu_item_dashboard">Dashboard</string>
+    <string name="left_menu_item_home">Home</string>
     
     
     <!-- Exp. Budget -->
@@ -132,10 +134,10 @@
     <string name="about_app_contact_whooing">Contact to Whooing</string>
     <string name="about_app_contact_whooing_email">support@whooing.com</string>
     <string name="about_app_contact_developer">Contact to App developer</string>
-    <string name="about_app_contact_developer_email">peashellapps@gmail.com</string>
+    <string name="about_app_contact_developer_email">kim.jongha@gmail.com</string>
     <string name="about_app_whooing_url">Website : http://whooing.com</string>
-    <string name="about_app_blog">Blog : http://peashellapps.wordpress.com</string>
-    <string name="about_app_creator">Created by Peashell Apps.</string>
+    <string name="about_app_blog">Blog : http://story.wisedog.net</string>
+    <string name="about_app_creator">Created by Jongha Kim</string>
     <string name="about_app_send_email">Choose Email Client</string>
     <string name="about_app_version">Version : </string>
     
@@ -192,12 +194,20 @@
     <string name="account_setting_del_msg_really_delete">Really delete?</string>
     <string name="account_setting_msg_close">Deactivate - Click "Confirm" to apply</string>
     <string name="account_setting_del_unavailable">Unavailable to delete. Only this account is remain in the account type.</string>
+    
+    <!-- Submenus -->
+    <string name="submenu_account_setting">Accounts Setting</string>
+    <string name="submenu_user_setting">User Setting</string>
+    <string name="submenu_rating">Rating me!</string>
+    <string name="submenu_about">About</string>
         
     <!-- Content Description -->
     <string name="desc_imgbtn_delete">Delete</string>
     <string name="desc_imgbtn_modify">Modify</string>
     <string name="desc_imgbtn_calendar">Calendar</string>
     <string name="desc_img_possibility">Possibility to archive object</string>
+    <string name="desc_img_sms">SMS</string>
+    <string name="desc_img_arrow">Arrow</string>
     
     
 </resources>

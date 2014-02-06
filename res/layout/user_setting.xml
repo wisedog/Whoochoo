@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+     Copyright (C) 2013 Jongha Kim
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E5E5E5"
@@ -14,13 +28,13 @@
         android:gravity="right" >
 
         <net.wisedog.android.whooing.widget.WiButton
-	        android:id="@+id/user_setting_cancel"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/cancel" 
-	        android:onClick="onClickCancel"
-	        android:textColor="#333333"
-	        android:visibility="invisible"/>
+            android:id="@+id/user_setting_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClickCancel"
+            android:text="@string/cancel"
+            android:textColor="#333333"
+            android:visibility="invisible" />
 
         <net.wisedog.android.whooing.widget.WiButton
             android:id="@+id/user_setting_complete"
@@ -29,14 +43,12 @@
             android:onClick="onClickComplete"
             android:text="@string/text_complete"
             android:textColor="#333333" />
-        
     </LinearLayout>
-    
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical" >
 
         <net.wisedog.android.whooing.widget.WiTextView
             android:id="@+id/user_setting_text_username"
@@ -65,9 +77,9 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text_check" 
-                android:textColor="#333333" 
-                android:onClick="onClickCheckName"/>
+                android:onClick="onClickCheckName"
+                android:text="@string/text_check"
+                android:textColor="#333333" />
 
             <ProgressBar
                 android:id="@+id/user_setting_progress_bar"
@@ -75,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="invisible" />
         </LinearLayout>
-        
+
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginBottom="10dp" />
-        
+
         <net.wisedog.android.whooing.widget.WiTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,8 +119,8 @@
             android:layout_height="wrap_content"
             android:text="@string/text_country"
             android:textColor="#AAAAAA"
-            android:textSize="18sp" 
-            android:textStyle="bold"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/user_setting_spinner_country"
@@ -129,4 +141,5 @@
             android:layout_height="50dp"
             android:layout_marginBottom="10dp" />
     </LinearLayout>
+
 </RelativeLayout>

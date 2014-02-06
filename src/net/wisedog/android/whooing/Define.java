@@ -1,5 +1,22 @@
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.wisedog.android.whooing;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 
 public class Define {
@@ -122,5 +139,32 @@ public class Define {
     public static boolean NEED_TO_REFRESH = false;
     
     public static boolean SHOW_NO_API_INFORM = false;
+    
+    public static void gettingLoginInfo(Context context){
+    	if(context == null){
+    		return;
+    	}
+    	/*
+        if(Define.DEBUG){
+            Define.REAL_TOKEN = "9772ff8e2f751ddf1c5cf74b0d9b328f392a4b71";
+            Define.PIN = "339599";
+            Define.TOKEN_SECRET = "7776e79057bc222254da0b108555afd86e3b7d3c";
+            Define.APP_SECTION = "s10550";
+            Define.USER_ID = 8955;
+            Define.CURRENCY_CODE = "KRW";
+            Define.COUNTRY_CODE="KR";
+            Define.LOCALE_LANGUAGE = "ko";
+        }*/
+    	SharedPreferences prefs = context.getSharedPreferences(Define.SHARED_PREFERENCE, Context.MODE_PRIVATE);
+        Define.REAL_TOKEN = prefs.getString(Define.KEY_SHARED_TOKEN, null);
+        Define.PIN = prefs.getString(Define.KEY_SHARED_PIN, null);
+        Define.TOKEN_SECRET = prefs.getString(Define.KEY_SHARED_TOKEN_SECRET, null);
+        Define.APP_SECTION = prefs.getString(Define.KEY_SHARED_SECTION_ID, null);
+        Define.USER_ID = prefs.getInt(Define.KEY_SHARED_USER_ID, 0);
+        Define.CURRENCY_CODE = prefs.getString(Define.KEY_SHARED_CURRENCY_CODE, "USD");
+        Define.COUNTRY_CODE = prefs.getString(Define.KEY_SHARED_COUNTRY_CODE, "US");
+        Define.LOCALE_LANGUAGE = prefs.getString(Define.KEY_SHARED_LOCALE_LANGUAGE, "en");
+        Define.TIMEZONE = prefs.getString(Define.KEY_SHARED_TIMEZONE, null);
+    }
 
 }

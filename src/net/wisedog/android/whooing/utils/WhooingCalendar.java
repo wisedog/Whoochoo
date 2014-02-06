@@ -1,7 +1,24 @@
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package net.wisedog.android.whooing.utils;
 
 import java.util.Calendar;
 import java.util.Locale;
+
+import android.content.Context;
 
 import net.wisedog.android.whooing.Define;
 
@@ -52,7 +69,8 @@ public class WhooingCalendar {
         return "" + year + monthString;
     }
     
-    static public String getTodayLocale(){
+    static public String getTodayLocale(Context context){
+    	Define.gettingLoginInfo(context);
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         Calendar calendar = Calendar.getInstance(); 
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
@@ -94,7 +112,8 @@ public class WhooingCalendar {
         return "" + year + monthString + dayString;
     }
     
-    static public String getPreMonthLocale(int premonth){
+    static public String getPreMonthLocale(Context context, int premonth){
+    	Define.gettingLoginInfo(context);
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         Calendar calendar = Calendar.getInstance(); 
         calendar.add(Calendar.MONTH, -(premonth));

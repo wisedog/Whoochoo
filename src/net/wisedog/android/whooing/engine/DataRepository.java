@@ -1,25 +1,32 @@
-/**
- * 
+/*
+ * Copyright (C) 2013 Jongha Kim
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package net.wisedog.android.whooing.engine;
 
 import net.wisedog.android.whooing.Define;
-import net.wisedog.android.whooing.activity.MainFragmentActivity;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.TextView;
 
 /**
- * FragmentPager에서 Fragment가 DestroyView되기때문에 값을 가지고 있다. 
- * @author Wisedog(me@wisedog.net)
+ *  A class to store data
  */
 public class DataRepository{
     static public final int BS_MODE = 0;
@@ -141,14 +148,14 @@ public class DataRepository{
     
     protected void setRestApi(Context context, final int apiNum){
         if(context != null){
-            TextView textView = (TextView) ((Activity)context).findViewById(MainFragmentActivity.API_MENUITEM_ID);
+            /*TextView textView = (TextView) ((Activity)context).findViewById(MainFragmentActivity.API_MENUITEM_ID);
             if(textView != null){
                 if(apiNum == 0){
                     textView.setText("Api\r\n -");
                 }else{
                     textView.setText("Api\r\n "+String.valueOf(apiNum));
                 }
-            }
+            }*/
         }
     }
     
