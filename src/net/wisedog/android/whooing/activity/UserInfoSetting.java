@@ -354,6 +354,7 @@ public class UserInfoSetting extends Activity{
         if(getIntent().getBooleanExtra("from_menu", false)){
             setResult(RESULT_CANCELED);
             finish();
+            return;
         }
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(getString(R.string.exit));
