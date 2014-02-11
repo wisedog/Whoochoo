@@ -19,10 +19,12 @@ Contributing
 
 Development Items
 -----------------
-  * Remove transaction items
+  * Support multiple sections
+  * User can remove transaction items
   * Account manipulation
   * Replace ugly graphs
   * Make BBS HTML tags works
+  * Get rid of ActionBarSherlock to support only 4.0+
   
 Download
 --------
