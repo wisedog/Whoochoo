@@ -72,7 +72,7 @@ public class BbsArticleFragment extends SherlockFragment {
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
-    	refreshArticle(false);
+    	//refreshArticle(false);
 		super.onCreate(savedInstanceState);
 	}
 

@@ -93,8 +93,8 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         
 		getListView().setOnScrollListener(this);
 		getListView().setOnItemClickListener(this);
-		getListView().removeFooterView(footerView);
-		getListView().setAdapter(mAdapter);
+		//getListView().removeFooterView(footerView);
+		setListAdapter(mAdapter);
 		super.onActivityCreated(savedInstanceState);
 	}
 
