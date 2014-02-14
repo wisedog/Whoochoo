@@ -396,7 +396,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         double amountDouble = Double.valueOf(amount);
         
         final Bundle bundle = new Bundle();
-        int formattedDate = mYear * 10000 + mMonth * 100 + mDay;
+        int formattedDate = mYear * 10000 + (mMonth + 1) * 100 + mDay;
         bundle.putInt("entry_date", formattedDate);
         bundle.putParcelable("l_account", mLeftAccount);
         bundle.putParcelable("r_account", mRightAccount);
