@@ -181,18 +181,20 @@ public class BbsArticleFragment extends SherlockFragment {
             }
             
             else if(msg.what == 0){
-                ImageView image = 
-                   (ImageView)getView().findViewById(R.id.bbs_article_profile_image);
-                if(msg.obj == null){
-                    image.setImageResource(R.drawable.profile_anonymous);
-                }
-                else{
-                    image.setImageBitmap((Bitmap)msg.obj);              
-                }           
-            }
-            super.handleMessage(msg);
+				try {
+					ImageView image = (ImageView) getView().findViewById(
+							R.id.bbs_article_profile_image);
+					if (msg.obj == null) {
+						image.setImageResource(R.drawable.profile_anonymous);
+					} else {
+						image.setImageBitmap((Bitmap) msg.obj);
+					}
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
+			}
+			super.handleMessage(msg);
         }
-        
     };
     
     

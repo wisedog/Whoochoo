@@ -127,13 +127,13 @@ public class ExpBudgetFragment extends SherlockFragment{
 
     private void showExpBudget(JSONObject obj){
         
-        TableLayout tl = (TableLayout) getView().findViewById(R.id.exp_budget_table);
-        DisplayMetrics metrics = new DisplayMetrics();
-        getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        
-        final int secondColumnWidth = (int) (metrics.widthPixels * 0.7);
-        
         try {
+        	TableLayout tl = (TableLayout) getView().findViewById(R.id.exp_budget_table);
+            DisplayMetrics metrics = new DisplayMetrics();
+            getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            
+            final int secondColumnWidth = (int) (metrics.widthPixels * 0.7);
+            
             JSONObject objResult = obj.getJSONObject("results");
             JSONArray objRows = objResult.getJSONArray("rows");
             JSONObject objRow1 = (JSONObject) objRows.get(0);
@@ -149,12 +149,12 @@ public class ExpBudgetFragment extends SherlockFragment{
                     LayoutParams.WRAP_CONTENT));
             
             showExpBudgetEntries(objRow1.getJSONArray("accounts"), tl, 0x885294FF, secondColumnWidth, 5);
-            
 
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch(NullPointerException e){
+        	e.printStackTrace();
         }
-    	
     }
     
     private void showExpBudgetEntries(JSONArray accounts, TableLayout tl, int color, 

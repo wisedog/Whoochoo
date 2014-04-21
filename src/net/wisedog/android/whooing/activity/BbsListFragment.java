@@ -27,15 +27,15 @@ import net.wisedog.android.whooing.WhooingApplication;
 import net.wisedog.android.whooing.adapter.BoardAdapter;
 import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import net.wisedog.android.whooing.utils.EndlessScrollListener;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
@@ -46,7 +46,7 @@ import com.actionbarsherlock.view.MenuItem;
  * A fragment for listing bbs items 
  *
  */
-public class BbsListFragment extends SherlockListFragment implements OnScrollListener, OnItemClickListener {
+public class BbsListFragment extends SherlockListFragment implements OnItemClickListener {
 	public static final int BOARD_TYPE_FREE = 0;
 	public static final int BOARD_TYPE_MONEY_TALK = 1;
 	public static final int BOARD_TYPE_COUNSELING = 2;
@@ -58,12 +58,12 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
 	protected View footerView;
 	/** Adapter of this Listview*/
 	protected BoardAdapter mAdapter;
-	/** listview loading flag */
-	protected boolean loading = false;
 	/** Page number to loading*/
 	private int mPageNum = 1;
 	/** Board type*/
 	private int mBoardType = -1;
+	
+	private boolean isLoading = false;
 	
     
 	/**
@@ -91,7 +91,15 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
 		footerView = getActivity().getLayoutInflater().inflate(R.layout.footer, null, false);
 		getListView().addFooterView(footerView, null, false);
         
-		getListView().setOnScrollListener(this);
+		getListView().setOnScrollListener(new EndlessScrollListener(){
+
+			@Override
+			public void onLoadMore(int page, int totalItemsCount) {
+		    	if(isLoading == false){
+		    		getMore();
+		    	}
+			}
+		});
 		getListView().setOnItemClickListener(this);
 		//getListView().removeFooterView(footerView);
 		setListAdapter(mAdapter);
@@ -133,6 +141,7 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
 	protected Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+        	isLoading = false;
             if(msg.what == Define.MSG_API_OK){
                 if(msg.arg1 == Define.API_GET_BOARD){
                     mPageNum = mPageNum + 1;
@@ -192,27 +201,21 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
             
             mDataArray.add(item);
         }
-        
-        getListView().removeFooterView(footerView);
+        try{
+        	getListView().removeFooterView(footerView);
+        }
+        catch(IllegalStateException e){
+        	e.printStackTrace();
+        	Toast.makeText(getActivity(), "Err- List#01", Toast.LENGTH_LONG).show();
+        }
         mAdapter.notifyDataSetChanged();
-        loading = false;
     }
-
-    @Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-			int visibleItemCount, int totalItemCount) {
-		boolean loadMore = firstVisibleItem + visibleItemCount >= totalItemCount - 1;
-		if (loadMore && !loading) {
-			loading = true;
-			getMore();
-		}
-
-	}
 
     /**
      * Get more list items
      * */
     public void getMore(){
+    	isLoading = true;
     	getListView().addFooterView(footerView, null, false);
         Bundle b = new Bundle();
         b.putInt("board_type", mBoardType);
@@ -236,11 +239,4 @@ public class BbsListFragment extends SherlockListFragment implements OnScrollLis
         thread.start();
     }
 
-    /* (non-Javadoc)
-     * @see android.widget.AbsListView.OnScrollListener#onScrollStateChanged(android.widget.AbsListView, int)
-     */
-    @Override
-    public void onScrollStateChanged(AbsListView arg0, int arg1) {
-        ; //Do nothing        
-    }
 }
