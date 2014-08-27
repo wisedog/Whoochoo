@@ -396,7 +396,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         double amountDouble = Double.valueOf(amount);
         
         final Bundle bundle = new Bundle();
-        int formattedDate = mYear * 10000 + mMonth * 100 + mDay;
+        int formattedDate = mYear * 10000 + (mMonth + 1) * 100 + mDay;
         bundle.putInt("entry_date", formattedDate);
         bundle.putParcelable("l_account", mLeftAccount);
         bundle.putParcelable("r_account", mRightAccount);
@@ -423,6 +423,9 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
 			    if(Define.DEBUG && result != null){
                     Log.d("wisedog", "API Call - API_POST_ENTRIES : " + result.toString());
                 }
+			    if(getView() == null){
+			    	return;
+			    }
 				Button goBtn = (Button)(getView().findViewById(R.id.add_transaction_btn_go));
             	goBtn.setEnabled(true);
             	goBtn.setText(getString(R.string.add_transaction_add));

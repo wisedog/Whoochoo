@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">       
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="Theme.Styled" parent="Theme.Sherlock.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+    </style>
+    
+    <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+        <item name="titleTextStyle">@style/TitleText</item>
+        <item name="android:titleTextStyle">@style/TitleText</item>
+        <item name="android:background">#FF4A566B</item>
+    	<item name="background">#FF4A566B</item>
+    </style>
+        
     <!-- Title on action bar -->
      <style name="TitleText" >
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">17sp</item>
-    </style>
-    
-     <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- API 14 theme customizations can go here. -->
-        <!-- <item name="android:background">#00428E</item> -->
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-    </style>
-    
-    <style name="MyActionBar" parent="android:style/Widget.Holo.ActionBar">
-        <item name="android:background">#FF4A566B</item>
-        <item name="android:titleTextStyle">@style/TitleTextStyle</item>
-    </style>
-    
-    <style name="TitleTextStyle"
-           parent="@android:style/TextAppearance">
-        <item name="android:titleTextStyle">@style/TitleText</item>
+        <item name="android:textSize">17dip</item>
     </style>
 </resources>
