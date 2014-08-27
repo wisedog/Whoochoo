@@ -23,9 +23,9 @@ import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.annotation.SuppressLint;
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -36,9 +36,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class AccountSelectFragment extends SherlockDialogFragment {
+public class AccountSelectFragment extends DialogFragment {
 	private static final int DYNAMIC_VIEW_ID = 10000;
     private static final int DYNAMIC_LAYOUT_ID = 20000;
     private static final int DYNAMIC_LAYOUT_ID_ADDED = 20100;
@@ -138,7 +137,7 @@ public class AccountSelectFragment extends SherlockDialogFragment {
         
         for(int j = 0; j < 5; j++){
           //creating linearlayout for item wrapping. 
-            LinearLayout llAlso = new LinearLayout(getSherlockActivity());
+            LinearLayout llAlso = new LinearLayout(getActivity());
             llAlso.setId(DYNAMIC_LAYOUT_ID + j);
             llAlso.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
@@ -155,7 +154,7 @@ public class AccountSelectFragment extends SherlockDialogFragment {
         }
         
         DisplayMetrics metrics = new DisplayMetrics();
-        getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         
         int maxWidth = (int) (metrics.widthPixels * 0.7);
         
@@ -171,7 +170,7 @@ public class AccountSelectFragment extends SherlockDialogFragment {
             }
             
             //Creating accounts item
-            WiTextView textView = new WiTextView(getSherlockActivity());
+            WiTextView textView = new WiTextView(getActivity());
             textView.setId(DYNAMIC_VIEW_ID + i);
             textView.setText(entity.title);
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16.0f);
@@ -242,7 +241,7 @@ public class AccountSelectFragment extends SherlockDialogFragment {
                     continue;
                 }
               //creating linearlayout for item wrapping. 
-                LinearLayout llAlso = new LinearLayout(getSherlockActivity());
+                LinearLayout llAlso = new LinearLayout(getActivity());
                 llAlso.setId(DYNAMIC_LAYOUT_ID_ADDED + i);
                 llAlso.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                         LayoutParams.WRAP_CONTENT));

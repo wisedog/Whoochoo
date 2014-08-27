@@ -36,6 +36,7 @@ import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,9 +55,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
-public class TransactionAddFragment extends SherlockFragment implements AccountSelectListener{
+public class TransactionAddFragment extends Fragment implements AccountSelectListener{
 	
 	public static final int LEFT_SIDE = 10;
     public static final int RIGHT_SIDE = 11;
@@ -136,7 +135,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
      * 
      * */
     private void setDateText(int year, int month, int day){
-    	Define.gettingLoginInfo(getSherlockActivity());
+    	Define.gettingLoginInfo(getActivity());
         Locale locale = new Locale(Define.LOCALE_LANGUAGE, Define.COUNTRY_CODE);
         java.text.DateFormat df = java.text.DateFormat.getDateInstance(java.text.DateFormat.MEDIUM, locale);
         Calendar cal = Calendar.getInstance(locale);
@@ -201,7 +200,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
 		dateChangeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				DatePickerDialog dpdFromDate = new DatePickerDialog(
-						getSherlockActivity(), new DatePickerDialog.OnDateSetListener() {
+						getActivity(), new DatePickerDialog.OnDateSetListener() {
 							
 							@Override
 							public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -220,7 +219,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         textView.setText("");
         ((EditText)(getView().findViewById(R.id.add_transaction_edit_amount))).setText("");
 
-        Define.gettingLoginInfo(getSherlockActivity());
+        Define.gettingLoginInfo(getActivity());
         setDateText(mYear, mMonth, mDay);
         
         if(mLeftAccount != null && mRightAccount != null){
@@ -254,7 +253,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         }
         String[] lastestStringItems = entryItemStringArray.toArray(new String[entryItemStringArray.size()]);
         
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getSherlockActivity(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.select_dialog_item, lastestStringItems);
         textView.setAdapter(adapter);
 
@@ -276,7 +275,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
      * @return  Size of accounts list
      * */
     public int getAllAccountsInfo(){
-        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(getSherlockActivity());
+        AccountsDbOpenHelper dbHelper = new AccountsDbOpenHelper(getActivity());
         mAccountsList = dbHelper.getAllAccountsInfo(true);
         if(mAccountsList != null){
             return mAccountsList.size();
@@ -292,7 +291,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         for(int i = 0; i < mEntryItemArray.size(); i++){
             TransactionItem item = mEntryItemArray.get(i);
             if(item.item.compareToIgnoreCase(itemName) == 0){
-                GeneralProcessor processor = new GeneralProcessor(getSherlockActivity());
+                GeneralProcessor processor = new GeneralProcessor(getActivity());
                 AccountsEntity leftEntity = processor.findAccountById(item.l_account_id);
                 AccountsEntity rightEntity = processor.findAccountById(item.r_account_id);
                 setLeftAccount(leftEntity);
@@ -381,7 +380,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
     public void refreshLastestList(){
     	if(mDataArray != null && getView() != null){
     		ListView lastestTransactionList = (ListView)(getView().findViewById(R.id.list_lastest_transaction));
-    		mLastestadapter = new TransactionAddAdapter(getSherlockActivity(), mDataArray);
+    		mLastestadapter = new TransactionAddAdapter(getActivity(), mDataArray);
     		lastestTransactionList.setAdapter(mLastestadapter);
     	}
     }
@@ -445,7 +444,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            	Toast.makeText(getSherlockActivity(), getString(
+            	Toast.makeText(getActivity(), getString(
             			R.string.add_transaction_add_complete), Toast.LENGTH_SHORT).show();
             	AutoCompleteTextView textView = (AutoCompleteTextView)
                         (getView().findViewById(R.id.add_transaction_auto_complete));
@@ -475,7 +474,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         		R.id.add_transaction_auto_complete); 
         String itemStr = editItem.getText().toString();
         if(itemStr.equals("")){
-            Toast.makeText(getSherlockActivity(), "Check Item", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Check Item", Toast.LENGTH_SHORT).show();
             editItem.requestFocus();
             return false;
         }
@@ -484,7 +483,7 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         final EditText editAmount = (EditText)getView().findViewById(R.id.add_transaction_edit_amount);
         String itemAmount = editAmount.getText().toString();
         if(itemAmount.equals("")){
-            Toast.makeText(getSherlockActivity(), getString(R.string.add_transaction_msg_check_amount), 
+            Toast.makeText(getActivity(), getString(R.string.add_transaction_msg_check_amount), 
             		Toast.LENGTH_LONG).show();
             editAmount.requestFocus();
             
@@ -492,13 +491,13 @@ public class TransactionAddFragment extends SherlockFragment implements AccountS
         }
         
         if(mLeftAccount == null || mRightAccount == null){
-            Toast.makeText(getSherlockActivity(), getString(R.string.add_transaction_msg_check_lr), 
+            Toast.makeText(getActivity(), getString(R.string.add_transaction_msg_check_lr), 
             		Toast.LENGTH_SHORT).show();
             return false;
         }
         
         if(mLeftAccount.account_id.equals(mRightAccount.account_id)){
-            Toast.makeText(getSherlockActivity(), getString(R.string.add_transaction_msg_same), 
+            Toast.makeText(getActivity(), getString(R.string.add_transaction_msg_same), 
             		Toast.LENGTH_LONG).show();
             return false;
         }

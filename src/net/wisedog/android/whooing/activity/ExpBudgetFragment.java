@@ -29,6 +29,7 @@ import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.TableRowExpBudgetItem;
 import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
+import android.app.Fragment;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,9 +46,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
-import com.actionbarsherlock.app.SherlockFragment;
 
-public class ExpBudgetFragment extends SherlockFragment{
+public class ExpBudgetFragment extends Fragment{
 	
 	public static ExpBudgetFragment newInstance(Bundle b) {
 		ExpBudgetFragment fragment = new ExpBudgetFragment();
@@ -102,7 +102,7 @@ public class ExpBudgetFragment extends SherlockFragment{
         			}
         	    	if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
         	    		Define.SHOW_NO_API_INFORM = true;
-        	    		WhooingAlert.showNotEnoughApi(getSherlockActivity());
+        	    		WhooingAlert.showNotEnoughApi(getActivity());
         	    	}
         	    	
         	    	if(returnCode == Define.RESULT_OK){
@@ -130,7 +130,7 @@ public class ExpBudgetFragment extends SherlockFragment{
         try {
         	TableLayout tl = (TableLayout) getView().findViewById(R.id.exp_budget_table);
             DisplayMetrics metrics = new DisplayMetrics();
-            getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
             
             final int secondColumnWidth = (int) (metrics.widthPixels * 0.7);
             
@@ -162,7 +162,7 @@ public class ExpBudgetFragment extends SherlockFragment{
         if(accounts == null){
             return;
         }
-        GeneralProcessor genericProcessor = new GeneralProcessor(getSherlockActivity());
+        GeneralProcessor genericProcessor = new GeneralProcessor(getActivity());
         for(int i = 0; i < accounts.length(); i++){
             JSONObject accountItem = (JSONObject) accounts.get(i);
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
@@ -183,12 +183,12 @@ public class ExpBudgetFragment extends SherlockFragment{
         final int margin4Dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
                 r.getDisplayMetrics());
         /* Create a new row to be added. */
-        TableRow tr = new TableRow(getSherlockActivity());
+        TableRow tr = new TableRow(getActivity());
         tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT));
         tr.setWeightSum(1.0f);
         
-        TextView accountText = new TextView(getSherlockActivity());
+        TextView accountText = new TextView(getActivity());
         accountText.setText(accountName);
         LayoutParams params = new LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.3f);
         params.gravity = Gravity.CENTER_VERTICAL;
@@ -196,7 +196,7 @@ public class ExpBudgetFragment extends SherlockFragment{
         accountText.setLayoutParams(params);
         tr.addView(accountText);
         
-        TableRowExpBudgetItem layout = new TableRowExpBudgetItem(getSherlockActivity());
+        TableRowExpBudgetItem layout = new TableRowExpBudgetItem(getActivity());
         layout.setupListItem(spent, budget, remains, maxColumnWidth, minColumnWidth, color);
         layout.setLayoutParams(new LayoutParams(
                 0, LayoutParams.WRAP_CONTENT, 0.7f));

@@ -26,6 +26,7 @@ import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiButton;
 import net.wisedog.android.whooing.widget.WiTextView;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,9 +40,8 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class AccountDeleteConfirmDialog extends SherlockDialogFragment {
+public class AccountDeleteConfirmDialog extends DialogFragment {
     public interface AccountDeleteListener {
         void onFinishingDeleting();
     }

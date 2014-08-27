@@ -23,22 +23,21 @@ import net.wisedog.android.whooing.dataset.DrawerAdapter;
 import net.wisedog.android.whooing.dataset.DrawerCategory;
 import net.wisedog.android.whooing.dataset.DrawerItem;
 import net.wisedog.android.whooing.dialog.AboutDialog;
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
-
-public class MainFragmentActivity extends SherlockFragmentActivity{
+public class MainFragmentActivity extends Activity{
 	
     //for left sliding menu
     private DrawerLayout mDrawerLayout;
@@ -54,7 +53,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.whooing_tabs);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
@@ -68,7 +67,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
         
         TransactionAddFragment f = new TransactionAddFragment();
-        getSupportFragmentManager().beginTransaction()
+        getFragmentManager().beginTransaction()
         .addToBackStack(null)
         .replace(R.id.main_content, f)
         .commit();
@@ -94,14 +93,14 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 		switch(position){
         case 1: //Home
         {
-        	getSupportFragmentManager().popBackStack(0, 0);
+        	getFragmentManager().popBackStack(0, 0);
             break;
         }
         case 2: //Transaction entries fragment
         {
         	b.putString("title", getString(R.string.left_menu_item_history));
         	TransactionEntriesFragment f = TransactionEntriesFragment.newInstance(b);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();
@@ -112,7 +111,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         {
         	b.putString("title", getString(R.string.left_menu_item_balance));
         	ExpBudgetFragment f = ExpBudgetFragment.newInstance(b);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();	
@@ -122,7 +121,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         {
         	b.putString("title", getString(R.string.left_menu_item_balance));
         	BalanceFragment f = BalanceFragment.newInstance(b);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();	
@@ -132,7 +131,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         {
         	b.putString("title", getString(R.string.left_menu_item_profit_loss));
         	ProfitLossFragment f = ProfitLossFragment.newInstance(b);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();	
@@ -143,7 +142,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         {
         	b.putString("title", getString(R.string.left_menu_item_credit));
         	BillFragment f = BillFragment.newInstance(b);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();	
@@ -153,7 +152,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         {
         	b.putString("title", getString(R.string.left_menu_item_mountain));
         	MountainFragment f = MountainFragment.newInstance(b);
-            getSupportFragmentManager().beginTransaction()
+            getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();	
@@ -164,7 +163,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
         {
 			b.putString("title", getString(R.string.left_menu_item_post_it));
 			PostItListFragment f = PostItListFragment.newInstance(b);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();
@@ -175,7 +174,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 			b.putInt("board_type", BbsListFragment.BOARD_TYPE_FREE);
 			b.putString("title", getString(R.string.text_free_board));
 			BbsListFragment f = BbsListFragment.newInstance(b);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();
@@ -186,7 +185,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 			b.putInt("board_type", BbsListFragment.BOARD_TYPE_MONEY_TALK);
 			b.putString("title", getString(R.string.text_free_board));
 			BbsListFragment f = BbsListFragment.newInstance(b);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();
@@ -197,7 +196,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 			b.putInt("board_type", BbsListFragment.BOARD_TYPE_COUNSELING);
 			b.putString("title", getString(R.string.text_free_board));
 			BbsListFragment f = BbsListFragment.newInstance(b);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();
@@ -208,7 +207,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 			b.putInt("board_type", BbsListFragment.BOARD_TYPE_WHOOING);
 			b.putString("title", getString(R.string.text_free_board));
 			BbsListFragment f = BbsListFragment.newInstance(b);
-			getSupportFragmentManager().beginTransaction()
+			getFragmentManager().beginTransaction()
             .addToBackStack(null)
             .replace(R.id.main_content, f)
             .commit();
@@ -240,7 +239,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();		
+		MenuInflater inflater = getMenuInflater();		
 		inflater.inflate(R.menu.menus, menu);
 
 		return super.onCreateOptionsMenu(menu);
@@ -281,13 +280,13 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 		case R.id.menu_action_about:
 		{
 			DialogFragment newFragment = AboutDialog.newInstance();
-            newFragment.show(getSupportFragmentManager(), "dialog");
+            newFragment.show(getFragmentManager(), "dialog");
 			break;
 		}
 		case R.id.menu_action_postit_write:
 		{
 			PostItWriteFragment f = new PostItWriteFragment();
-	        getSupportFragmentManager().beginTransaction()
+	        getFragmentManager().beginTransaction()
 	        .addToBackStack(null)
 	        .replace(R.id.main_content, f)
 	        .commit();
@@ -299,10 +298,10 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 		case android.R.id.home:
 		{
 			if(mDrawerLayout.isDrawerOpen(mDrawerList) == true){
-        		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        		getActionBar().setDisplayHomeAsUpEnabled(true);
         		mDrawerLayout.closeDrawer(mDrawerList);
         	}else{
-                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                getActionBar().setDisplayHomeAsUpEnabled(false);
                 mDrawerLayout.openDrawer(mDrawerList);
             }
 		}
@@ -315,13 +314,13 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
     @Override
     public void onBackPressed() {
     	if(mDrawerLayout.isDrawerOpen(mDrawerList) == true){
-    		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    		getActionBar().setDisplayHomeAsUpEnabled(true);
     		mDrawerLayout.closeDrawer(mDrawerList);
     	}
     	else{
-    		int count = getSupportFragmentManager().getBackStackEntryCount();
+    		int count = getFragmentManager().getBackStackEntryCount();
     		if(count > 1){
-    			getSupportFragmentManager().popBackStack();
+    			getFragmentManager().popBackStack();
     		}
     		else{
     			this.setResult(RESULT_CANCELED);
@@ -350,7 +349,7 @@ public class MainFragmentActivity extends SherlockFragmentActivity{
 		} else {
 			f.setData(mode, boardType, subject, contents, bbs_id);
 		}
-		getSupportFragmentManager().beginTransaction().addToBackStack(null)
+		getFragmentManager().beginTransaction().addToBackStack(null)
 				.replace(R.id.main_content, f).commit();
 	}
 }

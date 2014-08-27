@@ -20,6 +20,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.dataset.PostItItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,12 +37,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  * Post it! article fragment
  */
-public class PostItArticleFragment extends SherlockFragment {
+public class PostItArticleFragment extends Fragment {
     
     private PostItItem mItem = null;
     private boolean mInEditMode = false;
@@ -151,11 +150,11 @@ public class PostItArticleFragment extends SherlockFragment {
 				if (msg.arg1 == Define.API_PUT_POSTIT) {
 					Toast.makeText(getActivity(), getString(R.string.bbs_article_post_modified),
 							Toast.LENGTH_SHORT).show();
-					getActivity().getSupportFragmentManager().popBackStack();
+					getActivity().getFragmentManager().popBackStack();
 				} else if (msg.arg1 == Define.API_DELETE_POSTIT) {
 					Toast.makeText(getActivity(), getString(R.string.bbs_article_post_deleted),
 							Toast.LENGTH_SHORT).show();
-					getActivity().getSupportFragmentManager().popBackStack();
+					getActivity().getFragmentManager().popBackStack();
 				}
 			}
 			super.handleMessage(msg);

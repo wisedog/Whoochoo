@@ -32,6 +32,7 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -49,13 +50,11 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  *  A fragment to show transaction entries
  */
 @SuppressLint("HandlerLeak")
-public class TransactionEntriesFragment extends SherlockFragment implements View.OnClickListener{
+public class TransactionEntriesFragment extends Fragment implements View.OnClickListener{
 	/** date from */
 	private int mFromDate;
 	/** date to*/
@@ -101,11 +100,11 @@ public class TransactionEntriesFragment extends SherlockFragment implements View
 	        TextView startDate = (TextView)v.findViewById(R.id.transaction_entries_from_date);
 	        TextView endDate = (TextView)v.findViewById(R.id.transaction_entries_to_date);
 	        
-	        startDate.setText(WhooingCalendar.getPreMonthLocale(getSherlockActivity(), 1)); 
-	        endDate.setText(WhooingCalendar.getTodayLocale(getSherlockActivity()));
+	        startDate.setText(WhooingCalendar.getPreMonthLocale(getActivity(), 1)); 
+	        endDate.setText(WhooingCalendar.getTodayLocale(getActivity()));
 	        
 	        //Setting Spinner
-	        GeneralProcessor processor = new GeneralProcessor(getSherlockActivity());
+	        GeneralProcessor processor = new GeneralProcessor(getActivity());
 	        mAccountsArray = processor.getAllAccount(false);
 	        ArrayList<String> stringArray = new ArrayList<String>();
 	        stringArray.add("");
@@ -116,7 +115,7 @@ public class TransactionEntriesFragment extends SherlockFragment implements View
 	        String[] notArrayListStrArray = stringArray.toArray(new String[stringArray.size()]);
 
 	        Spinner accountSpinner = (Spinner) v.findViewById(R.id.transaction_entries_spinner_account);
-	        ArrayAdapter<String> accountAdapter = new ArrayAdapter<String>(getSherlockActivity(),
+	        ArrayAdapter<String> accountAdapter = new ArrayAdapter<String>(getActivity(),
 	                android.R.layout.select_dialog_item, notArrayListStrArray) {
 	            @Override
 	            public View getView(int position, View convertView, ViewGroup parent) {
@@ -201,7 +200,7 @@ public class TransactionEntriesFragment extends SherlockFragment implements View
             dataArray.add(item);
         }
         ListView lastestTransactionList = (ListView)getView().findViewById(R.id.transaction_entries_listview);
-        TransactionAddAdapter adapter = new TransactionAddAdapter(getSherlockActivity(), dataArray);
+        TransactionAddAdapter adapter = new TransactionAddAdapter(getActivity(), dataArray);
         lastestTransactionList.setAdapter(adapter);
     }
     
@@ -223,7 +222,7 @@ public class TransactionEntriesFragment extends SherlockFragment implements View
         int _day = c.get(Calendar.DAY_OF_MONTH);
     	
     	DatePickerDialog dpdFromDate = new DatePickerDialog(
-				getSherlockActivity(), new DatePickerDialog.OnDateSetListener() {
+    			getActivity(), new DatePickerDialog.OnDateSetListener() {
 					
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear,

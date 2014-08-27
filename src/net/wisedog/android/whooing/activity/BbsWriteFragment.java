@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,13 +40,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  * A fragment for writing/modifying article/comment on BBS 
  *
  */
-public class BbsWriteFragment extends SherlockFragment {
+public class BbsWriteFragment extends Fragment {
     public static final int MODE_WRITE_ARTICLE = 0;
     public static final int MODE_MODIFY_ARTICLE = 1;
     public static final int MODE_MODIFY_REPLY = 2;
@@ -111,7 +110,7 @@ public class BbsWriteFragment extends SherlockFragment {
                 if(content == null || content.equals("")){
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                     button.startAnimation(shake);
-                    Toast.makeText(getSherlockActivity(), getString(R.string.bbs_write_fill_content), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getString(R.string.bbs_write_fill_content), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 
@@ -123,7 +122,7 @@ public class BbsWriteFragment extends SherlockFragment {
 						Animation shake = AnimationUtils.loadAnimation(
 								getActivity(), R.anim.shake);
 						button.startAnimation(shake);
-						Toast.makeText(getSherlockActivity(),
+						Toast.makeText(getActivity(),
 								getString(R.string.bbs_write_fill_subject),
 								Toast.LENGTH_SHORT).show();
 						return;
@@ -183,14 +182,14 @@ public class BbsWriteFragment extends SherlockFragment {
                 if(progress != null){
                     progress.setVisibility(View.INVISIBLE);
                 }
-                MainFragmentActivity activity = (MainFragmentActivity)getSherlockActivity();
+                MainFragmentActivity activity = (MainFragmentActivity)getActivity();
                 JSONObject obj = (JSONObject)msg.obj;
                 int result = 0;
                 try {
                     result = obj.getInt("code");
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Toast.makeText(getSherlockActivity(), "Error - BBS-01", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Error - BBS-01", Toast.LENGTH_LONG).show();
                     return;
                 }
                 if(msg.arg1 == Define.API_POST_BOARD_ARTICLE){
@@ -200,7 +199,7 @@ public class BbsWriteFragment extends SherlockFragment {
                     }
                     
                     if(result == Define.RESULT_OK){
-                        activity.getSupportFragmentManager().popBackStack();
+                        activity.getFragmentManager().popBackStack();
                     }
                     
                 }else if(msg.arg1== Define.API_PUT_BOARD_ARTICLE){
@@ -210,7 +209,7 @@ public class BbsWriteFragment extends SherlockFragment {
                     
                     if(result == Define.RESULT_OK){
                     	activity.mDirtyFlagModifyBbs = true;
-                        activity.getSupportFragmentManager().popBackStack();
+                        activity.getFragmentManager().popBackStack();
                     }
                 }else if(msg.arg1 == Define.API_PUT_BOARD_REPLY){
                 	if(Define.DEBUG){
@@ -218,7 +217,7 @@ public class BbsWriteFragment extends SherlockFragment {
                 	}
                 	
                 	if(result == Define.RESULT_OK){
-                        getActivity().getSupportFragmentManager().popBackStack();
+                        getActivity().getFragmentManager().popBackStack();
                 	}
                 }
             }

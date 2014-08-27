@@ -21,6 +21,7 @@ import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.activity.AccountsModify;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.widget.WiButton;
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,10 +32,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
 
-public class AccountSettingCheckcardDialog extends SherlockDialogFragment {
+public class AccountSettingCheckcardDialog extends DialogFragment {
     private ArrayList<String> mAccountsTitleList = new ArrayList<String>();
     private ArrayList<String> mIdList = new ArrayList<String>();
     
@@ -80,7 +80,7 @@ public class AccountSettingCheckcardDialog extends SherlockDialogFragment {
         final Spinner accountsSpinner = (Spinner) v
                 .findViewById(R.id.account_setting_checkcard_spinner);
         ArrayAdapter<String> accountsAdapter = new ArrayAdapter<String>(
-                getSherlockActivity(), android.R.layout.select_dialog_item,
+        		getActivity(), android.R.layout.select_dialog_item,
                 mAccountsTitleList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

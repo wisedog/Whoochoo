@@ -22,6 +22,7 @@ import net.wisedog.android.whooing.activity.AccountsModify;
 import net.wisedog.android.whooing.db.AccountsEntity;
 import net.wisedog.android.whooing.widget.WiButton;
 
+import android.app.DialogFragment;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,9 +34,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 
-public class AccountSettingCardDialog extends SherlockDialogFragment {
+public class AccountSettingCardDialog extends DialogFragment {
     
     private static final Integer[] DATE_NUMBER = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
     private ArrayList<String> mAccountsTitleList = new ArrayList<String>();
@@ -87,7 +87,7 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
         final Spinner accountsSpinner = (Spinner) v
                 .findViewById(R.id.account_setting_card_spinner_accounts);
         ArrayAdapter<String> accountsAdapter = new ArrayAdapter<String>(
-                getSherlockActivity(), android.R.layout.select_dialog_item, mAccountsTitleList) {
+        		getActivity(), android.R.layout.select_dialog_item, mAccountsTitleList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
@@ -104,7 +104,7 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
 
         final Spinner payDateSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_date);
         ArrayAdapter<Integer> dateAdapter = new ArrayAdapter<Integer>(
-                getSherlockActivity(), android.R.layout.select_dialog_item, DATE_NUMBER) {
+        		getActivity(), android.R.layout.select_dialog_item, DATE_NUMBER) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View v = super.getView(position, convertView, parent);
@@ -124,7 +124,7 @@ public class AccountSettingCardDialog extends SherlockDialogFragment {
         final Spinner periodSpinner = (Spinner) v.findViewById(R.id.account_setting_card_spinner_period);
         Resources res = getResources();
         String[] startDate = res.getStringArray(R.array.card_start_date_array);
-        ArrayAdapter<String> periodAdapter = new ArrayAdapter<String>(getSherlockActivity(), 
+        ArrayAdapter<String> periodAdapter = new ArrayAdapter<String>(getActivity(), 
                 android.R.layout.select_dialog_item, startDate){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

@@ -19,12 +19,15 @@ import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -32,14 +35,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-
 /**
  * A fragment for writing Post it!
  */
-public class PostItWriteFragment extends SherlockFragment {
+public class PostItWriteFragment extends Fragment {
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,7 +97,7 @@ public class PostItWriteFragment extends SherlockFragment {
 				
 				@Override
 				public void onClick(View v) {
-					getActivity().getSupportFragmentManager().popBackStack();
+					getActivity().getFragmentManager().popBackStack();
 				}
 			});
     	}
@@ -123,7 +122,7 @@ public class PostItWriteFragment extends SherlockFragment {
 					((ProgressBar) getView().findViewById(
 							R.id.post_it_write_progress))
 							.setVisibility(View.INVISIBLE);
-					getActivity().getSupportFragmentManager().popBackStack();
+					getActivity().getFragmentManager().popBackStack();
 				}
 			}
 			super.handleMessage(msg);

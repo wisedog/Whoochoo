@@ -29,24 +29,23 @@ import net.wisedog.android.whooing.dataset.BoardItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.EndlessScrollListener;
 import android.annotation.SuppressLint;
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 /**
  * A fragment for listing bbs items 
  *
  */
-public class BbsListFragment extends SherlockListFragment implements OnItemClickListener {
+public class BbsListFragment extends ListFragment implements OnItemClickListener {
 	public static final int BOARD_TYPE_FREE = 0;
 	public static final int BOARD_TYPE_MONEY_TALK = 1;
 	public static final int BOARD_TYPE_COUNSELING = 2;
@@ -81,7 +80,7 @@ public class BbsListFragment extends SherlockListFragment implements OnItemClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataArray = new ArrayList<BoardItem>();
-        mAdapter = new BoardAdapter(getSherlockActivity(), mDataArray);
+        mAdapter = new BoardAdapter(getActivity(), mDataArray);
         mBoardType = getArguments().getInt("board_type");
         setHasOptionsMenu(true);
     }
@@ -112,7 +111,7 @@ public class BbsListFragment extends SherlockListFragment implements OnItemClick
 		BoardItem item = (BoardItem)(getListView().getItemAtPosition(position));
 		BbsArticleFragment f = new BbsArticleFragment();
     	f.setData(mBoardType, item);
-        getSherlockActivity().getSupportFragmentManager().beginTransaction()
+        getActivity().getFragmentManager().beginTransaction()
         .addToBackStack(null)
         .replace(R.id.main_content, f)
         .commit();

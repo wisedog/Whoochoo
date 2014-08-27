@@ -33,15 +33,16 @@ import net.wisedog.android.whooing.network.ThreadRestAPI;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.widget.WiButton;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.DialogFragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -57,9 +58,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
-public class AccountsModify extends SherlockFragmentActivity implements OnItemSelectedListener, 
+public class AccountsModify extends Activity implements OnItemSelectedListener, 
         AccountCardSettingListener, DatePickerDialog.OnDateSetListener, AccountCheckCardSettingListener {
     private String useDate = "p25";
     private String accountId = null;
@@ -217,7 +217,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         GeneralProcessor general = new GeneralProcessor(this);
         ArrayList<AccountsEntity> list = general.getAllAccount(true);
         DialogFragment newFragment = AccountSettingCheckcardDialog.newInstance(list);
-        newFragment.show(getSupportFragmentManager(), "dialog");   
+        newFragment.show(getFragmentManager(), "dialog");   
     }
     
     public void onClickBtnCard(View v){
@@ -226,7 +226,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
         Intent intent = getIntent();
         AccountsEntity entity = intent.getParcelableExtra("account_entity");
         DialogFragment newFragment = AccountSettingCardDialog.newInstance(entity, list);
-        newFragment.show(getSupportFragmentManager(), "dialog");    
+        newFragment.show(getFragmentManager(), "dialog");    
     }
 
     @Override
@@ -357,7 +357,7 @@ public class AccountsModify extends SherlockFragmentActivity implements OnItemSe
     
     public void onClickChangeOpenDate(View v){
         DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+        newFragment.show(getFragmentManager(), "datePicker");
     }
     
     private String getCurrentCategoryString(){

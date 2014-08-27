@@ -31,6 +31,7 @@ import net.wisedog.android.whooing.ui.BbsReplyEntity;
 import net.wisedog.android.whooing.utils.DateUtil;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -51,12 +52,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 /**
  * A fragment for showing BBS(Free, Counselling, Support, ...) article.   
  */
-public class BbsArticleFragment extends SherlockFragment {
+public class BbsArticleFragment extends Fragment {
 
     /** Board type defined in BbsListFragment */
     private int mBoardType = -1;
@@ -141,7 +140,7 @@ public class BbsArticleFragment extends SherlockFragment {
 						result = obj.getInt("code");
 					} catch (JSONException e) {
 						e.printStackTrace();
-						Toast.makeText(getSherlockActivity(), "Error - BBS-03", Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), "Error - BBS-03", Toast.LENGTH_LONG).show();
 						return;
 					}
                 	if(result == Define.RESULT_OK){
@@ -167,14 +166,14 @@ public class BbsArticleFragment extends SherlockFragment {
                         result = obj.getInt("code");
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        Toast.makeText(getSherlockActivity(), "Error - BBS-02", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Error - BBS-02", Toast.LENGTH_LONG).show();
                         return;
                     }
                     if(result == Define.RESULT_OK){
                         mProgress.dismiss();
                         Toast.makeText(getActivity(), getString(R.string.bbs_deleted), Toast.LENGTH_LONG).show();
                         //((BbsFragmentActivity)getActivity()).setListRefreshFlag(true);
-                        getActivity().getSupportFragmentManager().popBackStack();                        
+                        getActivity().getFragmentManager().popBackStack();                        
                     }
                     
                 }

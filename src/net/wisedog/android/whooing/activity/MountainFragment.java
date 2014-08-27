@@ -18,8 +18,6 @@ package net.wisedog.android.whooing.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import net.wisedog.android.whooing.Define;
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.WhooingApplication;
@@ -27,6 +25,7 @@ import net.wisedog.android.whooing.api.GeneralApi;
 import net.wisedog.android.whooing.engine.DataRepository;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.views.WhooingGraph;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -36,7 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-public final class MountainFragment extends SherlockFragment{
+public final class MountainFragment extends Fragment{
 
     public static MountainFragment newInstance(Bundle b) {
         MountainFragment fragment = new MountainFragment();
@@ -98,9 +97,9 @@ public final class MountainFragment extends SherlockFragment{
         try {
             JSONObject resultObj = obj.getJSONObject("results");
             WhooingGraph wg = new WhooingGraph();
-            LinearLayout llBody = (LinearLayout) getSherlockActivity().findViewById(R.id.mountain_fragment_container);
+            LinearLayout llBody = (LinearLayout) getActivity().findViewById(R.id.mountain_fragment_container);
             if(llBody != null){
-                wg.showGraph(getSherlockActivity(), llBody, resultObj.getJSONArray("rows"));
+                wg.showGraph(getActivity(), llBody, resultObj.getJSONArray("rows"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

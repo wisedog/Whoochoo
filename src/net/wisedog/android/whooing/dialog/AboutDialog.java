@@ -15,10 +15,9 @@
  */
 package net.wisedog.android.whooing.dialog;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
-
 import net.wisedog.android.whooing.R;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -33,7 +32,7 @@ import android.widget.Button;
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class AboutDialog extends SherlockDialogFragment {
+public class AboutDialog extends DialogFragment {
 
     static public AboutDialog newInstance() {
         AboutDialog f = new AboutDialog();

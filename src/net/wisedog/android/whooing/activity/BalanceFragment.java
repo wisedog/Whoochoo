@@ -31,6 +31,7 @@ import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import net.wisedog.android.whooing.utils.WhooingCurrency;
 import net.wisedog.android.whooing.widget.WiTextView;
+import android.app.Fragment;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -48,13 +49,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 
-import com.actionbarsherlock.app.SherlockFragment;
 
 /**
  * @author Wisedog(me@wisedog.net)
  *
  */
-public class BalanceFragment extends SherlockFragment{
+public class BalanceFragment extends Fragment{
 
     public static BalanceFragment newInstance(Bundle b) {
         BalanceFragment fragment = new BalanceFragment();
@@ -64,7 +64,7 @@ public class BalanceFragment extends SherlockFragment{
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.balance_fragment, null);
+        View view = inflater.inflate(R.layout.balance_fragment, container, false);
 		return view;
     }
     
@@ -72,7 +72,7 @@ public class BalanceFragment extends SherlockFragment{
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        TableLayout tl = (TableLayout) getSherlockActivity()
+        TableLayout tl = (TableLayout) getActivity()
                 .findViewById(R.id.balance_asset_table);
         if(tl.getChildCount() <= 2){
         	DataRepository repository = WhooingApplication.getInstance().getRepo();
@@ -118,7 +118,7 @@ public class BalanceFragment extends SherlockFragment{
                             int returnCode = result.getInt("code");
                             if(returnCode == Define.RESULT_INSUFFIENT_API && Define.SHOW_NO_API_INFORM == false){
                                 Define.SHOW_NO_API_INFORM = true;
-                                WhooingAlert.showNotEnoughApi(getSherlockActivity());
+                                WhooingAlert.showNotEnoughApi(getActivity());
                                 return;
                             }
                         }
@@ -129,7 +129,7 @@ public class BalanceFragment extends SherlockFragment{
                         DataRepository repository = WhooingApplication.getInstance().getRepo();
                         try {
                             repository.setRestApi(result.getInt("rest_of_api"));
-                            repository.refreshRestApi(getSherlockActivity());
+                            repository.refreshRestApi(getActivity());
                         } catch (JSONException e) {
                             // Just passing..... 
                             e.printStackTrace();
@@ -154,12 +154,12 @@ public class BalanceFragment extends SherlockFragment{
 	 * @param	obj		JSON formatted balance data
 	 * */
 	public void showBalance(JSONObject obj) {
-	    WiTextView labelTotalAssetValue = (WiTextView)getSherlockActivity().findViewById(R.id.balance_total_asset_value);
+	    WiTextView labelTotalAssetValue = (WiTextView)getActivity().findViewById(R.id.balance_total_asset_value);
 		
-		TableLayout tl = (TableLayout) getSherlockActivity()
+		TableLayout tl = (TableLayout) getActivity()
 				.findViewById(R.id.balance_asset_table);
 		DisplayMetrics metrics = new DisplayMetrics();
-		getSherlockActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
 		final int secondColumnWidth = (int) (metrics.widthPixels * 0.6);
 		Resources r = getResources();
 		final int valueWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 95,
@@ -174,8 +174,8 @@ public class BalanceFragment extends SherlockFragment{
 			double totalAssetValue = objAssets.getDouble("total");
             if (labelTotalAssetValue != null) {
             	double totalAssetValue1 = objAssets.getDouble("total");
-                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1, getSherlockActivity()));
-                View bar = (View) getSherlockActivity().findViewById(R.id.bar_total_asset);
+                labelTotalAssetValue.setText(WhooingCurrency.getFormattedValue(totalAssetValue1, getActivity()));
+                View bar = (View) getActivity().findViewById(R.id.bar_total_asset);
                 int barWidth = FragmentUtil.getBarWidth(objAssets.getInt("total"), totalAssetValue,
                         secondColumnWidth, valueWidth);
                 
@@ -192,14 +192,14 @@ public class BalanceFragment extends SherlockFragment{
 			
 			JSONObject objLiabilities = objResult.getJSONObject("liabilities");
 			JSONArray objLiabilitiesAccounts = objLiabilities.getJSONArray("accounts");
-			TableLayout tableLiabilites = (TableLayout) getSherlockActivity()
+			TableLayout tableLiabilites = (TableLayout) getActivity()
 	                .findViewById(R.id.balance_liabilities_table);
 			
-			WiTextView labelTotalLiabilitiesValue = (WiTextView)getSherlockActivity().findViewById(R.id.balance_total_liabilities_value);
+			WiTextView labelTotalLiabilitiesValue = (WiTextView)getActivity().findViewById(R.id.balance_total_liabilities_value);
 			if(labelTotalLiabilitiesValue != null){
 				double totalLiabilities = objLiabilities.getDouble("total");
-			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities, getSherlockActivity()));
-                View bar = (View)getSherlockActivity().findViewById(R.id.bar_total_liabilities);
+			    labelTotalLiabilitiesValue.setText(WhooingCurrency.getFormattedValue(totalLiabilities, getActivity()));
+                View bar = (View)getActivity().findViewById(R.id.bar_total_liabilities);
                 int barWidth = FragmentUtil.getBarWidth(objLiabilities.getInt("total"), totalAssetValue, 
                         secondColumnWidth, valueWidth);
                 android.widget.LinearLayout.LayoutParams lParams = new LinearLayout.LayoutParams(
@@ -222,17 +222,17 @@ public class BalanceFragment extends SherlockFragment{
 	    if(accounts == null){
 	        return;
 	    }
-	    GeneralProcessor genericProcessor = new GeneralProcessor(getSherlockActivity());
+	    GeneralProcessor genericProcessor = new GeneralProcessor(getActivity());
 	    for(int i = 0; i < accounts.length(); i++){
 	        JSONObject accountItem = (JSONObject) accounts.get(i);
             
             /* Create a new row to be added. */
-            TableRow tr = new TableRow(getSherlockActivity());
+            TableRow tr = new TableRow(getActivity());
             tr.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                     LayoutParams.WRAP_CONTENT));
             tr.setWeightSum(1.0f);
             
-            WiTextView accountText = new WiTextView(getSherlockActivity());
+            WiTextView accountText = new WiTextView(getActivity());
             AccountsEntity entity = genericProcessor.findAccountById(accountItem.getString("account_id"));
             if(entity == null){
             	return;
@@ -249,7 +249,7 @@ public class BalanceFragment extends SherlockFragment{
 
             tr.addView(accountText);
             
-            LinearLayout amountLayout = new LinearLayout(getSherlockActivity());
+            LinearLayout amountLayout = new LinearLayout(getActivity());
             amountLayout.setLayoutParams(new TableRow.LayoutParams(
                     0, 
                     LayoutParams.WRAP_CONTENT,0.6f));
@@ -262,7 +262,7 @@ public class BalanceFragment extends SherlockFragment{
                     barWidth, px);
             
             //set up view for horizontally bar graph 
-            View barView = new View(getSherlockActivity());
+            View barView = new View(getActivity());
             barView.setBackgroundColor(color);
             int rightMargin = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics());
             lParams.setMargins(0, 0, rightMargin, 0);
@@ -270,9 +270,9 @@ public class BalanceFragment extends SherlockFragment{
             barView.setLayoutParams(lParams);
             
             //set up textview for showing amount
-            WiTextView amountText = new WiTextView(getSherlockActivity());
+            WiTextView amountText = new WiTextView(getActivity());
             double money = accountItem.getDouble("money");
-            amountText.setText(WhooingCurrency.getFormattedValue(money, getSherlockActivity()));
+            amountText.setText(WhooingCurrency.getFormattedValue(money, getActivity()));
             amountLayout.addView(barView);
             amountLayout.addView(amountText);
             tr.addView(amountLayout);

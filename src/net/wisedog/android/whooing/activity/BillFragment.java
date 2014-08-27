@@ -28,6 +28,7 @@ import net.wisedog.android.whooing.utils.WhooingAlert;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -41,13 +42,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 
 /**
  * @author wisedog(me@wisedog.net)
  *
  */
-public class BillFragment extends SherlockFragment implements
+public class BillFragment extends Fragment implements
 DatePickerDialog.OnDateSetListener{
 	int mFromDate;
 	int mToDate;
@@ -102,7 +102,7 @@ DatePickerDialog.OnDateSetListener{
                     	if(returnCode == Define.RESULT_INSUFFIENT_API 
                     			&& Define.SHOW_NO_API_INFORM == false){
                     		Define.SHOW_NO_API_INFORM = true;
-                    		WhooingAlert.showNotEnoughApi(getSherlockActivity());
+                    		WhooingAlert.showNotEnoughApi(getActivity());
                     		return;
                     	}
                         showBill(obj);
@@ -127,7 +127,7 @@ DatePickerDialog.OnDateSetListener{
         int count = array.length();
         for(int i = 0; i < count; i++){
         	JSONObject objRowItem = array.getJSONObject(i);
-        	BillMonthlyEntity monthly = new BillMonthlyEntity(getSherlockActivity());
+        	BillMonthlyEntity monthly = new BillMonthlyEntity(getActivity());
         	monthly.setupMonthlyCard(objRowItem);
         	baseLayout.addView(monthly);
         }
@@ -152,12 +152,12 @@ DatePickerDialog.OnDateSetListener{
     		mCalendarSelectionResId = R.id.transaction_entries_to_date;
     	}
     	DatePickerDialog datePickerDlg = new DatePickerDialog(
-				getSherlockActivity(), new DatePickerDialog.OnDateSetListener() {
+				getActivity(), new DatePickerDialog.OnDateSetListener() {
 					
 					@Override
 					public void onDateSet(DatePicker view, int year, int monthOfYear,
 							int dayOfMonth) {
-						Toast.makeText(getSherlockActivity(), 
+						Toast.makeText(getActivity(), 
 								"year : " + year + " month : " + monthOfYear + " day : " + dayOfMonth, 
 								Toast.LENGTH_LONG).show();
 						

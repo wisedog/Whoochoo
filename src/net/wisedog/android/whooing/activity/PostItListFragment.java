@@ -27,22 +27,22 @@ import net.wisedog.android.whooing.adapter.PostItAdapter;
 import net.wisedog.android.whooing.dataset.PostItItem;
 import net.wisedog.android.whooing.network.ThreadRestAPI;
 import android.annotation.SuppressLint;
+import android.app.ListFragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 
 /**
  * A fragment for showing Post it! item list
  */
-public class PostItListFragment extends SherlockListFragment{
+public class PostItListFragment extends ListFragment{
     
     protected ArrayList<PostItItem> mDataArray;
     protected View footerView;
@@ -89,7 +89,7 @@ public class PostItListFragment extends SherlockListFragment{
         PostItItem item = (PostItItem)getListView().getItemAtPosition(position);
         PostItArticleFragment f = new PostItArticleFragment();
         f.setData(item);
-        getSherlockActivity().getSupportFragmentManager().beginTransaction()
+        getActivity().getFragmentManager().beginTransaction()
         .addToBackStack(null)
         .replace(R.id.main_content, f)
         .commit();

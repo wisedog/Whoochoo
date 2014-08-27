@@ -25,6 +25,7 @@ import net.wisedog.android.whooing.dialog.AccountDeleteConfirmDialog.AccountDele
 import net.wisedog.android.whooing.engine.GeneralProcessor;
 import net.wisedog.android.whooing.ui.AccountRowItem;
 import net.wisedog.android.whooing.utils.WhooingCalendar;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -35,13 +36,12 @@ import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 /**
  * Setting user accounts(for banking account - like budget, expenses)
  * @author	Wisedog(me@wisedog.net)
  * */
-public class AccountsSetting extends SherlockFragmentActivity implements AccountDeleteListener{
+public class AccountsSetting extends Activity implements AccountDeleteListener{
     public static final int REQUEST_CODE_ADD = 0;
     public static final int REQUEST_CODE_MODIFY = 1;
 
@@ -100,7 +100,7 @@ public class AccountsSetting extends SherlockFragmentActivity implements Account
                 @Override
                 public void onClick(View v) {
                     AccountDeleteConfirmDialog newFragment = AccountDeleteConfirmDialog.newInstance(entity.account_id, entity.accountType);
-                    newFragment.show(getSupportFragmentManager(), "account_del_dialog");
+                    newFragment.show(getFragmentManager(), "account_del_dialog");
                 }
             });
             
